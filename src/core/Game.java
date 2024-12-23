@@ -1,58 +1,53 @@
 package core;
 
-import components.ColorComponent;
+import entities.ImageEntity;
+import systems.MovementSystem;
+import systems.RenderSystem;
 import views.GameFrame;
 import views.GamePanel;
-import systems.BackgroundSystem;
-import entities.BackgroundEntity;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    private GameFrame Frame;
-    private GamePanel Panel;
-    private GameLoop GameLoop;
-    private BackgroundSystem backgroundSystem;
+    private GameFrame frame;
+    private GamePanel panel;
+    private GameLoop gameLoop;
+    private RenderSystem renderSystem;
+    private MovementSystem movementSystem;
     private List<Entity> entities;
 
     public Game(String title, int width, int height) {
-        Frame = new GameFrame(title, width, height);
-        Panel = new GamePanel();
+        frame = new GameFrame(title, width, height);
+        panel = new GamePanel();
         entities = new ArrayList<>();
 
-        BackgroundEntity backgroundEntity = new BackgroundEntity();
-        entities.add(backgroundEntity);
+        entities.add(new ImageEntity(100, 100, "/assets/test.png"));
 
-        backgroundSystem = new BackgroundSystem();
+        renderSystem = new RenderSystem(panel);
+        movementSystem = new MovementSystem();
     }
 
     public void start() {
-        Panel.setPreferredSize(new Dimension(500, 500));
-        Panel.setBackground(Color.BLACK);
-        Panel.setLayout(new BorderLayout());
-        Frame.add(Panel);
-        Frame.pack();
-        Frame.setVisible(true);
+        panel.setPreferredSize(new Dimension(500, 500));
+        panel.setBackground(Color.BLACK);
+        frame.add(panel);
+        frame.pack();
+        frame.setVisible(true);
 
-        GameLoop = new GameLoop(60) {
+        gameLoop = new GameLoop(60) {
             @Override
             public void update() {
-                backgroundSystem.update(1.0f / 60.0f, entities);
-
-                ColorComponent colorComponent = entities.getFirst().getComponent(ColorComponent.class);
-                if (colorComponent != null) {
-                    Panel.setBackground(colorComponent.getColor());
-                }
-                Panel.repaint();
+                renderSystem.update(1.0f / 60.0f, entities);
+                movementSystem.update(1.0f / 60.0f, entities);
             }
         };
 
-        GameLoop.startLoop();
+        gameLoop.startLoop();
     }
 
     public void stop() {
-        GameLoop.stopLoop();
+        gameLoop.stopLoop();
     }
 }
