@@ -28,6 +28,8 @@ public class MovementSystem extends System {
                 var position = entity.getComponent(PositionComponent.class);
                 position.setX(position.getX() + velocity.getDx());
                 position.setY(position.getY() + velocity.getDy());
+            } else {
+                throw new Error("Trying to move entity without a position component.");
             }
         }
     }
