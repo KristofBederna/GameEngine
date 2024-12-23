@@ -32,13 +32,13 @@ public abstract class GameLoop extends Thread {
             lastTime = currentTime;
 
             if (frameDelta >= 1) {
+                update();
                 frameDelta--;
                 frameCount++;
             }
         }
     }
 
-    public void update() {
-    }
+    public abstract void update();
 }
 
