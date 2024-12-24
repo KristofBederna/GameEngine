@@ -1,6 +1,6 @@
 package systems;
 
-import components.MoveableComponent;
+import components.InteractiveComponent;
 import components.PositionComponent;
 import components.VelocityComponent;
 import core.Entity;
@@ -22,10 +22,10 @@ public class InputHandlingSystem extends System {
         for (Entity entity : entities) {
             PositionComponent position = entity.getComponent(PositionComponent.class);
             VelocityComponent velocity = entity.getComponent(VelocityComponent.class);
-            MoveableComponent moveable = entity.getComponent(MoveableComponent.class);
+            InteractiveComponent interactive = entity.getComponent(InteractiveComponent.class);
 
-            if (position != null && velocity != null && moveable != null) {
-                handleInput(moveable);
+            if (position != null && velocity != null && interactive != null) {
+                handleInput(interactive);
             } else {
                 throw new Error("Trying to apply keyboard movement to entity without Position, Velocity and Moveable components");
             }
@@ -33,8 +33,8 @@ public class InputHandlingSystem extends System {
     }
 
 
-    private void handleInput(MoveableComponent moveable) {
-        for (Map.Entry<Integer, Tuple<Runnable, Runnable>> entry : moveable.getInputMapping().entrySet()) {
+    private void handleInput(InteractiveComponent interactive) {
+        for (Map.Entry<Integer, Tuple<Runnable, Runnable>> entry : interactive.getInputMapping().entrySet()) {
             int keyCode = entry.getKey();
             Runnable action = entry.getValue().first();
             Runnable counterAction = entry.getValue().second() == null ? null : entry.getValue().second();

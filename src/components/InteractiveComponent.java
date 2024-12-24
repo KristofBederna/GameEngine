@@ -6,10 +6,10 @@ import miscs.Tuple;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MoveableComponent extends Component {
+public class InteractiveComponent extends Component {
     private final Map<Integer, Tuple<Runnable, Runnable>> inputMapping;
 
-    public MoveableComponent() {
+    public InteractiveComponent() {
         this.inputMapping = new HashMap<>();
     }
 
