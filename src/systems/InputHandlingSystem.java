@@ -5,11 +5,10 @@ import components.PositionComponent;
 import components.VelocityComponent;
 import core.Entity;
 import core.System;
+import miscs.Tuple;
 
-import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class InputHandlingSystem extends System {
     private final KeyboardInputHandler inputHandler;
@@ -26,7 +25,7 @@ public class InputHandlingSystem extends System {
             MoveableComponent moveable = entity.getComponent(MoveableComponent.class);
 
             if (position != null && velocity != null && moveable != null) {
-                handleInput(moveable, velocity, deltaTime);
+                handleInput(moveable);
             } else {
                 throw new Error("Trying to apply keyboard movement to entity without Position, Velocity and Moveable components");
             }
@@ -34,28 +33,17 @@ public class InputHandlingSystem extends System {
     }
 
 
-    private void handleInput(MoveableComponent moveable, VelocityComponent velocity, float deltaTime) {
-        int speed = 1;
-
-        int dx = 0;
-        int dy = 0;
-
-        for (Map.Entry<Integer, String> entry : moveable.getInputMapping().entrySet()) {
+    private void handleInput(MoveableComponent moveable) {
+        for (Map.Entry<Integer, Tuple<Runnable, Runnable>> entry : moveable.getInputMapping().entrySet()) {
             int keyCode = entry.getKey();
-            String action = entry.getValue();
-
+            Runnable action = entry.getValue().first();
+            Runnable counterAction = entry.getValue().second() == null ? null : entry.getValue().second();
             if (inputHandler.isKeyPressed(keyCode)) {
-                switch (action) {
-                    case "MOVE_UP" -> dy -= speed;
-                    case "MOVE_DOWN" -> dy += speed;
-                    case "MOVE_LEFT" -> dx -= speed;
-                    case "MOVE_RIGHT" -> dx += speed;
-                }
+                action.run();
+            }
+            if (inputHandler.isKeyReleased(keyCode) && counterAction != null) {
+                counterAction.run();
             }
         }
-
-        velocity.setDx(dx);
-        velocity.setDy(dy);
     }
-
 }

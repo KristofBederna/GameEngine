@@ -1,3 +1,5 @@
+//Testing entity class to showcase progress
+
 package entities;
 
 import components.ImageComponent;

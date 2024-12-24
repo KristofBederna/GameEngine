@@ -9,6 +9,7 @@ import java.util.Set;
 
 public class KeyboardInputHandler implements KeyListener {
     private final Set<Integer> pressedKeys = new HashSet<>();
+    private final Set<Integer> releasedKeys = new HashSet<>();
     private final GamePanel GamePanel;
 
     public KeyboardInputHandler(GamePanel gamePanel) {
@@ -24,15 +25,24 @@ public class KeyboardInputHandler implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         pressedKeys.remove(e.getKeyCode());
+        releasedKeys.add(e.getKeyCode());
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        // No-op
+        // Not implemented
     }
 
     public boolean isKeyPressed(int keyCode) {
         return pressedKeys.contains(keyCode);
+    }
+
+    public boolean isKeyReleased(int keyCode) {
+        if (releasedKeys.contains(keyCode)) {
+            releasedKeys.remove(keyCode);
+            return true;
+        }
+        return false;
     }
 
     public Set<Integer> getPressedKeys() {
