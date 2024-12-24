@@ -8,6 +8,7 @@ import core.System;
 
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class InputHandlingSystem extends System {
@@ -25,7 +26,7 @@ public class InputHandlingSystem extends System {
             MoveableComponent moveable = entity.getComponent(MoveableComponent.class);
 
             if (position != null && velocity != null && moveable != null) {
-                handleInput(velocity, deltaTime);
+                handleInput(moveable, velocity, deltaTime);
             } else {
                 throw new Error("Trying to apply keyboard movement to entity without Position, Velocity and Moveable components");
             }
@@ -33,28 +34,28 @@ public class InputHandlingSystem extends System {
     }
 
 
-    private void handleInput(VelocityComponent velocity, float deltaTime) {
+    private void handleInput(MoveableComponent moveable, VelocityComponent velocity, float deltaTime) {
         int speed = 1;
 
         int dx = 0;
         int dy = 0;
 
-        Set<Integer> inputs = inputHandler.getPressedKeys();
+        for (Map.Entry<Integer, String> entry : moveable.getInputMapping().entrySet()) {
+            int keyCode = entry.getKey();
+            String action = entry.getValue();
 
-        if (inputs.contains(KeyEvent.VK_W)) {
-            dy -= speed; // Move up
-        }
-        if (inputs.contains(KeyEvent.VK_S)) {
-            dy += speed; // Move down
-        }
-        if (inputs.contains(KeyEvent.VK_A)) {
-            dx -= speed; // Move left
-        }
-        if (inputs.contains(KeyEvent.VK_D)) {
-            dx += speed; // Move right
+            if (inputHandler.isKeyPressed(keyCode)) {
+                switch (action) {
+                    case "MOVE_UP" -> dy -= speed;
+                    case "MOVE_DOWN" -> dy += speed;
+                    case "MOVE_LEFT" -> dx -= speed;
+                    case "MOVE_RIGHT" -> dx += speed;
+                }
+            }
         }
 
         velocity.setDx(dx);
         velocity.setDy(dy);
     }
+
 }

@@ -1,5 +1,6 @@
 package core;
 
+import components.MoveableComponent;
 import entities.ImageEntity;
 import systems.InputHandlingSystem;
 import systems.KeyboardInputHandler;
@@ -9,6 +10,7 @@ import views.GameFrame;
 import views.GamePanel;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +27,13 @@ public class Game {
         frame = new GameFrame(title, width, height);
         panel = new GamePanel();
         entities = new ArrayList<>();
+        ImageEntity moveable = new ImageEntity(100, 100, "/assets/test.png");
+        moveable.getComponent(MoveableComponent.class).mapInput(KeyEvent.VK_W, "MOVE_UP");
+        moveable.getComponent(MoveableComponent.class).mapInput(KeyEvent.VK_S, "MOVE_DOWN");
+        moveable.getComponent(MoveableComponent.class).mapInput(KeyEvent.VK_A, "MOVE_LEFT");
+        moveable.getComponent(MoveableComponent.class).mapInput(KeyEvent.VK_D, "MOVE_RIGHT");
 
-        entities.add(new ImageEntity(100, 100, "/assets/test.png"));
+        entities.add(moveable);
 
         renderSystem = new RenderSystem(panel);
         movementSystem = new MovementSystem();
