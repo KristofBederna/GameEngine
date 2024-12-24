@@ -1,8 +1,10 @@
 package core;
 
+import assets.GlobalPaths;
 import components.InteractiveComponent;
 import components.VelocityComponent;
 import entities.ImageEntity;
+import miscs.MapLoader;
 import systems.InputHandlingSystem;
 import systems.KeyboardInputHandler;
 import systems.MovementSystem;
@@ -12,6 +14,7 @@ import views.GamePanel;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +25,7 @@ public class Game {
     private RenderSystem renderSystem;
     private MovementSystem movementSystem;
     private InputHandlingSystem inputHandlingSystem;
+    private GameMap map;
     private List<Entity> entities;
 
     public Game(String title, int width, int height) {
@@ -30,14 +34,16 @@ public class Game {
         entities = new ArrayList<>();
 
         //Testing code
-        ImageEntity moveable = new ImageEntity(100, 100, "/assets/test.png");
-        moveable.getComponent(InteractiveComponent.class).mapInput(KeyEvent.VK_W, () -> {
-                moveable.getComponent(VelocityComponent.class).setDy(-1);
-                java.lang.System.out.println("moving up");
-            }, () -> {
-            moveable.getComponent(VelocityComponent.class).setDy(0);
-            java.lang.System.out.println("stop moving up");
-        });
+        try {
+            map = MapLoader.loadMap(GlobalPaths.MapsPath + "testMap.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+
+        ImageEntity moveable = new ImageEntity(100, 100, GlobalPaths.ImagesPath + "test.png");
+        moveable.getComponent(InteractiveComponent.class).mapInput(KeyEvent.VK_W, () -> moveable.getComponent(VelocityComponent.class).setDy(-1), () -> moveable.getComponent(VelocityComponent.class).setDy(0));
         moveable.getComponent(InteractiveComponent.class).mapInput(KeyEvent.VK_S, () -> moveable.getComponent(VelocityComponent.class).setDy(1), () -> moveable.getComponent(VelocityComponent.class).setDy(0));
         moveable.getComponent(InteractiveComponent.class).mapInput(KeyEvent.VK_A, () -> moveable.getComponent(VelocityComponent.class).setDx(-1), () -> moveable.getComponent(VelocityComponent.class).setDx(0));
         moveable.getComponent(InteractiveComponent.class).mapInput(KeyEvent.VK_D, () -> moveable.getComponent(VelocityComponent.class).setDx(1), () -> moveable.getComponent(VelocityComponent.class).setDx(0));
@@ -45,6 +51,7 @@ public class Game {
         entities.add(moveable);
 
         renderSystem = new RenderSystem(panel);
+        renderSystem.setMap(map);
         movementSystem = new MovementSystem();
         KeyboardInputHandler inputHandler = new KeyboardInputHandler(this.panel);
         inputHandlingSystem = new InputHandlingSystem(inputHandler);
