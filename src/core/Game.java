@@ -4,6 +4,7 @@ import assets.GlobalPaths;
 import components.InteractiveComponent;
 import components.VelocityComponent;
 import entities.ImageEntity;
+import entities.TileEntity;
 import miscs.MapLoader;
 import systems.InputHandlingSystem;
 import systems.KeyboardInputHandler;
@@ -16,6 +17,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Game {
@@ -31,11 +33,12 @@ public class Game {
     public Game(String title, int width, int height) {
         frame = new GameFrame(title, width, height);
         panel = new GamePanel();
+        panel.setBackground(Color.BLACK);
         entities = new ArrayList<>();
 
         //Testing code
         try {
-            map = MapLoader.loadMap(GlobalPaths.MapsPath + "testMap.txt");
+            map = MapLoader.loadMap(GlobalPaths.MapsPath + "testMap.txt", 25);
         } catch (IOException e) {
             e.printStackTrace();
             return;
@@ -48,6 +51,9 @@ public class Game {
         moveable.getComponent(InteractiveComponent.class).mapInput(KeyEvent.VK_A, () -> moveable.getComponent(VelocityComponent.class).setDx(-1), () -> moveable.getComponent(VelocityComponent.class).setDx(0));
         moveable.getComponent(InteractiveComponent.class).mapInput(KeyEvent.VK_D, () -> moveable.getComponent(VelocityComponent.class).setDx(1), () -> moveable.getComponent(VelocityComponent.class).setDx(0));
 
+        for (TileEntity[] row: map.getMapData()) {
+            entities.addAll(Arrays.asList(row));
+        }
         entities.add(moveable);
 
         renderSystem = new RenderSystem(panel);
@@ -60,7 +66,6 @@ public class Game {
 
     public void start() {
         panel.setPreferredSize(new Dimension(500, 500));
-        panel.setBackground(Color.BLACK);
         frame.add(panel);
         frame.pack();
         frame.setVisible(true);

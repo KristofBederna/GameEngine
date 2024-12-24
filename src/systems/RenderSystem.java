@@ -4,6 +4,7 @@ import components.ImageComponent;
 import components.PositionComponent;
 import core.Entity;
 import core.GameMap;
+import entities.TileEntity;
 import views.GamePanel;
 
 import java.awt.*;
@@ -31,7 +32,6 @@ public class RenderSystem extends core.System {
         setEntities(entities);
 
         panel.setRenderCallback(g -> {
-            renderMap(map, g);
             for (Entity entity : entities) {
                 PositionComponent position = entity.getComponent(PositionComponent.class);
                 ImageComponent img = entity.getComponent(ImageComponent.class);
@@ -46,27 +46,4 @@ public class RenderSystem extends core.System {
 
         panel.repaint();
     }
-
-    private void renderMap(GameMap map, Graphics2D g) {
-        int tileSize = 32;
-        for (int y = 0; y < map.getHeight(); y++) {
-            for (int x = 0; x < map.getWidth(); x++) {
-                int tileId = map.getElement(x, y);
-                Color tileColor = getColorForTile(tileId);
-                g.setColor(tileColor);
-                g.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
-            }
-        }
-    }
-
-    private Color getColorForTile(int tileId) {
-        return switch (tileId) {
-            case 0 -> Color.BLACK; // Empty space
-            case 1 -> Color.GREEN; // Grass
-            case 2 -> Color.GRAY;  // Stone
-            case 3 -> Color.BLUE;  // Water
-            default -> Color.RED;  // Error
-        };
-    }
-
 }
