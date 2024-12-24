@@ -1,6 +1,9 @@
+//Testing entity class to showcase progress
+
 package entities;
 
 import components.ImageComponent;
+import components.InteractiveComponent;
 import components.PositionComponent;
 import components.VelocityComponent;
 import core.Entity;
@@ -11,5 +14,6 @@ public class ImageEntity extends Entity {
         this.addComponent(new ImageComponent(path, 25, 25));
         this.addComponent(new PositionComponent(x, y));
         this.addComponent(new VelocityComponent(0, 0));
+        this.addComponent(new InteractiveComponent());
     }
 }

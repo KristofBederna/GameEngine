@@ -5,6 +5,11 @@ import java.awt.*;
 import java.util.function.Consumer;
 
 public class GamePanel extends JPanel {
+    public GamePanel() {
+        setFocusable(true);
+    }
+
+
     private Consumer<Graphics2D> renderCallback;
 
     public void setRenderCallback(Consumer<Graphics2D> renderCallback) {
