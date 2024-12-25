@@ -7,6 +7,7 @@ import entities.ImageEntity;
 import entities.TileEntity;
 import miscs.MapLoader;
 import miscs.TileLoader;
+import miscs.TileSetLoader;
 import systems.InputHandlingSystem;
 import systems.KeyboardInputHandler;
 import systems.MovementSystem;
@@ -40,15 +41,7 @@ public class Game {
 
         //Testing code
         tileLoader = new TileLoader();
-        tileLoader.addTilePath(1, "bottomLeftWall");
-        tileLoader.addTilePath(2, "bottomRightWall");
-        tileLoader.addTilePath(3, "topLeftWall");
-        tileLoader.addTilePath(4, "topRightWall");
-        tileLoader.addTilePath(5, "leftWall");
-        tileLoader.addTilePath(6, "rightWall");
-        tileLoader.addTilePath(7, "topWall");
-        tileLoader.addTilePath(8, "bottomWall");
-        tileLoader.addTilePath(9, "windowWall");
+        TileSetLoader.loadSet(GlobalPaths.TileSetsPath + "testTiles.txt", tileLoader);
         try {
             map = MapLoader.loadMap(GlobalPaths.MapsPath + "testMap.txt", 25, tileLoader);
         } catch (IOException e) {
