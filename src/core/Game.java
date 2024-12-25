@@ -42,12 +42,7 @@ public class Game {
         //Testing code
         tileLoader = new TileLoader();
         TileSetLoader.loadSet(GlobalPaths.TileSetsPath + "testTiles.txt", tileLoader);
-        try {
-            map = MapLoader.loadMap(GlobalPaths.MapsPath + "testMap.txt", 25, tileLoader);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
+        map = MapLoader.loadMap(GlobalPaths.MapsPath + "testMap.txt", 25, tileLoader);
 
 
         ImageEntity moveable = new ImageEntity(100, 100, GlobalPaths.ImagesPath + "test.png");

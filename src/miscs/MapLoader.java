@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.Objects;
 
 public class MapLoader {
-    public static GameMap loadMap(String path, int tileSize, TileLoader tileLoader) throws IOException {
+    public static GameMap loadMap(String path, int tileSize, TileLoader tileLoader) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(MapLoader.class.getResourceAsStream(path))))) {
             String[] dimensions = reader.readLine().split(" ");
             int width = Integer.parseInt(dimensions[0]);
@@ -29,6 +29,8 @@ public class MapLoader {
             }
 
             return map;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
