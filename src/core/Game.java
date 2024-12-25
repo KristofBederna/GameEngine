@@ -6,6 +6,7 @@ import components.VelocityComponent;
 import entities.ImageEntity;
 import entities.TileEntity;
 import miscs.MapLoader;
+import miscs.TileLoader;
 import systems.InputHandlingSystem;
 import systems.KeyboardInputHandler;
 import systems.MovementSystem;
@@ -29,6 +30,7 @@ public class Game {
     private InputHandlingSystem inputHandlingSystem;
     private GameMap map;
     private List<Entity> entities;
+    private TileLoader tileLoader;
 
     public Game(String title, int width, int height) {
         frame = new GameFrame(title, width, height);
@@ -37,8 +39,18 @@ public class Game {
         entities = new ArrayList<>();
 
         //Testing code
+        tileLoader = new TileLoader();
+        tileLoader.addTilePath(1, "bottomLeftWall");
+        tileLoader.addTilePath(2, "bottomRightWall");
+        tileLoader.addTilePath(3, "topLeftWall");
+        tileLoader.addTilePath(4, "topRightWall");
+        tileLoader.addTilePath(5, "leftWall");
+        tileLoader.addTilePath(6, "rightWall");
+        tileLoader.addTilePath(7, "topWall");
+        tileLoader.addTilePath(8, "bottomWall");
+        tileLoader.addTilePath(9, "windowWall");
         try {
-            map = MapLoader.loadMap(GlobalPaths.MapsPath + "testMap.txt", 25);
+            map = MapLoader.loadMap(GlobalPaths.MapsPath + "testMap.txt", 25, tileLoader);
         } catch (IOException e) {
             e.printStackTrace();
             return;
