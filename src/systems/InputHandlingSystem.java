@@ -26,8 +26,6 @@ public class InputHandlingSystem extends System {
 
             if (position != null && velocity != null && interactive != null) {
                 handleInput(interactive);
-            } else {
-                throw new Error("Trying to apply keyboard movement to entity without Position, Velocity and Moveable components");
             }
         }
     }
