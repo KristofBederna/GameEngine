@@ -2,7 +2,6 @@ package components;
 
 import core.Component;
 import miscs.Tuple;
-
 import java.util.HashMap;
 import java.util.Map;
 
