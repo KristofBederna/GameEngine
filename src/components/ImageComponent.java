@@ -1,7 +1,6 @@
 package components;
 
 import core.Component;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -11,14 +10,14 @@ public class ImageComponent extends Component {
     private int Width, Height = -1;
     public ImageComponent(String path) {
         try {
-            this.Image = setImage(path);
+            setImage(path);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
     public ImageComponent(String path, int width, int height) {
         try {
-            this.Image = setImage(path);
+            setImage(path);
             this.Width = width;
             this.Height = height;
         } catch (IOException e) {
@@ -30,12 +29,16 @@ public class ImageComponent extends Component {
         return Image;
     }
 
-    public BufferedImage setImage(String path) throws IOException {
+    public void setImage(String path) throws IOException {
         var resource = getClass().getResourceAsStream(path);
         if (resource == null) {
             throw new IOException("Image resource not found: " + path);
         }
-        return ImageIO.read(resource);
+        this.Image = ImageIO.read(resource);
+    }
+
+    public void setImage(BufferedImage nextFrame) {
+        this.Image = nextFrame;
     }
 
     public int getHeight() {

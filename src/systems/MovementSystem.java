@@ -4,24 +4,11 @@ import components.PositionComponent;
 import components.VelocityComponent;
 import core.Entity;
 import core.System;
-
 import java.util.List;
 
 public class MovementSystem extends System {
-    private List<Entity> entities;
-
-    public MovementSystem() {
-        ;
-    }
-
-    public void setEntities(List<Entity> entities) {
-        this.entities = entities;
-    }
-
     @Override
     public void update(float deltaTime, List<Entity> entities) {
-        setEntities(entities);
-
         for (Entity entity : entities) {
             if (entity.getComponent(PositionComponent.class) != null && entity.getComponent(VelocityComponent.class) != null) {
                 var velocity = entity.getComponent(VelocityComponent.class);

@@ -18,5 +18,14 @@ public abstract class Entity {
     public <T extends Component> T getComponent(Class<T> componentType) {
         return componentType.cast(components.get(componentType));
     }
-}
 
+    public <T extends Component> void removeComponentsByType(Class<T> componentType) {
+        components.entrySet().removeIf(entry -> componentType.isAssignableFrom(entry.getKey()));
+    }
+
+    public void showComponents() {
+        for (Component component : components.values()) {
+            java.lang.System.out.println(component.getClass().getSimpleName());
+        }
+    }
+}
