@@ -1,12 +1,12 @@
 package core;
 
 import assets.GlobalPaths;
-import components.AnimationComponent;
 import components.InteractiveComponent;
 import components.StateComponent;
 import components.VelocityComponent;
 import entities.ImageEntity;
 import entities.TileEntity;
+import miscs.KeyboardInputHandler;
 import miscs.MapLoader;
 import miscs.TileLoader;
 import miscs.TileSetLoader;
@@ -31,49 +31,26 @@ public class Game {
     private GameMap map;
     private List<Entity> entities;
     private TileLoader tileLoader;
+    private int tileSize;
 
-    public Game(String title, int width, int height) {
-        frame = new GameFrame(title, width, height);
+    public Game(String title) {
+        frame = new GameFrame(title);
         panel = new GamePanel();
         panel.setBackground(Color.BLACK);
         entities = new ArrayList<>();
 
         //Testing code
         tileLoader = new TileLoader();
+        tileSize = 25;
         TileSetLoader.loadSet(GlobalPaths.TileSetsPath + "testTiles.txt", tileLoader);
-        map = MapLoader.loadMap(GlobalPaths.MapsPath + "testMap.txt", 25, tileLoader);
-
+        map = MapLoader.loadMap(GlobalPaths.MapsPath + "testMap.txt", tileSize, tileLoader);
 
         ImageEntity moveable = new ImageEntity(50, 50, GlobalPaths.ImagesPath + "PlayerIdle.png");
 
-        moveable.getComponent(InteractiveComponent.class).mapInput(KeyEvent.VK_W, () -> {
-            moveable.getComponent(VelocityComponent.class).setDy(-1);
-            moveable.getComponent(StateComponent.class).setCurrentState("up");
-        }, () -> {
-            moveable.getComponent(VelocityComponent.class).setDy(0);
-            moveable.getComponent(StateComponent.class).setCurrentState("idle");
-        });
-        moveable.getComponent(InteractiveComponent.class).mapInput(KeyEvent.VK_S, () -> {
-            moveable.getComponent(VelocityComponent.class).setDy(1);
-            moveable.getComponent(StateComponent.class).setCurrentState("down");
-        }, () -> {
-            moveable.getComponent(VelocityComponent.class).setDy(0);
-            moveable.getComponent(StateComponent.class).setCurrentState("idle");
-        });
-        moveable.getComponent(InteractiveComponent.class).mapInput(KeyEvent.VK_A, () -> {
-            moveable.getComponent(VelocityComponent.class).setDx(-1);
-            moveable.getComponent(StateComponent.class).setCurrentState("left");
-        }, () -> {
-            moveable.getComponent(VelocityComponent.class).setDx(0);
-            moveable.getComponent(StateComponent.class).setCurrentState("idle");
-        });
-        moveable.getComponent(InteractiveComponent.class).mapInput(KeyEvent.VK_D, () -> {
-            moveable.getComponent(VelocityComponent.class).setDx(1);
-            moveable.getComponent(StateComponent.class).setCurrentState("right");
-        }, () -> {
-            moveable.getComponent(VelocityComponent.class).setDx(0);
-            moveable.getComponent(StateComponent.class).setCurrentState("idle");
-        });
+        moveable.getComponent(InteractiveComponent.class).mapInput(KeyEvent.VK_W, () -> moveUp(moveable), () -> counterVertical(moveable));
+        moveable.getComponent(InteractiveComponent.class).mapInput(KeyEvent.VK_S, () -> moveDown(moveable), () -> counterVertical(moveable));
+        moveable.getComponent(InteractiveComponent.class).mapInput(KeyEvent.VK_A, () -> moveLeft(moveable), () -> counterHorizontal(moveable));
+        moveable.getComponent(InteractiveComponent.class).mapInput(KeyEvent.VK_D, () -> moveRight(moveable), () -> counterHorizontal(moveable));
 
         for (TileEntity[] row: map.getMapData()) {
             entities.addAll(Arrays.asList(row));
@@ -89,7 +66,7 @@ public class Game {
     }
 
     public void start() {
-        panel.setPreferredSize(new Dimension(500, 500));
+        panel.setPreferredSize(new Dimension(map.getWidth()*tileSize, map.getHeight()*tileSize));
         frame.add(panel);
         frame.pack();
         frame.setVisible(true);
@@ -113,5 +90,31 @@ public class Game {
 
     public void stop() {
         gameLoop.stopLoop();
+    }
+
+    //Custom functions
+    private void moveUp(Entity e) {
+        e.getComponent(VelocityComponent.class).setDy(-1);
+        e.getComponent(StateComponent.class).setCurrentState("up");
+    }
+    private void moveDown(Entity e) {
+        e.getComponent(VelocityComponent.class).setDy(1);
+        e.getComponent(StateComponent.class).setCurrentState("down");
+    }
+    private void moveLeft(Entity e) {
+        e.getComponent(VelocityComponent.class).setDx(-1);
+        e.getComponent(StateComponent.class).setCurrentState("left");
+    }
+    private void moveRight(Entity e) {
+        e.getComponent(VelocityComponent.class).setDx(1);
+        e.getComponent(StateComponent.class).setCurrentState("right");
+    }
+    private void counterVertical(Entity e) {
+        e.getComponent(VelocityComponent.class).setDy(0);
+        e.getComponent(StateComponent.class).setCurrentState("idle");
+    }
+    private void counterHorizontal(Entity e) {
+        e.getComponent(VelocityComponent.class).setDx(0);
+        e.getComponent(StateComponent.class).setCurrentState("idle");
     }
 }

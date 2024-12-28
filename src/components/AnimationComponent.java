@@ -6,14 +6,15 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AnimationComponent extends Component {
-    private final ArrayList<BufferedImage> frames;
-    private final ArrayList<Integer> durations;
+    private final List<BufferedImage> frames;
+    private final List<Integer> durations;
     private int currentFrame = 0;
     private int frameDurationCounter = 0;
 
-    public AnimationComponent(ArrayList<String> paths, ArrayList<Integer> durations) {
+    public AnimationComponent(List<String> paths, List<Integer> durations) {
         if (paths.size() != durations.size()) {
             throw new IllegalArgumentException("Paths and durations must have the same size.");
         }
@@ -26,7 +27,7 @@ public class AnimationComponent extends Component {
         }
     }
 
-    public void setFrames(ArrayList<String> paths) throws IOException {
+    public void setFrames(List<String> paths) throws IOException {
         for (String path : paths) {
             try (var resource = getClass().getResourceAsStream(path)) {
                 if (resource == null) {

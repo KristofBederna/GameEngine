@@ -12,6 +12,7 @@ public class StateComponent extends Component {
     public String getCurrentState() {
         return currentState;
     }
+
     public void setCurrentState(String currentState) {
         this.currentState = currentState;
     }

@@ -1,4 +1,4 @@
-package systems;
+package miscs;
 
 import views.GamePanel;
 import java.awt.event.KeyEvent;

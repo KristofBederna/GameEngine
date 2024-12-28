@@ -1,4 +1,4 @@
-//Testing entity class to showcase progress
+//Testing custom entity class to showcase progress
 
 package entities;
 
