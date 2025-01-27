@@ -1,5 +1,6 @@
 package systems;
 
+import components.RectangularHitBoxComponent;
 import components.ImageComponent;
 import components.PositionComponent;
 import core.Entity;
@@ -24,6 +25,10 @@ public class RenderSystem extends core.System {
                     int height = (img.getHeight() >= 0) ? img.getHeight() : img.getImage().getHeight(null);
 
                     g.drawImage(img.getImage(), position.getX(), position.getY(), width, height, null);
+                }
+                //DEBUG mode
+                if (entity.getComponent(RectangularHitBoxComponent.class) != null) {
+                    entity.getComponent(RectangularHitBoxComponent.class).render(g);
                 }
             }
         });
