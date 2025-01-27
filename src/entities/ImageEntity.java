@@ -4,7 +4,6 @@ package entities;
 
 import assets.GlobalPaths;
 import components.*;
-import core.Component;
 import core.Entity;
 
 import java.io.IOException;
@@ -15,11 +14,12 @@ public class ImageEntity extends Entity {
     String lastState = "";
     public ImageEntity(int x, int y, String path) {
         super(0);
-        this.addComponent(new ImageComponent(path, 25, 25));
+        this.addComponent(new ImageComponent(path, 100, 100));
         this.addComponent(new PositionComponent(x, y));
         this.addComponent(new VelocityComponent(0, 0));
         this.addComponent(new InteractiveComponent());
         this.addComponent(new StateComponent("idle"));
+        this.addComponent(new RectangularHitBoxComponent(x, y, 100, 100));
     }
 
     public void setAnimationState() {

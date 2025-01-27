@@ -28,6 +28,7 @@ public class Game {
     private MovementSystem movementSystem;
     private InputHandlingSystem inputHandlingSystem;
     private AnimationSystem animationSystem;
+    private CollisionSystem collisionSystem;
     private GameMap map;
     private List<Entity> entities;
     private TileLoader tileLoader;
@@ -41,11 +42,11 @@ public class Game {
 
         //Testing code
         tileLoader = new TileLoader();
-        tileSize = 25;
+        tileSize = 100;
         TileSetLoader.loadSet(GlobalPaths.TileSetsPath + "testTiles.txt", tileLoader);
         map = MapLoader.loadMap(GlobalPaths.MapsPath + "testMap.txt", tileSize, tileLoader);
 
-        ImageEntity moveable = new ImageEntity(50, 50, GlobalPaths.ImagesPath + "PlayerIdle.png");
+        ImageEntity moveable = new ImageEntity(200, 200, GlobalPaths.ImagesPath + "PlayerIdle.png");
 
         moveable.getComponent(InteractiveComponent.class).mapInput(KeyEvent.VK_W, () -> moveUp(moveable), () -> counterVertical(moveable));
         moveable.getComponent(InteractiveComponent.class).mapInput(KeyEvent.VK_S, () -> moveDown(moveable), () -> counterVertical(moveable));
@@ -62,6 +63,7 @@ public class Game {
         movementSystem = new MovementSystem();
         KeyboardInputHandler inputHandler = new KeyboardInputHandler(this.panel);
         inputHandlingSystem = new InputHandlingSystem(inputHandler);
+        collisionSystem = new CollisionSystem();
         //Testing code end
     }
 
@@ -81,6 +83,7 @@ public class Game {
                 renderSystem.update(1.0f / 60.0f, entities);
                 movementSystem.update(1.0f / 60.0f, entities);
                 inputHandlingSystem.update(1.0f / 60.0f, entities);
+                collisionSystem.update(1.0f / 60.0f, entities);
                 //Testing code end
             }
         };
@@ -94,19 +97,19 @@ public class Game {
 
     //Custom functions
     private void moveUp(Entity e) {
-        e.getComponent(VelocityComponent.class).setDy(-1);
+        e.getComponent(VelocityComponent.class).setDy(-10);
         e.getComponent(StateComponent.class).setCurrentState("up");
     }
     private void moveDown(Entity e) {
-        e.getComponent(VelocityComponent.class).setDy(1);
+        e.getComponent(VelocityComponent.class).setDy(10);
         e.getComponent(StateComponent.class).setCurrentState("down");
     }
     private void moveLeft(Entity e) {
-        e.getComponent(VelocityComponent.class).setDx(-1);
+        e.getComponent(VelocityComponent.class).setDx(-10);
         e.getComponent(StateComponent.class).setCurrentState("left");
     }
     private void moveRight(Entity e) {
-        e.getComponent(VelocityComponent.class).setDx(1);
+        e.getComponent(VelocityComponent.class).setDx(10);
         e.getComponent(StateComponent.class).setCurrentState("right");
     }
     private void counterVertical(Entity e) {

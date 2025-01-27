@@ -24,7 +24,11 @@ public class MapLoader {
                     if (name == null) {
                         name = String.valueOf(value);
                     }
-                    map.setElement(x, y, new TileEntity(1, value,x*tileSize, y*tileSize, GlobalPaths.TilesPath + name+".png", tileSize, tileSize));
+                    if (value == 9) {
+                        map.setElement(x, y, new TileEntity(1, value,x*tileSize, y*tileSize, GlobalPaths.TilesPath + name+".png", tileSize, tileSize));
+                    } else {
+                        map.setElement(x, y, new TileEntity(1, value,x*tileSize, y*tileSize, GlobalPaths.TilesPath + name+".png", tileSize, tileSize, true));
+                    }
                 }
             }
 
