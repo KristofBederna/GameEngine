@@ -4,11 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Entity {
+    private static int nextId = 0;
     private final int id;
     private final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
-    public Entity(int id) {
-        this.id = id;
+    public Entity() {
+        this.id = ++nextId;
     }
 
     public <T extends Component> void addComponent(T component) {
@@ -21,6 +22,10 @@ public abstract class Entity {
 
     public <T extends Component> void removeComponentsByType(Class<T> componentType) {
         components.entrySet().removeIf(entry -> componentType.isAssignableFrom(entry.getKey()));
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void showComponents() {

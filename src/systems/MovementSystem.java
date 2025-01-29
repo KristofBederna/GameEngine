@@ -3,10 +3,10 @@ package systems;
 import components.PositionComponent;
 import components.VelocityComponent;
 import core.Entity;
-import core.System;
+import core.GameSystem;
 import java.util.List;
 
-public class MovementSystem extends System {
+public class MovementSystem extends GameSystem {
     @Override
     public void update(float deltaTime, List<Entity> entities) {
         for (Entity entity : entities) {

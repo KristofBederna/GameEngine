@@ -4,10 +4,11 @@ import components.RectangularHitBoxComponent;
 import components.ImageComponent;
 import components.PositionComponent;
 import core.Entity;
+import core.GameSystem;
 import views.GamePanel;
 import java.util.List;
 
-public class RenderSystem extends core.System {
+public class RenderSystem extends GameSystem {
     private GamePanel panel;
 
     public RenderSystem(GamePanel panel) {

@@ -25,9 +25,9 @@ public class MapLoader {
                         name = String.valueOf(value);
                     }
                     if (value == 9) {
-                        map.setElement(x, y, new TileEntity(1, value,x*tileSize, y*tileSize, GlobalPaths.TilesPath + name+".png", tileSize, tileSize));
+                        map.setElement(x, y, new TileEntity(value,x*tileSize, y*tileSize, GlobalPaths.TilesPath + name+".png", tileSize, tileSize));
                     } else {
-                        map.setElement(x, y, new TileEntity(1, value,x*tileSize, y*tileSize, GlobalPaths.TilesPath + name+".png", tileSize, tileSize, true));
+                        map.setElement(x, y, new TileEntity(value,x*tileSize, y*tileSize, GlobalPaths.TilesPath + name+".png", tileSize, tileSize, true));
                     }
                 }
             }

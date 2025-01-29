@@ -13,7 +13,6 @@ import java.util.Objects;
 public class ImageEntity extends Entity {
     String lastState = "";
     public ImageEntity(int x, int y, String path) {
-        super(0);
         this.addComponent(new ImageComponent(path, 100, 100));
         this.addComponent(new PositionComponent(x, y));
         this.addComponent(new VelocityComponent(0, 0));

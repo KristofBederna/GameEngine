@@ -7,14 +7,12 @@ import core.Entity;
 
 public class TileEntity extends Entity {
     private int value;
-    public TileEntity(int id, int value, int x, int y, String path, int width, int height) {
-        super(id);
+    public TileEntity(int value, int x, int y, String path, int width, int height) {
         this.value = value;
         this.addComponent(new ImageComponent(path, width, height));
         this.addComponent(new PositionComponent(x, y));
     }
-    public TileEntity(int id, int value, int x, int y, String path, int width, int height, boolean hasHitBox) {
-        super(id);
+    public TileEntity(int value, int x, int y, String path, int width, int height, boolean hasHitBox) {
         this.value = value;
         this.addComponent(new ImageComponent(path, width, height));
         this.addComponent(new PositionComponent(x, y));
@@ -22,8 +20,7 @@ public class TileEntity extends Entity {
             this.addComponent(new RectangularHitBoxComponent(x, y, width, height));
         }
     }
-    public TileEntity(int id, int value, int x, int y, String path) {
-        super(id);
+    public TileEntity(int value, int x, int y, String path) {
         this.value = value;
         this.addComponent(new ImageComponent(path));
         this.addComponent(new PositionComponent(x, y));

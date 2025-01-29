@@ -14,24 +14,24 @@ public class AnimationComponent extends Component {
     private int currentFrame = 0;
     private int frameDurationCounter = 0;
 
-    public AnimationComponent(List<String> paths, List<Integer> durations) {
-        if (paths.size() != durations.size()) {
-            throw new IllegalArgumentException("Paths and durations must have the same size.");
+    public AnimationComponent(List<String> frames, List<Integer> durations) {
+        if (frames.size() != durations.size()) {
+            throw new IllegalArgumentException("Frames and durations must have the same size.");
         }
         this.durations = durations;
         this.frames = new ArrayList<>();
         try {
-            setFrames(paths);
+            setFrames(frames);
         } catch (IOException e) {
             throw new RuntimeException("Failed to load frames", e);
         }
     }
 
-    public void setFrames(List<String> paths) throws IOException {
-        for (String path : paths) {
-            try (var resource = getClass().getResourceAsStream(path)) {
+    public void setFrames(List<String> frames) throws IOException {
+        for (String frame : frames) {
+            try (var resource = getClass().getResourceAsStream(frame)) {
                 if (resource == null) {
-                    throw new IOException("Image resource not found: " + path);
+                    throw new IOException("Image resource not found: " + frame);
                 }
                 this.frames.add(ImageIO.read(resource));
             }

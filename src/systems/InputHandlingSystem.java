@@ -4,13 +4,13 @@ import components.InteractiveComponent;
 import components.PositionComponent;
 import components.VelocityComponent;
 import core.Entity;
-import core.System;
+import core.GameSystem;
 import miscs.KeyboardInputHandler;
 import miscs.Tuple;
 import java.util.List;
 import java.util.Map;
 
-public class InputHandlingSystem extends System {
+public class InputHandlingSystem extends GameSystem {
     private final KeyboardInputHandler inputHandler;
 
     public InputHandlingSystem(KeyboardInputHandler inputHandler) {

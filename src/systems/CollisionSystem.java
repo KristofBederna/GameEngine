@@ -4,13 +4,12 @@ import components.RectangularHitBoxComponent;
 import components.PositionComponent;
 import components.VelocityComponent;
 import core.Entity;
-import core.System;
+import core.GameSystem;
 
 import java.awt.*;
-import java.awt.geom.RectangularShape;
 import java.util.List;
 
-public class CollisionSystem extends System {
+public class CollisionSystem extends GameSystem {
 
     @Override
     public void update(float deltaTime, List<Entity> entities) {

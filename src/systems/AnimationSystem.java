@@ -4,12 +4,12 @@ import components.AnimationComponent;
 import components.ImageComponent;
 import components.PositionComponent;
 import core.Entity;
-import core.System;
+import core.GameSystem;
 import entities.ImageEntity;
 
 import java.util.List;
 
-public class AnimationSystem extends System {
+public class AnimationSystem extends GameSystem {
     @Override
     public void update(float deltaTime, List<Entity> entities) {
         for (Entity entity : entities) {
