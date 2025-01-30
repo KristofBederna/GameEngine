@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class HelloApplication extends Application {
+public class Main extends Application {
     private InputHandlingSystem inputHandlingSystem;
     private MovementSystem movementSystem;
     private CollisionSystem collisionSystem;
