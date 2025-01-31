@@ -28,7 +28,9 @@ public class DummyEntity extends Entity {
         if (Objects.equals(this.getComponent(StateComponent.class).getCurrentState(), lastState)) {
             return;
         }
-        this.removeComponentsByType(AnimationComponent.class);
+
+        AnimationComponent animationComponent = this.getComponent(AnimationComponent.class);
+
         ArrayList<String> downFramePath = new ArrayList<>();
         downFramePath.add("/assets/images/" + "PlayerDown_1.png");
         downFramePath.add("/assets/images/" + "PlayerDown_2.png");
@@ -46,22 +48,57 @@ public class DummyEntity extends Entity {
         durations.add(15);
         durations.add(15);
 
-        switch (this.getComponent(StateComponent.class).getCurrentState()) {
+        String currentState = this.getComponent(StateComponent.class).getCurrentState();
+        lastState = currentState;
+
+        switch (currentState) {
             case "up":
-                lastState = "up";
-                this.addComponent(new AnimationComponent(upFramePath, durations));
+                if (animationComponent != null) {
+                    try {
+                        animationComponent.setFrames(upFramePath);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    animationComponent.setDurations(durations);
+                } else {
+                    this.addComponent(new AnimationComponent(upFramePath, durations));
+                }
                 break;
             case "down":
-                lastState = "down";
-                this.addComponent(new AnimationComponent(downFramePath, durations));
+                if (animationComponent != null) {
+                    try {
+                        animationComponent.setFrames(downFramePath);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    animationComponent.setDurations(durations);
+                } else {
+                    this.addComponent(new AnimationComponent(downFramePath, durations));
+                }
                 break;
             case "left":
-                lastState = "left";
-                this.addComponent(new AnimationComponent(leftFramePath, durations));
+                if (animationComponent != null) {
+                    try {
+                        animationComponent.setFrames(leftFramePath);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    animationComponent.setDurations(durations);
+                } else {
+                    this.addComponent(new AnimationComponent(leftFramePath, durations));
+                }
                 break;
             case "right":
-                lastState = "right";
-                this.addComponent(new AnimationComponent(rightFramePath, durations));
+                if (animationComponent != null) {
+                    try {
+                        animationComponent.setFrames(rightFramePath);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    animationComponent.setDurations(durations);
+                } else {
+                    this.addComponent(new AnimationComponent(rightFramePath, durations));
+                }
                 break;
             case "idle":
                 this.removeComponentsByType(AnimationComponent.class);
@@ -73,4 +110,5 @@ public class DummyEntity extends Entity {
                 break;
         }
     }
+
 }
