@@ -26,4 +26,19 @@ public class InteractiveComponent extends Component {
     public Map<KeyCode, Tuple<Runnable, Runnable>> getInputMapping() {
         return inputMapping;
     }
+
+    @Override
+    public String getStatus() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("---").append(this.getClass().getSimpleName()).append("---\n");
+
+        for (Map.Entry<KeyCode, Tuple<Runnable, Runnable>> entry : inputMapping.entrySet()) {
+            sb.append("Key: ").append(entry.getKey())
+                    .append(", Value: ").append(entry.getValue())
+                    .append("\n");
+        }
+
+        return sb.toString();
+    }
+
 }

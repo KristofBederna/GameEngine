@@ -22,7 +22,7 @@ public class AnimationSystem extends GameSystem {
             AnimationComponent animation = entity.getComponent(AnimationComponent.class);
 
             if (position != null && img != null && animation != null) {
-                img.setImage(animation.getNextFrame());
+                img.setNextFrame(animation.getNextFrame());
             }
         }
     }

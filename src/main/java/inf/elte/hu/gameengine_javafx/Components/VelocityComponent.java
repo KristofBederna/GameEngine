@@ -23,4 +23,9 @@ public class VelocityComponent extends Component {
     public void setDy(int dy) {
         Dy = dy;
     }
+
+    @Override
+    public String getStatus() {
+        return (this.getClass().getSimpleName() + ": Dx: " + Dx + ", Dy: " + Dy);
+    }
 }

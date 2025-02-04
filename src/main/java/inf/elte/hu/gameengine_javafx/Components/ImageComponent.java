@@ -1,58 +1,47 @@
 package inf.elte.hu.gameengine_javafx.Components;
 
 import inf.elte.hu.gameengine_javafx.Core.Component;
-import javafx.scene.image.Image;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 public class ImageComponent extends Component {
-    private Image image;
-    private int Width, Height = -1;
+    private String imagePath;
+    private int width = -1, height = -1;
+
     public ImageComponent(String path) {
-        try {
-            setImage(path);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        this.imagePath = path;
     }
+
     public ImageComponent(String path, int width, int height) {
-        try {
-            setImage(path);
-            this.Width = width;
-            this.Height = height;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        this.imagePath = path;
+        this.width = width;
+        this.height = height;
     }
 
-    public Image getImage() {
-        return image;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setImage(String path) throws IOException {
-        InputStream resource = getClass().getResourceAsStream(path);
-        if (resource == null) {
-            throw new IOException("Image resource not found: " + path);
-        }
-        this.image = new Image(resource);
-    }
-
-    public void setImage(Image nextFrame) {
-        this.image = nextFrame;
+    public void setNextFrame(String nextFramePath) {
+        this.imagePath = nextFramePath;
     }
 
     public int getHeight() {
-        return Height;
+        return height;
     }
+
     public int getWidth() {
-        return Width;
+        return width;
     }
 
     public void setHeight(int height) {
-        Height = height;
+        this.height = height;
     }
+
     public void setWidth(int width) {
-        Width = width;
+        this.width = width;
+    }
+
+    @Override
+    public String getStatus() {
+        return (this.getClass().getSimpleName() + ": Image Path: " + imagePath + ", Width: " + width + ", Height: " + height);
     }
 }

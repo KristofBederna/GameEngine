@@ -20,4 +20,9 @@ public class RectangularHitBoxComponent extends Component {
         g.setColor(Color.RED);
         g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
     }
+
+    @Override
+    public String getStatus() {
+        return (this.getClass().getSimpleName() + ": X:" + hitBox.getX() + ", Y:" + hitBox.getY() + ", Width:" + hitBox.getWidth() + ", Height:" + hitBox.getHeight());
+    }
 }
