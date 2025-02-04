@@ -41,10 +41,6 @@ public class RenderSystem extends GameSystem {
                 gc.setStroke(Color.RED);
                 gc.strokeRect(position.getX(), position.getY(), hitbox.getHitBox().getWidth(), hitbox.getHitBox().getHeight());
             }
-
-            if (entity.getClass() == DebugInfoEntity.class) {
-
-            }
         }
     }
 }
