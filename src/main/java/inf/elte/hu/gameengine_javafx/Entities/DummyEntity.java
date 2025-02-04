@@ -2,6 +2,7 @@ package inf.elte.hu.gameengine_javafx.Entities;
 
 import inf.elte.hu.gameengine_javafx.Components.*;
 import inf.elte.hu.gameengine_javafx.Core.Entity;
+import javafx.scene.image.Image;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -102,11 +103,7 @@ public class DummyEntity extends Entity {
                 break;
             case "idle":
                 this.removeComponentsByType(AnimationComponent.class);
-                try {
-                    this.getComponent(ImageComponent.class).setImage("/assets/images/" + "PlayerIdle.png");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                this.getComponent(ImageComponent.class).setNextFrame("/assets/images/PlayerIdle.png");
                 break;
         }
     }

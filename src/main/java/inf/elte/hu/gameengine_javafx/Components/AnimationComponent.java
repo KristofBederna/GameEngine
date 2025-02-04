@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnimationComponent extends Component {
-    private final List<Image> frames;
+    private List<String> frames;
     private final List<Integer> durations;
     private int currentFrame = 0;
     private int frameDurationCounter = 0;
@@ -19,26 +19,14 @@ public class AnimationComponent extends Component {
             throw new IllegalArgumentException("Frames and durations must have the same size.");
         }
         this.durations = durations;
-        this.frames = new ArrayList<>();
-        try {
-            setFrames(frames);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load frames", e);
-        }
+        this.frames = frames;
     }
 
     public void setFrames(List<String> frames) throws IOException {
-        for (String frame : frames) {
-            try (var resource = getClass().getResourceAsStream(frame)) {
-                if (resource == null) {
-                    throw new IOException("Image resource not found: " + frame);
-                }
-                this.frames.add(new Image(resource));
-            }
-        }
+        this.frames = frames;
     }
 
-    public Image getNextFrame() {
+    public String getNextFrame() {
         frameDurationCounter++;
         calculateCurrentFrame();
         return frames.get(currentFrame);
@@ -57,9 +45,13 @@ public class AnimationComponent extends Component {
         currentFrame = 0;
     }
 
-
     public void setDurations(ArrayList<Integer> newDurations) {
         durations.clear();
         durations.addAll(newDurations);
+    }
+
+    @Override
+    public String getStatus() {
+        return(this.getClass().getSimpleName() + ": current frame: " + currentFrame + ", current duration: " + durations.get(currentFrame));
     }
 }

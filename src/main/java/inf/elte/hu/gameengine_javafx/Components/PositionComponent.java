@@ -28,4 +28,9 @@ public class PositionComponent extends Component {
         hitBox.x = this.X;
         hitBox.y = this.Y;
     }
+
+    @Override
+    public String getStatus() {
+        return (this.getClass().getSimpleName() + ": X: " + X + ", Y: " + Y);
+    }
 }

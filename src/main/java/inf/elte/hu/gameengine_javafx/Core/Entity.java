@@ -1,6 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Core;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class Entity {
@@ -32,5 +33,9 @@ public abstract class Entity {
         for (Component component : components.values()) {
             java.lang.System.out.println(component.getClass().getSimpleName());
         }
+    }
+
+    public Map<Class<? extends Component>, Component> getAllComponents() {
+        return components;
     }
 }

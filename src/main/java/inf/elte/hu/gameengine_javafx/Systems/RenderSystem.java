@@ -5,6 +5,8 @@ import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.RectangularHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Core.Entity;
 import inf.elte.hu.gameengine_javafx.Core.GameSystem;
+import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
+import inf.elte.hu.gameengine_javafx.Entities.DebugInfoEntity;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -19,7 +21,6 @@ public class RenderSystem extends GameSystem {
 
     @Override
     public void update(float deltaTime, List<Entity> entities) {
-        // Clear canvas before rendering
         gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
 
         for (Entity entity : entities) {
@@ -27,7 +28,7 @@ public class RenderSystem extends GameSystem {
             ImageComponent imgComponent = entity.getComponent(ImageComponent.class);
 
             if (position != null && imgComponent != null) {
-                Image img = imgComponent.getImage();
+                Image img = ResourceHub.getInstance().getResourceManager(Image.class).get(imgComponent.getImagePath());
                 double width = (imgComponent.getWidth() >= 0) ? imgComponent.getWidth() : img.getWidth();
                 double height = (imgComponent.getHeight() >= 0) ? imgComponent.getHeight() : img.getHeight();
 
