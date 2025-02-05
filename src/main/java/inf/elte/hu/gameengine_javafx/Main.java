@@ -49,11 +49,11 @@ public class Main extends Application {
         Canvas canvas = new Canvas(1920, 1080);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        DebugInfoEntity debugInfoEntity = new DebugInfoEntity();
-        entities.add(debugInfoEntity);
+        //DebugInfoEntity debugInfoEntity = new DebugInfoEntity();
+        //entities.add(debugInfoEntity);
 
         BorderPane root = new BorderPane();
-        root.setTop(debugInfoEntity.getTextArea());
+        //root.setTop(debugInfoEntity.getTextArea());
         root.setCenter(canvas);
         Scene scene = new Scene(root, 1920, 1080);
 
@@ -73,6 +73,7 @@ public class Main extends Application {
         systemHub.addSystem(RenderSystem.class, new RenderSystem(gc));
         systemHub.addSystem(AnimationSystem.class, new AnimationSystem());
         systemHub.addSystem(DebugInfoSystem.class, new DebugInfoSystem());
+        systemHub.addSystem(ResourceSystem.class, new ResourceSystem());
 
         TileLoader tileLoader = new TileLoader();
         int tileSize = 100;
@@ -100,7 +101,8 @@ public class Main extends Application {
                 systemHub.getSystem(MovementSystem.class).update(1.0f/60.0f, entities);
                 systemHub.getSystem(InputHandlingSystem.class).update(1.0f/60.0f, entities);
                 systemHub.getSystem(CollisionSystem.class).update(1.0f/60.0f, entities);
-                systemHub.getSystem(DebugInfoSystem.class).update(1.0f/60.0f, entities);
+                //systemHub.getSystem(DebugInfoSystem.class).update(1.0f/60.0f, entities);
+                systemHub.getSystem(ResourceSystem.class).update(1.0f/60.0f, entities);
             }
         };
 
