@@ -7,6 +7,7 @@ import inf.elte.hu.gameengine_javafx.Core.Entity;
 import inf.elte.hu.gameengine_javafx.Core.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Entities.DebugInfoEntity;
+import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -21,26 +22,46 @@ public class RenderSystem extends GameSystem {
 
     @Override
     public void update(float deltaTime, List<Entity> entities) {
-        gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+        if (gc == null || gc.getCanvas() == null) {
+            System.err.println("RenderSystem: GraphicsContext or Canvas is null!");
+            return;
+        }
 
-        for (Entity entity : entities) {
-            PositionComponent position = entity.getComponent(PositionComponent.class);
-            ImageComponent imgComponent = entity.getComponent(ImageComponent.class);
+        Platform.runLater(() -> {
+            gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
 
-            if (position != null && imgComponent != null) {
+            for (Entity entity : entities) {
+                PositionComponent position = entity.getComponent(PositionComponent.class);
+                ImageComponent imgComponent = entity.getComponent(ImageComponent.class);
+
+                if (position == null || imgComponent == null) continue;
+
                 Image img = ResourceHub.getInstance().getResourceManager(Image.class).get(imgComponent.getImagePath());
+                if (img == null) {
+                    System.err.println("RenderSystem: Missing image for " + imgComponent.getImagePath());
+                    continue;
+                }
+
                 double width = (imgComponent.getWidth() >= 0) ? imgComponent.getWidth() : img.getWidth();
                 double height = (imgComponent.getHeight() >= 0) ? imgComponent.getHeight() : img.getHeight();
 
-                gc.drawImage(img, position.getX(), position.getY(), width, height);
-            }
+                // Ellenőrizzük, hogy az entity a canvas területén belül van-e
+                if (position.getX() < 0 || position.getY() < 0 ||
+                        position.getX() + width > gc.getCanvas().getWidth() ||
+                        position.getY() + height > gc.getCanvas().getHeight()) {
+                    System.err.println("RenderSystem: Entity out of bounds!");
+                    continue;
+                }
 
-            // DEBUG mode: Draw hitbox
-            RectangularHitBoxComponent hitbox = entity.getComponent(RectangularHitBoxComponent.class);
-            if (hitbox != null) {
-                gc.setStroke(Color.RED);
-                gc.strokeRect(position.getX(), position.getY(), hitbox.getHitBox().getWidth(), hitbox.getHitBox().getHeight());
+                gc.drawImage(img, position.getX(), position.getY(), width, height);
+
+                // DEBUG mode: Draw hitbox
+                RectangularHitBoxComponent hitbox = entity.getComponent(RectangularHitBoxComponent.class);
+                if (hitbox != null) {
+                    gc.setStroke(Color.RED);
+                    gc.strokeRect(position.getX(), position.getY(), hitbox.getHitBox().getWidth(), hitbox.getHitBox().getHeight());
+                }
             }
-        }
+        });
     }
 }

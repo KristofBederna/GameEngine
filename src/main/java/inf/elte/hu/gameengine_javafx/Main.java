@@ -28,6 +28,14 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
+        startUpGame(stage);
+    }
+
+    public static void main(String[] args) {
+        launch();
+    }
+
+    private void startUpGame(Stage stage) {
         ResourceManager<Image> imageManager = new ResourceManager<>(key -> {
             try {
                 if (key.startsWith("file:")) {
@@ -49,11 +57,11 @@ public class Main extends Application {
         Canvas canvas = new Canvas(1920, 1080);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        //DebugInfoEntity debugInfoEntity = new DebugInfoEntity();
-        //entities.add(debugInfoEntity);
+        DebugInfoEntity debugInfoEntity = new DebugInfoEntity();
+        entities.add(debugInfoEntity);
 
         BorderPane root = new BorderPane();
-        //root.setTop(debugInfoEntity.getTextArea());
+        root.setTop(debugInfoEntity.getTextArea());
         root.setCenter(canvas);
         Scene scene = new Scene(root, 1920, 1080);
 
@@ -67,13 +75,13 @@ public class Main extends Application {
 
         stage.show();
 
-        systemHub.addSystem(InputHandlingSystem.class, new InputHandlingSystem(new KeyboardInputHandler(scene)));
-        systemHub.addSystem(MovementSystem.class, new MovementSystem());
-        systemHub.addSystem(CollisionSystem.class, new CollisionSystem());
-        systemHub.addSystem(RenderSystem.class, new RenderSystem(gc));
-        systemHub.addSystem(AnimationSystem.class, new AnimationSystem());
-        systemHub.addSystem(DebugInfoSystem.class, new DebugInfoSystem());
-        systemHub.addSystem(ResourceSystem.class, new ResourceSystem());
+        systemHub.addSystem(InputHandlingSystem.class, new InputHandlingSystem(new KeyboardInputHandler(scene)),4);
+        systemHub.addSystem(MovementSystem.class, new MovementSystem(),3);
+        systemHub.addSystem(CollisionSystem.class, new CollisionSystem(),5);
+        systemHub.addSystem(RenderSystem.class, new RenderSystem(gc),2);
+        systemHub.addSystem(AnimationSystem.class, new AnimationSystem(), 1);
+        systemHub.addSystem(DebugInfoSystem.class, new DebugInfoSystem(),6);
+        systemHub.addSystem(ResourceSystem.class, new ResourceSystem(),7);
 
         TileLoader tileLoader = new TileLoader();
         int tileSize = 100;
@@ -96,21 +104,13 @@ public class Main extends Application {
         GameLoop gameLoop = new GameLoop(60) {
             @Override
             public void update() {
-                systemHub.getSystem(AnimationSystem.class).update(1.0f/60.0f, entities);
-                systemHub.getSystem(RenderSystem.class).update(1.0f/60.0f, entities);
-                systemHub.getSystem(MovementSystem.class).update(1.0f/60.0f, entities);
-                systemHub.getSystem(InputHandlingSystem.class).update(1.0f/60.0f, entities);
-                systemHub.getSystem(CollisionSystem.class).update(1.0f/60.0f, entities);
-                //systemHub.getSystem(DebugInfoSystem.class).update(1.0f/60.0f, entities);
-                systemHub.getSystem(ResourceSystem.class).update(1.0f/60.0f, entities);
+                for (GameSystem system : SystemHub.getInstance().getAllSystemsInPriorityOrder()) {
+                    system.update(1.0f/60.0f, entities);
+                }
             }
         };
 
         gameLoop.startLoop();
-    }
-
-    public static void main(String[] args) {
-        launch();
     }
 
     private void moveUp(Entity e) {
