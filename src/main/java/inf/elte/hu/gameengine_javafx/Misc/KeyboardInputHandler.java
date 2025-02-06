@@ -16,6 +16,7 @@ public class KeyboardInputHandler {
     }
 
     private void keyPressed(KeyEvent event) {
+        releasedKeys.clear();
         pressedKeys.add(event.getCode());
     }
 
@@ -29,11 +30,7 @@ public class KeyboardInputHandler {
     }
 
     public boolean isKeyReleased(KeyCode keyCode) {
-        if (releasedKeys.contains(keyCode)) {
-            releasedKeys.remove(keyCode);
-            return true;
-        }
-        return false;
+        return releasedKeys.contains(keyCode);
     }
 
     public Set<KeyCode> getPressedKeys() {

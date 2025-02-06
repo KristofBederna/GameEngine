@@ -95,10 +95,18 @@ public class Main extends Application {
         dummyEntity.getComponent(InteractiveComponent.class).mapInput(KeyCode.A, () -> moveLeft(dummyEntity), () -> counterHorizontal(dummyEntity));
         dummyEntity.getComponent(InteractiveComponent.class).mapInput(KeyCode.D, () -> moveRight(dummyEntity), () -> counterHorizontal(dummyEntity));
 
+        DummyEntity dummyEntity2 = new DummyEntity(200, 200, "idle", "/assets/images/PlayerIdle.png", 50, 50);
+
+        dummyEntity2.getComponent(InteractiveComponent.class).mapInput(KeyCode.W, () -> moveUp(dummyEntity2), () -> counterVertical(dummyEntity2));
+        dummyEntity2.getComponent(InteractiveComponent.class).mapInput(KeyCode.S, () -> moveDown(dummyEntity2), () -> counterVertical(dummyEntity2));
+        dummyEntity2.getComponent(InteractiveComponent.class).mapInput(KeyCode.A, () -> moveLeft(dummyEntity2), () -> counterHorizontal(dummyEntity2));
+        dummyEntity2.getComponent(InteractiveComponent.class).mapInput(KeyCode.D, () -> moveRight(dummyEntity2), () -> counterHorizontal(dummyEntity2));
+
         for (TileEntity[] row : map.getMapData()) {
             entities.addAll(Arrays.asList(row));
         }
         entities.add(dummyEntity);
+        entities.add(dummyEntity2);
 
 
         GameLoop gameLoop = new GameLoop(60) {
