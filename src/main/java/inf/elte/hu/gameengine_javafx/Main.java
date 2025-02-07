@@ -13,6 +13,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -75,7 +76,7 @@ public class Main extends Application {
 
         stage.show();
 
-        systemHub.addSystem(InputHandlingSystem.class, new InputHandlingSystem(new KeyboardInputHandler(scene)),4);
+        systemHub.addSystem(InputHandlingSystem.class, new InputHandlingSystem(new KeyboardInputHandler(scene), new MouseInputHandler(scene)),4);
         systemHub.addSystem(MovementSystem.class, new MovementSystem(),3);
         systemHub.addSystem(CollisionSystem.class, new CollisionSystem(),5);
         systemHub.addSystem(RenderSystem.class, new RenderSystem(gc),2);
@@ -94,6 +95,7 @@ public class Main extends Application {
         dummyEntity.getComponent(InteractiveComponent.class).mapInput(KeyCode.S, () -> moveDown(dummyEntity), () -> counterVertical(dummyEntity));
         dummyEntity.getComponent(InteractiveComponent.class).mapInput(KeyCode.A, () -> moveLeft(dummyEntity), () -> counterHorizontal(dummyEntity));
         dummyEntity.getComponent(InteractiveComponent.class).mapInput(KeyCode.D, () -> moveRight(dummyEntity), () -> counterHorizontal(dummyEntity));
+        dummyEntity.getComponent(InteractiveComponent.class).mapInput(MouseButton.PRIMARY, () -> {dummyEntity.getComponent(PositionComponent.class).setX(100); dummyEntity.getComponent(PositionComponent.class).setY(200);}, () -> {dummyEntity.getComponent(PositionComponent.class).setX(500); dummyEntity.getComponent(PositionComponent.class).setY(300);});
 
         DummyEntity dummyEntity2 = new DummyEntity(200, 200, "idle", "/assets/images/PlayerIdle.png", 50, 50);
 

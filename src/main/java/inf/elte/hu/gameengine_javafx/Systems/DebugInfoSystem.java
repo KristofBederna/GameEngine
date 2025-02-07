@@ -32,21 +32,21 @@ public class DebugInfoSystem extends GameSystem {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Interactive entities status:\n");
-
-        for (Entity entity : entities) {
-            if (entity.getAllComponents().containsKey(InteractiveComponent.class)) {
-                for (Component component : entity.getAllComponents().values()) {
-                    sb.append(component.getStatus()).append("\n");
-                }
-            }
-        }
-
-        sb.append("\nSystems currently running:\n");
-
-        for (GameSystem system : SystemHub.getInstance().getAllSystemsInPriorityOrder()) {
-            sb.append(system.getClass().getSimpleName()).append("\n");
-        }
+//        sb.append("Interactive entities status:\n");
+//
+//        for (Entity entity : entities) {
+//            if (entity.getAllComponents().containsKey(InteractiveComponent.class)) {
+//                for (Component component : entity.getAllComponents().values()) {
+//                    sb.append(component.getStatus()).append("\n");
+//                }
+//            }
+//        }
+//
+//        sb.append("\nSystems currently running:\n");
+//
+//        for (GameSystem system : SystemHub.getInstance().getAllSystemsInPriorityOrder()) {
+//            sb.append(system.getClass().getSimpleName()).append("\n");
+//        }
 
         sb.append("\nResources currently loaded:\n");
 
