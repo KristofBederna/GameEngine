@@ -1,12 +1,12 @@
 package inf.elte.hu.gameengine_javafx.Systems;
 
+import inf.elte.hu.gameengine_javafx.Components.CameraComponent;
 import inf.elte.hu.gameengine_javafx.Components.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.RectangularHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Core.Entity;
 import inf.elte.hu.gameengine_javafx.Core.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
-import inf.elte.hu.gameengine_javafx.Entities.DebugInfoEntity;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -14,10 +14,12 @@ import javafx.scene.paint.Color;
 import java.util.List;
 
 public class RenderSystem extends GameSystem {
-    GraphicsContext gc;
+    private GraphicsContext gc;
+    private CameraComponent camera;
 
-    public RenderSystem(GraphicsContext gc) {
+    public RenderSystem(GraphicsContext gc, CameraComponent camera) {
         this.gc = gc;
+        this.camera = camera;
     }
 
     @Override
@@ -45,21 +47,18 @@ public class RenderSystem extends GameSystem {
                 double width = (imgComponent.getWidth() >= 0) ? imgComponent.getWidth() : img.getWidth();
                 double height = (imgComponent.getHeight() >= 0) ? imgComponent.getHeight() : img.getHeight();
 
-                // Ellenőrizzük, hogy az entity a canvas területén belül van-e
-                if (position.getX() < 0 || position.getY() < 0 ||
-                        position.getX() + width > gc.getCanvas().getWidth() ||
-                        position.getY() + height > gc.getCanvas().getHeight()) {
-                    System.err.println("RenderSystem: Entity out of bounds!");
-                    continue;
+                double renderX = position.getX() - camera.getX();
+                double renderY = position.getY() - camera.getY();
+
+                if (renderX + width >= 0 && renderX <= camera.getWidth() &&
+                        renderY + height >= 0 && renderY <= camera.getHeight()) {
+                    gc.drawImage(img, renderX, renderY, width, height);
                 }
 
-                gc.drawImage(img, position.getX(), position.getY(), width, height);
-
-                // DEBUG mode: Draw hitbox
                 RectangularHitBoxComponent hitbox = entity.getComponent(RectangularHitBoxComponent.class);
                 if (hitbox != null) {
                     gc.setStroke(Color.RED);
-                    gc.strokeRect(position.getX(), position.getY(), hitbox.getHitBox().getWidth(), hitbox.getHitBox().getHeight());
+                    gc.strokeRect(renderX, renderY, hitbox.getHitBox().getWidth(), hitbox.getHitBox().getHeight());
                 }
             }
         });

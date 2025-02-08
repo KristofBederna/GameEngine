@@ -11,13 +11,14 @@ import java.util.Objects;
 public class DummyEntity extends Entity {
 
     private String lastState;
-    public DummyEntity(int x, int y, String state, String path, int width, int height) {
+    public DummyEntity(int x, int y, String state, String path, int width, int height, int viewportWidth, int viewportHeight, int mapWidth, int mapHeight) {
         this.addComponent(new PositionComponent(x, y));
         this.addComponent(new VelocityComponent());
         this.addComponent(new StateComponent(state));
         this.addComponent(new ImageComponent(path, width, height));
         this.addComponent(new InteractiveComponent());
         this.addComponent(new RectangularHitBoxComponent(x,y,width,height));
+        this.addComponent(new CameraComponent(viewportWidth, viewportHeight, mapWidth, mapHeight));
     }
 
     @Override
