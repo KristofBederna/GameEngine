@@ -1,7 +1,8 @@
 package inf.elte.hu.gameengine_javafx.Systems;
 
-import inf.elte.hu.gameengine_javafx.Components.InteractiveComponent;
 import inf.elte.hu.gameengine_javafx.Core.*;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Entities.DebugInfoEntity;
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;

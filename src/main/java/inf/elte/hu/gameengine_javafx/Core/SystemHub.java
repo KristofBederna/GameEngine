@@ -1,5 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Core;
 
+import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
+
 import java.util.*;
 
 public class SystemHub {

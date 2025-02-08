@@ -1,6 +1,6 @@
 package inf.elte.hu.gameengine_javafx.Entities;
 
-import inf.elte.hu.gameengine_javafx.Core.Entity;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
 

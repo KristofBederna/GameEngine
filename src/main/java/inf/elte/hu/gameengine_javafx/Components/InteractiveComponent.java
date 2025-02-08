@@ -1,6 +1,6 @@
 package inf.elte.hu.gameengine_javafx.Components;
 
-import inf.elte.hu.gameengine_javafx.Core.Component;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Misc.Tuple;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;

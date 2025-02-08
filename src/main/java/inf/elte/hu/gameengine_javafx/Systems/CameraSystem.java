@@ -3,8 +3,8 @@ package inf.elte.hu.gameengine_javafx.Systems;
 import inf.elte.hu.gameengine_javafx.Components.CameraComponent;
 import inf.elte.hu.gameengine_javafx.Components.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
-import inf.elte.hu.gameengine_javafx.Core.Entity;
-import inf.elte.hu.gameengine_javafx.Core.GameSystem;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 
 import java.util.List;
 
@@ -34,5 +34,4 @@ public class CameraSystem extends GameSystem {
 
         camera.setPosition(newX, newY);
     }
-
 }

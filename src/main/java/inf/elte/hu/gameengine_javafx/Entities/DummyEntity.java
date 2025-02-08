@@ -1,8 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Entities;
 
 import inf.elte.hu.gameengine_javafx.Components.*;
-import inf.elte.hu.gameengine_javafx.Core.Entity;
-import javafx.scene.image.Image;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ public class DummyEntity extends Entity {
         this.addComponent(new InteractiveComponent());
         this.addComponent(new RectangularHitBoxComponent(x,y,width,height));
         this.addComponent(new CameraComponent(viewportWidth, viewportHeight, mapWidth, mapHeight));
+        this.addComponent(new SoundEffectStoreComponent());
     }
 
     @Override

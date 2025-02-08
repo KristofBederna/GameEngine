@@ -1,8 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Components;
 
 
-import inf.elte.hu.gameengine_javafx.Core.Component;
-import javafx.scene.image.Image;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;

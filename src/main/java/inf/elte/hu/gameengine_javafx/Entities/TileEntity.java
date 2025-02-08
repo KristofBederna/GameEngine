@@ -3,7 +3,7 @@ package inf.elte.hu.gameengine_javafx.Entities;
 import inf.elte.hu.gameengine_javafx.Components.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.RectangularHitBoxComponent;
-import inf.elte.hu.gameengine_javafx.Core.Entity;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 
 public class TileEntity extends Entity {
     private int value;

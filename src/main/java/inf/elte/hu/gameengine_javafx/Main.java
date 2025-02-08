@@ -2,10 +2,19 @@ package inf.elte.hu.gameengine_javafx;
 
 import inf.elte.hu.gameengine_javafx.Components.*;
 import inf.elte.hu.gameengine_javafx.Core.*;
-import inf.elte.hu.gameengine_javafx.Entities.DebugInfoEntity;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
+import inf.elte.hu.gameengine_javafx.Core.ResourceManagers.ImageResourceManager;
+import inf.elte.hu.gameengine_javafx.Core.ResourceManagers.SoundResourceManager;
 import inf.elte.hu.gameengine_javafx.Entities.DummyEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Misc.*;
+import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.KeyboardInputHandler;
+import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.MouseInputHandler;
+import inf.elte.hu.gameengine_javafx.Misc.MapClasses.GameMap;
+import inf.elte.hu.gameengine_javafx.Misc.MapClasses.MapLoader;
+import inf.elte.hu.gameengine_javafx.Misc.MapClasses.TileLoader;
+import inf.elte.hu.gameengine_javafx.Misc.MapClasses.TileSetLoader;
 import inf.elte.hu.gameengine_javafx.Systems.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -17,7 +26,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import java.io.InputStream;
+import javax.sound.sampled.Clip;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,23 +46,8 @@ public class Main extends Application {
     }
 
     private void startUpGame(Stage stage) {
-        ResourceManager<Image> imageManager = new ResourceManager<>(key -> {
-            try {
-                if (key.startsWith("file:")) {
-                    return new Image(key);
-                }
-
-                InputStream resource = ResourceManager.class.getResourceAsStream(key);
-                if (resource != null) {
-                    return new Image(resource);
-                }
-                return new Image("file:" + key);
-            } catch (Exception e) {
-                System.err.println("Error loading image: " + key);
-                return null;
-            }
-        });
-        resourceHub.addResourceManager(Image.class, imageManager);
+        resourceHub.addResourceManager(Image.class, new ImageResourceManager());
+        resourceHub.addResourceManager(Clip.class, new SoundResourceManager());
 
         Canvas canvas = new Canvas(500, 500);
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -81,13 +75,16 @@ public class Main extends Application {
         TileSetLoader.loadSet("/assets/tileSets/testTiles.txt", tileLoader);
         GameMap map = MapLoader.loadMap("/assets/maps/testMap.txt", tileSize, tileLoader);
 
-        DummyEntity dummyEntity = new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 100, 100, 500, 500, 30*100, 15*100);
+        DummyEntity dummyEntity = new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80, 500, 500, 30*100, 15*100);
 
         dummyEntity.getComponent(InteractiveComponent.class).mapInput(KeyCode.W, () -> moveUp(dummyEntity), () -> counterVertical(dummyEntity));
         dummyEntity.getComponent(InteractiveComponent.class).mapInput(KeyCode.S, () -> moveDown(dummyEntity), () -> counterVertical(dummyEntity));
         dummyEntity.getComponent(InteractiveComponent.class).mapInput(KeyCode.A, () -> moveLeft(dummyEntity), () -> counterHorizontal(dummyEntity));
         dummyEntity.getComponent(InteractiveComponent.class).mapInput(KeyCode.D, () -> moveRight(dummyEntity), () -> counterHorizontal(dummyEntity));
         dummyEntity.getComponent(InteractiveComponent.class).mapInput(MouseButton.PRIMARY, () -> {dummyEntity.getComponent(PositionComponent.class).setX(100); dummyEntity.getComponent(PositionComponent.class).setY(200);}, () -> {dummyEntity.getComponent(PositionComponent.class).setX(500); dummyEntity.getComponent(PositionComponent.class).setY(300);});
+        dummyEntity.getComponent(InteractiveComponent.class).mapInput(MouseButton.SECONDARY, () ->
+        {dummyEntity.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion");
+            dummyEntity.getComponent(SoundEffectStoreComponent.class).loadSounds((SoundResourceManager) resourceHub.getResourceManager(Clip.class));}, ()->dummyEntity.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
 
 //        DummyEntity dummyEntity2 = new DummyEntity(200, 200, "idle", "/assets/images/PlayerIdle.png", 50, 50);
 //
@@ -110,6 +107,7 @@ public class Main extends Application {
         systemHub.addSystem(AnimationSystem.class, new AnimationSystem(), 1);
         systemHub.addSystem(DebugInfoSystem.class, new DebugInfoSystem(),6);
         systemHub.addSystem(ResourceSystem.class, new ResourceSystem(),7);
+        systemHub.addSystem(SoundSystem.class, new SoundSystem(), 9);
 
         GameLoop gameLoop = new GameLoop(60) {
             @Override

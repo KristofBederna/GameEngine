@@ -1,6 +1,6 @@
 package inf.elte.hu.gameengine_javafx.Components;
 
-import inf.elte.hu.gameengine_javafx.Core.Component;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 
 public class StateComponent extends Component {
     private String currentState;

@@ -4,8 +4,8 @@ package inf.elte.hu.gameengine_javafx.Systems;
 import inf.elte.hu.gameengine_javafx.Components.AnimationComponent;
 import inf.elte.hu.gameengine_javafx.Components.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
-import inf.elte.hu.gameengine_javafx.Core.Entity;
-import inf.elte.hu.gameengine_javafx.Core.GameSystem;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Entities.DummyEntity;
 
 import java.util.List;
