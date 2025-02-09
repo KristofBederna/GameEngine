@@ -38,27 +38,30 @@ public class RenderSystem extends GameSystem {
 
                 if (position == null || imgComponent == null) continue;
 
-                Image img = ResourceHub.getInstance().getResourceManager(Image.class).get(imgComponent.getImagePath());
-                if (img == null) {
-                    System.err.println("RenderSystem: Missing image for " + imgComponent.getImagePath());
-                    continue;
-                }
-
-                double width = (imgComponent.getWidth() >= 0) ? imgComponent.getWidth() : img.getWidth();
-                double height = (imgComponent.getHeight() >= 0) ? imgComponent.getHeight() : img.getHeight();
+                double width = imgComponent.getWidth();
+                double height = imgComponent.getHeight();
 
                 double renderX = position.getX() - camera.getX();
                 double renderY = position.getY() - camera.getY();
 
                 if (renderX + width >= 0 && renderX <= camera.getWidth() &&
                         renderY + height >= 0 && renderY <= camera.getHeight()) {
-                    gc.drawImage(img, renderX, renderY, width, height);
-                }
 
-                RectangularHitBoxComponent hitbox = entity.getComponent(RectangularHitBoxComponent.class);
-                if (hitbox != null) {
-                    gc.setStroke(Color.RED);
-                    gc.strokeRect(renderX, renderY, hitbox.getHitBox().getWidth(), hitbox.getHitBox().getHeight());
+                    Image img = ResourceHub.getInstance().getResourceManager(Image.class)
+                            .get(imgComponent.getImagePath());
+
+                    if (img == null) {
+                        System.err.println("RenderSystem: Missing image for " + imgComponent.getImagePath());
+                        continue;
+                    }
+
+                    gc.drawImage(img, renderX, renderY, width, height);
+
+                    RectangularHitBoxComponent hitbox = entity.getComponent(RectangularHitBoxComponent.class);
+                    if (hitbox != null) {
+                        gc.setStroke(Color.RED);
+                        gc.strokeRect(renderX, renderY, hitbox.getHitBox().getWidth(), hitbox.getHitBox().getHeight());
+                    }
                 }
             }
         });

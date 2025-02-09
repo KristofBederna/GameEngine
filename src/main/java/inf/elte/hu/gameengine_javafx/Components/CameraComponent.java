@@ -28,8 +28,22 @@ public class CameraComponent extends Component {
         this.y = Math.max(0, Math.min(y, worldHeight - height));
     }
 
+    public void setWidth(double width) {
+        this.width = width;
+    }
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
     @Override
     public String getStatus() {
         return (this.getClass().getSimpleName() + ": x: " + x + ", y: " + y + ", Width: " + width + ", Height: " + height);
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+    public void setY(double y) {
+        this.y = y;
     }
 }

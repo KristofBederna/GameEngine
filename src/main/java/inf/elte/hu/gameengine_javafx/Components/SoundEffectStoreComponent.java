@@ -1,9 +1,11 @@
 package inf.elte.hu.gameengine_javafx.Components;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
+import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Misc.SoundEffect;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManagers.SoundResourceManager;
 
+import javax.sound.sampled.Clip;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class SoundEffectStoreComponent extends Component {
 
     public void addSoundEffect(String path, String identifier) {
         soundEffects.add(new SoundEffect(path, identifier));
+        ResourceHub.getInstance().getResourceManager(Clip.class).get(path);
     }
 
     public void removeSoundEffect(String path) {
@@ -40,12 +43,5 @@ public class SoundEffectStoreComponent extends Component {
         }
 
         return sb.toString();
-    }
-
-    public void loadSounds(SoundResourceManager soundManager) {
-        // Load the clip for each sound effect
-        for (SoundEffect sound : soundEffects) {
-            soundManager.get(sound.getPath());
-        }
     }
 }

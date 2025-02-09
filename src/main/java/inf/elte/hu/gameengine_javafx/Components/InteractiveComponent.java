@@ -11,6 +11,7 @@ import java.util.Map;
 public class InteractiveComponent extends Component {
     private final Map<KeyCode, Tuple<Runnable, Runnable>> keyInputMapping;
     private final Map<MouseButton, Tuple<Runnable, Runnable>> mouseInputMapping;
+    private Runnable scrollAction;
     private Runnable mouseMoveAction;
 
     public InteractiveComponent() {
@@ -49,6 +50,15 @@ public class InteractiveComponent extends Component {
     public Runnable getMouseMoveAction() {
         return mouseMoveAction;
     }
+
+    public void setScrollAction(Runnable action) {
+        this.scrollAction = action;
+    }
+
+    public Runnable getScrollAction() {
+        return scrollAction;
+    }
+
 
     @Override
     public String getStatus() {

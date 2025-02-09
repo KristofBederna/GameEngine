@@ -6,6 +6,7 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManagers.ImageResourceManager;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManagers.SoundResourceManager;
+import inf.elte.hu.gameengine_javafx.Entities.DebugInfoEntity;
 import inf.elte.hu.gameengine_javafx.Entities.DummyEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Misc.*;
@@ -49,14 +50,14 @@ public class Main extends Application {
         resourceHub.addResourceManager(Image.class, new ImageResourceManager());
         resourceHub.addResourceManager(Clip.class, new SoundResourceManager());
 
-        Canvas canvas = new Canvas(500, 500);
+        Canvas canvas = new Canvas(1000, 1000);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-       // DebugInfoEntity debugInfoEntity = new DebugInfoEntity();
-        // entities.add(debugInfoEntity);
+        DebugInfoEntity debugInfoEntity = new DebugInfoEntity();
+        entities.add(debugInfoEntity);
 
         BorderPane root = new BorderPane();
-        //root.setTop(debugInfoEntity.getTextArea());
+        root.setTop(debugInfoEntity.getTextArea());
         root.setCenter(canvas);
         Scene scene = new Scene(root, 500, 500);
 
@@ -76,15 +77,13 @@ public class Main extends Application {
         GameMap map = MapLoader.loadMap("/assets/maps/testMap.txt", tileSize, tileLoader);
 
         DummyEntity dummyEntity = new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80, 500, 500, 30*100, 15*100);
-
-        dummyEntity.getComponent(InteractiveComponent.class).mapInput(KeyCode.W, () -> moveUp(dummyEntity), () -> counterVertical(dummyEntity));
-        dummyEntity.getComponent(InteractiveComponent.class).mapInput(KeyCode.S, () -> moveDown(dummyEntity), () -> counterVertical(dummyEntity));
-        dummyEntity.getComponent(InteractiveComponent.class).mapInput(KeyCode.A, () -> moveLeft(dummyEntity), () -> counterHorizontal(dummyEntity));
-        dummyEntity.getComponent(InteractiveComponent.class).mapInput(KeyCode.D, () -> moveRight(dummyEntity), () -> counterHorizontal(dummyEntity));
-        dummyEntity.getComponent(InteractiveComponent.class).mapInput(MouseButton.PRIMARY, () -> {dummyEntity.getComponent(PositionComponent.class).setX(100); dummyEntity.getComponent(PositionComponent.class).setY(200);}, () -> {dummyEntity.getComponent(PositionComponent.class).setX(500); dummyEntity.getComponent(PositionComponent.class).setY(300);});
-        dummyEntity.getComponent(InteractiveComponent.class).mapInput(MouseButton.SECONDARY, () ->
-        {dummyEntity.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion");
-            dummyEntity.getComponent(SoundEffectStoreComponent.class).loadSounds((SoundResourceManager) resourceHub.getResourceManager(Clip.class));}, ()->dummyEntity.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
+        InteractiveComponent dummyInteractiveComponent = dummyEntity.getComponent(InteractiveComponent.class);
+        dummyInteractiveComponent.mapInput(KeyCode.W, () -> moveUp(dummyEntity), () -> counterVertical(dummyEntity));
+        dummyInteractiveComponent.mapInput(KeyCode.S, () -> moveDown(dummyEntity), () -> counterVertical(dummyEntity));
+        dummyInteractiveComponent.mapInput(KeyCode.A, () -> moveLeft(dummyEntity), () -> counterHorizontal(dummyEntity));
+        dummyInteractiveComponent.mapInput(KeyCode.D, () -> moveRight(dummyEntity), () -> counterHorizontal(dummyEntity));
+        dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> {dummyEntity.getComponent(PositionComponent.class).setX(100); dummyEntity.getComponent(PositionComponent.class).setY(200);}, () -> {dummyEntity.getComponent(PositionComponent.class).setX(500); dummyEntity.getComponent(PositionComponent.class).setY(300);});
+        dummyInteractiveComponent.mapInput(MouseButton.SECONDARY, () -> dummyEntity.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion"), ()->dummyEntity.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
 
 //        DummyEntity dummyEntity2 = new DummyEntity(200, 200, "idle", "/assets/images/PlayerIdle.png", 50, 50);
 //
@@ -99,7 +98,8 @@ public class Main extends Application {
         entities.add(dummyEntity);
 //        entities.add(dummyEntity2);
 
-        systemHub.addSystem(InputHandlingSystem.class, new InputHandlingSystem(new KeyboardInputHandler(scene), new MouseInputHandler(scene)),4);
+        MouseInputHandler mouseInputHandler = new MouseInputHandler(scene);
+        systemHub.addSystem(InputHandlingSystem.class, new InputHandlingSystem(new KeyboardInputHandler(scene), mouseInputHandler),4);
         systemHub.addSystem(MovementSystem.class, new MovementSystem(),3);
         systemHub.addSystem(CollisionSystem.class, new CollisionSystem(),5);
         systemHub.addSystem(RenderSystem.class, new RenderSystem(gc, dummyEntity.getComponent(CameraComponent.class)),2);
