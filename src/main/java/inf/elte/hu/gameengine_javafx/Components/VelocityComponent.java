@@ -3,24 +3,24 @@ package inf.elte.hu.gameengine_javafx.Components;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 
 public class VelocityComponent extends Component {
-    private int Dx;
-    private int Dy;
+    private double Dx;
+    private double Dy;
     public VelocityComponent() {
         Dx = 0;
         Dy = 0;
     }
 
-    public int getDx() {
+    public double getDx() {
         return Dx;
     }
-    public int getDy() {
+    public double getDy() {
         return Dy;
     }
 
-    public void setDx(int dx) {
+    public void setDx(double dx) {
         Dx = dx;
     }
-    public void setDy(int dy) {
+    public void setDy(double dy) {
         Dy = dy;
     }
 

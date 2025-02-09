@@ -1,23 +1,23 @@
 package inf.elte.hu.gameengine_javafx.Systems;
 
+import inf.elte.hu.gameengine_javafx.Components.InteractiveComponent;
 import inf.elte.hu.gameengine_javafx.Core.*;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
-import inf.elte.hu.gameengine_javafx.Entities.DebugInfoEntity;
+import inf.elte.hu.gameengine_javafx.Entities.LoggerEntity;
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
-
-import java.util.List;
 import java.util.Map;
 
-public class DebugInfoSystem extends GameSystem {
+public class LogSystem extends GameSystem {
     @Override
-    public void update(float deltaTime, List<Entity> entities) {
+    public void update(float deltaTime) {
         TextArea statusTextArea = null;
 
-        for (Entity e : entities) {
-            if (e.getClass() == DebugInfoEntity.class) {
-                DebugInfoEntity info = (DebugInfoEntity) e;
+        for (Entity e : EntityHub.getInstance().getAllEntities()) {
+            if (e.getClass() == LoggerEntity.class) {
+                LoggerEntity info = (LoggerEntity) e;
                 statusTextArea = (TextArea) info.getTextArea();
 
                 if (statusTextArea == null) {
@@ -33,14 +33,12 @@ public class DebugInfoSystem extends GameSystem {
         }
 
         StringBuilder sb = new StringBuilder();
-//        sb.append("Interactive entities status:\n");
+//        sb.append("Entities status:\n");
 //
-//        for (Entity entity : entities) {
-//            if (entity.getAllComponents().containsKey(InteractiveComponent.class)) {
+//        for (Entity entity : EntityHub.getInstance().getAllEntities()) {
 //                for (Component component : entity.getAllComponents().values()) {
 //                    sb.append(component.getStatus()).append("\n");
 //                }
-//            }
 //        }
 //
 //        sb.append("\nSystems currently running:\n");

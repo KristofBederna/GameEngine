@@ -46,4 +46,12 @@ public class CameraComponent extends Component {
     public void setY(double y) {
         this.y = y;
     }
+
+    public boolean isPositionInsideViewport(double entityX, double entityY, double entityWidth, double entityHeight) {
+        double renderX = entityX - x;
+        double renderY = entityY - y;
+
+        return renderX + entityWidth >= 0 && renderX <= width &&
+                renderY + entityHeight >= 0 && renderY <= height;
+    }
 }

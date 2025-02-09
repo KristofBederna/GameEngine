@@ -5,13 +5,12 @@ import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.VelocityComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
+import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.KeyboardInputHandler;
 import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.MouseInputHandler;
 import inf.elte.hu.gameengine_javafx.Misc.Tuple;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
-
-import java.util.List;
 import java.util.Map;
 
 public class InputHandlingSystem extends GameSystem {
@@ -24,8 +23,8 @@ public class InputHandlingSystem extends GameSystem {
     }
 
     @Override
-    public void update(float deltaTime, List<Entity> entities) {
-        for (Entity entity : entities) {
+    public void update(float deltaTime) {
+        for (Entity entity : EntityHub.getInstance().getAllEntities()) {
             PositionComponent position = entity.getComponent(PositionComponent.class);
             VelocityComponent velocity = entity.getComponent(VelocityComponent.class);
             InteractiveComponent interactive = entity.getComponent(InteractiveComponent.class);

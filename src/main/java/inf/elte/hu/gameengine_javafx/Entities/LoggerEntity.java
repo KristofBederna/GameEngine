@@ -4,10 +4,10 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
 
-public class DebugInfoEntity extends Entity {
+public class LoggerEntity extends Entity {
     private final TextArea debugInfoTextArea;
 
-    public DebugInfoEntity() {
+    public LoggerEntity() {
         debugInfoTextArea = new TextArea();
         debugInfoTextArea.setEditable(false);
         debugInfoTextArea.setFocusTraversable(false);

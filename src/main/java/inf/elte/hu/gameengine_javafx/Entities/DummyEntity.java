@@ -19,6 +19,7 @@ public class DummyEntity extends Entity {
         this.addComponent(new RectangularHitBoxComponent(x,y,width,height));
         this.addComponent(new CameraComponent(viewportWidth, viewportHeight, mapWidth, mapHeight));
         this.addComponent(new SoundEffectStoreComponent());
+        this.addComponent(new ZIndexComponent(2));
     }
 
     @Override

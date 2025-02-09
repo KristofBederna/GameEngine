@@ -1,17 +1,15 @@
 package inf.elte.hu.gameengine_javafx.Systems;
 
-import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 public class ResourceSystem extends GameSystem {
     @Override
-    public void update(float deltaTime, List<Entity> entities) {
+    public void update(float deltaTime) {
         Map<Class<?>, ResourceManager<?>> resourceManagers = ResourceHub.getInstance().getAllResourceManagers();
 
         long threshold = System.currentTimeMillis() - 1000;

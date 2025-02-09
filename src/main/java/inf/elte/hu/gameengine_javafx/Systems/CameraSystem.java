@@ -5,8 +5,7 @@ import inf.elte.hu.gameengine_javafx.Components.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
-
-import java.util.List;
+import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 
 public class CameraSystem extends GameSystem {
     private Entity player;
@@ -18,7 +17,7 @@ public class CameraSystem extends GameSystem {
     }
 
     @Override
-    public void update(float deltaTime, List<Entity> entities) {
+    public void update(float deltaTime) {
         if (player == null || camera == null) return;
 
         PositionComponent playerPos = player.getComponent(PositionComponent.class);
@@ -33,5 +32,7 @@ public class CameraSystem extends GameSystem {
         double newY = playerCenterY - camera.getHeight() / 2;
 
         camera.setPosition(newX, newY);
+
+        EntityHub.getInstance().getEntityManager(player.getClass()).updateLastUsed(player.getId());
     }
 }

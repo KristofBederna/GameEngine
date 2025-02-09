@@ -5,28 +5,28 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import java.awt.*;
 
 public class PositionComponent extends Component {
-    private int X;
-    private int Y;
-    public PositionComponent(int x, int y) {
+    private double X;
+    private double Y;
+    public PositionComponent(double x, double y) {
         this.X = x;
         this.Y = y;
     }
 
-    public int getX() {
+    public double getX() {
         return X;
     }
-    public int getY() {
+    public double getY() {
         return Y;
     }
-    public void setX(int x) {
+    public void setX(double x) {
         X = x;
     }
-    public void setY(int y) {
+    public void setY(double y) {
         Y = y;
     }
     public void alignHitBox(Rectangle hitBox) {
-        hitBox.x = this.X;
-        hitBox.y = this.Y;
+        hitBox.x = (int) this.X;
+        hitBox.y = (int) this.Y;
     }
 
     @Override

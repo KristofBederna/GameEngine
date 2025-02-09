@@ -3,6 +3,7 @@ package inf.elte.hu.gameengine_javafx.Entities;
 import inf.elte.hu.gameengine_javafx.Components.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.RectangularHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.ZIndexComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 
 public class TileEntity extends Entity {
@@ -11,11 +12,13 @@ public class TileEntity extends Entity {
         this.value = value;
         this.addComponent(new ImageComponent(path, width, height));
         this.addComponent(new PositionComponent(x, y));
+        this.addComponent(new ZIndexComponent(0));
     }
     public TileEntity(int value, int x, int y, String path, int width, int height, boolean hasHitBox) {
         this.value = value;
         this.addComponent(new ImageComponent(path, width, height));
         this.addComponent(new PositionComponent(x, y));
+        this.addComponent(new ZIndexComponent(0));
         if (hasHitBox) {
             this.addComponent(new RectangularHitBoxComponent(x, y, width, height));
         }
@@ -24,6 +27,7 @@ public class TileEntity extends Entity {
         this.value = value;
         this.addComponent(new ImageComponent(path));
         this.addComponent(new PositionComponent(x, y));
+        this.addComponent(new ZIndexComponent(0));
     }
     public int getValue() {
         return value;

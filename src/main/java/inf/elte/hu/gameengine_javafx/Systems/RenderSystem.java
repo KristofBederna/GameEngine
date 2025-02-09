@@ -4,14 +4,18 @@ import inf.elte.hu.gameengine_javafx.Components.CameraComponent;
 import inf.elte.hu.gameengine_javafx.Components.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.RectangularHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.ZIndexComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
+import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RenderSystem extends GameSystem {
     private GraphicsContext gc;
@@ -23,7 +27,7 @@ public class RenderSystem extends GameSystem {
     }
 
     @Override
-    public void update(float deltaTime, List<Entity> entities) {
+    public void update(float deltaTime) {
         if (gc == null || gc.getCanvas() == null) {
             System.err.println("RenderSystem: GraphicsContext or Canvas is null!");
             return;
@@ -32,7 +36,24 @@ public class RenderSystem extends GameSystem {
         Platform.runLater(() -> {
             gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
 
-            for (Entity entity : entities) {
+            List<Entity> visibleEntities = EntityHub.getInstance().getAllEntities();
+            for (Entity entity: visibleEntities) {
+                if (entity.getAllComponents().containsKey(CameraComponent.class)) {
+                    visibleEntities = EntityHub.getInstance().getEntitiesInsideViewport(entity.getComponent(CameraComponent.class));
+                    break;
+                }
+            }
+
+            List<Entity> sortedEntities = visibleEntities.stream()
+                    .filter(entity -> entity.getComponent(ZIndexComponent.class) != null)
+                    .sorted((e1, e2) -> {
+                        ZIndexComponent zIndex1 = e1.getComponent(ZIndexComponent.class);
+                        ZIndexComponent zIndex2 = e2.getComponent(ZIndexComponent.class);
+                        return Integer.compare(zIndex1.getZ_index(), zIndex2.getZ_index());
+                    })
+                    .toList();
+
+            for (Entity entity : sortedEntities) {
                 PositionComponent position = entity.getComponent(PositionComponent.class);
                 ImageComponent imgComponent = entity.getComponent(ImageComponent.class);
 
@@ -50,6 +71,8 @@ public class RenderSystem extends GameSystem {
                     Image img = ResourceHub.getInstance().getResourceManager(Image.class)
                             .get(imgComponent.getImagePath());
 
+                    EntityHub.getInstance().getEntityManager(entity.getClass()).updateLastUsed(entity.getId());
+
                     if (img == null) {
                         System.err.println("RenderSystem: Missing image for " + imgComponent.getImagePath());
                         continue;
@@ -57,11 +80,11 @@ public class RenderSystem extends GameSystem {
 
                     gc.drawImage(img, renderX, renderY, width, height);
 
-                    RectangularHitBoxComponent hitbox = entity.getComponent(RectangularHitBoxComponent.class);
-                    if (hitbox != null) {
-                        gc.setStroke(Color.RED);
-                        gc.strokeRect(renderX, renderY, hitbox.getHitBox().getWidth(), hitbox.getHitBox().getHeight());
-                    }
+//                    RectangularHitBoxComponent hitbox = entity.getComponent(RectangularHitBoxComponent.class);
+//                    if (hitbox != null) {
+//                        gc.setStroke(Color.RED);
+//                        gc.strokeRect(renderX, renderY, hitbox.getHitBox().getWidth(), hitbox.getHitBox().getHeight());
+//                    }
                 }
             }
         });

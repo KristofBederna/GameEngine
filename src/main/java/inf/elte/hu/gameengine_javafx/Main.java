@@ -6,7 +6,7 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManagers.ImageResourceManager;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManagers.SoundResourceManager;
-import inf.elte.hu.gameengine_javafx.Entities.DebugInfoEntity;
+import inf.elte.hu.gameengine_javafx.Entities.LoggerEntity;
 import inf.elte.hu.gameengine_javafx.Entities.DummyEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Misc.*;
@@ -33,7 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Main extends Application {
-    private final List<Entity> entities = new ArrayList<>();
+    EntityHub entityHub = EntityHub.getInstance();
     SystemHub systemHub = SystemHub.getInstance();
     ResourceHub resourceHub = ResourceHub.getInstance();
 
@@ -50,14 +50,16 @@ public class Main extends Application {
         resourceHub.addResourceManager(Image.class, new ImageResourceManager());
         resourceHub.addResourceManager(Clip.class, new SoundResourceManager());
 
-        Canvas canvas = new Canvas(1000, 1000);
+        Canvas canvas = new Canvas(500, 500);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        DebugInfoEntity debugInfoEntity = new DebugInfoEntity();
-        entities.add(debugInfoEntity);
+//        LoggerEntity loggerEntity = new LoggerEntity();
+//        EntityManager<LoggerEntity> loggerEntityManager = new EntityManager<>();
+//        loggerEntityManager.register(loggerEntity);
+//        entityHub.addEntityManager(LoggerEntity.class, loggerEntityManager);
 
         BorderPane root = new BorderPane();
-        root.setTop(debugInfoEntity.getTextArea());
+//        root.setTop(loggerEntity.getTextArea());
         root.setCenter(canvas);
         Scene scene = new Scene(root, 500, 500);
 
@@ -92,10 +94,15 @@ public class Main extends Application {
 //        dummyEntity2.getComponent(InteractiveComponent.class).mapInput(KeyCode.A, () -> moveLeft(dummyEntity2), () -> counterHorizontal(dummyEntity2));
 //        dummyEntity2.getComponent(InteractiveComponent.class).mapInput(KeyCode.D, () -> moveRight(dummyEntity2), () -> counterHorizontal(dummyEntity2));
 
+        EntityManager<TileEntity> tileEntityManager = new EntityManager<>();
         for (TileEntity[] row : map.getMapData()) {
-            entities.addAll(Arrays.asList(row));
+            tileEntityManager.registerAll(Arrays.asList(row));
         }
-        entities.add(dummyEntity);
+        entityHub.addEntityManager(TileEntity.class, tileEntityManager);
+
+        EntityManager<DummyEntity> dummyEntityManager = new EntityManager<>();
+        dummyEntityManager.register(dummyEntity);
+        entityHub.addEntityManager(DummyEntity.class, dummyEntityManager);
 //        entities.add(dummyEntity2);
 
         MouseInputHandler mouseInputHandler = new MouseInputHandler(scene);
@@ -105,7 +112,7 @@ public class Main extends Application {
         systemHub.addSystem(RenderSystem.class, new RenderSystem(gc, dummyEntity.getComponent(CameraComponent.class)),2);
         systemHub.addSystem(CameraSystem.class, new CameraSystem(dummyEntity, dummyEntity.getComponent(CameraComponent.class)), 8);
         systemHub.addSystem(AnimationSystem.class, new AnimationSystem(), 1);
-        systemHub.addSystem(DebugInfoSystem.class, new DebugInfoSystem(),6);
+        systemHub.addSystem(LogSystem.class, new LogSystem(),6);
         systemHub.addSystem(ResourceSystem.class, new ResourceSystem(),7);
         systemHub.addSystem(SoundSystem.class, new SoundSystem(), 9);
 
@@ -113,7 +120,7 @@ public class Main extends Application {
             @Override
             public void update() {
                 for (GameSystem system : SystemHub.getInstance().getAllSystemsInPriorityOrder()) {
-                    system.update(1.0f/60.0f, entities);
+                    system.update(1.0f/60.0f);
                 }
             }
         };
