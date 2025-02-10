@@ -1,42 +1,19 @@
 package inf.elte.hu.gameengine_javafx;
 
-import inf.elte.hu.gameengine_javafx.Components.*;
-import inf.elte.hu.gameengine_javafx.Core.*;
-import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
-import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
-import inf.elte.hu.gameengine_javafx.Core.ResourceManagers.ImageResourceManager;
-import inf.elte.hu.gameengine_javafx.Core.ResourceManagers.SoundResourceManager;
-import inf.elte.hu.gameengine_javafx.Entities.LoggerEntity;
-import inf.elte.hu.gameengine_javafx.Entities.DummyEntity;
-import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
-import inf.elte.hu.gameengine_javafx.Misc.*;
-import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.KeyboardInputHandler;
-import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.MouseInputHandler;
-import inf.elte.hu.gameengine_javafx.Misc.MapClasses.GameMap;
-import inf.elte.hu.gameengine_javafx.Misc.MapClasses.MapLoader;
-import inf.elte.hu.gameengine_javafx.Misc.MapClasses.TileLoader;
-import inf.elte.hu.gameengine_javafx.Misc.MapClasses.TileSetLoader;
-import inf.elte.hu.gameengine_javafx.Systems.*;
+import inf.elte.hu.gameengine_javafx.Core.Globals;
+import inf.elte.hu.gameengine_javafx.Misc.GameLoopStartUp;
+import inf.elte.hu.gameengine_javafx.Misc.ResourceStartup;
+import inf.elte.hu.gameengine_javafx.Misc.Scenes.GameScene;
+import inf.elte.hu.gameengine_javafx.Misc.Scenes.TestScene;
+import inf.elte.hu.gameengine_javafx.Misc.SystemStartup;
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import javax.sound.sampled.Clip;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import static inf.elte.hu.gameengine_javafx.Core.Globals.canvas;
 
 public class Main extends Application {
-    EntityHub entityHub = EntityHub.getInstance();
-    SystemHub systemHub = SystemHub.getInstance();
-    ResourceHub resourceHub = ResourceHub.getInstance();
-
     @Override
     public void start(Stage stage) {
         startUpGame(stage);
@@ -47,24 +24,22 @@ public class Main extends Application {
     }
 
     private void startUpGame(Stage stage) {
-        resourceHub.addResourceManager(Image.class, new ImageResourceManager());
-        resourceHub.addResourceManager(Clip.class, new SoundResourceManager());
-
-        Canvas canvas = new Canvas(500, 500);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-
 //        LoggerEntity loggerEntity = new LoggerEntity();
 //        EntityManager<LoggerEntity> loggerEntityManager = new EntityManager<>();
 //        loggerEntityManager.register(loggerEntity);
-//        entityHub.addEntityManager(LoggerEntity.class, loggerEntityManager);
+//        EntityHub.getInstance().addEntityManager(LoggerEntity.class, loggerEntityManager);
+
+        new ResourceStartup();
 
         BorderPane root = new BorderPane();
 //        root.setTop(loggerEntity.getTextArea());
-        root.setCenter(canvas);
-        Scene scene = new Scene(root, 500, 500);
+        root.setCenter(Globals.canvas);
+        GameScene gameScene = new TestScene(root, 500, 500);
+
+        new SystemStartup();
 
         stage.setTitle("JavaFX Game Engine");
-        stage.setScene(scene);
+        stage.setScene(gameScene);
 
         stage.setOnCloseRequest(event -> {
             System.out.println("Window is closing!");
@@ -73,89 +48,6 @@ public class Main extends Application {
 
         stage.show();
 
-        TileLoader tileLoader = new TileLoader();
-        int tileSize = 100;
-        TileSetLoader.loadSet("/assets/tileSets/testTiles.txt", tileLoader);
-        GameMap map = MapLoader.loadMap("/assets/maps/testMap.txt", tileSize, tileLoader);
-
-        MouseInputHandler mouseInputHandler = new MouseInputHandler(scene);
-
-        DummyEntity dummyEntity = new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80, 500, 500, 30*100, 15*100);
-        InteractiveComponent dummyInteractiveComponent = dummyEntity.getComponent(InteractiveComponent.class);
-        dummyInteractiveComponent.mapInput(KeyCode.W, () -> moveUp(dummyEntity), () -> counterVertical(dummyEntity));
-        dummyInteractiveComponent.mapInput(KeyCode.S, () -> moveDown(dummyEntity), () -> counterVertical(dummyEntity));
-        dummyInteractiveComponent.mapInput(KeyCode.A, () -> moveLeft(dummyEntity), () -> counterHorizontal(dummyEntity));
-        dummyInteractiveComponent.mapInput(KeyCode.D, () -> moveRight(dummyEntity), () -> counterHorizontal(dummyEntity));
-        dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> {dummyEntity.getComponent(PositionComponent.class).setX(mouseInputHandler.getMouseX()); dummyEntity.getComponent(PositionComponent.class).setY(mouseInputHandler.getMouseY());});
-        dummyInteractiveComponent.mapInput(MouseButton.SECONDARY, () -> dummyEntity.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion"), ()->dummyEntity.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
-
-//        DummyEntity dummyEntity2 = new DummyEntity(200, 200, "idle", "/assets/images/PlayerIdle.png", 50, 50);
-//
-//        dummyEntity2.getComponent(InteractiveComponent.class).mapInput(KeyCode.W, () -> moveUp(dummyEntity2), () -> counterVertical(dummyEntity2));
-//        dummyEntity2.getComponent(InteractiveComponent.class).mapInput(KeyCode.S, () -> moveDown(dummyEntity2), () -> counterVertical(dummyEntity2));
-//        dummyEntity2.getComponent(InteractiveComponent.class).mapInput(KeyCode.A, () -> moveLeft(dummyEntity2), () -> counterHorizontal(dummyEntity2));
-//        dummyEntity2.getComponent(InteractiveComponent.class).mapInput(KeyCode.D, () -> moveRight(dummyEntity2), () -> counterHorizontal(dummyEntity2));
-
-        EntityManager<TileEntity> tileEntityManager = new EntityManager<>();
-        for (TileEntity[] row : map.getMapData()) {
-            tileEntityManager.registerAll(Arrays.asList(row));
-        }
-        entityHub.addEntityManager(TileEntity.class, tileEntityManager);
-
-        EntityManager<DummyEntity> dummyEntityManager = new EntityManager<>();
-        dummyEntityManager.register(dummyEntity);
-        entityHub.addEntityManager(DummyEntity.class, dummyEntityManager);
-//        entities.add(dummyEntity2);
-
-        systemHub.addSystem(InputHandlingSystem.class, new InputHandlingSystem(new KeyboardInputHandler(scene), mouseInputHandler),4);
-        systemHub.addSystem(MovementSystem.class, new MovementSystem(),3);
-        systemHub.addSystem(CollisionSystem.class, new CollisionSystem(),5);
-        systemHub.addSystem(RenderSystem.class, new RenderSystem(gc, dummyEntity.getComponent(CameraComponent.class)),2);
-        systemHub.addSystem(CameraSystem.class, new CameraSystem(dummyEntity, dummyEntity.getComponent(CameraComponent.class)), 8);
-        systemHub.addSystem(AnimationSystem.class, new AnimationSystem(), 1);
-        systemHub.addSystem(LogSystem.class, new LogSystem(),6);
-        systemHub.addSystem(ResourceSystem.class, new ResourceSystem(),7);
-        systemHub.addSystem(SoundSystem.class, new SoundSystem(), 9);
-
-        GameLoop gameLoop = new GameLoop(60) {
-            @Override
-            public void update() {
-                for (GameSystem system : SystemHub.getInstance().getAllSystemsInPriorityOrder()) {
-                    system.update(1.0f/60.0f);
-                }
-            }
-        };
-
-        gameLoop.startLoop();
-    }
-
-    private void moveUp(Entity e) {
-        e.getComponent(VelocityComponent.class).setDy(-10);
-        e.getComponent(StateComponent.class).setCurrentState("up");
-    }
-
-    private void moveDown(Entity e) {
-        e.getComponent(VelocityComponent.class).setDy(10);
-        e.getComponent(StateComponent.class).setCurrentState("down");
-    }
-
-    private void moveLeft(Entity e) {
-        e.getComponent(VelocityComponent.class).setDx(-10);
-        e.getComponent(StateComponent.class).setCurrentState("left");
-    }
-
-    private void moveRight(Entity e) {
-        e.getComponent(VelocityComponent.class).setDx(10);
-        e.getComponent(StateComponent.class).setCurrentState("right");
-    }
-
-    private void counterVertical(Entity e) {
-        e.getComponent(VelocityComponent.class).setDy(0);
-        e.getComponent(StateComponent.class).setCurrentState("idle");
-    }
-
-    private void counterHorizontal(Entity e) {
-        e.getComponent(VelocityComponent.class).setDx(0);
-        e.getComponent(StateComponent.class).setCurrentState("idle");
+        new GameLoopStartUp();
     }
 }

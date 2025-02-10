@@ -1,12 +1,15 @@
 package inf.elte.hu.gameengine_javafx.Misc.MapClasses;
 
+import inf.elte.hu.gameengine_javafx.Core.Globals;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 
 import java.io.*;
 import java.util.Objects;
 
+import static inf.elte.hu.gameengine_javafx.Core.Globals.tileSize;
+
 public class MapLoader {
-    public static GameMap loadMap(String path, int tileSize, TileLoader tileLoader) {
+    public static GameMap loadMap(String path, TileLoader tileLoader) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(MapLoader.class.getResourceAsStream(path))))) {
             String[] dimensions = reader.readLine().split(" ");
             int width = Integer.parseInt(dimensions[0]);
@@ -23,9 +26,9 @@ public class MapLoader {
                         name = String.valueOf(value);
                     }
                     if (value == 9) {
-                        map.setElement(x, y, new TileEntity(value,x*tileSize, y*tileSize, "/assets/tiles/" + name+".png", tileSize, tileSize));
+                        map.setElement(x, y, new TileEntity(value,x* Globals.tileSize, y*Globals.tileSize, "/assets/tiles/" + name+".png", Globals.tileSize, Globals.tileSize));
                     } else {
-                        map.setElement(x, y, new TileEntity(value,x*tileSize, y*tileSize, "/assets/tiles/" + name+".png", tileSize, tileSize, true));
+                        map.setElement(x, y, new TileEntity(value,x*Globals.tileSize, y*Globals.tileSize, "/assets/tiles/" + name+".png", Globals.tileSize, Globals.tileSize, true));
                     }
                 }
             }
