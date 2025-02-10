@@ -78,13 +78,15 @@ public class Main extends Application {
         TileSetLoader.loadSet("/assets/tileSets/testTiles.txt", tileLoader);
         GameMap map = MapLoader.loadMap("/assets/maps/testMap.txt", tileSize, tileLoader);
 
+        MouseInputHandler mouseInputHandler = new MouseInputHandler(scene);
+
         DummyEntity dummyEntity = new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80, 500, 500, 30*100, 15*100);
         InteractiveComponent dummyInteractiveComponent = dummyEntity.getComponent(InteractiveComponent.class);
         dummyInteractiveComponent.mapInput(KeyCode.W, () -> moveUp(dummyEntity), () -> counterVertical(dummyEntity));
         dummyInteractiveComponent.mapInput(KeyCode.S, () -> moveDown(dummyEntity), () -> counterVertical(dummyEntity));
         dummyInteractiveComponent.mapInput(KeyCode.A, () -> moveLeft(dummyEntity), () -> counterHorizontal(dummyEntity));
         dummyInteractiveComponent.mapInput(KeyCode.D, () -> moveRight(dummyEntity), () -> counterHorizontal(dummyEntity));
-        dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> {dummyEntity.getComponent(PositionComponent.class).setX(100); dummyEntity.getComponent(PositionComponent.class).setY(200);}, () -> {dummyEntity.getComponent(PositionComponent.class).setX(500); dummyEntity.getComponent(PositionComponent.class).setY(300);});
+        dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> {dummyEntity.getComponent(PositionComponent.class).setX(mouseInputHandler.getMouseX()); dummyEntity.getComponent(PositionComponent.class).setY(mouseInputHandler.getMouseY());});
         dummyInteractiveComponent.mapInput(MouseButton.SECONDARY, () -> dummyEntity.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion"), ()->dummyEntity.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
 
 //        DummyEntity dummyEntity2 = new DummyEntity(200, 200, "idle", "/assets/images/PlayerIdle.png", 50, 50);
@@ -105,7 +107,6 @@ public class Main extends Application {
         entityHub.addEntityManager(DummyEntity.class, dummyEntityManager);
 //        entities.add(dummyEntity2);
 
-        MouseInputHandler mouseInputHandler = new MouseInputHandler(scene);
         systemHub.addSystem(InputHandlingSystem.class, new InputHandlingSystem(new KeyboardInputHandler(scene), mouseInputHandler),4);
         systemHub.addSystem(MovementSystem.class, new MovementSystem(),3);
         systemHub.addSystem(CollisionSystem.class, new CollisionSystem(),5);

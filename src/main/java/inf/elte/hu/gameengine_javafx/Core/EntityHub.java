@@ -50,6 +50,7 @@ public class EntityHub {
         return entities;
     }
 
+    @SuppressWarnings("unchecked")
     public void refreshEntitiesList() {
         entities.clear();
         for (EntityManager<?> entityManager : entityManagers.values()) {
