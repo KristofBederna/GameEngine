@@ -14,14 +14,6 @@ import javafx.scene.input.MouseButton;
 import java.util.Map;
 
 public class InputHandlingSystem extends GameSystem {
-    private final KeyboardInputHandler keyboardInputHandler;
-    private final MouseInputHandler mouseInputHandler;
-
-    public InputHandlingSystem(KeyboardInputHandler keyboardInputHandler, MouseInputHandler mouseInputHandler) {
-        this.keyboardInputHandler = keyboardInputHandler;
-        this.mouseInputHandler = mouseInputHandler;
-    }
-
     @Override
     public void update(float deltaTime) {
         for (Entity entity : EntityHub.getInstance().getAllEntities()) {
@@ -31,12 +23,13 @@ public class InputHandlingSystem extends GameSystem {
 
             if (position != null && velocity != null && interactive != null) {
                 handleKeyboardInput(interactive);
-                handleMouseInput(interactive, position);
+                handleMouseInput(interactive);
             }
         }
     }
 
     private void handleKeyboardInput(InteractiveComponent interactive) {
+        KeyboardInputHandler keyboardInputHandler = KeyboardInputHandler.getInstance();
         for (Map.Entry<KeyCode, Tuple<Runnable, Runnable>> entry : interactive.getKeyInputMapping().entrySet()) {
             KeyCode keyCode = entry.getKey();
             Runnable action = entry.getValue().first();
@@ -51,7 +44,8 @@ public class InputHandlingSystem extends GameSystem {
         }
     }
 
-    private void handleMouseInput(InteractiveComponent interactive, PositionComponent position) {
+    private void handleMouseInput(InteractiveComponent interactive) {
+        MouseInputHandler mouseInputHandler = MouseInputHandler.getInstance();
         for (Map.Entry<MouseButton, Tuple<Runnable, Runnable>> entry : interactive.getMouseInputMapping().entrySet()) {
             MouseButton mouseButton = entry.getKey();
             Runnable action = entry.getValue().first();

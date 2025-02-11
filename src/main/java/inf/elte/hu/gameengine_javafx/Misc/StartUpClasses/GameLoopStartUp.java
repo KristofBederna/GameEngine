@@ -1,7 +1,8 @@
-package inf.elte.hu.gameengine_javafx.Misc;
+package inf.elte.hu.gameengine_javafx.Misc.StartUpClasses;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
+import inf.elte.hu.gameengine_javafx.Misc.GameLoop;
 
 public class GameLoopStartUp {
     public GameLoopStartUp() {

@@ -3,7 +3,6 @@ package inf.elte.hu.gameengine_javafx.Core;
 import inf.elte.hu.gameengine_javafx.Components.CameraComponent;
 import inf.elte.hu.gameengine_javafx.Components.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
-import inf.elte.hu.gameengine_javafx.Components.RectangularHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 
 import java.util.*;
@@ -24,13 +23,13 @@ public class EntityHub {
         return instance;
     }
 
-    public <T> void addEntityManager(Class<T> classType, EntityManager<T> entityManager) {
+    public <T extends Entity> void addEntityManager(Class<T> classType, EntityManager<T> entityManager) {
         entityManagers.put(classType, entityManager);
         refreshEntitiesList();
     }
 
     @SuppressWarnings("unchecked")
-    public <T> EntityManager<T> getEntityManager(Class<T> classType) {
+    public <T extends Entity> EntityManager<T> getEntityManager(Class<T> classType) {
         return (EntityManager<T>) entityManagers.get(classType);
     }
 

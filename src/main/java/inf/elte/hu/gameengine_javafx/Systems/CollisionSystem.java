@@ -10,7 +10,6 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CollisionSystem extends GameSystem {

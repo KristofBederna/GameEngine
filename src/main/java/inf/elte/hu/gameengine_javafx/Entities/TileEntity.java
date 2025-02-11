@@ -5,6 +5,8 @@ import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.RectangularHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.ZIndexComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 
 public class TileEntity extends Entity {
     private int value;
@@ -37,5 +39,18 @@ public class TileEntity extends Entity {
     }
     public void addHitBox(int x, int y, int width, int height) {
         this.addComponent(new RectangularHitBoxComponent(x, y, width, height));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void addToManager() {
+        EntityManager<TileEntity> manager = EntityHub.getInstance().getEntityManager((Class<TileEntity>)this.getClass());
+
+        if (manager != null) {
+            manager.register(this);
+        } else {
+            manager = new EntityManager<>();
+            EntityHub.getInstance().addEntityManager(TileEntity.class, manager);
+        }
     }
 }

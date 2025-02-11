@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EntityManager<T> {
+public class EntityManager<T extends Entity> {
     private final Map<Integer, T> entities;
     private final Map<Integer, Long> lastAccessed;
 
@@ -26,7 +26,7 @@ public class EntityManager<T> {
     }
 
     public void register(T entity) {
-        this.entities.put(((Entity)entity).getId(), entity);
+        this.entities.put(entity.getId(), entity);
         EntityHub.getInstance().refreshEntitiesList();
     }
 

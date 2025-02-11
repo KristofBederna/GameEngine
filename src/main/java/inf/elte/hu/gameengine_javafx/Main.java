@@ -1,17 +1,18 @@
 package inf.elte.hu.gameengine_javafx;
 
-import inf.elte.hu.gameengine_javafx.Core.Globals;
-import inf.elte.hu.gameengine_javafx.Misc.GameLoopStartUp;
-import inf.elte.hu.gameengine_javafx.Misc.ResourceStartup;
+import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+import inf.elte.hu.gameengine_javafx.Core.EntityManager;
+import inf.elte.hu.gameengine_javafx.Entities.LoggerEntity;
+import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Misc.Scenes.GameScene;
 import inf.elte.hu.gameengine_javafx.Misc.Scenes.TestScene;
-import inf.elte.hu.gameengine_javafx.Misc.SystemStartup;
+import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.GameLoopStartUp;
+import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.ResourceStartup;
+import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.SystemStartup;
 import javafx.application.Application;
-import javafx.scene.canvas.Canvas;
+import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-
-import static inf.elte.hu.gameengine_javafx.Core.Globals.canvas;
 
 public class Main extends Application {
     @Override
@@ -24,30 +25,38 @@ public class Main extends Application {
     }
 
     private void startUpGame(Stage stage) {
-//        LoggerEntity loggerEntity = new LoggerEntity();
-//        EntityManager<LoggerEntity> loggerEntityManager = new EntityManager<>();
-//        loggerEntityManager.register(loggerEntity);
-//        EntityHub.getInstance().addEntityManager(LoggerEntity.class, loggerEntityManager);
+        LoggerEntity loggerEntity = new LoggerEntity();
+        EntityManager<LoggerEntity> loggerEntityManager = new EntityManager<>();
+        loggerEntityManager.register(loggerEntity);
+        EntityHub.getInstance().addEntityManager(LoggerEntity.class, loggerEntityManager);
 
         new ResourceStartup();
 
         BorderPane root = new BorderPane();
-//        root.setTop(loggerEntity.getTextArea());
+        root.setTop(loggerEntity.getTextArea());
         root.setCenter(Globals.canvas);
-        GameScene gameScene = new TestScene(root, 500, 500);
+        GameScene gameScene = new TestScene(root, 1920, 1080);
+
+        stageSetup(stage, gameScene);
 
         new SystemStartup();
+        new GameLoopStartUp();
+    }
 
+    private void stageSetup(Stage stage, Scene scene) {
+        //Set window title here
         stage.setTitle("JavaFX Game Engine");
-        stage.setScene(gameScene);
 
+        //Assigns the stage as the parent container of the scene
+        stage.setScene(scene);
+
+        //Define on close behaviour here
         stage.setOnCloseRequest(event -> {
             System.out.println("Window is closing!");
             System.exit(0);
         });
 
+        //Makes the window visible
         stage.show();
-
-        new GameLoopStartUp();
     }
 }

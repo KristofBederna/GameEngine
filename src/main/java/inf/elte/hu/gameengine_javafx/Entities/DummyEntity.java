@@ -2,6 +2,8 @@ package inf.elte.hu.gameengine_javafx.Entities;
 
 import inf.elte.hu.gameengine_javafx.Components.*;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +22,23 @@ public class DummyEntity extends Entity {
         this.addComponent(new CameraComponent(viewportWidth, viewportHeight, mapWidth, mapHeight));
         this.addComponent(new SoundEffectStoreComponent());
         this.addComponent(new ZIndexComponent(2));
+
+        addToManager();
     }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void addToManager() {
+        EntityManager<DummyEntity> manager = EntityHub.getInstance().getEntityManager((Class<DummyEntity>)this.getClass());
+
+        if (manager != null) {
+            manager.register(this);
+        } else {
+            manager = new EntityManager<>();
+            EntityHub.getInstance().addEntityManager(DummyEntity.class, manager);
+        }
+    }
+
 
     @Override
     public String toString() {

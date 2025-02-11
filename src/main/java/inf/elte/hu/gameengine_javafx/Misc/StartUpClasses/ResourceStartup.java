@@ -1,4 +1,4 @@
-package inf.elte.hu.gameengine_javafx.Misc;
+package inf.elte.hu.gameengine_javafx.Misc.StartUpClasses;
 
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManagers.ImageResourceManager;

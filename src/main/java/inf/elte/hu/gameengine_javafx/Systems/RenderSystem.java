@@ -1,13 +1,10 @@
 package inf.elte.hu.gameengine_javafx.Systems;
 
-import inf.elte.hu.gameengine_javafx.Components.CameraComponent;
-import inf.elte.hu.gameengine_javafx.Components.ImageComponent;
-import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
-import inf.elte.hu.gameengine_javafx.Components.RectangularHitBoxComponent;
-import inf.elte.hu.gameengine_javafx.Components.ZIndexComponent;
+import inf.elte.hu.gameengine_javafx.Components.*;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
@@ -15,19 +12,13 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RenderSystem extends GameSystem {
-    private GraphicsContext gc;
-    private CameraComponent camera;
-
-    public RenderSystem(GraphicsContext gc, CameraComponent camera) {
-        this.gc = gc;
-        this.camera = camera;
-    }
-
     @Override
     public void update(float deltaTime) {
+        GraphicsContext gc = Globals.canvas.getGraphicsContext2D();
+        CameraComponent camera = Globals.playerEntity.getComponent(CameraComponent.class);
+
         if (gc == null || gc.getCanvas() == null) {
             System.err.println("RenderSystem: GraphicsContext or Canvas is null!");
             return;
@@ -80,11 +71,11 @@ public class RenderSystem extends GameSystem {
 
                     gc.drawImage(img, renderX, renderY, width, height);
 
-//                    RectangularHitBoxComponent hitbox = entity.getComponent(RectangularHitBoxComponent.class);
-//                    if (hitbox != null) {
-//                        gc.setStroke(Color.RED);
-//                        gc.strokeRect(renderX, renderY, hitbox.getHitBox().getWidth(), hitbox.getHitBox().getHeight());
-//                    }
+                    RectangularHitBoxComponent hitbox = entity.getComponent(RectangularHitBoxComponent.class);
+                    if (hitbox != null) {
+                        gc.setStroke(Color.RED);
+                        gc.strokeRect(renderX, renderY, hitbox.getHitBox().getWidth(), hitbox.getHitBox().getHeight());
+                    }
                 }
             }
         });

@@ -3,14 +3,13 @@ package inf.elte.hu.gameengine_javafx.Misc.InputHandlers;
 import inf.elte.hu.gameengine_javafx.Components.CameraComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
-import inf.elte.hu.gameengine_javafx.Core.SystemHub;
+import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class MouseInputHandler {
@@ -20,7 +19,8 @@ public class MouseInputHandler {
     private int mouseX, mouseY;
     private double scrollDeltaY;
 
-    private MouseInputHandler(Scene scene) {
+    private MouseInputHandler() {
+        Scene scene = Globals.canvas.getScene();
         scene.setOnMousePressed(this::mousePressed);
         scene.setOnMouseReleased(this::mouseReleased);
         scene.setOnMouseMoved(this::mouseMoved);
@@ -28,9 +28,9 @@ public class MouseInputHandler {
         scene.setOnScroll(this::mouseScrolled);
     }
 
-    public static MouseInputHandler getInstance(Scene scene) {
+    public static MouseInputHandler getInstance() {
         if (instance == null) {
-            instance = new MouseInputHandler(scene);
+            instance = new MouseInputHandler();
         }
         return instance;
     }

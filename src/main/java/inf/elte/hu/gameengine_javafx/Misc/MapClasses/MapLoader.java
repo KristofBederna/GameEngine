@@ -1,12 +1,10 @@
 package inf.elte.hu.gameengine_javafx.Misc.MapClasses;
 
-import inf.elte.hu.gameengine_javafx.Core.Globals;
+import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 
 import java.io.*;
 import java.util.Objects;
-
-import static inf.elte.hu.gameengine_javafx.Core.Globals.tileSize;
 
 public class MapLoader {
     public static GameMap loadMap(String path, TileLoader tileLoader) {

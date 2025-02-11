@@ -1,4 +1,4 @@
-package inf.elte.hu.gameengine_javafx.Core;
+package inf.elte.hu.gameengine_javafx.Misc;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Entities.DummyEntity;

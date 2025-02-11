@@ -1,13 +1,16 @@
 package inf.elte.hu.gameengine_javafx.Systems;
 
-import inf.elte.hu.gameengine_javafx.Components.InteractiveComponent;
-import inf.elte.hu.gameengine_javafx.Core.*;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
+import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
+import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
+import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Entities.LoggerEntity;
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
+
 import java.util.Map;
 
 public class LogSystem extends GameSystem {
@@ -33,19 +36,21 @@ public class LogSystem extends GameSystem {
         }
 
         StringBuilder sb = new StringBuilder();
-//        sb.append("Entities status:\n");
-//
-//        for (Entity entity : EntityHub.getInstance().getAllEntities()) {
-//                for (Component component : entity.getAllComponents().values()) {
-//                    sb.append(component.getStatus()).append("\n");
-//                }
-//        }
-//
-//        sb.append("\nSystems currently running:\n");
-//
-//        for (GameSystem system : SystemHub.getInstance().getAllSystemsInPriorityOrder()) {
-//            sb.append(system.getClass().getSimpleName()).append("\n");
-//        }
+        sb.append("Entities status:\n");
+
+        for (Entity entity : EntityHub.getInstance().getAllEntities()) {
+            sb.append(entity.getClass().getSimpleName()).append("\n");
+            sb.append(EntityHub.getInstance().getEntityManager(entity.getClass()).getLastAccessed(entity.getId())).append('\n');
+            for (Component component : entity.getAllComponents().values()) {
+                sb.append(component.getStatus()).append("\n");
+            }
+        }
+
+        sb.append("\nSystems currently running:\n");
+
+        for (GameSystem system : SystemHub.getInstance().getAllSystemsInPriorityOrder()) {
+            sb.append(system.getClass().getSimpleName()).append("\n");
+        }
 
         sb.append("\nResources currently loaded:\n");
 
@@ -57,6 +62,7 @@ public class LogSystem extends GameSystem {
 
             for (String resourceKey : manager.getResources().keySet()) {
                 sb.append("  - ").append(resourceKey).append("\n");
+                sb.append("  - ").append(manager.getLastAccessed(resourceKey)).append("\n");
             }
         }
 

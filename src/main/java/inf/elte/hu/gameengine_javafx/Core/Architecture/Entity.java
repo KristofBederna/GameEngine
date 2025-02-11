@@ -37,4 +37,6 @@ public abstract class Entity {
     public Map<Class<? extends Component>, Component> getAllComponents() {
         return components;
     }
+
+    protected abstract void addToManager();
 }
