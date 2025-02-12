@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class LogSystem extends GameSystem {
     @Override
-    public void update(float deltaTime) {
+    public void update() {
         TextArea statusTextArea = null;
 
         for (Entity e : EntityHub.getInstance().getAllEntities()) {

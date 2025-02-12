@@ -11,7 +11,7 @@ import javax.sound.sampled.Clip;
 
 public class SoundSystem extends GameSystem {
     @Override
-    public void update(float deltaTime) {
+    public void update() {
         for (Entity entity : EntityHub.getInstance().getAllEntities()) {
             SoundEffectStoreComponent soundStore = entity.getComponent(SoundEffectStoreComponent.class);
             if (soundStore != null) {

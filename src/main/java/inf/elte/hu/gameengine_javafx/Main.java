@@ -7,8 +7,9 @@ import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Misc.Scenes.GameScene;
 import inf.elte.hu.gameengine_javafx.Misc.Scenes.TestScene;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.GameLoopStartUp;
-import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.ResourceStartup;
-import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.SystemStartup;
+import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.LoggerStartUp;
+import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.ResourceStartUp;
+import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.SystemStartUp;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -25,21 +26,16 @@ public class Main extends Application {
     }
 
     private void startUpGame(Stage stage) {
-        LoggerEntity loggerEntity = new LoggerEntity();
-        EntityManager<LoggerEntity> loggerEntityManager = new EntityManager<>();
-        loggerEntityManager.register(loggerEntity);
-        EntityHub.getInstance().addEntityManager(LoggerEntity.class, loggerEntityManager);
+        //LoggerStartUp loggerStartUp = new LoggerStartUp();
+        new ResourceStartUp();
 
-        new ResourceStartup();
+        Globals.root = new BorderPane();
+        //root.setTop(loggerStartUp.getLoggerEntity().getTextArea());
+        Globals.root.setCenter(Globals.canvas);
 
-        BorderPane root = new BorderPane();
-        root.setTop(loggerEntity.getTextArea());
-        root.setCenter(Globals.canvas);
-        GameScene gameScene = new TestScene(root, 1920, 1080);
+        stageSetup(stage, new TestScene(Globals.root, 1920, 1080));
 
-        stageSetup(stage, gameScene);
-
-        new SystemStartup();
+        new SystemStartUp();
         new GameLoopStartUp();
     }
 

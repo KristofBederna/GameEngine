@@ -3,8 +3,8 @@ package inf.elte.hu.gameengine_javafx.Misc.StartUpClasses;
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Systems.*;
 
-public class SystemStartup {
-    public SystemStartup() {
+public class SystemStartUp {
+    public SystemStartUp() {
         SystemHub.getInstance();
         startUpSystems();
     }
@@ -15,7 +15,7 @@ public class SystemStartup {
         SystemHub.getInstance().addSystem(MovementSystem.class, new MovementSystem(),3);
         SystemHub.getInstance().addSystem(InputHandlingSystem.class, new InputHandlingSystem(),4);
         SystemHub.getInstance().addSystem(CollisionSystem.class, new CollisionSystem(),5);
-        SystemHub.getInstance().addSystem(LogSystem.class, new LogSystem(),6);
+        //SystemHub.getInstance().addSystem(LogSystem.class, new LogSystem(),6);
         SystemHub.getInstance().addSystem(ResourceSystem.class, new ResourceSystem(),7);
         SystemHub.getInstance().addSystem(CameraSystem.class, new CameraSystem(), 8);
         SystemHub.getInstance().addSystem(SoundSystem.class, new SoundSystem(), 9);

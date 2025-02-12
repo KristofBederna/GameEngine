@@ -15,7 +15,7 @@ import java.util.List;
 public class CollisionSystem extends GameSystem {
 
     @Override
-    public void update(float deltaTime) {
+    public void update() {
         List<Entity> visibleEntities = EntityHub.getInstance().getAllEntities();
         for (Entity entity: visibleEntities) {
             if (entity.getAllComponents().containsKey(CameraComponent.class)) {

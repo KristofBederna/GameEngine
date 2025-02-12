@@ -11,7 +11,7 @@ import inf.elte.hu.gameengine_javafx.Entities.DummyEntity;
 
 public class AnimationSystem extends GameSystem {
     @Override
-    public void update(float deltaTime) {
+    public void update() {
         for (Entity entity : EntityHub.getInstance().getAllEntities()) {
             PositionComponent position = entity.getComponent(PositionComponent.class);
             ImageComponent img = entity.getComponent(ImageComponent.class);

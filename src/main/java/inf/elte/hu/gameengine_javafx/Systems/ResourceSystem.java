@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class ResourceSystem extends GameSystem {
     @Override
-    public void update(float deltaTime) {
+    public void update() {
         Map<Class<?>, ResourceManager<?>> resourceManagers = ResourceHub.getInstance().getAllResourceManagers();
 
         long threshold = System.currentTimeMillis() - 1000;

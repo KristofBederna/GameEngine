@@ -9,7 +9,7 @@ import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 
 public class MovementSystem extends GameSystem {
     @Override
-    public void update(float deltaTime) {
+    public void update() {
         for (Entity entity : EntityHub.getInstance().getAllEntities()) {
             if (entity.getComponent(PositionComponent.class) != null && entity.getComponent(VelocityComponent.class) != null) {
                 var velocity = entity.getComponent(VelocityComponent.class);

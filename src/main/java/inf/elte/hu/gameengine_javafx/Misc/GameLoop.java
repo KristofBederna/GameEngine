@@ -1,7 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Misc;
 
 public abstract class GameLoop extends Thread {
-    private int FPS;
+    private final int FPS;
     private boolean running;
     private long frameCount;
 
@@ -22,23 +22,33 @@ public abstract class GameLoop extends Thread {
 
     @Override
     public void run() {
-        double frameTime = 1_000_000_000.0 / FPS;
-        double frameDelta = 0;
+        final double frameTime = 1_000_000_000.0 / FPS;
         long lastTime = System.nanoTime();
+        long lastFrameTime = lastTime;
 
         while (running) {
             long currentTime = System.nanoTime();
-            frameDelta += (currentTime - lastTime) / frameTime;
+            double elapsedTime = currentTime - lastTime;
             lastTime = currentTime;
 
-            if (frameDelta >= 1) {
+            if (elapsedTime >= frameTime) {
                 update();
-                frameDelta--;
                 frameCount++;
+                lastFrameTime = currentTime;
+            }
+
+            long sleepTime = (lastFrameTime + (long) frameTime) - System.nanoTime();
+            if (sleepTime > 0) {
+                try {
+                    Thread.sleep(sleepTime / 1_000_000, (int) (sleepTime % 1_000_000));
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            } else {
+                Thread.yield();
             }
         }
     }
 
     public abstract void update();
 }
-

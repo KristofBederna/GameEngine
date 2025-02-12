@@ -9,7 +9,7 @@ import inf.elte.hu.gameengine_javafx.Misc.Globals;
 
 public class CameraSystem extends GameSystem {
     @Override
-    public void update(float deltaTime) {
+    public void update() {
         if (Globals.playerEntity == null || Globals.playerEntity.getComponent(CameraComponent.class) == null) return;
 
         PositionComponent playerPos = Globals.playerEntity.getComponent(PositionComponent.class);

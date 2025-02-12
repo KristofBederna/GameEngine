@@ -15,7 +15,7 @@ import java.util.List;
 
 public class RenderSystem extends GameSystem {
     @Override
-    public void update(float deltaTime) {
+    public void update() {
         GraphicsContext gc = Globals.canvas.getGraphicsContext2D();
         CameraComponent camera = Globals.playerEntity.getComponent(CameraComponent.class);
 

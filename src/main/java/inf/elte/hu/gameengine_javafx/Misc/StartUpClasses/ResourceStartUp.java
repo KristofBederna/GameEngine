@@ -7,8 +7,8 @@ import javafx.scene.image.Image;
 
 import javax.sound.sampled.Clip;
 
-public class ResourceStartup {
-    public ResourceStartup() {
+public class ResourceStartUp {
+    public ResourceStartUp() {
         ResourceHub.getInstance();
         startUpResourceManagers();
     }

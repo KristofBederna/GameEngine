@@ -34,6 +34,8 @@ public class TestScene extends GameScene{
         dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> {Globals.playerEntity.getComponent(PositionComponent.class).setX(MouseInputHandler.getInstance().getMouseX()); Globals.playerEntity.getComponent(PositionComponent.class).setY(MouseInputHandler.getInstance().getMouseY());});
         dummyInteractiveComponent.mapInput(MouseButton.SECONDARY, () -> Globals.playerEntity.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion"), ()->Globals.playerEntity.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
 
+
+
         EntityManager<TileEntity> tileEntityManager = new EntityManager<>();
         for (TileEntity[] row : map.getMapData()) {
             tileEntityManager.registerAll(Arrays.asList(row));

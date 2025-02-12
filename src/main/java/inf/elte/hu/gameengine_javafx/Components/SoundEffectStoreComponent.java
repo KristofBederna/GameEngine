@@ -25,6 +25,11 @@ public class SoundEffectStoreComponent extends Component {
     }
 
     public void addSoundEffect(String path, String identifier) {
+        for (SoundEffect soundEffect : soundEffects) {
+            if (soundEffect.getPath().equals(path) && soundEffect.getIdentifier().equals(identifier)) {
+                return;
+            }
+        }
         soundEffects.add(new SoundEffect(path, identifier));
         ResourceHub.getInstance().getResourceManager(Clip.class).get(path);
     }

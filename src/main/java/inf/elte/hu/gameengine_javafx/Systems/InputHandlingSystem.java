@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class InputHandlingSystem extends GameSystem {
     @Override
-    public void update(float deltaTime) {
+    public void update() {
         for (Entity entity : EntityHub.getInstance().getAllEntities()) {
             PositionComponent position = entity.getComponent(PositionComponent.class);
             VelocityComponent velocity = entity.getComponent(VelocityComponent.class);
