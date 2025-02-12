@@ -1,8 +1,9 @@
 package inf.elte.hu.gameengine_javafx.Misc.Scenes;
 
 import inf.elte.hu.gameengine_javafx.Components.*;
-import inf.elte.hu.gameengine_javafx.Core.*;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Entities.DummyEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
@@ -11,47 +12,28 @@ import inf.elte.hu.gameengine_javafx.Misc.MapClasses.GameMap;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.MapLoader;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.TileLoader;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.TileSetLoader;
-import javafx.application.Platform;
 import javafx.scene.Parent;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.BorderPane;
 
 import java.util.Arrays;
 
 
-public class TestScene extends GameScene{
-    public TestScene(Parent parent, double width, double height) {
+public class Test2Scene extends GameScene{
+    public Test2Scene(Parent parent, double width, double height) {
         super(parent, width, height);
 
         TileLoader tileLoader = new TileLoader();
-        TileSetLoader.loadSet("/assets/tileSets/testTiles2.txt", tileLoader);
+        TileSetLoader.loadSet("/assets/tileSets/testTiles.txt", tileLoader);
         GameMap map = MapLoader.loadMap("/assets/maps/testMap.txt", tileLoader);
 
         InteractiveComponent dummyInteractiveComponent = Globals.playerEntity.getComponent(InteractiveComponent.class);
-        dummyInteractiveComponent.mapInput(KeyCode.W, () -> moveUp(Globals.playerEntity), () -> counterVertical(Globals.playerEntity));
-        dummyInteractiveComponent.mapInput(KeyCode.S, () -> moveDown(Globals.playerEntity), () -> counterVertical(Globals.playerEntity));
-        dummyInteractiveComponent.mapInput(KeyCode.A, () -> moveLeft(Globals.playerEntity), () -> counterHorizontal(Globals.playerEntity));
-        dummyInteractiveComponent.mapInput(KeyCode.D, () -> moveRight(Globals.playerEntity), () -> counterHorizontal(Globals.playerEntity));
+        dummyInteractiveComponent.mapInput(KeyCode.UP, () -> moveUp(Globals.playerEntity), () -> counterVertical(Globals.playerEntity));
+        dummyInteractiveComponent.mapInput(KeyCode.DOWN, () -> moveDown(Globals.playerEntity), () -> counterVertical(Globals.playerEntity));
+        dummyInteractiveComponent.mapInput(KeyCode.LEFT, () -> moveLeft(Globals.playerEntity), () -> counterHorizontal(Globals.playerEntity));
+        dummyInteractiveComponent.mapInput(KeyCode.RIGHT, () -> moveRight(Globals.playerEntity), () -> counterHorizontal(Globals.playerEntity));
         dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> {Globals.playerEntity.getComponent(PositionComponent.class).setX(MouseInputHandler.getInstance().getMouseX()); Globals.playerEntity.getComponent(PositionComponent.class).setY(MouseInputHandler.getInstance().getMouseY());});
         dummyInteractiveComponent.mapInput(MouseButton.SECONDARY, () -> Globals.playerEntity.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion"), ()->Globals.playerEntity.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
-        dummyInteractiveComponent.mapInput(KeyCode.ENTER, () -> {
-            Platform.runLater(() -> {
-                BorderPane root = (BorderPane) this.getRoot();
-                root.setCenter(null);
-
-                EntityHub.getInstance().unloadAll();
-
-                Globals.playerEntity = new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80, 1920, 1080, 30*100, 15*100);
-
-                BorderPane newRoot = new BorderPane();
-                newRoot.setCenter(Globals.canvas);
-
-                root.setCenter(new Test2Scene(newRoot, 500, 500).getRoot());
-            });
-        });
-
 
 
 

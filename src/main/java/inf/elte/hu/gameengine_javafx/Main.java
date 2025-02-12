@@ -29,11 +29,11 @@ public class Main extends Application {
         //LoggerStartUp loggerStartUp = new LoggerStartUp();
         new ResourceStartUp();
 
-        Globals.root = new BorderPane();
+        BorderPane root = new BorderPane();
         //root.setTop(loggerStartUp.getLoggerEntity().getTextArea());
-        Globals.root.setCenter(Globals.canvas);
+        root.setCenter(Globals.canvas);
 
-        stageSetup(stage, new TestScene(Globals.root, 1920, 1080));
+        stageSetup(stage, new TestScene(root, 1920, 1080));
 
         new SystemStartUp();
         new GameLoopStartUp();

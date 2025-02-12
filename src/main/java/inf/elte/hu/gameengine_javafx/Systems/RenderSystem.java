@@ -71,10 +71,10 @@ public class RenderSystem extends GameSystem {
 
                     gc.drawImage(img, renderX, renderY, width, height);
 
-                    RectangularHitBoxComponent hitbox = entity.getComponent(RectangularHitBoxComponent.class);
-                    if (hitbox != null) {
+                    RectangularHitBoxComponent hitBox = entity.getComponent(RectangularHitBoxComponent.class);
+                    if (hitBox != null) {
                         gc.setStroke(Color.RED);
-                        gc.strokeRect(renderX, renderY, hitbox.getHitBox().getWidth(), hitbox.getHitBox().getHeight());
+                        gc.strokeRect(renderX, renderY, hitBox.getHitBox().getWidth(), hitBox.getHitBox().getHeight());
                     }
                 }
             }
