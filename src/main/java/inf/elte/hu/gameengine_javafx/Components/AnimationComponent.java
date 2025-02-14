@@ -1,7 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Components;
 
-
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
+import inf.elte.hu.gameengine_javafx.Misc.Time;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ public class AnimationComponent extends Component {
     private List<String> frames;
     private final List<Integer> durations;
     private int currentFrame = 0;
-    private int frameDurationCounter = 0;
+    private double elapsedTime = 0;
 
     public AnimationComponent(List<String> frames, List<Integer> durations) {
         if (frames.size() != durations.size()) {
@@ -26,22 +26,20 @@ public class AnimationComponent extends Component {
     }
 
     public String getNextFrame() {
-        frameDurationCounter++;
-        calculateCurrentFrame();
-        return frames.get(currentFrame);
-    }
+        int fps = Time.getInstance().getFPS();
+        elapsedTime += Time.getInstance().getDeltaTime();
 
-    private void calculateCurrentFrame() {
-        int partialSum = 0;
-        for (int i = 0; i < durations.size(); i++) {
-            partialSum += durations.get(i);
-            if (frameDurationCounter < partialSum) {
-                currentFrame = i;
-                return;
+        double frameDurationInSeconds = (double) durations.get(currentFrame) / fps;
+
+        if (elapsedTime >= frameDurationInSeconds) {
+            currentFrame++;
+            if (currentFrame >= frames.size()) {
+                currentFrame = 0;
             }
+            elapsedTime = 0;
         }
-        frameDurationCounter = 0;
-        currentFrame = 0;
+
+        return frames.get(currentFrame);
     }
 
     public void setDurations(ArrayList<Integer> newDurations) {
@@ -51,6 +49,6 @@ public class AnimationComponent extends Component {
 
     @Override
     public String getStatus() {
-        return(this.getClass().getSimpleName() + ": current frame: " + currentFrame + ", current duration: " + durations.get(currentFrame));
+        return (this.getClass().getSimpleName() + ": current frame: " + currentFrame + ", current duration: " + durations.get(currentFrame));
     }
 }

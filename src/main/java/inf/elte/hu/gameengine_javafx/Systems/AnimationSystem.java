@@ -26,5 +26,4 @@ public class AnimationSystem extends GameSystem {
             }
         }
     }
-
 }

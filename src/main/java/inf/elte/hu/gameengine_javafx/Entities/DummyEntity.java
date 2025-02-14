@@ -4,6 +4,7 @@ import inf.elte.hu.gameengine_javafx.Components.*;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
+import inf.elte.hu.gameengine_javafx.Misc.Time;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,8 +67,8 @@ public class DummyEntity extends Entity {
         rightFramePath.add("/assets/images/" + "PlayerRight_2.png");
 
         ArrayList<Integer> durations = new ArrayList<>();
-        durations.add(15);
-        durations.add(15);
+        durations.add(15*Time.getInstance().getFPS()/60);
+        durations.add(15*Time.getInstance().getFPS()/60);
 
         String currentState = this.getComponent(StateComponent.class).getCurrentState();
         lastState = currentState;

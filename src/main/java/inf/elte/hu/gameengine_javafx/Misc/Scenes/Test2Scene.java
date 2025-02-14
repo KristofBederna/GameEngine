@@ -12,6 +12,7 @@ import inf.elte.hu.gameengine_javafx.Misc.MapClasses.GameMap;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.MapLoader;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.TileLoader;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.TileSetLoader;
+import inf.elte.hu.gameengine_javafx.Misc.Time;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -49,22 +50,26 @@ public class Test2Scene extends GameScene{
     }
 
     private void moveUp(Entity e) {
-        e.getComponent(VelocityComponent.class).setDy(-10);
+        double dy = -400 * Time.getInstance().getDeltaTime();
+        e.getComponent(VelocityComponent.class).setDy(dy);
         e.getComponent(StateComponent.class).setCurrentState("up");
     }
 
     private void moveDown(Entity e) {
-        e.getComponent(VelocityComponent.class).setDy(10);
+        double dy = 400 * Time.getInstance().getDeltaTime();
+        e.getComponent(VelocityComponent.class).setDy(dy);
         e.getComponent(StateComponent.class).setCurrentState("down");
     }
 
     private void moveLeft(Entity e) {
-        e.getComponent(VelocityComponent.class).setDx(-10);
+        double dx = -400 * Time.getInstance().getDeltaTime();
+        e.getComponent(VelocityComponent.class).setDx(dx);
         e.getComponent(StateComponent.class).setCurrentState("left");
     }
 
     private void moveRight(Entity e) {
-        e.getComponent(VelocityComponent.class).setDx(10);
+        double dx = 400 * Time.getInstance().getDeltaTime();
+        e.getComponent(VelocityComponent.class).setDx(dx);
         e.getComponent(StateComponent.class).setCurrentState("right");
     }
 
@@ -72,6 +77,7 @@ public class Test2Scene extends GameScene{
         e.getComponent(VelocityComponent.class).setDy(0);
         e.getComponent(StateComponent.class).setCurrentState("idle");
     }
+
 
     private void counterHorizontal(Entity e) {
         e.getComponent(VelocityComponent.class).setDx(0);

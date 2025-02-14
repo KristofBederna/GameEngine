@@ -1,14 +1,13 @@
 package inf.elte.hu.gameengine_javafx.Misc;
 
 public abstract class GameLoop extends Thread {
-    private final int FPS;
     private boolean running;
-    private long frameCount;
+    private final Time time;
 
-    public GameLoop(int FPS) {
-        this.FPS = FPS;
+    public GameLoop() {
         this.running = false;
-        this.frameCount = 0;
+        this.time = Time.getInstance();
+        time.setFPSCap(144);
     }
 
     public void startLoop() {
@@ -22,30 +21,25 @@ public abstract class GameLoop extends Thread {
 
     @Override
     public void run() {
-        final double frameTime = 1_000_000_000.0 / FPS;
-        long lastTime = System.nanoTime();
-        long lastFrameTime = lastTime;
-
         while (running) {
-            long currentTime = System.nanoTime();
-            double elapsedTime = currentTime - lastTime;
-            lastTime = currentTime;
+            long frameStartTime = System.nanoTime();
+            time.update();
 
-            if (elapsedTime >= frameTime) {
-                update();
-                frameCount++;
-                lastFrameTime = currentTime;
-            }
+            update();
 
-            long sleepTime = (lastFrameTime + (long) frameTime) - System.nanoTime();
-            if (sleepTime > 0) {
-                try {
-                    Thread.sleep(sleepTime / 1_000_000, (int) (sleepTime % 1_000_000));
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
+            if (time.isFPSCapEnabled()) {
+                long frameDuration = System.nanoTime() - frameStartTime;
+                long sleepTime = (1_000_000_000L / time.getFPSCap()) - frameDuration;
+
+                if (sleepTime > 0) {
+                    try {
+                        Thread.sleep(sleepTime / 1_000_000, (int) (sleepTime % 1_000_000));
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                } else {
+                    Thread.yield();
                 }
-            } else {
-                Thread.yield();
             }
         }
     }
