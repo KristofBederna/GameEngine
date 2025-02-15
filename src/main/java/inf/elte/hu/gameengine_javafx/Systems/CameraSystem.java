@@ -17,8 +17,8 @@ public class CameraSystem extends GameSystem {
 
         if (playerPos == null || playerImg == null) return;
 
-        double playerCenterX = playerPos.getX() + (double) playerImg.getWidth() / 2;
-        double playerCenterY = playerPos.getY() + (double) playerImg.getHeight() / 2;
+        double playerCenterX = playerPos.getGlobalX() + (double) playerImg.getWidth() / 2;
+        double playerCenterY = playerPos.getGlobalY() + (double) playerImg.getHeight() / 2;
 
         double newX = playerCenterX - Globals.playerEntity.getComponent(CameraComponent.class).getWidth() / 2;
         double newY = playerCenterY - Globals.playerEntity.getComponent(CameraComponent.class).getHeight() / 2;

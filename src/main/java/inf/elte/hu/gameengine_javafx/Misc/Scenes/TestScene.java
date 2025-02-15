@@ -35,7 +35,7 @@ public class TestScene extends GameScene{
         dummyInteractiveComponent.mapInput(KeyCode.S, () -> moveDown(Globals.playerEntity), () -> counterVertical(Globals.playerEntity));
         dummyInteractiveComponent.mapInput(KeyCode.A, () -> moveLeft(Globals.playerEntity), () -> counterHorizontal(Globals.playerEntity));
         dummyInteractiveComponent.mapInput(KeyCode.D, () -> moveRight(Globals.playerEntity), () -> counterHorizontal(Globals.playerEntity));
-        dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> {Globals.playerEntity.getComponent(PositionComponent.class).setX(MouseInputHandler.getInstance().getMouseX()); Globals.playerEntity.getComponent(PositionComponent.class).setY(MouseInputHandler.getInstance().getMouseY());});
+        dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> {Globals.playerEntity.getComponent(PositionComponent.class).setLocalX(MouseInputHandler.getInstance().getMouseX(), Globals.playerEntity); Globals.playerEntity.getComponent(PositionComponent.class).setLocalY(MouseInputHandler.getInstance().getMouseY(), Globals.playerEntity);});
         dummyInteractiveComponent.mapInput(MouseButton.SECONDARY, () -> Globals.playerEntity.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion"), ()->Globals.playerEntity.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
         dummyInteractiveComponent.mapInput(KeyCode.ENTER, () -> {
             Platform.runLater(() -> {
@@ -64,6 +64,10 @@ public class TestScene extends GameScene{
 
         EntityManager<DummyEntity> dummyEntityManager = new EntityManager<>();
         dummyEntityManager.register((DummyEntity) Globals.playerEntity);
+        DummyEntity entity2 = new DummyEntity(80, 0, "idle", "/assets/images/PlayerIdle.png", 80, 80, 1920, 1080, 30*100, 15*100);
+        dummyEntityManager.register(entity2);
+        Globals.playerEntity.getComponent(ParentComponent.class).addChild(entity2);
+        entity2.getComponent(ParentComponent.class).setParent(Globals.playerEntity);
         EntityHub.getInstance().addEntityManager(DummyEntity.class, dummyEntityManager);
     }
 

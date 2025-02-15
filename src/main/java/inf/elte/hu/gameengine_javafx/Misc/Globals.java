@@ -6,7 +6,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
 
 public class Globals {
-    public static Entity playerEntity = new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80, 1920, 1080, 30*100, 15*100);
+    public static Entity playerEntity = new DummyEntity(400, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80, 1920, 1080, 30*100, 15*100);
     public static final Canvas canvas = new Canvas(1920, 1080);
     public static int tileSize = 100;
 }

@@ -1,36 +1,78 @@
 package inf.elte.hu.gameengine_javafx.Components;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 
 import java.awt.*;
 
 public class PositionComponent extends Component {
-    private double X;
-    private double Y;
-    public PositionComponent(double x, double y) {
-        this.X = x;
-        this.Y = y;
+    private double localX;
+    private double localY;
+    private double globalX;
+    private double globalY;
+
+    public PositionComponent(double localX, double localY, Entity entity) {
+        this.localX = localX;
+        this.localY = localY;
+        updateGlobalPosition(entity);
     }
 
-    public double getX() {
-        return X;
+    public double getLocalX() {
+        return localX;
     }
-    public double getY() {
-        return Y;
+
+    public double getLocalY() {
+        return localY;
     }
-    public void setX(double x) {
-        X = x;
+
+    public double getGlobalX() {
+        return globalX;
     }
-    public void setY(double y) {
-        Y = y;
+
+    public double getGlobalY() {
+        return globalY;
     }
+
+    public void setLocalX(double localX,  Entity entity) {
+        this.localX = localX;
+        updateGlobalPosition(entity);
+    }
+
+    public void setLocalY(double localY,  Entity entity) {
+        this.localY = localY;
+        updateGlobalPosition(entity);
+    }
+
+    public void setLocalPosition(double x, double y,  Entity entity) {
+        this.localX = x;
+        this.localY = y;
+        updateGlobalPosition(entity);
+    }
+
+    public void updateGlobalPosition(Entity entity) {
+        if (entity != null) {
+            ParentComponent parentComponent = entity.getComponent(ParentComponent.class);
+            if (parentComponent != null && parentComponent.getParent() != null) {
+                PositionComponent parentPosition = parentComponent.getParent().getComponent(PositionComponent.class);
+                if (parentPosition != null) {
+                    this.globalX = parentPosition.getGlobalX() + localX;
+                    this.globalY = parentPosition.getGlobalY() + localY;
+                    return;
+                }
+            }
+        }
+        this.globalX = localX;
+        this.globalY = localY;
+    }
+
     public void alignHitBox(Rectangle hitBox) {
-        hitBox.x = (int) this.X;
-        hitBox.y = (int) this.Y;
+        hitBox.x = (int) this.globalX;
+        hitBox.y = (int) this.globalY;
     }
 
     @Override
     public String getStatus() {
-        return (this.getClass().getSimpleName() + ": X: " + X + ", Y: " + Y);
+        return this.getClass().getSimpleName() +
+                ": Local(X: " + localX + ", Y: " + localY + ") | Global(X: " + globalX + ", Y: " + globalY + ")";
     }
 }

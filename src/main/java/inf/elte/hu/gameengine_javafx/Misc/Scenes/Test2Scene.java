@@ -33,7 +33,7 @@ public class Test2Scene extends GameScene{
         dummyInteractiveComponent.mapInput(KeyCode.DOWN, () -> moveDown(Globals.playerEntity), () -> counterVertical(Globals.playerEntity));
         dummyInteractiveComponent.mapInput(KeyCode.LEFT, () -> moveLeft(Globals.playerEntity), () -> counterHorizontal(Globals.playerEntity));
         dummyInteractiveComponent.mapInput(KeyCode.RIGHT, () -> moveRight(Globals.playerEntity), () -> counterHorizontal(Globals.playerEntity));
-        dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> {Globals.playerEntity.getComponent(PositionComponent.class).setX(MouseInputHandler.getInstance().getMouseX()); Globals.playerEntity.getComponent(PositionComponent.class).setY(MouseInputHandler.getInstance().getMouseY());});
+        dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> {Globals.playerEntity.getComponent(PositionComponent.class).setLocalX(MouseInputHandler.getInstance().getMouseX(), Globals.playerEntity); Globals.playerEntity.getComponent(PositionComponent.class).setLocalY(MouseInputHandler.getInstance().getMouseY(), Globals.playerEntity);});
         dummyInteractiveComponent.mapInput(MouseButton.SECONDARY, () -> Globals.playerEntity.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion"), ()->Globals.playerEntity.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
 
 

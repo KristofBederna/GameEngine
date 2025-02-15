@@ -14,8 +14,11 @@ public class MovementSystem extends GameSystem {
             if (entity.getComponent(PositionComponent.class) != null && entity.getComponent(VelocityComponent.class) != null) {
                 var velocity = entity.getComponent(VelocityComponent.class);
                 var position = entity.getComponent(PositionComponent.class);
-                position.setX(position.getX() + velocity.getDx());
-                position.setY(position.getY() + velocity.getDy());
+
+                position.setLocalX(position.getLocalX() + velocity.getDx(), entity);
+                position.setLocalY(position.getLocalY() + velocity.getDy(), entity);
+
+                position.updateGlobalPosition(entity);
             }
         }
     }

@@ -53,8 +53,8 @@ public class RenderSystem extends GameSystem {
                 double width = imgComponent.getWidth();
                 double height = imgComponent.getHeight();
 
-                double renderX = position.getX() - camera.getX();
-                double renderY = position.getY() - camera.getY();
+                double renderX = position.getGlobalX() - camera.getX();
+                double renderY = position.getGlobalY() - camera.getY();
 
                 if (renderX + width >= 0 && renderX <= camera.getWidth() &&
                         renderY + height >= 0 && renderY <= camera.getHeight()) {

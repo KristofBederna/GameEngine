@@ -66,7 +66,7 @@ public class EntityHub {
             if (entity.getComponent(ImageComponent.class) == null) {
                 continue;
             }
-            if (camera.isPositionInsideViewport(position.getX(), position.getY(),
+            if (camera.isPositionInsideViewport(position.getGlobalX(), position.getGlobalY(),
                     entity.getComponent(ImageComponent.class).getWidth(), entity.getComponent(ImageComponent.class).getHeight())) {
                 visibleEntities.add(entity);
             }

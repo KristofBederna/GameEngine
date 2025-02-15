@@ -14,7 +14,7 @@ public class DummyEntity extends Entity {
 
     private String lastState;
     public DummyEntity(int x, int y, String state, String path, int width, int height, int viewportWidth, int viewportHeight, int mapWidth, int mapHeight) {
-        this.addComponent(new PositionComponent(x, y));
+        this.addComponent(new PositionComponent(x, y, this));
         this.addComponent(new VelocityComponent());
         this.addComponent(new StateComponent(state));
         this.addComponent(new ImageComponent(path, width, height));
@@ -23,6 +23,7 @@ public class DummyEntity extends Entity {
         this.addComponent(new CameraComponent(viewportWidth, viewportHeight, mapWidth, mapHeight));
         this.addComponent(new SoundEffectStoreComponent());
         this.addComponent(new ZIndexComponent(2));
+        this.addComponent(new ParentComponent());
 
         addToManager();
     }
@@ -43,7 +44,7 @@ public class DummyEntity extends Entity {
 
     @Override
     public String toString() {
-        return this.getComponent(PositionComponent.class).getX() + " " + this.getComponent(PositionComponent.class).getY() + " " + this.getComponent(VelocityComponent.class).getDx() + " " + this.getComponent(VelocityComponent.class).getDy();
+        return this.getComponent(PositionComponent.class).getGlobalX() + " " + this.getComponent(PositionComponent.class).getGlobalY() + " " + this.getComponent(VelocityComponent.class).getDx() + " " + this.getComponent(VelocityComponent.class).getDy();
     }
 
     public void setAnimationState() {
