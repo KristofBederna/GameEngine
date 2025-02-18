@@ -9,10 +9,17 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Entities.DummyEntity;
 
+import java.util.ArrayList;
+
 public class AnimationSystem extends GameSystem {
     @Override
     public void update() {
-        for (Entity entity : EntityHub.getInstance().getAllEntities()) {
+        var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getAllEntities());
+        if (entitiesSnapshot.isEmpty()) {
+            return;
+        }
+        for (Entity entity : entitiesSnapshot) {
+            if (entity == null) continue;
             PositionComponent position = entity.getComponent(PositionComponent.class);
             ImageComponent img = entity.getComponent(ImageComponent.class);
             if (entity.getClass() == DummyEntity.class) {

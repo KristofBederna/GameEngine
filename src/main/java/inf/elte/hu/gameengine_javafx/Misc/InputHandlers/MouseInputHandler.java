@@ -53,7 +53,7 @@ public class MouseInputHandler {
                 break;
             }
         }
-        assert cameraEntity != null;
+        if (cameraEntity == null) return;
         mouseX = (int) (event.getX() + cameraEntity.getComponent(CameraComponent.class).getX());
         mouseY = (int) (event.getY() + cameraEntity.getComponent(CameraComponent.class).getY());
     }

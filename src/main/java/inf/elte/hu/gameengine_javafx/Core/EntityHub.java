@@ -6,6 +6,7 @@ import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class EntityHub {
     private static EntityHub instance;
@@ -23,18 +24,22 @@ public class EntityHub {
         return instance;
     }
 
-    public <T extends Entity> void addEntityManager(Class<T> classType, EntityManager<T> entityManager) {
-        entityManagers.put(classType, entityManager);
+    public <T extends Entity> void addEntityManager(Class<T> type, EntityManager<T> entityManager) {
+        entityManagers.put(type, entityManager);
         refreshEntitiesList();
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Entity> EntityManager<T> getEntityManager(Class<T> classType) {
-        return (EntityManager<T>) entityManagers.get(classType);
+    public <T extends Entity> EntityManager<T> getEntityManager(Class<T> type) {
+        return (EntityManager<T>) entityManagers.get(type);
     }
 
     public void removeEntityManager(Class<?> type) {
         entityManagers.remove(type);
+    }
+
+    public void removeAllEntityManagers() {
+        entityManagers.clear();
     }
 
     public void unloadAll() {

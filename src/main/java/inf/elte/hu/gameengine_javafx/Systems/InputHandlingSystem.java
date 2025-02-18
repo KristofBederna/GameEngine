@@ -11,12 +11,22 @@ import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.MouseInputHandler;
 import inf.elte.hu.gameengine_javafx.Misc.Tuple;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+
+import java.security.Key;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class InputHandlingSystem extends GameSystem {
     @Override
     public void update() {
-        for (Entity entity : EntityHub.getInstance().getAllEntities()) {
+        var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getAllEntities());
+        if (entitiesSnapshot.isEmpty()) {
+            return;
+        }
+        for (Entity entity : entitiesSnapshot) {
+            if (entity == null) continue;
             PositionComponent position = entity.getComponent(PositionComponent.class);
             VelocityComponent velocity = entity.getComponent(VelocityComponent.class);
             InteractiveComponent interactive = entity.getComponent(InteractiveComponent.class);
@@ -30,7 +40,10 @@ public class InputHandlingSystem extends GameSystem {
 
     private void handleKeyboardInput(InteractiveComponent interactive) {
         KeyboardInputHandler keyboardInputHandler = KeyboardInputHandler.getInstance();
-        for (Map.Entry<KeyCode, Tuple<Runnable, Runnable>> entry : interactive.getKeyInputMapping().entrySet()) {
+        List<Map.Entry<KeyCode, Tuple<Runnable, Runnable>>> snapshot =
+                new ArrayList<>(interactive.getKeyInputMapping().entrySet());
+
+        for (Map.Entry<KeyCode, Tuple<Runnable, Runnable>> entry : snapshot) {
             KeyCode keyCode = entry.getKey();
             Runnable action = entry.getValue().first();
             Runnable counterAction = entry.getValue().second();
@@ -42,6 +55,7 @@ public class InputHandlingSystem extends GameSystem {
                 counterAction.run();
             }
         }
+
     }
 
     private void handleMouseInput(InteractiveComponent interactive) {

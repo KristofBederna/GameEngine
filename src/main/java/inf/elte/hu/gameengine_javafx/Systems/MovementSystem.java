@@ -7,10 +7,17 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 
+import java.util.ArrayList;
+
 public class MovementSystem extends GameSystem {
     @Override
     public void update() {
-        for (Entity entity : EntityHub.getInstance().getAllEntities()) {
+        var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getAllEntities());
+        if (entitiesSnapshot.isEmpty()) {
+            return;
+        }
+        for (Entity entity : entitiesSnapshot) {
+            if (entity == null) continue;
             if (entity.getComponent(PositionComponent.class) != null && entity.getComponent(VelocityComponent.class) != null) {
                 var velocity = entity.getComponent(VelocityComponent.class);
                 var position = entity.getComponent(PositionComponent.class);

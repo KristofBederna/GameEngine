@@ -15,16 +15,19 @@ public class ResourceSystem extends GameSystem {
         long threshold = System.currentTimeMillis() - 1000;
 
         for (ResourceManager<?> resourceManager : resourceManagers.values()) {
-            Iterator<String> iterator = resourceManager.getResources().keySet().iterator();
+            synchronized (resourceManager) {
+                Iterator<String> iterator = resourceManager.getResources().keySet().iterator();
 
-            while (iterator.hasNext()) {
-                String resourceKey = iterator.next();
-                Long lastAccessed = resourceManager.getLastAccessed(resourceKey);
+                while (iterator.hasNext()) {
+                    String resourceKey = iterator.next();
+                    Long lastAccessed = resourceManager.getLastAccessed(resourceKey);
 
-                if (lastAccessed != null && lastAccessed < threshold) {
-                    iterator.remove();
+                    if (lastAccessed != null && lastAccessed < threshold) {
+                        iterator.remove();
+                    }
                 }
             }
         }
     }
 }
+

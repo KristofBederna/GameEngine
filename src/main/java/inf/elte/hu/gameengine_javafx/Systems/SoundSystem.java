@@ -8,11 +8,14 @@ import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Misc.SoundEffect;
 
 import javax.sound.sampled.Clip;
+import java.util.ArrayList;
 
 public class SoundSystem extends GameSystem {
     @Override
     public void update() {
-        for (Entity entity : EntityHub.getInstance().getAllEntities()) {
+        var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getAllEntities());
+        for (Entity entity : entitiesSnapshot) {
+            if (entity == null) continue;
             SoundEffectStoreComponent soundStore = entity.getComponent(SoundEffectStoreComponent.class);
             if (soundStore != null) {
                 for (SoundEffect soundEffect : soundStore.getSoundEffects()) {

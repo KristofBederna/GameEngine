@@ -13,17 +13,18 @@ import inf.elte.hu.gameengine_javafx.Misc.MapClasses.MapLoader;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.TileLoader;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.TileSetLoader;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.BorderPane;
 
 import java.util.Arrays;
 
 
 public class Test2Scene extends GameScene{
-    public Test2Scene(Parent parent, double width, double height) {
+    public Test2Scene(Parent parent, double width, double height, Runnable switchScene) {
         super(parent, width, height);
-
         TileLoader tileLoader = new TileLoader();
         TileSetLoader.loadSet("/assets/tileSets/testTiles.txt", tileLoader);
         GameMap map = MapLoader.loadMap("/assets/maps/testMap.txt", tileLoader);
@@ -35,8 +36,6 @@ public class Test2Scene extends GameScene{
         dummyInteractiveComponent.mapInput(KeyCode.RIGHT, () -> moveRight(Globals.playerEntity), () -> counterHorizontal(Globals.playerEntity));
         dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> {Globals.playerEntity.getComponent(PositionComponent.class).setLocalX(MouseInputHandler.getInstance().getMouseX(), Globals.playerEntity); Globals.playerEntity.getComponent(PositionComponent.class).setLocalY(MouseInputHandler.getInstance().getMouseY(), Globals.playerEntity);});
         dummyInteractiveComponent.mapInput(MouseButton.SECONDARY, () -> Globals.playerEntity.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion"), ()->Globals.playerEntity.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
-
-
 
         EntityManager<TileEntity> tileEntityManager = new EntityManager<>();
         for (TileEntity[] row : map.getMapData()) {

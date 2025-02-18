@@ -7,6 +7,7 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CollisionSystem extends GameSystem {
@@ -14,13 +15,18 @@ public class CollisionSystem extends GameSystem {
     @Override
     public void update() {
         List<Entity> visibleEntities = EntityHub.getInstance().getAllEntities();
-        for (Entity entity: visibleEntities) {
+        List<Entity> filteredEntities = new ArrayList<>(visibleEntities); // Make a copy
+
+        for (Entity entity : visibleEntities) {
             if (entity.getAllComponents().containsKey(CameraComponent.class)) {
-                visibleEntities = EntityHub.getInstance().getEntitiesInsideViewport(entity.getComponent(CameraComponent.class));
+                // Reassign the filteredEntities instead of the original list
+                filteredEntities = EntityHub.getInstance().getEntitiesInsideViewport(entity.getComponent(CameraComponent.class));
                 break;
             }
         }
-        for (Entity entity : visibleEntities) {
+
+        for (Entity entity : filteredEntities) {
+
             RectangularHitBoxComponent hitBox = entity.getComponent(RectangularHitBoxComponent.class);
             TriangularHitBoxComponent triBox = entity.getComponent(TriangularHitBoxComponent.class);
             NSidedHitBoxComponent circBox = entity.getComponent(NSidedHitBoxComponent.class);

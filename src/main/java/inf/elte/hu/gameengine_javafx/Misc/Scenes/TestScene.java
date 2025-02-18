@@ -20,10 +20,11 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 
 import java.util.Arrays;
+import java.util.function.Function;
 
 
 public class TestScene extends GameScene{
-    public TestScene(Parent parent, double width, double height) {
+    public TestScene(Parent parent, double width, double height, Runnable switchScene) {
         super(parent, width, height);
 
         TileLoader tileLoader = new TileLoader();
@@ -37,21 +38,7 @@ public class TestScene extends GameScene{
         dummyInteractiveComponent.mapInput(KeyCode.D, () -> moveRight(Globals.playerEntity), () -> counterHorizontal(Globals.playerEntity));
         dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> {Globals.playerEntity.getComponent(PositionComponent.class).setLocalX(MouseInputHandler.getInstance().getMouseX(), Globals.playerEntity); Globals.playerEntity.getComponent(PositionComponent.class).setLocalY(MouseInputHandler.getInstance().getMouseY(), Globals.playerEntity);});
         dummyInteractiveComponent.mapInput(MouseButton.SECONDARY, () -> Globals.playerEntity.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion"), ()->Globals.playerEntity.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
-        dummyInteractiveComponent.mapInput(KeyCode.ENTER, () -> {
-            Platform.runLater(() -> {
-                BorderPane root = (BorderPane) this.getRoot();
-                root.setCenter(null);
-
-                EntityHub.getInstance().unloadAll();
-
-                Globals.playerEntity = new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80, 1920, 1080, 30*100, 15*100);
-
-                BorderPane newRoot = new BorderPane();
-                newRoot.setCenter(Globals.canvas);
-
-                root.setCenter(new Test2Scene(newRoot, 500, 500).getRoot());
-            });
-        });
+        dummyInteractiveComponent.mapInput(KeyCode.ENTER, switchScene);
 
 
 
