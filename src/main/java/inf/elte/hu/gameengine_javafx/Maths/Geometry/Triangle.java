@@ -1,6 +1,6 @@
 package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
-import inf.elte.hu.gameengine_javafx.Components.CameraComponent;
+import inf.elte.hu.gameengine_javafx.Misc.Camera;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -107,7 +107,7 @@ public class Triangle extends Shape {
         gc.setStroke(Color.BLUE);
         gc.setLineWidth(2);
 
-        CameraComponent camera = Globals.playerEntity.getComponent(CameraComponent.class);
+        Camera camera = Camera.getInstance();
 
         double renderAX = points.get(0).getX() - camera.getX();
         double renderAY = points.get(0).getY() - camera.getY();

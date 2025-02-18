@@ -3,6 +3,7 @@ package inf.elte.hu.gameengine_javafx;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Entities.LoggerEntity;
+import inf.elte.hu.gameengine_javafx.Misc.Camera;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Misc.Scenes.GameScene;
 import inf.elte.hu.gameengine_javafx.Misc.Scenes.Test2Scene;
@@ -41,6 +42,8 @@ public class Main extends Application {
     private void startUpGame(Stage stage) {
         //LoggerStartUp loggerStartUp = new LoggerStartUp();
         new ResourceStartUp();
+        Camera.getInstance(1920, 1080, 30*100, 15*100);
+        Camera.getInstance().attachTo(Globals.playerEntity);
 
         this.stage = stage;
 

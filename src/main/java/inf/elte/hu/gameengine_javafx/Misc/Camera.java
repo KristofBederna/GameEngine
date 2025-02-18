@@ -1,19 +1,33 @@
-package inf.elte.hu.gameengine_javafx.Components;
+package inf.elte.hu.gameengine_javafx.Misc;
 
-import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
+import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 
-public class CameraComponent extends Component {
+public class Camera {
+    private static Camera instance;
     private double x, y;
     private double width, height;
     private double worldWidth, worldHeight;
+    private Entity owner;
 
-    public CameraComponent(double width, double height, double worldWidth, double worldHeight) {
+    private Camera(double width, double height, double worldWidth, double worldHeight) {
         this.width = width;
         this.height = height;
         this.worldWidth = worldWidth;
         this.worldHeight = worldHeight;
         this.x = 0;
         this.y = 0;
+    }
+
+    public static Camera getInstance(double width, double height, double worldWidth, double worldHeight) {
+        if (instance == null) {
+            instance = new Camera(width, height, worldWidth, worldHeight);
+        }
+        return instance;
+    }
+
+    public static Camera getInstance() {
+        return instance;
     }
 
     public double getX() { return x; }
@@ -35,11 +49,6 @@ public class CameraComponent extends Component {
         this.height = height;
     }
 
-    @Override
-    public String getStatus() {
-        return (this.getClass().getSimpleName() + ": x: " + x + ", y: " + y + ", Width: " + width + ", Height: " + height);
-    }
-
     public void setX(double x) {
         this.x = x;
     }
@@ -53,5 +62,13 @@ public class CameraComponent extends Component {
 
         return renderX + entityWidth >= 0 && renderX <= width &&
                 renderY + entityHeight >= 0 && renderY <= height;
+    }
+
+    public void attachTo(Entity entity) {
+        this.owner = entity;
+    }
+
+    public Entity getOwner() {
+        return owner;
     }
 }

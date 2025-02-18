@@ -4,6 +4,7 @@ import inf.elte.hu.gameengine_javafx.Components.*;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+import inf.elte.hu.gameengine_javafx.Misc.Camera;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import javafx.application.Platform;
@@ -16,7 +17,7 @@ public class RenderSystem extends GameSystem {
     @Override
     public void update() {
         GraphicsContext gc = Globals.canvas.getGraphicsContext2D();
-        CameraComponent camera = Globals.playerEntity.getComponent(CameraComponent.class);
+        Camera camera = Camera.getInstance();
 
         if (gc == null || gc.getCanvas() == null) {
             System.err.println("RenderSystem: GraphicsContext or Canvas is null!");
@@ -26,13 +27,7 @@ public class RenderSystem extends GameSystem {
         Platform.runLater(() -> {
             gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
 
-            List<Entity> visibleEntities = EntityHub.getInstance().getAllEntities();
-            for (Entity entity: visibleEntities) {
-                if (entity.getAllComponents().containsKey(CameraComponent.class)) {
-                    visibleEntities = EntityHub.getInstance().getEntitiesInsideViewport(entity.getComponent(CameraComponent.class));
-                    break;
-                }
-            }
+            List<Entity> visibleEntities = EntityHub.getInstance().getEntitiesInsideViewport(Camera.getInstance());
 
             List<Entity> sortedEntities = visibleEntities.stream()
                     .filter(entity -> entity.getComponent(ZIndexComponent.class) != null)

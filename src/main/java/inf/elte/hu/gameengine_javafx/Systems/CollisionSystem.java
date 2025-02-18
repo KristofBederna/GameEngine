@@ -6,6 +6,7 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.*;
+import inf.elte.hu.gameengine_javafx.Misc.Camera;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +15,7 @@ public class CollisionSystem extends GameSystem {
 
     @Override
     public void update() {
-        List<Entity> visibleEntities = EntityHub.getInstance().getAllEntities();
-        List<Entity> filteredEntities = new ArrayList<>(visibleEntities); // Make a copy
-
-        for (Entity entity : visibleEntities) {
-            if (entity.getAllComponents().containsKey(CameraComponent.class)) {
-                // Reassign the filteredEntities instead of the original list
-                filteredEntities = EntityHub.getInstance().getEntitiesInsideViewport(entity.getComponent(CameraComponent.class));
-                break;
-            }
-        }
+        List<Entity> filteredEntities = EntityHub.getInstance().getEntitiesInsideViewport(Camera.getInstance());
 
         for (Entity entity : filteredEntities) {
 

@@ -6,6 +6,7 @@ import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Entities.DummyEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
+import inf.elte.hu.gameengine_javafx.Misc.Camera;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.MouseInputHandler;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.GameMap;
@@ -45,6 +46,9 @@ public class Test2Scene extends GameScene{
 
         EntityManager<DummyEntity> dummyEntityManager = new EntityManager<>();
         dummyEntityManager.register((DummyEntity) Globals.playerEntity);
+        DummyEntity entity2 = new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80);
+        dummyEntityManager.register(entity2);
+        dummyInteractiveComponent.mapInput(KeyCode.F2, () -> Camera.getInstance().attachTo(entity2), () -> Camera.getInstance().attachTo(Globals.playerEntity));
         EntityHub.getInstance().addEntityManager(DummyEntity.class, dummyEntityManager);
     }
 

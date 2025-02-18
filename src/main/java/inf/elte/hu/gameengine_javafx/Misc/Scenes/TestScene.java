@@ -51,10 +51,10 @@ public class TestScene extends GameScene{
 
         EntityManager<DummyEntity> dummyEntityManager = new EntityManager<>();
         dummyEntityManager.register((DummyEntity) Globals.playerEntity);
-        //DummyEntity entity2 = new DummyEntity(80, 0, "idle", "/assets/images/PlayerIdle.png", 80, 80, 1920, 1080, 30*100, 15*100);
-        //dummyEntityManager.register(entity2);
-        //Globals.playerEntity.getComponent(ParentComponent.class).addChild(entity2);
-        //entity2.getComponent(ParentComponent.class).setParent(Globals.playerEntity);
+//        DummyEntity entity2 = new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80);
+//        dummyEntityManager.register(entity2);
+//        Globals.playerEntity.getComponent(ParentComponent.class).addChild(entity2);
+//        entity2.getComponent(ParentComponent.class).setParent(Globals.playerEntity);
         EntityHub.getInstance().addEntityManager(DummyEntity.class, dummyEntityManager);
     }
 

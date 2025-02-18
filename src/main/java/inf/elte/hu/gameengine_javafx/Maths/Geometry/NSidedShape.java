@@ -1,7 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
 
-import inf.elte.hu.gameengine_javafx.Components.CameraComponent;
+import inf.elte.hu.gameengine_javafx.Misc.Camera;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -85,7 +85,7 @@ public class NSidedShape extends Shape {
 
 
     public void render(GraphicsContext gc) {
-        CameraComponent camera = Globals.playerEntity.getComponent(CameraComponent.class);
+        Camera camera = Camera.getInstance();
 
         gc.setStroke(Color.GREEN);
         gc.setLineWidth(2);

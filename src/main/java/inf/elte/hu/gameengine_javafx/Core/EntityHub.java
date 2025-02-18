@@ -1,9 +1,10 @@
 package inf.elte.hu.gameengine_javafx.Core;
 
-import inf.elte.hu.gameengine_javafx.Components.CameraComponent;
+import inf.elte.hu.gameengine_javafx.Components.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+import inf.elte.hu.gameengine_javafx.Misc.Camera;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -58,11 +59,11 @@ public class EntityHub {
     public void refreshEntitiesList() {
         entities.clear();
         for (EntityManager<?> entityManager : entityManagers.values()) {
-            entities.addAll((Collection<? extends Entity>) entityManager.getEntities().values());
+            entities.addAll(entityManager.getEntities().values());
         }
     }
 
-    public List<Entity> getEntitiesInsideViewport(CameraComponent camera) {
+    public List<Entity> getEntitiesInsideViewport(Camera camera) {
         List<Entity> visibleEntities = new ArrayList<>();
         for (Entity entity : getAllEntities()) {
             PositionComponent position = entity.getComponent(PositionComponent.class);
@@ -71,8 +72,7 @@ public class EntityHub {
             if (entity.getComponent(ImageComponent.class) == null) {
                 continue;
             }
-            if (camera.isPositionInsideViewport(position.getGlobalX(), position.getGlobalY(),
-                    entity.getComponent(ImageComponent.class).getWidth(), entity.getComponent(ImageComponent.class).getHeight())) {
+            if (camera.isPositionInsideViewport(position.getGlobalX(), position.getGlobalY(), entity.getComponent(DimensionComponent.class).getWidth(), entity.getComponent(DimensionComponent.class).getHeight())) {
                 visibleEntities.add(entity);
             }
         }

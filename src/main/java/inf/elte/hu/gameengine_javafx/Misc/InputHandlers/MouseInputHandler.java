@@ -1,8 +1,8 @@
 package inf.elte.hu.gameengine_javafx.Misc.InputHandlers;
 
-import inf.elte.hu.gameengine_javafx.Components.CameraComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+import inf.elte.hu.gameengine_javafx.Misc.Camera;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
@@ -46,16 +46,11 @@ public class MouseInputHandler {
     }
 
     private void mouseMoved(MouseEvent event) {
-        Entity cameraEntity = null;
-        for (Entity entity: EntityHub.getInstance().getAllEntities()) {
-            if (entity.getAllComponents().containsKey(CameraComponent.class)) {
-                cameraEntity = entity;
-                break;
-            }
-        }
-        if (cameraEntity == null) return;
-        mouseX = (int) (event.getX() + cameraEntity.getComponent(CameraComponent.class).getX());
-        mouseY = (int) (event.getY() + cameraEntity.getComponent(CameraComponent.class).getY());
+        Camera camera = Camera.getInstance();
+
+        if (camera == null) return;
+        mouseX = (int) (event.getX() + camera.getX());
+        mouseY = (int) (event.getY() + camera.getY());
     }
 
     private void mouseScrolled(ScrollEvent event) {
