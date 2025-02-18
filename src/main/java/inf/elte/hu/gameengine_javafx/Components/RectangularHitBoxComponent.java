@@ -1,13 +1,14 @@
 package inf.elte.hu.gameengine_javafx.Components;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.Rectangle;
 
-import java.awt.*;
 
 public class RectangularHitBoxComponent extends Component {
     private Rectangle hitBox;
-    public RectangularHitBoxComponent(int x, int y, int width, int height) {
-        this.hitBox = new Rectangle(x, y, width, height);
+    public RectangularHitBoxComponent(Point topLeft, Point topRight, Point bottomLeft, Point bottomRight) {
+        this.hitBox = new Rectangle(topLeft, topRight, bottomLeft, bottomRight);
     }
     public Rectangle getHitBox() {
         return hitBox;
@@ -16,13 +17,8 @@ public class RectangularHitBoxComponent extends Component {
         this.hitBox = hitBox;
     }
 
-    public void render(Graphics g) {
-        g.setColor(Color.RED);
-        g.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
-    }
-
     @Override
     public String getStatus() {
-        return (this.getClass().getSimpleName() + ": X:" + hitBox.getX() + ", Y:" + hitBox.getY() + ", Width:" + hitBox.getWidth() + ", Height:" + hitBox.getHeight());
+        return "";
     }
 }

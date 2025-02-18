@@ -2,8 +2,10 @@ package inf.elte.hu.gameengine_javafx.Components;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
-
-import java.awt.*;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.Rectangle;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.Shape;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.Triangle;
 
 public class PositionComponent extends Component {
     private double localX;
@@ -63,11 +65,6 @@ public class PositionComponent extends Component {
         }
         this.globalX = localX;
         this.globalY = localY;
-    }
-
-    public void alignHitBox(Rectangle hitBox) {
-        hitBox.x = (int) this.globalX;
-        hitBox.y = (int) this.globalY;
     }
 
     @Override

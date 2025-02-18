@@ -7,6 +7,7 @@ import inf.elte.hu.gameengine_javafx.Components.ZIndexComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 
 public class TileEntity extends Entity {
     private int value;
@@ -22,7 +23,7 @@ public class TileEntity extends Entity {
         this.addComponent(new PositionComponent(x, y, this));
         this.addComponent(new ZIndexComponent(0));
         if (hasHitBox) {
-            this.addComponent(new RectangularHitBoxComponent(x, y, width, height));
+            this.addComponent(new RectangularHitBoxComponent(new Point(x, y), new Point(x+width, y), new Point(x, y + height), new Point(x + width, y + height)));
         }
     }
     public TileEntity(int value, int x, int y, String path) {
@@ -38,7 +39,7 @@ public class TileEntity extends Entity {
         this.value = value;
     }
     public void addHitBox(int x, int y, int width, int height) {
-        this.addComponent(new RectangularHitBoxComponent(x, y, width, height));
+        this.addComponent(new RectangularHitBoxComponent(new Point(x, y), new Point(x+width, y), new Point(x, y + height), new Point(x + width, y + height)));
     }
 
     @SuppressWarnings("unchecked")
