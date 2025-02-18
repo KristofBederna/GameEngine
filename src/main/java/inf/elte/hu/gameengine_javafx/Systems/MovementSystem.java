@@ -21,7 +21,7 @@ public class MovementSystem extends GameSystem {
                 position.updateGlobalPosition(entity);
                 RectangularHitBoxComponent hitBox = entity.getComponent(RectangularHitBoxComponent.class);
                 TriangularHitBoxComponent triBox = entity.getComponent(TriangularHitBoxComponent.class);
-                CircularHitBoxComponent circBox = entity.getComponent(CircularHitBoxComponent.class);
+                NSidedHitBoxComponent circBox = entity.getComponent(NSidedHitBoxComponent.class);
                 if (hitBox != null) {
                     hitBox.getHitBox().moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
                 }

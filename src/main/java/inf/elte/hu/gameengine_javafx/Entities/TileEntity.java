@@ -11,13 +11,13 @@ import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 
 public class TileEntity extends Entity {
     private int value;
-    public TileEntity(int value, int x, int y, String path, int width, int height) {
+    public TileEntity(int value, int x, int y, String path, double width, double height) {
         this.value = value;
         this.addComponent(new ImageComponent(path, width, height));
         this.addComponent(new PositionComponent(x, y, this));
         this.addComponent(new ZIndexComponent(0));
     }
-    public TileEntity(int value, int x, int y, String path, int width, int height, boolean hasHitBox) {
+    public TileEntity(int value, int x, int y, String path, double width, double height, boolean hasHitBox) {
         this.value = value;
         this.addComponent(new ImageComponent(path, width, height));
         this.addComponent(new PositionComponent(x, y, this));
@@ -38,7 +38,7 @@ public class TileEntity extends Entity {
     public void setValue(int value) {
         this.value = value;
     }
-    public void addHitBox(int x, int y, int width, int height) {
+    public void addHitBox(int x, int y, double width, double height) {
         this.addComponent(new RectangularHitBoxComponent(new Point(x, y), new Point(x+width, y), new Point(x, y + height), new Point(x + width, y + height)));
     }
 

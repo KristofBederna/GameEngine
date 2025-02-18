@@ -1,20 +1,20 @@
 package inf.elte.hu.gameengine_javafx.Components;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
-import inf.elte.hu.gameengine_javafx.Maths.Geometry.Circle;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.NSidedShape;
 
-public class CircularHitBoxComponent extends Component {
-    private Circle hitBox;
+public class NSidedHitBoxComponent extends Component {
+    private NSidedShape hitBox;
 
-    public CircularHitBoxComponent(Circle hitBox) {
+    public NSidedHitBoxComponent(NSidedShape hitBox) {
         this.hitBox = hitBox;
     }
 
-    public Circle getHitBox() {
+    public NSidedShape getHitBox() {
         return hitBox;
     }
 
-    public void setHitBox(Circle hitBox) {
+    public void setHitBox(NSidedShape hitBox) {
         this.hitBox = hitBox;
     }
 

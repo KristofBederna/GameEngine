@@ -9,12 +9,13 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Circle extends Shape {
+public class NSidedShape extends Shape {
     private Point center;
     private double radius;
     private int segments;
+    private double rotation = 0;
 
-    public Circle(Point center, double radius, int segments) {
+    public NSidedShape(Point center, double radius, int segments) {
         this.center = center;
         this.radius = radius;
         this.segments = segments;
@@ -22,14 +23,29 @@ public class Circle extends Shape {
         generateApproximation();
     }
 
-    public Circle(Circle hitBox) {
+    public NSidedShape(NSidedShape hitBox) {
         this.center = hitBox.center;
         this.radius = hitBox.radius;
+        this.segments = hitBox.segments;
+        this.rotation = hitBox.rotation;
         this.points = new ArrayList<>(hitBox.points);
     }
 
+    public NSidedShape(Point center, double sideLength, int segments, int rotation) {
+        this.center = center;
+        this.radius = sideLength / 2;
+        this.segments = segments;
+        this.points = new ArrayList<>();
+        generateApproximation();
+        this.rotation = rotation;
+        rotate(rotation);
+    }
+
+
+
     private void generateApproximation() {
         points.clear();
+
         for (int i = 0; i < this.segments; i++) {
             double angle = 2 * Math.PI * i / this.segments;
             double x = center.getX() + radius * Math.cos(angle);
@@ -37,7 +53,26 @@ public class Circle extends Shape {
             points.add(new Point(x, y));
         }
         updateEdges();
+        rotate(rotation);
     }
+
+    public void rotate(double degrees) {
+        double angle = Math.toRadians(degrees);
+
+        for (int i = 0; i < points.size(); i++) {
+            Point p = points.get(i);
+
+            double x = p.getX() - center.getX();
+            double y = p.getY() - center.getY();
+
+            double rotatedX = x * Math.cos(angle) - y * Math.sin(angle);
+            double rotatedY = x * Math.sin(angle) + y * Math.cos(angle);
+
+            points.set(i, new Point(rotatedX + center.getX(), rotatedY + center.getY()));
+        }
+        updateEdges();
+    }
+
 
     public void updateEdges() {
         this.edges = new ArrayList<>();
@@ -57,9 +92,10 @@ public class Circle extends Shape {
 
         if (points.isEmpty()) {
             generateApproximation();
+            updateEdges();
         }
 
-        Point prev = points.get(points.size() - 1);
+        Point prev = points.getLast();
         for (Point p : points) {
             double x1 = prev.getX() - camera.getX();
             double y1 = prev.getY() - camera.getY();
@@ -82,5 +118,6 @@ public class Circle extends Shape {
         generateApproximation();
         updateEdges();
     }
+
 }
 

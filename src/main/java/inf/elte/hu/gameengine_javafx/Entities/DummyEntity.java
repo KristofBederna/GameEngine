@@ -4,10 +4,9 @@ import inf.elte.hu.gameengine_javafx.Components.*;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
-import inf.elte.hu.gameengine_javafx.Maths.Geometry.Circle;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.NSidedShape;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Triangle;
-import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
 
 import java.io.IOException;
@@ -17,7 +16,7 @@ import java.util.Objects;
 public class DummyEntity extends Entity {
 
     private String lastState;
-    public DummyEntity(int x, int y, String state, String path, int width, int height, int viewportWidth, int viewportHeight, int mapWidth, int mapHeight) {
+    public DummyEntity(int x, int y, String state, String path, double width, double height, int viewportWidth, int viewportHeight, int mapWidth, int mapHeight) {
         this.addComponent(new PositionComponent(x, y, this));
         this.addComponent(new VelocityComponent());
         this.addComponent(new StateComponent(state));
@@ -25,8 +24,8 @@ public class DummyEntity extends Entity {
         this.addComponent(new InteractiveComponent());
         this.addComponent(new DimensionComponent(width, height));
         //this.addComponent(new TriangularHitBoxComponent(new Triangle(new Point(x, y), new Point(x + width, y), new Point(x + width/2, y + height))));
-        //this.addComponent(new RectangularHitBoxComponent(new Point(x, y), new Point(x+width, y), new Point(x, y + height), new Point(x + width, y + height)));
-        this.addComponent(new CircularHitBoxComponent(new Circle(new Point(x+width/2, y+height/2), width/2, 32)));
+        this.addComponent(new RectangularHitBoxComponent(new Point(x, y), new Point(x+width, y), new Point(x, y + height), new Point(x + width, y + height)));
+        //this.addComponent(new NSidedHitBoxComponent(new NSidedShape(new Point(x+width/2, y+height/2), width, 6, 0)));
         this.addComponent(new CameraComponent(viewportWidth, viewportHeight, mapWidth, mapHeight));
         this.addComponent(new SoundEffectStoreComponent());
         this.addComponent(new ZIndexComponent(2));

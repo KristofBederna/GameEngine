@@ -9,7 +9,6 @@ import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 import java.util.List;
 
@@ -79,7 +78,7 @@ public class RenderSystem extends GameSystem {
                     if (hitBox2 != null) {
                         hitBox2.getHitBox().render(gc);
                     }
-                    CircularHitBoxComponent hitBox3 = entity.getComponent(CircularHitBoxComponent.class);
+                    NSidedHitBoxComponent hitBox3 = entity.getComponent(NSidedHitBoxComponent.class);
                     if (hitBox3 != null) {
                         hitBox3.getHitBox().render(gc);
                     }

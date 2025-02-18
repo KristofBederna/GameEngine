@@ -4,13 +4,13 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 
 public class ImageComponent extends Component {
     private String imagePath;
-    private int width = -1, height = -1;
+    private double width = -1, height = -1;
 
     public ImageComponent(String path) {
         this.imagePath = path;
     }
 
-    public ImageComponent(String path, int width, int height) {
+    public ImageComponent(String path, double width, double height) {
         this.imagePath = path;
         this.width = width;
         this.height = height;
@@ -24,19 +24,19 @@ public class ImageComponent extends Component {
         this.imagePath = nextFramePath;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 
-    public int getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(double height) {
         this.height = height;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(double width) {
         this.width = width;
     }
 
