@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Rectangle extends Shape {
     public Rectangle(Point topLeft, Point topRight, Point bottomLeft, Point bottomRight) {
-        super(List.of(topLeft, topRight, bottomLeft, bottomRight));
+        this.points = List.of(topLeft, topRight, bottomRight, bottomLeft);
         updateEdges();
     }
 
@@ -18,14 +18,14 @@ public class Rectangle extends Shape {
     }
 
     private void updateEdges() {
-        // Initialize edges based on the points
         edges = List.of(
-                new Edge(points.get(0), points.get(1)), // top
-                new Edge(points.get(1), points.get(3)), // right
-                new Edge(points.get(3), points.get(2)), // bottom
-                new Edge(points.get(2), points.get(0))  // left
+                new Edge(points.get(0), points.get(1)), // Top edge (topLeft -> topRight)
+                new Edge(points.get(1), points.get(2)), // Right edge (topRight -> bottomRight)
+                new Edge(points.get(2), points.get(3)), // Bottom edge (bottomRight -> bottomLeft)
+                new Edge(points.get(3), points.get(0))  // Left edge (bottomLeft -> topLeft)
         );
     }
+
 
     public Point getTopLeft() {
         return points.get(0);
@@ -120,10 +120,10 @@ public class Rectangle extends Shape {
         double renderTopLeftY = points.get(0).getY() - cameraY;
         double renderTopRightX = points.get(1).getX() - cameraX;
         double renderTopRightY = points.get(1).getY() - cameraY;
-        double renderBottomRightX = points.get(3).getX() - cameraX;
-        double renderBottomRightY = points.get(3).getY() - cameraY;
-        double renderBottomLeftX = points.get(2).getX() - cameraX;
-        double renderBottomLeftY = points.get(2).getY() - cameraY;
+        double renderBottomRightX = points.get(2).getX() - cameraX; // Corrected index
+        double renderBottomRightY = points.get(2).getY() - cameraY; // Corrected index
+        double renderBottomLeftX = points.get(3).getX() - cameraX;  // Corrected index
+        double renderBottomLeftY = points.get(3).getY() - cameraY;  // Corrected index
 
         gc.strokeLine(renderTopLeftX, renderTopLeftY, renderTopRightX, renderTopRightY);
         gc.strokeLine(renderTopRightX, renderTopRightY, renderBottomRightX, renderBottomRightY);

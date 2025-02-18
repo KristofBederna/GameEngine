@@ -79,6 +79,10 @@ public class RenderSystem extends GameSystem {
                     if (hitBox2 != null) {
                         hitBox2.getHitBox().render(gc);
                     }
+                    CircularHitBoxComponent hitBox3 = entity.getComponent(CircularHitBoxComponent.class);
+                    if (hitBox3 != null) {
+                        hitBox3.getHitBox().render(gc);
+                    }
                 }
             }
         });

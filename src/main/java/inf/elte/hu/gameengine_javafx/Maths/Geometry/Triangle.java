@@ -10,12 +10,12 @@ import java.util.List;
 public class Triangle extends Shape {
 
     public Triangle(Point a, Point b, Point c) {
-        super(List.of(a, b, c));
+        this.points = List.of(a, b, c);
         updateEdges();
     }
 
     public Triangle(Triangle hitBox) {
-        super(hitBox.getPoints());
+        this.points = List.of(hitBox.getA(), hitBox.getB(), hitBox.getC());
         updateEdges();
     }
 

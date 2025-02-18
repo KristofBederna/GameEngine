@@ -6,15 +6,6 @@ public class Shape {
     protected List<Point> points;
     protected List<Edge> edges;
 
-    public Shape(List<Point> points) {
-        this.points = points;
-        updateEdges();
-    }
-
-    private void updateEdges() {
-        edges = List.of(new Edge(points.get(0), points.get(1)), new Edge(points.get(1), points.get(2)), new Edge(points.get(2), points.get(0)));
-    }
-
     public List<Edge> getEdges() {
         return edges;
     }
