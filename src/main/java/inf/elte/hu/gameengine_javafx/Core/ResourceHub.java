@@ -37,4 +37,8 @@ public class ResourceHub {
     public Map<Class<?>, ResourceManager<?>> getAllResourceManagers() {
         return resourceManagers;
     }
+
+    public void clearResources() {
+        resourceManagers.clear();
+    }
 }

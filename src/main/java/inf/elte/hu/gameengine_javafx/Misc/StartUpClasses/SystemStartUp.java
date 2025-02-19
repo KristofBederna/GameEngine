@@ -8,6 +8,7 @@ public class SystemStartUp {
         SystemHub.getInstance();
         startUpSystems();
     }
+
     public void startUpSystems() {
         //Define systems to be started up here
         SystemHub.getInstance().addSystem(AnimationSystem.class, new AnimationSystem(), 1);
@@ -19,5 +20,9 @@ public class SystemStartUp {
         SystemHub.getInstance().addSystem(ResourceSystem.class, new ResourceSystem(),7);
         SystemHub.getInstance().addSystem(CameraSystem.class, new CameraSystem(), 8);
         SystemHub.getInstance().addSystem(SoundSystem.class, new SoundSystem(), 9);
+    }
+
+    public void startUpSceneManagementSystem() {
+        SystemHub.getInstance().addSystem(SceneManagementSystem.class, new SceneManagementSystem(), 10);
     }
 }

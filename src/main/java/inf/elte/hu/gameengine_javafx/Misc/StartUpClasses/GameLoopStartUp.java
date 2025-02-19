@@ -5,17 +5,22 @@ import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Misc.GameLoop;
 
 public class GameLoopStartUp {
+    static private GameLoop gameLoop;
     public GameLoopStartUp() {
-        GameLoop gameloop = new GameLoop() {
+        gameLoop = new GameLoop() {
             @Override
             public void update() {
                 var systems = SystemHub.getInstance().getAllSystemsInPriorityOrder();
                 for (GameSystem system : systems) {
-                    system.update();
+                    system.run();
                 }
             }
         };
-        gameloop.startLoop();
+        gameLoop.startLoop();
+    }
+
+    public static void stopGameLoop() {
+        gameLoop.stopLoop();
     }
 }
 

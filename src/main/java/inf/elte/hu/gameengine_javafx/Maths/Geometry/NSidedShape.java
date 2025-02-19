@@ -1,8 +1,8 @@
 package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
 
-import inf.elte.hu.gameengine_javafx.Misc.Camera;
-import inf.elte.hu.gameengine_javafx.Misc.Globals;
+import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -85,7 +85,7 @@ public class NSidedShape extends Shape {
 
 
     public void render(GraphicsContext gc) {
-        Camera camera = Camera.getInstance();
+        CameraEntity cameraEntity = CameraEntity.getInstance();
 
         gc.setStroke(Color.GREEN);
         gc.setLineWidth(2);
@@ -97,10 +97,10 @@ public class NSidedShape extends Shape {
 
         Point prev = points.getLast();
         for (Point p : points) {
-            double x1 = prev.getX() - camera.getX();
-            double y1 = prev.getY() - camera.getY();
-            double x2 = p.getX() - camera.getX();
-            double y2 = p.getY() - camera.getY();
+            double x1 = prev.getX() - cameraEntity.getComponent(PositionComponent.class).getGlobalX();
+            double y1 = prev.getY() - cameraEntity.getComponent(PositionComponent.class).getGlobalY();
+            double x2 = p.getX() - cameraEntity.getComponent(PositionComponent.class).getGlobalX();
+            double y2 = p.getY() - cameraEntity.getComponent(PositionComponent.class).getGlobalY();
 
             gc.strokeLine(x1, y1, x2, y2);
             prev = p;

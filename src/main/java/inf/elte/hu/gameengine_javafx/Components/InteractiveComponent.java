@@ -85,4 +85,11 @@ public class InteractiveComponent extends Component {
 
         return sb.toString();
     }
+
+    public void clearMappings() {
+        keyInputMapping.clear();
+        mouseInputMapping.clear();
+        scrollAction = null;
+        mouseMoveAction = null;
+    }
 }

@@ -1,29 +1,29 @@
 package inf.elte.hu.gameengine_javafx.Systems;
 
+import inf.elte.hu.gameengine_javafx.Components.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
-import inf.elte.hu.gameengine_javafx.Misc.Camera;
-import inf.elte.hu.gameengine_javafx.Misc.Globals;
+import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 
 public class CameraSystem extends GameSystem {
     @Override
     public void update() {
-        PositionComponent playerPos = Camera.getInstance().getOwner().getComponent(PositionComponent.class);
-        ImageComponent playerImg = Camera.getInstance().getOwner().getComponent(ImageComponent.class);
-        Camera camera = Camera.getInstance();
+        PositionComponent playerPos = CameraEntity.getInstance().getOwner().getComponent(PositionComponent.class);
+        ImageComponent playerImg = CameraEntity.getInstance().getOwner().getComponent(ImageComponent.class);
+        CameraEntity cameraEntity = CameraEntity.getInstance();
 
         if (playerPos == null || playerImg == null) return;
 
         double playerCenterX = playerPos.getGlobalX() + playerImg.getWidth() / 2;
         double playerCenterY = playerPos.getGlobalY() + playerImg.getHeight() / 2;
 
-        double newX = playerCenterX - camera.getWidth() / 2;
-        double newY = playerCenterY - camera.getHeight() / 2;
+        double newX = playerCenterX - cameraEntity.getComponent(DimensionComponent.class).getWidth() / 2;
+        double newY = playerCenterY - cameraEntity.getComponent(DimensionComponent.class).getHeight() / 2;
 
-        camera.setPosition(newX, newY);
+        cameraEntity.setPosition(newX, newY);
 
-        EntityHub.getInstance().getEntityManager(Camera.getInstance().getOwner().getClass()).updateLastUsed(Camera.getInstance().getOwner().getId());
+        EntityHub.getInstance().getEntityManager(CameraEntity.getInstance().getOwner().getClass()).updateLastUsed(CameraEntity.getInstance().getOwner().getId());
     }
 }

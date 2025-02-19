@@ -43,6 +43,7 @@ public class DummyEntity extends Entity {
         } else {
             manager = new EntityManager<>();
             EntityHub.getInstance().addEntityManager(DummyEntity.class, manager);
+            manager.register(this);
         }
     }
 

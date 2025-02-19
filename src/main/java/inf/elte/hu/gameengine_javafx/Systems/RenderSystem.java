@@ -4,7 +4,9 @@ import inf.elte.hu.gameengine_javafx.Components.*;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
-import inf.elte.hu.gameengine_javafx.Misc.Camera;
+import inf.elte.hu.gameengine_javafx.Core.EntityManager;
+import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
+import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import javafx.application.Platform;
@@ -17,7 +19,7 @@ public class RenderSystem extends GameSystem {
     @Override
     public void update() {
         GraphicsContext gc = Globals.canvas.getGraphicsContext2D();
-        Camera camera = Camera.getInstance();
+        CameraEntity cameraEntity = CameraEntity.getInstance();
 
         if (gc == null || gc.getCanvas() == null) {
             System.err.println("RenderSystem: GraphicsContext or Canvas is null!");
@@ -27,8 +29,10 @@ public class RenderSystem extends GameSystem {
         Platform.runLater(() -> {
             gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
 
-            List<Entity> visibleEntities = EntityHub.getInstance().getEntitiesInsideViewport(Camera.getInstance());
-
+            List<Entity> visibleEntities = EntityHub.getInstance().getEntitiesInsideViewport(CameraEntity.getInstance());
+            if (visibleEntities == null) {
+                return;
+            }
             List<Entity> sortedEntities = visibleEntities.stream()
                     .filter(entity -> entity.getComponent(ZIndexComponent.class) != null)
                     .sorted((e1, e2) -> {
@@ -47,16 +51,21 @@ public class RenderSystem extends GameSystem {
                 double width = imgComponent.getWidth();
                 double height = imgComponent.getHeight();
 
-                double renderX = position.getGlobalX() - camera.getX();
-                double renderY = position.getGlobalY() - camera.getY();
+                double renderX = position.getGlobalX() - cameraEntity.getComponent(PositionComponent.class).getGlobalX();
+                double renderY = position.getGlobalY() - cameraEntity.getComponent(PositionComponent.class).getGlobalY();
 
-                if (renderX + width >= 0 && renderX <= camera.getWidth() &&
-                        renderY + height >= 0 && renderY <= camera.getHeight()) {
+                if (renderX + width >= 0 && renderX <= cameraEntity.getComponent(DimensionComponent.class).getWidth() &&
+                        renderY + height >= 0 && renderY <= cameraEntity.getComponent(DimensionComponent.class).getHeight()) {
 
-                    Image img = ResourceHub.getInstance().getResourceManager(Image.class)
-                            .get(imgComponent.getImagePath());
+                    ResourceManager<Image> imageManager = ResourceHub.getInstance().getResourceManager(Image.class);
+                    if (imageManager == null) continue;
+                    Image img = imageManager.get(imgComponent.getImagePath());
 
-                    EntityHub.getInstance().getEntityManager(entity.getClass()).updateLastUsed(entity.getId());
+                    EntityManager<Entity> entityManager = (EntityManager<Entity>)EntityHub.getInstance().getEntityManager(entity.getClass());
+
+                    if (entityManager == null) continue;
+
+                    entityManager.updateLastUsed(entity.getId());
 
                     if (img == null) {
                         System.err.println("RenderSystem: Missing image for " + imgComponent.getImagePath());
@@ -65,18 +74,18 @@ public class RenderSystem extends GameSystem {
 
                     gc.drawImage(img, renderX, renderY, width, height);
 
-                    RectangularHitBoxComponent hitBox = entity.getComponent(RectangularHitBoxComponent.class);
-                    if (hitBox != null) {
-                        hitBox.getHitBox().render(gc);
-                    }
-                    TriangularHitBoxComponent hitBox2 = entity.getComponent(TriangularHitBoxComponent.class);
-                    if (hitBox2 != null) {
-                        hitBox2.getHitBox().render(gc);
-                    }
-                    NSidedHitBoxComponent hitBox3 = entity.getComponent(NSidedHitBoxComponent.class);
-                    if (hitBox3 != null) {
-                        hitBox3.getHitBox().render(gc);
-                    }
+//                    RectangularHitBoxComponent hitBox = entity.getComponent(RectangularHitBoxComponent.class);
+//                    if (hitBox != null) {
+//                        hitBox.getHitBox().render(gc);
+//                    }
+//                    TriangularHitBoxComponent hitBox2 = entity.getComponent(TriangularHitBoxComponent.class);
+//                    if (hitBox2 != null) {
+//                        hitBox2.getHitBox().render(gc);
+//                    }
+//                    NSidedHitBoxComponent hitBox3 = entity.getComponent(NSidedHitBoxComponent.class);
+//                    if (hitBox3 != null) {
+//                        hitBox3.getHitBox().render(gc);
+//                    }
                 }
             }
         });

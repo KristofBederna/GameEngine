@@ -1,23 +1,27 @@
 package inf.elte.hu.gameengine_javafx.Misc.InputHandlers;
 
-import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
-import inf.elte.hu.gameengine_javafx.Core.EntityHub;
-import inf.elte.hu.gameengine_javafx.Misc.Camera;
+import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class MouseInputHandler {
     private static MouseInputHandler instance;
     private final Set<MouseButton> pressedButtons = new HashSet<>();
     private final Set<MouseButton> releasedButtons = new HashSet<>();
+    private final Map<MouseButton, Long> lastPressedTime = new HashMap<>();
+
     private int mouseX, mouseY;
     private double scrollDeltaY;
+    private static final long PRESS_COOLDOWN = 100;
 
     private MouseInputHandler() {
         Scene scene = Globals.canvas.getScene();
@@ -36,21 +40,30 @@ public class MouseInputHandler {
     }
 
     private void mousePressed(MouseEvent event) {
-        releasedButtons.clear();
-        pressedButtons.add(event.getButton());
+        long currentTime = System.currentTimeMillis();
+        MouseButton button = event.getButton();
+
+        if (!pressedButtons.contains(button) ||
+                (lastPressedTime.getOrDefault(button, 0L) + PRESS_COOLDOWN < currentTime)) {
+
+            lastPressedTime.put(button, currentTime);
+            pressedButtons.add(button);
+            releasedButtons.clear();
+        }
     }
 
     private void mouseReleased(MouseEvent event) {
-        pressedButtons.remove(event.getButton());
-        releasedButtons.add(event.getButton());
+        MouseButton button = event.getButton();
+        pressedButtons.remove(button);
+        releasedButtons.add(button);
     }
 
     private void mouseMoved(MouseEvent event) {
-        Camera camera = Camera.getInstance();
+        CameraEntity cameraEntity = CameraEntity.getInstance();
+        if (cameraEntity == null) return;
 
-        if (camera == null) return;
-        mouseX = (int) (event.getX() + camera.getX());
-        mouseY = (int) (event.getY() + camera.getY());
+        mouseX = (int) (event.getX() + cameraEntity.getComponent(PositionComponent.class).getGlobalX());
+        mouseY = (int) (event.getY() + cameraEntity.getComponent(PositionComponent.class).getGlobalY());
     }
 
     private void mouseScrolled(ScrollEvent event) {
@@ -62,7 +75,11 @@ public class MouseInputHandler {
     }
 
     public boolean isButtonReleased(MouseButton button) {
-        return releasedButtons.contains(button);
+        boolean wasReleased = releasedButtons.contains(button);
+        if (wasReleased) {
+            releasedButtons.remove(button);
+        }
+        return wasReleased;
     }
 
     public int getMouseX() {

@@ -4,8 +4,7 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
 
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class ResourceSystem extends GameSystem {
     @Override
@@ -16,10 +15,10 @@ public class ResourceSystem extends GameSystem {
 
         for (ResourceManager<?> resourceManager : resourceManagers.values()) {
             synchronized (resourceManager) {
-                Iterator<String> iterator = resourceManager.getResources().keySet().iterator();
-
+                Iterator<? extends Map.Entry<String, ?>> iterator = resourceManager.getResources().entrySet().iterator();
                 while (iterator.hasNext()) {
-                    String resourceKey = iterator.next();
+                    Map.Entry<String, ?> resourceEntry = iterator.next();
+                    String resourceKey = resourceEntry.getKey();
                     Long lastAccessed = resourceManager.getLastAccessed(resourceKey);
 
                     if (lastAccessed != null && lastAccessed < threshold) {

@@ -6,9 +6,9 @@ import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
+import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Entities.DummyEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
-import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.MouseInputHandler;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.GameMap;
@@ -17,6 +17,7 @@ import inf.elte.hu.gameengine_javafx.Misc.MapClasses.TileLoader;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.TileSetLoader;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.GameLoopStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.ResourceStartUp;
+import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.SystemStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
 import inf.elte.hu.gameengine_javafx.Systems.SceneManagementSystem;
 import javafx.scene.Parent;
@@ -27,10 +28,9 @@ import javafx.scene.layout.BorderPane;
 import java.util.Arrays;
 
 
-public class TestScene extends GameScene{
-    public TestScene(Parent parent, double width, double height) {
+public class Test3Scene extends GameScene{
+    public Test3Scene(Parent parent, double width, double height) {
         super(parent, width, height);
-        setup();
     }
 
     @Override
@@ -40,6 +40,7 @@ public class TestScene extends GameScene{
         Entity entity2 = entitySetup(map);
         cameraSetup();
         interactionSetup(entity2);
+        new SystemStartUp();
         new GameLoopStartUp();
     }
 
@@ -48,10 +49,12 @@ public class TestScene extends GameScene{
         EntityHub entityHub = EntityHub.getInstance();
         entityHub.removeEntityManager(TileEntity.class);
         entityHub.removeEntityManager(DummyEntity.class);
+
         EntityManager<TileEntity> tileEntityManager = entityHub.getEntityManager(TileEntity.class);
         if (tileEntityManager != null) {
             tileEntityManager.unloadAll();
         }
+
         EntityManager<DummyEntity> dummyEntityManager = entityHub.getEntityManager(DummyEntity.class);
         if (dummyEntityManager != null) {
             dummyEntityManager.unloadAll();
@@ -70,10 +73,9 @@ public class TestScene extends GameScene{
     }
 
 
-
     private GameMap mapSetup() {
         TileLoader tileLoader = new TileLoader();
-        TileSetLoader.loadSet("/assets/tileSets/testTiles2.txt", tileLoader);
+        TileSetLoader.loadSet("/assets/tileSets/testTiles.txt", tileLoader);
         return MapLoader.loadMap("/assets/maps/testMap.txt", tileLoader);
     }
 
@@ -109,7 +111,7 @@ public class TestScene extends GameScene{
         dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> {Globals.playerEntity.getComponent(PositionComponent.class).setLocalX(MouseInputHandler.getInstance().getMouseX(), Globals.playerEntity); Globals.playerEntity.getComponent(PositionComponent.class).setLocalY(MouseInputHandler.getInstance().getMouseY(), Globals.playerEntity);});
         dummyInteractiveComponent.mapInput(MouseButton.SECONDARY, () -> Globals.playerEntity.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion"), ()->Globals.playerEntity.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
         dummyInteractiveComponent.mapInput(KeyCode.F2, () -> CameraEntity.getInstance().attachTo(entity2), () -> CameraEntity.getInstance().attachTo(Globals.playerEntity));
-        dummyInteractiveComponent.mapInput(KeyCode.F3, () -> SystemHub.getInstance().getSystem(SceneManagementSystem.class).requestSceneChange(new Test2Scene(new BorderPane(), 1920, 1080)));
+        dummyInteractiveComponent.mapInput(KeyCode.ENTER, () -> SystemHub.getInstance().getSystem(SceneManagementSystem.class).requestSceneChange(new Test2Scene(new BorderPane(), 1920, 1080)));
     }
 
 

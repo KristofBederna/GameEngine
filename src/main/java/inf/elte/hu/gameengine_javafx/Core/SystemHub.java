@@ -1,6 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Core;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
+import inf.elte.hu.gameengine_javafx.Systems.SceneManagementSystem;
 
 import java.util.*;
 
@@ -8,6 +9,7 @@ public class SystemHub {
     private static SystemHub instance;
     private final Map<Class<? extends GameSystem>, Integer> systemPriorities;
     private final TreeMap<Integer, GameSystem> systems;
+    private boolean isShuttingDown = false;
 
     private SystemHub() {
         systemPriorities = new HashMap<>();
@@ -40,5 +42,26 @@ public class SystemHub {
 
     public List<GameSystem> getAllSystemsInPriorityOrder() {
         return new ArrayList<>(systems.values());
+    }
+
+    public void shutDownSystems() {
+        if (isShuttingDown) {
+            return;
+        }
+
+        isShuttingDown = true;
+        try {
+            SceneManagementSystem sceneManagementSystem = getSystem(SceneManagementSystem.class);
+
+            for (GameSystem system : getAllSystemsInPriorityOrder().reversed()) {
+                if (system != sceneManagementSystem) {
+                    system.abort();
+                }
+            }
+            systems.clear();
+            systems.put(systemPriorities.get(SceneManagementSystem.class), sceneManagementSystem);
+        } finally {
+            isShuttingDown = false;
+        }
     }
 }
