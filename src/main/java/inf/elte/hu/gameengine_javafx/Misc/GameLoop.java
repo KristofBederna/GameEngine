@@ -1,5 +1,8 @@
 package inf.elte.hu.gameengine_javafx.Misc;
 
+import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
+import inf.elte.hu.gameengine_javafx.Core.SystemHub;
+
 public abstract class GameLoop extends Thread {
     private boolean running;
     private final Time time;

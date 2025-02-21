@@ -15,6 +15,11 @@ import java.util.Map;
 
 public class LogSystem extends GameSystem {
     @Override
+    public void start() {
+        this.active = true;
+    }
+
+    @Override
     public void update() {
         TextArea statusTextArea = null;
 

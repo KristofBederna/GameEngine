@@ -13,6 +13,11 @@ import java.util.List;
 public class CollisionSystem extends GameSystem {
 
     @Override
+    public void start() {
+        this.active = true;
+    }
+
+    @Override
     public void update() {
         List<Entity> filteredEntities = EntityHub.getInstance().getEntitiesInsideViewport(CameraEntity.getInstance());
 

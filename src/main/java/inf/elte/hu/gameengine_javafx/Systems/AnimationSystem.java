@@ -13,6 +13,11 @@ import java.util.ArrayList;
 
 public class AnimationSystem extends GameSystem {
     @Override
+    public void start() {
+        this.active = true;
+    }
+
+    @Override
     public void update() {
         var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getAllEntities());
         if (entitiesSnapshot.isEmpty()) {

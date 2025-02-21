@@ -12,6 +12,11 @@ import java.util.ArrayList;
 
 public class SoundSystem extends GameSystem {
     @Override
+    public void start() {
+        this.active = true;
+    }
+
+    @Override
     public void update() {
         var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getAllEntities());
         for (Entity entity : entitiesSnapshot) {

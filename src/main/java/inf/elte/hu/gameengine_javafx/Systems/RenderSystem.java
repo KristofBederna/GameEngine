@@ -17,6 +17,11 @@ import java.util.List;
 
 public class RenderSystem extends GameSystem {
     @Override
+    public void start() {
+        this.active = true;
+    }
+
+    @Override
     public void update() {
         GraphicsContext gc = Globals.canvas.getGraphicsContext2D();
         CameraEntity cameraEntity = CameraEntity.getInstance();

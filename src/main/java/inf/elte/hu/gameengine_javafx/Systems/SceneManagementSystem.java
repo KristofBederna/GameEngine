@@ -20,6 +20,11 @@ public class SceneManagementSystem extends GameSystem {
     }
 
     @Override
+    public void start() {
+        active = true;
+    }
+
+    @Override
     public void update() {
         if (nextScene != null) {
             switchScene();

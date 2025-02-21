@@ -9,6 +9,11 @@ import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 
 public class CameraSystem extends GameSystem {
     @Override
+    public void start() {
+        this.active = true;
+    }
+
+    @Override
     public void update() {
         PositionComponent playerPos = CameraEntity.getInstance().getOwner().getComponent(PositionComponent.class);
         ImageComponent playerImg = CameraEntity.getInstance().getOwner().getComponent(ImageComponent.class);

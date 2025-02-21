@@ -20,6 +20,11 @@ import java.util.Set;
 
 public class InputHandlingSystem extends GameSystem {
     @Override
+    public void start() {
+        this.active = true;
+    }
+
+    @Override
     public void update() {
         var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getAllEntities());
         if (entitiesSnapshot.isEmpty()) {

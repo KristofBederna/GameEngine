@@ -9,12 +9,9 @@ import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Entities.DummyEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
+import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.MouseInputHandler;
-import inf.elte.hu.gameengine_javafx.Misc.MapClasses.GameMap;
-import inf.elte.hu.gameengine_javafx.Misc.MapClasses.MapLoader;
-import inf.elte.hu.gameengine_javafx.Misc.MapClasses.TileLoader;
-import inf.elte.hu.gameengine_javafx.Misc.MapClasses.TileSetLoader;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.GameLoopStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.ResourceStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
@@ -24,7 +21,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 
-import java.util.Arrays;
+import java.util.List;
 
 
 public class TestScene extends GameScene{
@@ -36,7 +33,7 @@ public class TestScene extends GameScene{
     @Override
     public void setup() {
         new ResourceStartUp();
-        GameMap map = mapSetup();
+        WorldEntity map = new WorldEntity(30, 15, "/assets/maps/testMap.txt", "/assets/tileSets/testTiles2.txt");
         Entity entity2 = entitySetup(map);
         cameraSetup();
         interactionSetup(entity2);
@@ -69,25 +66,17 @@ public class TestScene extends GameScene{
         Globals.playerEntity = null;
     }
 
-
-
-    private GameMap mapSetup() {
-        TileLoader tileLoader = new TileLoader();
-        TileSetLoader.loadSet("/assets/tileSets/testTiles2.txt", tileLoader);
-        return MapLoader.loadMap("/assets/maps/testMap.txt", tileLoader);
-    }
-
     private void cameraSetup() {
         CameraEntity.getInstance(1920, 1080, 30*100, 15*100);
         CameraEntity.getInstance().attachTo(Globals.playerEntity);
     }
 
-    private Entity entitySetup(GameMap map) {
+    private Entity entitySetup(WorldEntity map) {
         Globals.playerEntity = new DummyEntity(420, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80);
 
         EntityManager<TileEntity> tileEntityManager = new EntityManager<>();
-        for (TileEntity[] row : map.getMapData()) {
-            tileEntityManager.registerAll(Arrays.asList(row));
+        for (List<TileEntity> row : map.getComponent(WorldDataComponent.class).getMapData()) {
+            tileEntityManager.registerAll(row);
         }
         EntityHub.getInstance().addEntityManager(TileEntity.class, tileEntityManager);
 

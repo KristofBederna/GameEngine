@@ -14,6 +14,8 @@ public class TileEntity extends Entity {
         this.addComponent(new PositionComponent(x, y, this));
         this.addComponent(new ZIndexComponent(0));
         this.addComponent(new DimensionComponent(width, height));
+
+        addToManager();
     }
     public TileEntity(int value, int x, int y, String path, double width, double height, boolean hasHitBox) {
         this.value = value;
@@ -24,12 +26,16 @@ public class TileEntity extends Entity {
         if (hasHitBox) {
             this.addComponent(new RectangularHitBoxComponent(new Point(x, y), new Point(x+width, y), new Point(x, y + height), new Point(x + width, y + height)));
         }
+
+        addToManager();
     }
     public TileEntity(int value, int x, int y, String path) {
         this.value = value;
         this.addComponent(new ImageComponent(path));
         this.addComponent(new PositionComponent(x, y, this));
         this.addComponent(new ZIndexComponent(0));
+
+        addToManager();
     }
     public int getValue() {
         return value;

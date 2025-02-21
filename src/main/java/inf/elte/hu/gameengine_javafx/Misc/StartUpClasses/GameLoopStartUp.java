@@ -12,7 +12,14 @@ public class GameLoopStartUp {
             public void update() {
                 var systems = SystemHub.getInstance().getAllSystemsInPriorityOrder();
                 for (GameSystem system : systems) {
-                    system.run();
+                    if (!system.getIsActive()) {
+                        if (system.getIsAborting()) {
+                            continue;
+                        }
+                        system.start();
+                    } else {
+                        system.run();
+                    }
                 }
             }
         };

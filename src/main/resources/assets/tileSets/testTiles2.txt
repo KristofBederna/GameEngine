@@ -6,4 +6,4 @@
 7 rightWall
 8 topWall
 9 bottomWall
-0 windowWall
+1 windowWall
