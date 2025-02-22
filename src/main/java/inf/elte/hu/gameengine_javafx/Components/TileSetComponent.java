@@ -11,12 +11,12 @@ import java.util.Objects;
 
 public class TileSetComponent extends Component {
     private TileLoader tileLoader;
-    public TileSetComponent(String tileSetPath, TileLoader tileLoader) {
-        this.tileLoader = tileLoader;
+    public TileSetComponent(String tileSetPath) {
+        this.tileLoader = new TileLoader();
         loadSet(tileSetPath, tileLoader);
     }
-    public TileSetComponent(String tileSetPath, TileLoader tileLoader, String separator) {
-        this.tileLoader = tileLoader;
+    public TileSetComponent(String tileSetPath, String separator) {
+        this.tileLoader = new TileLoader();
         loadSet(tileSetPath, tileLoader, separator);
     }
     public static void loadSet(String path, TileLoader tileLoader) {

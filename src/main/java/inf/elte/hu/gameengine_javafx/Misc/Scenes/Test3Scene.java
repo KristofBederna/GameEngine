@@ -33,7 +33,7 @@ public class Test3Scene extends GameScene{
     @Override
     public void setup() {
         new ResourceStartUp();
-        WorldEntity map = new WorldEntity(30, 15, "/assets/maps/testMap.txt", "/assets/tileSets/testTiles2.txt");
+        WorldEntity map = WorldEntity.getInstance(30, 15, "/assets/maps/testMap.txt", "/assets/tileSets/testTiles2.txt");
         Entity entity2 = entitySetup(map);
         cameraSetup();
         interactionSetup(entity2);
@@ -56,6 +56,7 @@ public class Test3Scene extends GameScene{
         if (dummyEntityManager != null) {
             dummyEntityManager.unloadAll();
         }
+        WorldEntity.resetInstance();
         if (Globals.playerEntity != null) {
             InteractiveComponent interactiveComponent = Globals.playerEntity.getComponent(InteractiveComponent.class);
             if (interactiveComponent != null) {

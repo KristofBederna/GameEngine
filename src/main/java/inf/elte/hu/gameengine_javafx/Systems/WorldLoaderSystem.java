@@ -1,10 +1,10 @@
 package inf.elte.hu.gameengine_javafx.Systems;
 
-import inf.elte.hu.gameengine_javafx.Components.FilePathComponent;
-import inf.elte.hu.gameengine_javafx.Components.TileSetComponent;
-import inf.elte.hu.gameengine_javafx.Components.WorldDataComponent;
+import inf.elte.hu.gameengine_javafx.Components.*;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+import inf.elte.hu.gameengine_javafx.Core.EntityManager;
+import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
@@ -21,7 +21,7 @@ public class WorldLoaderSystem extends GameSystem {
     @Override
     public void start() {
         this.active = true;
-        WorldEntity map = EntityHub.getInstance().getEntityManager(WorldEntity.class).getEntities().get(1);
+        WorldEntity map = WorldEntity.getInstance();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(MapSaver.class.getResourceAsStream(map.getComponent(FilePathComponent.class).getFilePath()))))) {
             String[] dimensions = reader.readLine().split(" ");
             int width = Integer.parseInt(dimensions[0]);
@@ -51,6 +51,56 @@ public class WorldLoaderSystem extends GameSystem {
 
     @Override
     public void update() {
-        //Update the entities which are inside the viewport
+        CameraEntity camera = CameraEntity.getInstance();
+        WorldEntity map = WorldEntity.getInstance();
+        if (map == null) return;
+        if (camera == null) return;
+
+        double camX = camera.getComponent(PositionComponent.class).getGlobalX();
+        double camY = camera.getComponent(PositionComponent.class).getGlobalY();
+        double camWidth = camera.getComponent(DimensionComponent.class).getWidth();
+        double camHeight = camera.getComponent(DimensionComponent.class).getHeight();
+
+        EntityManager<TileEntity> tileManager = EntityHub.getInstance().getEntityManager(TileEntity.class);
+        List<TileEntity> toRemove = new ArrayList<>();
+
+        for (TileEntity tile : tileManager.getEntities().values()) {
+            double tileX = tile.getComponent(PositionComponent.class).getGlobalX();
+            double tileY = tile.getComponent(PositionComponent.class).getGlobalY();
+
+            if (tileX + Globals.tileSize < camX || tileX > camX + camWidth ||
+                    tileY + Globals.tileSize < camY || tileY > camY + camHeight) {
+                toRemove.add(tile);
+            }
+        }
+
+        for (TileEntity tile : toRemove) {
+            tileManager.unload(tile.getId());
+        }
+
+        List<List<TileEntity>> worldData = map.getComponent(WorldDataComponent.class).getMapData();
+        for (List<TileEntity> row : worldData) {
+            for (TileEntity data : row) {
+                double tileX = data.getComponent(PositionComponent.class).getGlobalX();
+                double tileY = data.getComponent(PositionComponent.class).getGlobalY();
+
+                if (tileX + Globals.tileSize >= camX && tileX <= camX + camWidth &&
+                        tileY + Globals.tileSize >= camY && tileY <= camY + camHeight) {
+
+                    boolean exists = tileManager.getEntities().values().stream()
+                            .anyMatch(t -> t.getComponent(PositionComponent.class).getGlobalX() == tileX &&
+                                    t.getComponent(PositionComponent.class).getGlobalY() == tileY);
+                    if (!exists) {
+                        RectangularHitBoxComponent hitBox = data.getComponent(RectangularHitBoxComponent.class);
+                        boolean hasHitBox = true;
+                        if (hitBox == null)
+                            hasHitBox = false;
+                        TileEntity newTile = new TileEntity(data.getValue(), tileX, tileY,
+                                data.getComponent(ImageComponent.class).getImagePath(), Globals.tileSize, Globals.tileSize, hasHitBox);
+                        tileManager.register(newTile);
+                    }
+                }
+            }
+        }
     }
 }

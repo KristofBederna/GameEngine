@@ -10,28 +10,50 @@ import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.TileLoader;
 
 public class WorldEntity extends Entity {
-    public WorldEntity(double width, double height, String filePath, String tileSetPath, String separator) {
+    private static WorldEntity instance;
+
+    private WorldEntity(double width, double height, String filePath, String tileSetPath, String separator) {
         this.addComponent(new WorldDimensionComponent(width, height));
         this.addComponent(new WorldDataComponent());
         this.addComponent(new FilePathComponent(filePath));
-        this.addComponent(new TileSetComponent(tileSetPath, new TileLoader(), separator));
-
+        this.addComponent(new TileSetComponent(tileSetPath, separator));
         addToManager();
     }
-    public WorldEntity(double width, double height, String filePath, String tileSetPath) {
+
+    private WorldEntity(double width, double height, String filePath, String tileSetPath) {
         this.addComponent(new WorldDimensionComponent(width, height));
         this.addComponent(new WorldDataComponent());
         this.addComponent(new FilePathComponent(filePath));
-        this.addComponent(new TileSetComponent(tileSetPath, new TileLoader()));
-
+        this.addComponent(new TileSetComponent(tileSetPath));
         addToManager();
+    }
+
+    public static WorldEntity getInstance(double width, double height, String filePath, String tileSetPath, String separator) {
+        if (instance == null) {
+            instance = new WorldEntity(width, height, filePath, tileSetPath, separator);
+        }
+        return instance;
+    }
+
+    public static WorldEntity getInstance(double width, double height, String filePath, String tileSetPath) {
+        if (instance == null) {
+            instance = new WorldEntity(width, height, filePath, tileSetPath);
+        }
+        return instance;
+    }
+
+    public static WorldEntity getInstance() {
+        return instance;
+    }
+
+    public static void resetInstance() {
+        instance = null;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected void addToManager() {
-        EntityManager<WorldEntity> manager = EntityHub.getInstance().getEntityManager((Class<WorldEntity>)this.getClass());
-
+        EntityManager<WorldEntity> manager = EntityHub.getInstance().getEntityManager((Class<WorldEntity>) this.getClass());
         if (manager != null) {
             manager.register(this);
         } else {

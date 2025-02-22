@@ -20,7 +20,8 @@ public class ResourceSystem extends GameSystem {
 
         for (ResourceManager<?> resourceManager : resourceManagers.values()) {
             synchronized (resourceManager) {
-                Iterator<? extends Map.Entry<String, ?>> iterator = resourceManager.getResources().entrySet().iterator();
+                Map<String, ?> resourcesSnapshot = new HashMap<>(resourceManager.getResources());
+                Iterator<? extends Map.Entry<String, ?>> iterator = resourcesSnapshot.entrySet().iterator();
                 while (iterator.hasNext()) {
                     Map.Entry<String, ?> resourceEntry = iterator.next();
                     String resourceKey = resourceEntry.getKey();

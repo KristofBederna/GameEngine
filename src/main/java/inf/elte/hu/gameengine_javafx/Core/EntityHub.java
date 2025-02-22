@@ -56,27 +56,37 @@ public class EntityHub {
 
     @SuppressWarnings("unchecked")
     public void refreshEntitiesList() {
-        entities.clear();
-        for (EntityManager<?> entityManager : entityManagers.values()) {
-            entities.addAll(entityManager.getEntities().values());
+        synchronized (entities) {
+            entities.clear();
+            for (EntityManager<?> entityManager : entityManagers.values()) {
+                entities.addAll(entityManager.getEntities().values());
+            }
         }
     }
+
 
     public List<Entity> getEntitiesInsideViewport(CameraEntity cameraEntity) {
         if (cameraEntity == null) return null;
-        List<Entity> visibleEntities = new ArrayList<>();
-        for (Entity entity : getAllEntities()) {
-            PositionComponent position = entity.getComponent(PositionComponent.class);
-            if (position == null) continue;
 
-            if (entity.getComponent(ImageComponent.class) == null) {
-                continue;
-            }
-            if (cameraEntity.isPositionInsideViewport(position.getGlobalX(), position.getGlobalY(), entity.getComponent(DimensionComponent.class).getWidth(), entity.getComponent(DimensionComponent.class).getHeight())) {
-                visibleEntities.add(entity);
+        List<Entity> visibleEntities = new ArrayList<>();
+        synchronized (entities) {
+            for (Entity entity : entities) {
+                PositionComponent position = entity.getComponent(PositionComponent.class);
+                if (position == null) continue;
+
+                if (entity.getComponent(ImageComponent.class) == null) {
+                    continue;
+                }
+                if (cameraEntity.isPositionInsideViewport(
+                        position.getGlobalX(),
+                        position.getGlobalY(),
+                        entity.getComponent(DimensionComponent.class).getWidth(),
+                        entity.getComponent(DimensionComponent.class).getHeight())) {
+                    visibleEntities.add(entity);
+                }
             }
         }
-
         return visibleEntities;
     }
+
 }

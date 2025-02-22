@@ -8,7 +8,7 @@ import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 
 public class TileEntity extends Entity {
     private int value;
-    public TileEntity(int value, int x, int y, String path, double width, double height) {
+    public TileEntity(int value, double x, double y, String path, double width, double height) {
         this.value = value;
         this.addComponent(new ImageComponent(path, width, height));
         this.addComponent(new PositionComponent(x, y, this));
@@ -17,7 +17,7 @@ public class TileEntity extends Entity {
 
         addToManager();
     }
-    public TileEntity(int value, int x, int y, String path, double width, double height, boolean hasHitBox) {
+    public TileEntity(int value, double x, double y, String path, double width, double height, boolean hasHitBox) {
         this.value = value;
         this.addComponent(new ImageComponent(path, width, height));
         this.addComponent(new PositionComponent(x, y, this));
