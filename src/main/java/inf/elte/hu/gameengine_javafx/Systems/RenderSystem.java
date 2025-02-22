@@ -79,18 +79,22 @@ public class RenderSystem extends GameSystem {
 
                     gc.drawImage(img, renderX, renderY, width, height);
 
-//                    RectangularHitBoxComponent hitBox = entity.getComponent(RectangularHitBoxComponent.class);
-//                    if (hitBox != null) {
-//                        hitBox.getHitBox().render(gc);
-//                    }
-//                    TriangularHitBoxComponent hitBox2 = entity.getComponent(TriangularHitBoxComponent.class);
-//                    if (hitBox2 != null) {
-//                        hitBox2.getHitBox().render(gc);
-//                    }
-//                    NSidedHitBoxComponent hitBox3 = entity.getComponent(NSidedHitBoxComponent.class);
-//                    if (hitBox3 != null) {
-//                        hitBox3.getHitBox().render(gc);
-//                    }
+                    RectangularHitBoxComponent hitBox = entity.getComponent(RectangularHitBoxComponent.class);
+                    if (hitBox != null) {
+                        hitBox.getHitBox().render(gc);
+                    }
+                    TriangularHitBoxComponent hitBox2 = entity.getComponent(TriangularHitBoxComponent.class);
+                    if (hitBox2 != null) {
+                        hitBox2.getHitBox().render(gc);
+                    }
+                    NSidedHitBoxComponent hitBox3 = entity.getComponent(NSidedHitBoxComponent.class);
+                    if (hitBox3 != null) {
+                        hitBox3.getHitBox().render(gc);
+                    }
+                    ComplexHitBoxComponent hitBox4 = entity.getComponent(ComplexHitBoxComponent.class);
+                    if (hitBox4 != null) {
+                        hitBox4.getHitBox().render(gc);
+                    }
                 }
             }
         });

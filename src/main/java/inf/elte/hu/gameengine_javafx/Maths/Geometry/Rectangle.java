@@ -13,6 +13,11 @@ public class Rectangle extends Shape {
         updateEdges();
     }
 
+    public Rectangle(Point topLeft, double width, double height) {
+        this.points = List.of(topLeft, new Point(topLeft.getX()+width, topLeft.getY()), new Point(topLeft.getX()+width, topLeft.getY()+height), new Point(topLeft.getX(), topLeft.getY()+height));
+        updateEdges();
+    }
+
     public Rectangle(Rectangle rectangle) {
         this(rectangle.getTopLeft(), rectangle.getTopRight(), rectangle.getBottomLeft(), rectangle.getBottomRight());
     }

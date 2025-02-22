@@ -24,7 +24,7 @@ public class TileEntity extends Entity {
         this.addComponent(new ZIndexComponent(0));
         this.addComponent(new DimensionComponent(width, height));
         if (hasHitBox) {
-            this.addComponent(new RectangularHitBoxComponent(new Point(x, y), new Point(x+width, y), new Point(x, y + height), new Point(x + width, y + height)));
+            this.addComponent(new RectangularHitBoxComponent(new Point(x, y), width, height));
         }
 
         addToManager();
@@ -44,7 +44,7 @@ public class TileEntity extends Entity {
         this.value = value;
     }
     public void addHitBox(int x, int y, double width, double height) {
-        this.addComponent(new RectangularHitBoxComponent(new Point(x, y), new Point(x+width, y), new Point(x, y + height), new Point(x + width, y + height)));
+        this.addComponent(new RectangularHitBoxComponent(new Point(x, y), width, height));
     }
 
     @SuppressWarnings("unchecked")

@@ -4,6 +4,7 @@ import inf.elte.hu.gameengine_javafx.Components.*;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.ComplexShape;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.NSidedShape;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Triangle;
@@ -11,6 +12,7 @@ import inf.elte.hu.gameengine_javafx.Misc.Time;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class DummyEntity extends Entity {
@@ -24,7 +26,7 @@ public class DummyEntity extends Entity {
         this.addComponent(new InteractiveComponent());
         this.addComponent(new DimensionComponent(width, height));
         //this.addComponent(new TriangularHitBoxComponent(new Triangle(new Point(x, y), new Point(x + width, y), new Point(x + width/2, y + height))));
-        this.addComponent(new RectangularHitBoxComponent(new Point(x, y), new Point(x+width, y), new Point(x, y + height), new Point(x + width, y + height)));
+        this.addComponent(new RectangularHitBoxComponent(new Point(x, y), width, height));
         //this.addComponent(new NSidedHitBoxComponent(new NSidedShape(new Point(x+width/2, y+height/2), width, 6, 0)));
         this.addComponent(new SoundEffectStoreComponent());
         this.addComponent(new ZIndexComponent(2));

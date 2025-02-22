@@ -10,6 +10,12 @@ public class RectangularHitBoxComponent extends Component {
     public RectangularHitBoxComponent(Point topLeft, Point topRight, Point bottomLeft, Point bottomRight) {
         this.hitBox = new Rectangle(topLeft, topRight, bottomLeft, bottomRight);
     }
+    public RectangularHitBoxComponent(Rectangle hitBox) {
+        this.hitBox = new Rectangle(hitBox);
+    }
+    public RectangularHitBoxComponent(Point topLeft, double width, double height) {
+        this.hitBox = new Rectangle(topLeft, width, height);
+    }
     public Rectangle getHitBox() {
         return hitBox;
     }
