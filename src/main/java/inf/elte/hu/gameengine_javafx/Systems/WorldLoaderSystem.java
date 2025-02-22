@@ -16,6 +16,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class WorldLoaderSystem extends GameSystem {
     @Override
@@ -79,6 +81,11 @@ public class WorldLoaderSystem extends GameSystem {
         }
 
         List<List<TileEntity>> worldData = map.getComponent(WorldDataComponent.class).getMapData();
+        Set<String> existingTiles = tileManager.getEntities().values().stream()
+                .map(t -> t.getComponent(PositionComponent.class).getGlobalX() + "," +
+                        t.getComponent(PositionComponent.class).getGlobalY())
+                .collect(Collectors.toSet());
+
         for (List<TileEntity> row : worldData) {
             for (TileEntity data : row) {
                 double tileX = data.getComponent(PositionComponent.class).getGlobalX();
@@ -87,16 +94,12 @@ public class WorldLoaderSystem extends GameSystem {
                 if (tileX + Globals.tileSize >= camX && tileX <= camX + camWidth &&
                         tileY + Globals.tileSize >= camY && tileY <= camY + camHeight) {
 
-                    boolean exists = tileManager.getEntities().values().stream()
-                            .anyMatch(t -> t.getComponent(PositionComponent.class).getGlobalX() == tileX &&
-                                    t.getComponent(PositionComponent.class).getGlobalY() == tileY);
-                    if (!exists) {
-                        RectangularHitBoxComponent hitBox = data.getComponent(RectangularHitBoxComponent.class);
-                        boolean hasHitBox = true;
-                        if (hitBox == null)
-                            hasHitBox = false;
+                    String key = tileX + "," + tileY;
+                    if (!existingTiles.contains(key)) {
+                        boolean hasHitBox = data.getComponent(RectangularHitBoxComponent.class) != null;
                         TileEntity newTile = new TileEntity(data.getValue(), tileX, tileY,
-                                data.getComponent(ImageComponent.class).getImagePath(), Globals.tileSize, Globals.tileSize, hasHitBox);
+                                data.getComponent(ImageComponent.class).getImagePath(),
+                                Globals.tileSize, Globals.tileSize, hasHitBox);
                         tileManager.register(newTile);
                     }
                 }

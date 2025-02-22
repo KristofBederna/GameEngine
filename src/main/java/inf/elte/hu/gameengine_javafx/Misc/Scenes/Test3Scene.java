@@ -71,12 +71,12 @@ public class Test3Scene extends GameScene{
     }
 
     private void cameraSetup() {
-        CameraEntity.getInstance(1920, 1080, 30*100, 15*100);
+        CameraEntity.getInstance(1920, 1080, 30*Globals.tileSize, 15*Globals.tileSize);
         CameraEntity.getInstance().attachTo(Globals.playerEntity);
     }
 
     private Entity entitySetup(WorldEntity map) {
-        Globals.playerEntity = new DummyEntity(420, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80);
+        Globals.playerEntity = new DummyEntity(420, 100, "idle", "/assets/images/PlayerIdle.png", 0.8*Globals.tileSize, 0.8*Globals.tileSize);
 
         EntityManager<TileEntity> tileEntityManager = new EntityManager<>();
         for (List<TileEntity> row : map.getComponent(WorldDataComponent.class).getMapData()) {
