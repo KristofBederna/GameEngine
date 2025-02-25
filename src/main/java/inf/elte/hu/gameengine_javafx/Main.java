@@ -2,6 +2,9 @@ package inf.elte.hu.gameengine_javafx;
 
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
+import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
+import inf.elte.hu.gameengine_javafx.Misc.Layers.GameLayer;
+import inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.SystemStartUp;
 import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SceneManagementSystem;
 import javafx.application.Application;
@@ -28,12 +31,13 @@ public class Main extends Application {
 
         BorderPane root = (BorderPane) sceneManagementSystem.getCurrentScene().getRoot();
 
-        // Create StackPane to overlay UI over the game (canvas)
-        StackPane gameAndUI = new StackPane();
-        gameAndUI.getChildren().addAll(Globals.canvas, Globals.uiRoot); // Add canvas and UI root to stack
-        Globals.uiRoot.setFocusTraversable(true);
+        GameCanvas gameCanvas = GameCanvas.createInstance(1920, 1080);
+        uiRoot uiRoot = inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot.getInstance();
+        GameLayer gameLayer = GameLayer.getInstance();
+        gameLayer.getChildren().addAll(gameCanvas, uiRoot);
+        uiRoot.setFocusTraversable(true);
 
-        root.setCenter(gameAndUI); // Set the stacked root in the center of the BorderPane
+        root.setCenter(gameLayer);
 
         stageSetup();
     }

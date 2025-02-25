@@ -2,38 +2,26 @@ package inf.elte.hu.gameengine_javafx.Components.UIComponents;
 
 import javafx.scene.control.TextField;
 
-public class TextFieldComponent extends UIElementComponent {
-    private TextField textField;
-    private double x, y, width, height;
+public class TextFieldComponent extends UIComponent<TextField> {
 
     public TextFieldComponent(double x, double y, double width, double height) {
-        this.textField = new TextField();
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-
-        textField.setLayoutX(x);
-        textField.setLayoutY(y);
-        textField.setPrefSize(width, height);
-    }
-
-    public TextField getTextField() {
-        return textField;
+        super(x, y, width, height);
+        this.uiElement = new TextField();
+        uiElement.setLayoutX(x);
+        uiElement.setLayoutY(y);
+        uiElement.setPrefSize(width, height);
     }
 
     public String getText() {
-        return textField.getText();
+        return uiElement.getText();
     }
 
     public void setText(String text) {
-        textField.setText(text);
+        uiElement.setText(text);
     }
 
-    public void setPosition(double x, double y) {
-        this.x = x;
-        this.y = y;
-        textField.setLayoutX(x);
-        textField.setLayoutY(y);
+    @Override
+    public String getStatus() {
+        return "";
     }
 }

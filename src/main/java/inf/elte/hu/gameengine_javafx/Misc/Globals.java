@@ -9,6 +9,4 @@ import javafx.scene.layout.Pane;
 public class Globals {
     public static int tileSize = 100;
     public static Entity playerEntity = new DummyEntity(400, 100, "idle", "/assets/images/PlayerIdle.png", 0.8*tileSize, 0.8*tileSize);
-    public static Canvas canvas = new Canvas(1920, 1080);
-    public static Pane uiRoot = new Pane();
 }

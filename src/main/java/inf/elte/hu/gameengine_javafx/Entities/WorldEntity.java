@@ -48,17 +48,4 @@ public class WorldEntity extends Entity {
     public static void resetInstance() {
         instance = null;
     }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    protected void addToManager() {
-        EntityManager<WorldEntity> manager = EntityHub.getInstance().getEntityManager((Class<WorldEntity>) this.getClass());
-        if (manager != null) {
-            manager.register(this);
-        } else {
-            manager = new EntityManager<>();
-            EntityHub.getInstance().addEntityManager(WorldEntity.class, manager);
-            manager.register(this);
-        }
-    }
 }

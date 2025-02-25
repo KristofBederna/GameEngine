@@ -2,31 +2,21 @@ package inf.elte.hu.gameengine_javafx.Components.UIComponents;
 
 import javafx.scene.control.Label;
 
-public class LabelComponent extends UIElementComponent {
-    private Label label;
-    private double x, y;
+public class LabelComponent extends UIComponent<Label> {
 
     public LabelComponent(String text, double x, double y) {
-        this.label = new Label(text);
-        this.x = x;
-        this.y = y;
-
-        label.setLayoutX(x);
-        label.setLayoutY(y);
-    }
-
-    public Label getLabel() {
-        return label;
+        super(x, y, 0, 0);  // No width and height as it depends on text size
+        this.uiElement = new Label(text);
+        uiElement.setLayoutX(x);
+        uiElement.setLayoutY(y);
     }
 
     public void setText(String text) {
-        label.setText(text);
+        uiElement.setText(text);
     }
 
-    public void setPosition(double x, double y) {
-        this.x = x;
-        this.y = y;
-        label.setLayoutX(x);
-        label.setLayoutY(y);
+    @Override
+    public String getStatus() {
+        return "";
     }
 }

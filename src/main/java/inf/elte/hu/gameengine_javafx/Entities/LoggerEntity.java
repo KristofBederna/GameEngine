@@ -18,19 +18,6 @@ public class LoggerEntity extends Entity {
         debugInfoTextArea.setWrapText(true);
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    protected void addToManager() {
-        EntityManager<LoggerEntity> manager = EntityHub.getInstance().getEntityManager((Class<LoggerEntity>)this.getClass());
-
-        if (manager != null) {
-            manager.register(this);
-        } else {
-            manager = new EntityManager<>();
-            EntityHub.getInstance().addEntityManager(LoggerEntity.class, manager);
-        }
-    }
-
     public Node getTextArea() {
         return debugInfoTextArea;
     }

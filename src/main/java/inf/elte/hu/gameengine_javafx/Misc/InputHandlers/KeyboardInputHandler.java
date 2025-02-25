@@ -1,6 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Misc.InputHandlers;
 
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
+import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import java.util.HashMap;
@@ -17,8 +18,8 @@ public class KeyboardInputHandler {
     private static final long PRESS_COOLDOWN = 100;
 
     private KeyboardInputHandler() {
-        Globals.canvas.getScene().setOnKeyPressed(this::keyPressed);
-        Globals.canvas.getScene().setOnKeyReleased(this::keyReleased);
+        GameCanvas.getInstance().getScene().setOnKeyPressed(this::keyPressed);
+        GameCanvas.getInstance().getScene().setOnKeyReleased(this::keyReleased);
     }
 
     public static KeyboardInputHandler getInstance() {

@@ -1,5 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Core.Architecture;
 
+import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 
@@ -41,5 +43,16 @@ public abstract class Entity {
         return components;
     }
 
-    protected abstract void addToManager();
+    @SuppressWarnings("unchecked")
+    protected <T extends Entity> void addToManager() {
+        Class<T> entityClass = (Class<T>) this.getClass();
+        EntityManager<T> manager = EntityHub.getInstance().getEntityManager(entityClass);
+
+        if (manager == null) {
+            manager = new EntityManager<>();
+            EntityHub.getInstance().addEntityManager(entityClass, manager);
+        }
+
+        manager.register((T) this);
+    }
 }

@@ -3,6 +3,7 @@ package inf.elte.hu.gameengine_javafx.Misc.InputHandlers;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
+import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -24,7 +25,7 @@ public class MouseInputHandler {
     private static final long PRESS_COOLDOWN = 100;
 
     private MouseInputHandler() {
-        Scene scene = Globals.canvas.getScene();
+        Scene scene = GameCanvas.getInstance().getScene();
         scene.setOnMousePressed(this::mousePressed);
         scene.setOnMouseReleased(this::mouseReleased);
         scene.setOnMouseMoved(this::mouseMoved);

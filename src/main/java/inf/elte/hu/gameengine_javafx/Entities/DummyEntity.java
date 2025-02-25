@@ -39,20 +39,6 @@ public class DummyEntity extends Entity {
         addToManager();
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    protected void addToManager() {
-        EntityManager<DummyEntity> manager = EntityHub.getInstance().getEntityManager((Class<DummyEntity>)this.getClass());
-
-        if (manager != null) {
-            manager.register(this);
-        } else {
-            manager = new EntityManager<>();
-            EntityHub.getInstance().addEntityManager(DummyEntity.class, manager);
-            manager.register(this);
-        }
-    }
-
 
     @Override
     public String toString() {

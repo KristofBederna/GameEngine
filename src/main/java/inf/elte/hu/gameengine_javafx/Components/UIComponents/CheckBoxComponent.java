@@ -2,35 +2,25 @@ package inf.elte.hu.gameengine_javafx.Components.UIComponents;
 
 import javafx.scene.control.CheckBox;
 
-public class CheckBoxComponent extends UIElementComponent {
-    private CheckBox checkBox;
-    private double x, y;
+public class CheckBoxComponent extends UIComponent<CheckBox> {
 
     public CheckBoxComponent(String text, double x, double y) {
-        this.checkBox = new CheckBox(text);
-        this.x = x;
-        this.y = y;
-
-        checkBox.setLayoutX(x);
-        checkBox.setLayoutY(y);
-    }
-
-    public CheckBox getCheckBox() {
-        return checkBox;
+        super(x, y, 0, 0);  // No width and height as it depends on the CheckBox size
+        this.uiElement = new CheckBox(text);
+        uiElement.setLayoutX(x);
+        uiElement.setLayoutY(y);
     }
 
     public boolean isSelected() {
-        return checkBox.isSelected();
+        return uiElement.isSelected();
     }
 
     public void setSelected(boolean selected) {
-        checkBox.setSelected(selected);
+        uiElement.setSelected(selected);
     }
 
-    public void setPosition(double x, double y) {
-        this.x = x;
-        this.y = y;
-        checkBox.setLayoutX(x);
-        checkBox.setLayoutY(y);
+    @Override
+    public String getStatus() {
+        return "";
     }
 }

@@ -2,38 +2,26 @@ package inf.elte.hu.gameengine_javafx.Components.UIComponents;
 
 import javafx.scene.control.Slider;
 
-public class SliderComponent extends UIElementComponent {
-    private Slider slider;
-    private double x, y, width, height;
+public class SliderComponent extends UIComponent<Slider> {
 
     public SliderComponent(double x, double y, double width, double height, double min, double max, double initialValue) {
-        this.slider = new Slider(min, max, initialValue);
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-
-        slider.setLayoutX(x);
-        slider.setLayoutY(y);
-        slider.setPrefSize(width, height);
-    }
-
-    public Slider getSlider() {
-        return slider;
+        super(x, y, width, height);
+        this.uiElement = new Slider(min, max, initialValue);
+        uiElement.setLayoutX(x);
+        uiElement.setLayoutY(y);
+        uiElement.setPrefSize(width, height);
     }
 
     public double getValue() {
-        return slider.getValue();
+        return uiElement.getValue();
     }
 
     public void setValue(double value) {
-        slider.setValue(value);
+        uiElement.setValue(value);
     }
 
-    public void setPosition(double x, double y) {
-        this.x = x;
-        this.y = y;
-        slider.setLayoutX(x);
-        slider.setLayoutY(y);
+    @Override
+    public String getStatus() {
+        return "";
     }
 }

@@ -50,17 +50,4 @@ public class TileEntity extends Entity {
     public void addHitBox(int x, int y, double width, double height) {
         this.addComponent(new RectangularHitBoxComponent(new Point(x, y), width, height));
     }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    protected void addToManager() {
-        EntityManager<TileEntity> manager = EntityHub.getInstance().getEntityManager((Class<TileEntity>)this.getClass());
-
-        if (manager != null) {
-            manager.register(this);
-        } else {
-            manager = new EntityManager<>();
-            EntityHub.getInstance().addEntityManager(TileEntity.class, manager);
-        }
-    }
 }

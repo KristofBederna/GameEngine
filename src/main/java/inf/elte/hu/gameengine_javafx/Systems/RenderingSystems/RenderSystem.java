@@ -16,6 +16,7 @@ import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
+import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -30,7 +31,7 @@ public class RenderSystem extends GameSystem {
 
     @Override
     public void update() {
-        GraphicsContext gc = Globals.canvas.getGraphicsContext2D();
+        GraphicsContext gc = GameCanvas.getInstance().getGraphicsContext2D();
         CameraEntity cameraEntity = CameraEntity.getInstance();
 
         if (gc == null || gc.getCanvas() == null) {
@@ -104,8 +105,8 @@ public class RenderSystem extends GameSystem {
                     }
                 }
             }
-            if (!Globals.canvas.isFocused()) {
-                Globals.canvas.requestFocus();
+            if (!GameCanvas.getInstance().isFocused()) {
+                GameCanvas.getInstance().requestFocus();
             }
         });
     }

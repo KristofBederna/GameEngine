@@ -62,17 +62,4 @@ public class CameraEntity extends Entity  {
     public Entity getOwner() {
         return this.getComponent(ParentComponent.class).getChildren().stream().toList().getFirst();
     }
-
-    @Override
-    protected void addToManager() {
-        EntityManager<CameraEntity> manager = EntityHub.getInstance().getEntityManager((Class<CameraEntity>)this.getClass());
-
-        if (manager != null) {
-            manager.register(this);
-        } else {
-            manager = new EntityManager<>();
-            EntityHub.getInstance().addEntityManager(CameraEntity.class, manager);
-            manager.register(this);
-        }
-    }
 }

@@ -11,12 +11,10 @@ import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Entities.*;
-import inf.elte.hu.gameengine_javafx.Entities.UIEntities.ButtonEntity;
-import inf.elte.hu.gameengine_javafx.Entities.UIEntities.CheckBoxEntity;
-import inf.elte.hu.gameengine_javafx.Entities.UIEntities.LabelEntity;
-import inf.elte.hu.gameengine_javafx.Entities.UIEntities.SliderEntity;
+import inf.elte.hu.gameengine_javafx.Entities.UIEntities.*;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.MouseInputHandler;
+import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.GameLoopStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.ResourceStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
@@ -92,9 +90,12 @@ public class TestScene extends GameScene{
         dummyEntityManager.register(entity2);
         EntityHub.getInstance().addEntityManager(DummyEntity.class, dummyEntityManager);
 
-        ButtonEntity buttonEntity = new ButtonEntity();
-        SliderEntity sliderEntity = new SliderEntity();
-        CheckBoxEntity checkBoxEntity = new CheckBoxEntity();
+        new ButtonEntity();
+        new SliderEntity();
+        new CheckBoxEntity();
+        new LabelEntity();
+        new TextFieldEntity();
+        new ProgressBarEntity();
 
         return entity2;
     }
