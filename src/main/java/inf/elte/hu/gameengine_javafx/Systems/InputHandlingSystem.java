@@ -1,8 +1,8 @@
 package inf.elte.hu.gameengine_javafx.Systems;
 
 import inf.elte.hu.gameengine_javafx.Components.InteractiveComponent;
-import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
-import inf.elte.hu.gameengine_javafx.Components.VelocityComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
@@ -12,11 +12,9 @@ import inf.elte.hu.gameengine_javafx.Misc.Tuple;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class InputHandlingSystem extends GameSystem {
     @Override

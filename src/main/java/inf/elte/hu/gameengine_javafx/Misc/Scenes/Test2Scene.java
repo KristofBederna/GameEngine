@@ -1,6 +1,10 @@
 package inf.elte.hu.gameengine_javafx.Misc.Scenes;
 
 import inf.elte.hu.gameengine_javafx.Components.*;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.StateComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
+import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
@@ -16,7 +20,7 @@ import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.GameLoopStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.ResourceStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.SystemStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
-import inf.elte.hu.gameengine_javafx.Systems.SceneManagementSystem;
+import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SceneManagementSystem;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;

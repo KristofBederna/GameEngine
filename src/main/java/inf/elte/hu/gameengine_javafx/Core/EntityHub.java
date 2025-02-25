@@ -1,8 +1,8 @@
 package inf.elte.hu.gameengine_javafx.Core;
 
-import inf.elte.hu.gameengine_javafx.Components.DimensionComponent;
-import inf.elte.hu.gameengine_javafx.Components.ImageComponent;
-import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
+import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 
@@ -11,7 +11,7 @@ import java.util.*;
 public class EntityHub {
     private static EntityHub instance;
     private final Map<Class<?>, EntityManager<?>> entityManagers;
-    List<Entity> entities = new ArrayList<>();
+    final List<Entity> entities = new ArrayList<>();
 
     private EntityHub() {
         entityManagers = new HashMap<>();
@@ -87,6 +87,18 @@ public class EntityHub {
             }
         }
         return visibleEntities;
+    }
+
+    public List<Entity> getEntitiesWithComponent(Class<? extends Entity> type) {
+        List<Entity> entitiesWithComponent = new ArrayList<>();
+        synchronized (entities) {
+            for (Entity entity : entities) {
+                if (entity.getAllComponents().containsKey(type)) {
+                    entitiesWithComponent.add(entity);
+                }
+            }
+        }
+        return entitiesWithComponent;
     }
 
 }

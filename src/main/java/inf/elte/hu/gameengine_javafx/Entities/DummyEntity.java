@@ -1,18 +1,22 @@
 package inf.elte.hu.gameengine_javafx.Entities;
 
 import inf.elte.hu.gameengine_javafx.Components.*;
+import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.StateComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
+import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.AnimationComponent;
+import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
+import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ZIndexComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
-import inf.elte.hu.gameengine_javafx.Maths.Geometry.ComplexShape;
-import inf.elte.hu.gameengine_javafx.Maths.Geometry.NSidedShape;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Maths.Geometry.Triangle;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class DummyEntity extends Entity {

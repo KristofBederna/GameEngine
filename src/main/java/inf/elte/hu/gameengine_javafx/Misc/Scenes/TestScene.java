@@ -1,23 +1,26 @@
 package inf.elte.hu.gameengine_javafx.Misc.Scenes;
 
 import inf.elte.hu.gameengine_javafx.Components.*;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.StateComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
+import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
-import inf.elte.hu.gameengine_javafx.Entities.DummyEntity;
-import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
-import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
-import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
+import inf.elte.hu.gameengine_javafx.Entities.*;
+import inf.elte.hu.gameengine_javafx.Entities.UIEntities.ButtonEntity;
+import inf.elte.hu.gameengine_javafx.Entities.UIEntities.CheckBoxEntity;
+import inf.elte.hu.gameengine_javafx.Entities.UIEntities.LabelEntity;
+import inf.elte.hu.gameengine_javafx.Entities.UIEntities.SliderEntity;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
-import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.KeyboardInputHandler;
 import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.MouseInputHandler;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.GameLoopStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.ResourceStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
-import inf.elte.hu.gameengine_javafx.Systems.InputHandlingSystem;
-import inf.elte.hu.gameengine_javafx.Systems.SceneManagementSystem;
+import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SceneManagementSystem;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -88,6 +91,10 @@ public class TestScene extends GameScene{
         DummyEntity entity2 = new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80);
         dummyEntityManager.register(entity2);
         EntityHub.getInstance().addEntityManager(DummyEntity.class, dummyEntityManager);
+
+        ButtonEntity buttonEntity = new ButtonEntity();
+        SliderEntity sliderEntity = new SliderEntity();
+        CheckBoxEntity checkBoxEntity = new CheckBoxEntity();
 
         return entity2;
     }

@@ -1,6 +1,10 @@
 package inf.elte.hu.gameengine_javafx.Entities;
 
-import inf.elte.hu.gameengine_javafx.Components.*;
+import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
+import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ZIndexComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;

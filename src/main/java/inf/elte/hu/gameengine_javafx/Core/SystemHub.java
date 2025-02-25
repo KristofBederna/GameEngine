@@ -1,7 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Core;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
-import inf.elte.hu.gameengine_javafx.Systems.SceneManagementSystem;
+import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SceneManagementSystem;
 
 import java.util.*;
 

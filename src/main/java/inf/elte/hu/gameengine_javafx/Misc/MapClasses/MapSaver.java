@@ -1,6 +1,6 @@
 package inf.elte.hu.gameengine_javafx.Misc.MapClasses;
-import inf.elte.hu.gameengine_javafx.Components.WorldDataComponent;
-import inf.elte.hu.gameengine_javafx.Components.WorldDimensionComponent;
+import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
+import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionComponent;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 

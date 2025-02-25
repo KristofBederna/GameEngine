@@ -1,13 +1,12 @@
 package inf.elte.hu.gameengine_javafx.Entities;
 
 import inf.elte.hu.gameengine_javafx.Components.FilePathComponent;
-import inf.elte.hu.gameengine_javafx.Components.TileSetComponent;
-import inf.elte.hu.gameengine_javafx.Components.WorldDataComponent;
-import inf.elte.hu.gameengine_javafx.Components.WorldDimensionComponent;
+import inf.elte.hu.gameengine_javafx.Components.WorldComponents.TileSetComponent;
+import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
+import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
-import inf.elte.hu.gameengine_javafx.Misc.MapClasses.TileLoader;
 
 public class WorldEntity extends Entity {
     private static WorldEntity instance;

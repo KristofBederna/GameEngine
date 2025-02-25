@@ -1,6 +1,6 @@
 package inf.elte.hu.gameengine_javafx.Misc.InputHandlers;
 
-import inf.elte.hu.gameengine_javafx.Components.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import javafx.scene.Scene;

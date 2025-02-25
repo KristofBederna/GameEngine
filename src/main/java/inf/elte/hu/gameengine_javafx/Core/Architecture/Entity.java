@@ -1,5 +1,8 @@
 package inf.elte.hu.gameengine_javafx.Core.Architecture;
 
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.Pane;
+
 import java.util.HashMap;
 import java.util.Map;
 
