@@ -25,6 +25,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 
 import java.util.List;
+import java.util.Objects;
 
 
 public class TestScene extends GameScene{
@@ -35,6 +36,7 @@ public class TestScene extends GameScene{
 
     @Override
     public void setup() {
+        getStylesheets().add(Objects.requireNonNull(getClass().getResource("/assets/styles/styles.css")).toExternalForm());
         new ResourceStartUp();
         WorldEntity map = WorldEntity.getInstance(30, 15, "/assets/maps/testMap.txt", "/assets/tileSets/testTiles2.txt");
         Entity entity2 = entitySetup(map);
@@ -90,7 +92,8 @@ public class TestScene extends GameScene{
         dummyEntityManager.register(entity2);
         EntityHub.getInstance().addEntityManager(DummyEntity.class, dummyEntityManager);
 
-        new ButtonEntity();
+        ButtonEntity be = new ButtonEntity();
+        be.addStyleClass("my-custom-button");
         new SliderEntity();
         new CheckBoxEntity();
         new LabelEntity();
