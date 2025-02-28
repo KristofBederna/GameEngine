@@ -71,7 +71,7 @@ public class PathfindingSystem extends GameSystem {
             if (position.compareCoordinates(end)) {
                 System.out.println("entity reached goal");
                 pathfindingComponent.setDone();
-                pathfindingComponent.setNeighbours(getNeighbours(end));
+                pathfindingComponent.setNeighbours(pathfindingComponent.getNeighbours(end));
             }
         }
     }
@@ -82,7 +82,7 @@ public class PathfindingSystem extends GameSystem {
         path.add(start);
         while (path.getLast().distanceTo(end) > 0.1) {
             Point current = path.getLast();
-            List<Point> neighbours = getNeighbours(current);
+            List<Point> neighbours = entity.getComponent(PathfindingComponent.class).getNeighbours(current);
             entity.getComponent(PathfindingComponent.class).setNeighbours(neighbours);
             entity.getComponent(PathfindingComponent.class).setCurrent(current);
             Point next = selectNextNode(current, neighbours, end, path);
@@ -119,51 +119,4 @@ public class PathfindingSystem extends GameSystem {
         boolean found = path.contains(point);
         return !found;
     }
-
-    private List<Point> getNeighbours(Point current) {
-        List<Point> neighbours = new ArrayList<>();
-        MapMeshComponent mapMeshComponent = WorldEntity.getInstance().getComponent(MapMeshComponent.class);
-
-        int currentX = (int) Math.floor(current.getX() / Globals.tileSize);
-        int currentY = (int) Math.floor(current.getY() / Globals.tileSize);
-
-        int worldWidth = (int) WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldWidth();
-        int worldHeight = (int) WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldHeight();
-
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                if (i == 0 && j == 0) {
-                    continue; // Skip the current node
-                }
-
-                int neighbourX = currentX + i;
-                int neighbourY = currentY + j;
-
-
-                if (neighbourX < 0 || neighbourX >= worldWidth || neighbourY < 0 || neighbourY >= worldHeight) {
-                    continue; // Skip out-of-bounds neighbors
-                }
-
-                Point neighbour = mapMeshComponent.getMapCoordinate(neighbourX, neighbourY);
-                if (neighbour == null) {
-                    continue; // Skip if there's no valid point in the map mesh
-                }
-
-                boolean hasBlockingHitBox = WorldEntity.getInstance().getComponent(WorldDataComponent.class)
-                        .getElement(neighbourX, neighbourY)
-                        .getAllComponents()
-                        .keySet()
-                        .stream()
-                        .anyMatch(HitBoxComponent.class::isAssignableFrom);
-
-                if (hasBlockingHitBox) {
-                    continue; // Skip if blocked
-                }
-
-                neighbours.add(neighbour);
-            }
-        }
-        return neighbours;
-    }
-
 }
