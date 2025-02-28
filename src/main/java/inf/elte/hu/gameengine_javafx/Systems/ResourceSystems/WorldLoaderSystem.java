@@ -51,11 +51,12 @@ public class WorldLoaderSystem extends GameSystem {
                     }
                     if (value == 9) {
                         tile = new TileEntity(value,x* Globals.tileSize, y*Globals.tileSize, "/assets/tiles/" + name+".png", Globals.tileSize, Globals.tileSize);
+                        meshRow.add(new Point(tile.getComponent(CentralMassComponent.class).getCentralX(), tile.getComponent(CentralMassComponent.class).getCentralY()));
                     } else {
                         tile = new TileEntity(value,x*Globals.tileSize, y*Globals.tileSize, "/assets/tiles/" + name+".png", Globals.tileSize, Globals.tileSize, true);
+                        meshRow.add(null);
                     }
                     worldRow.add(tile);
-                    meshRow.add(new Point(tile.getComponent(CentralMassComponent.class).getCentralX(), tile.getComponent(CentralMassComponent.class).getCentralY()));
                 }
                 map.getComponent(MapMeshComponent.class).addRow(meshRow);
                 map.getComponent(WorldDataComponent.class).addRow(worldRow);

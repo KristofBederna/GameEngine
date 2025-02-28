@@ -21,4 +21,12 @@ public class CentralMassComponent extends Component {
     public String getStatus() {
         return "";
     }
+
+    public void setCentralX(double centralX) {
+        this.centralX = centralX;
+    }
+
+    public void setCentralY(double centralY) {
+        this.centralY = centralY;
+    }
 }

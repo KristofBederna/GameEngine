@@ -1,10 +1,12 @@
 package inf.elte.hu.gameengine_javafx.Components;
 
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
@@ -69,10 +71,10 @@ public class PathfindingComponent extends Component {
         end = point;
     }
 
-    public void resetPathing() {
+    public void resetPathing(Entity entity) {
         path = null;
         neighbours = null;
-        start = current;
+        start = new Point(entity.getComponent(CentralMassComponent.class).getCentralX(), entity.getComponent(CentralMassComponent.class).getCentralY());
     }
 
     public List<Point> getNeighbours(Point current) {
@@ -103,18 +105,6 @@ public class PathfindingComponent extends Component {
                 if (neighbour == null) {
                     continue; // Skip if there's no valid point in the map mesh
                 }
-
-                boolean hasBlockingHitBox = WorldEntity.getInstance().getComponent(WorldDataComponent.class)
-                        .getElement(neighbourX, neighbourY)
-                        .getAllComponents()
-                        .keySet()
-                        .stream()
-                        .anyMatch(HitBoxComponent.class::isAssignableFrom);
-
-                if (hasBlockingHitBox) {
-                    continue; // Skip if blocked
-                }
-
                 neighbours.add(neighbour);
             }
         }

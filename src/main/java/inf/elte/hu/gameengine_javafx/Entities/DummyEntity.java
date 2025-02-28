@@ -35,7 +35,7 @@ public class DummyEntity extends Entity {
         this.addComponent(new ZIndexComponent(2));
         this.addComponent(new ParentComponent());
         this.addComponent(new CentralMassComponent((double) x + width/2, (double) y+height/2));
-        this.addComponent(new PathfindingComponent(new Point(this.getComponent(CentralMassComponent.class).getCentralX(), this.getComponent(CentralMassComponent.class).getCentralY()), new Point(x+(Globals.tileSize*11)+50, y+(Globals.tileSize*7)+50)));
+        this.addComponent(new PathfindingComponent(new Point(this.getComponent(CentralMassComponent.class).getCentralX(), this.getComponent(CentralMassComponent.class).getCentralY()), new Point(x+(Globals.tileSize*21)+50, y+(Globals.tileSize*7)+50)));
         addToManager();
     }
 

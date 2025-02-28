@@ -5,6 +5,7 @@ import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.StateComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
+import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
@@ -114,33 +115,14 @@ public class TestScene extends GameScene{
 
         dummyInteractiveComponent.mapInput(KeyCode.F4, 1000, () -> {
             Random random = new Random();
-            int x, y;
-            boolean hasBlockingHitBox;
-
-            do {
-                x = random.nextInt(1, 29) * 100 + 50;
-                y = random.nextInt(1, 14) * 100 + 50;
-
-                var worldData = WorldEntity.getInstance().getComponent(WorldDataComponent.class);
-                var element = worldData.getElement((int) Math.floor(x/Globals.tileSize), (int) Math.floor(y/Globals.tileSize));
-
-                if (element == null) {
-                    hasBlockingHitBox = true; // Skip this point if it doesn't exist in the world
-                    continue;
-                }
-
-                hasBlockingHitBox = element.getAllComponents()
-                        .keySet()
-                        .stream()
-                        .anyMatch(HitBoxComponent.class::isAssignableFrom);
-
-            } while (hasBlockingHitBox); // Repeat until a valid (x, y) is found
-
-            // Ensure PathfindingComponent exists
+            Point target = null;
+            while (target == null) {
+                target = WorldEntity.getInstance().getComponent(MapMeshComponent.class).getMapCoordinates().get(random.nextInt(15)).get(random.nextInt(30));
+            }
             PathfindingComponent pathfinding = entity2.getComponent(PathfindingComponent.class);
             if (pathfinding != null && pathfinding.getEnd() != null) {
-                pathfinding.getEnd().setCoordinates(x, y);
-                pathfinding.resetPathing();
+                pathfinding.setEnd(target);
+                pathfinding.resetPathing(entity2);
             }
         });
     }

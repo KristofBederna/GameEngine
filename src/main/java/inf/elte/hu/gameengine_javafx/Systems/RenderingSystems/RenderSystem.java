@@ -116,6 +116,7 @@ public class RenderSystem extends GameSystem {
             if (meshComponent != null) {
                 for (List<Point> row : meshComponent.getMapCoordinates()) {
                     for (Point point : row) {
+                        if (point == null) continue;
                         point.render(gc, 5);
                     }
                 }
@@ -125,7 +126,7 @@ public class RenderSystem extends GameSystem {
                 if (pathfindingComponent.getPath() == null) {
                     continue;
                 }
-                if (pathfindingComponent.getPath().getFirst() == null) {
+                if (pathfindingComponent.getPath().isEmpty()) {
                     continue;
                 }
                 for (Point neighbour : pathfindingComponent.getNeighbours(pathfindingComponent.getPath().getFirst())) {

@@ -2,23 +2,15 @@ package inf.elte.hu.gameengine_javafx.Systems;
 
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.PathfindingComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
-import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
-import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
-import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
-import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
-import inf.elte.hu.gameengine_javafx.Maths.Geometry.Edge;
-import inf.elte.hu.gameengine_javafx.Maths.Geometry.Line;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Misc.Globals;
-import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class PathfindingSystem extends GameSystem {
     @Override
@@ -33,90 +25,73 @@ public class PathfindingSystem extends GameSystem {
             PathfindingComponent pathfindingComponent = entity.getComponent(PathfindingComponent.class);
             Point start = pathfindingComponent.getStart();
             Point end = pathfindingComponent.getEnd();
-            if (start == null && end == null) {
-                continue;
-            }
-            boolean hasHitBox = WorldEntity.getInstance().getComponent(WorldDataComponent.class)
-                    .getElement((int) end.getX() / Globals.tileSize, (int) end.getY() / Globals.tileSize)
-                    .getAllComponents().keySet()
-                    .stream()
-                    .anyMatch(HitBoxComponent.class::isAssignableFrom);
-            if (hasHitBox) {
-                System.out.println("Pathfinder end point cannot be reached inside a hit box");
+            if (start == null || end == null) {
                 continue;
             }
             if (pathfindingComponent.getPath() == null) {
                 pathfindingComponent.setPath(selectPath(start, end, entity));
-            }
-            if (pathfindingComponent.getPath() != null) {
-
+            } else {
                 if (entity.getComponent(VelocityComponent.class) == null) {
                     System.out.println("Entity has no velocity component");
                     continue;
                 }
-                Point node = entity.getComponent(PathfindingComponent.class).getPath().getFirst();
-                Point position = new Point(entity.getComponent(PositionComponent.class).getGlobalX(), entity.getComponent(PositionComponent.class).getGlobalY());
-                entity.getComponent(VelocityComponent.class).moveTowards(node, entity);
-                if (position.compareCoordinates(node)) {
-                    System.out.println("entity reached checkpoint");
-                    entity.getComponent(PathfindingComponent.class).getPath().removeFirst();
+                if (!pathfindingComponent.getPath().isEmpty()) {
+                    Point node = pathfindingComponent.getPath().getFirst();
+                    Point position = new Point(entity.getComponent(CentralMassComponent.class).getCentralX(),
+                            entity.getComponent(CentralMassComponent.class).getCentralY());
+                    entity.getComponent(VelocityComponent.class).moveTowards(node, entity);
+                    if (position.compareCoordinates(node)) {
+                        System.out.println("Entity reached checkpoint");
+                        pathfindingComponent.getPath().removeFirst();
+                    }
                 }
-                if (entity.getComponent(PathfindingComponent.class).getPath().isEmpty()) {
+                if (pathfindingComponent.getPath().isEmpty()) {
                     entity.getComponent(VelocityComponent.class).stopMovement();
                 }
-
-            }
-            Point position = new Point(entity.getComponent(PositionComponent.class).getGlobalX(), entity.getComponent(PositionComponent.class).getGlobalY());
-
-            if (position.compareCoordinates(end)) {
-                System.out.println("entity reached goal");
-                pathfindingComponent.setDone();
-                pathfindingComponent.setNeighbours(pathfindingComponent.getNeighbours(end));
             }
         }
     }
 
     private List<Point> selectPath(Point start, Point end, Entity entity) {
-        System.out.println("This should only run once");
         List<Point> path = new ArrayList<>();
-        path.add(start);
-        while (path.getLast().distanceTo(end) > 0.1) {
-            Point current = path.getLast();
-            List<Point> neighbours = entity.getComponent(PathfindingComponent.class).getNeighbours(current);
-            entity.getComponent(PathfindingComponent.class).setNeighbours(neighbours);
-            entity.getComponent(PathfindingComponent.class).setCurrent(current);
-            Point next = selectNextNode(current, neighbours, end, path);
-            if (next == null) {
-                return path;
+        Map<Point, Point> cameFrom = new HashMap<>(); // To reconstruct the path
+        PriorityQueue<Point> openSet = new PriorityQueue<>(Comparator.comparingDouble(p -> p.distanceTo(end)));
+        Set<Point> closedSet = new HashSet<>();
+        Map<Point, Double> gScore = new HashMap<>();
+
+        openSet.add(start);
+        gScore.put(start, 0.0);
+
+        while (!openSet.isEmpty()) {
+            Point current = openSet.poll();
+            if (current.compareCoordinates(end)) {
+                return reconstructPath(cameFrom, current);
             }
-            path.add(next);
+
+            closedSet.add(current);
+            List<Point> neighbours = entity.getComponent(PathfindingComponent.class).getNeighbours(current);
+
+            for (Point neighbor : neighbours) {
+                if (closedSet.contains(neighbor)) continue;
+
+                double tentativeGScore = gScore.getOrDefault(current, Double.MAX_VALUE) + current.distanceTo(neighbor);
+
+                if (!gScore.containsKey(neighbor) || tentativeGScore < gScore.get(neighbor)) {
+                    cameFrom.put(neighbor, current);
+                    gScore.put(neighbor, tentativeGScore);
+                    if (!openSet.contains(neighbor)) openSet.add(neighbor);
+                }
+            }
+        }
+        return path; // No valid path found
+    }
+
+    private List<Point> reconstructPath(Map<Point, Point> cameFrom, Point current) {
+        List<Point> path = new LinkedList<>();
+        while (cameFrom.containsKey(current)) {
+            path.add(0, current);
+            current = cameFrom.get(current);
         }
         return path;
-    }
-
-    private Point selectNextNode(Point current, List<Point> neighbours, Point end, List<Point> path) {
-        if (neighbours.isEmpty()) {
-            return current;
-        }
-        double minDistance = current.distanceTo(end);
-        int minIdx = -1;
-        for (int i = 0; i < neighbours.size(); i++) {
-            if (end.distanceTo(neighbours.get(i)) < minDistance && notBackTracking(neighbours.get(i), path)) {
-                minDistance = end.distanceTo(neighbours.get(i));
-                minIdx = i;
-            }
-        }
-        if (minIdx == -1) {
-            return current;
-        }
-        return neighbours.get(minIdx);
-    }
-
-    private boolean notBackTracking(Point point, List<Point> path) {
-        if (path == null) {
-            return true;
-        }
-        boolean found = path.contains(point);
-        return !found;
     }
 }

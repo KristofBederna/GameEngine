@@ -5,6 +5,8 @@ import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.ComplexHitBoxCo
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.NSidedHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.TriangularHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
@@ -33,6 +35,14 @@ public class MovementSystem extends GameSystem {
 
                 position.setLocalX(position.getLocalX() + velocity.getDx(), entity);
                 position.setLocalY(position.getLocalY() + velocity.getDy(), entity);
+
+                if (entity.getComponent(DimensionComponent.class) != null) {
+                    var dimension = entity.getComponent(DimensionComponent.class);
+                    if (entity.getComponent(CentralMassComponent.class) != null) {
+                        entity.getComponent(CentralMassComponent.class).setCentralX(position.getGlobalX() + dimension.getWidth()/2);
+                        entity.getComponent(CentralMassComponent.class).setCentralY(position.getGlobalY() + dimension.getHeight()/2);
+                    }
+                }
 
                 position.updateGlobalPosition(entity);
                 RectangularHitBoxComponent hitBox = entity.getComponent(RectangularHitBoxComponent.class);

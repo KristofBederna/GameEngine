@@ -27,8 +27,8 @@ public class VelocityComponent extends Component {
     }
 
     public void moveTowards(Point node, Entity entity) {
-        double currentX = entity.getComponent(PositionComponent.class).getGlobalX();
-        double currentY = entity.getComponent(PositionComponent.class).getGlobalY();
+        double currentX = entity.getComponent(CentralMassComponent.class).getCentralX();
+        double currentY = entity.getComponent(CentralMassComponent.class).getCentralY();
 
         double deltaX = node.getX() - currentX;
         double deltaY = node.getY() - currentY;
