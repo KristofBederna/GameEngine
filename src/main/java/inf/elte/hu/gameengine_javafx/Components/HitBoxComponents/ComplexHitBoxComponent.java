@@ -5,7 +5,7 @@ import inf.elte.hu.gameengine_javafx.Maths.Geometry.ComplexShape;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import java.util.List;
 
-public class ComplexHitBoxComponent extends Component {
+public class ComplexHitBoxComponent extends HitBoxComponent {
     private ComplexShape hitBox;
 
     public ComplexHitBoxComponent(List<Point> points) {

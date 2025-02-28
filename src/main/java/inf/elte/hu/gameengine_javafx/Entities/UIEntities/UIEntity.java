@@ -3,6 +3,7 @@ package inf.elte.hu.gameengine_javafx.Entities.UIEntities;
 import inf.elte.hu.gameengine_javafx.Components.UIComponents.UIComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot;
+import javafx.application.Platform;
 import javafx.scene.layout.Region;
 
 import java.util.Objects;
@@ -15,11 +16,15 @@ public abstract class UIEntity<T extends UIComponent<?>> extends Entity {
     }
 
     public void addToUI() {
-        uiRoot.getInstance().getChildren().add(uiComponent.getNode());
+        Platform.runLater(() -> {
+            uiRoot.getInstance().getChildren().add(uiComponent.getNode());
+        });
     }
 
     public void removeFromUI() {
-        uiRoot.getInstance().getChildren().remove(uiComponent.getNode());
+        Platform.runLater(() -> {
+            uiRoot.getInstance().getChildren().remove(uiComponent.getNode());
+        });
     }
 
     public void applyStyle(String style) {

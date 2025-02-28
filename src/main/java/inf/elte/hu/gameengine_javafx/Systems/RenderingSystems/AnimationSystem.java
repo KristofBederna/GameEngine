@@ -8,6 +8,7 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Entities.DummyEntity;
+import inf.elte.hu.gameengine_javafx.Entities.PlayerEntity;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,9 @@ public class AnimationSystem extends GameSystem {
             ImageComponent img = entity.getComponent(ImageComponent.class);
             if (entity.getClass() == DummyEntity.class) {
                 ((DummyEntity) entity).setAnimationState();
+            }
+            else if (entity.getClass() == PlayerEntity.class) {
+                ((PlayerEntity) entity).setAnimationState();
             }
             AnimationComponent animation = entity.getComponent(AnimationComponent.class);
 

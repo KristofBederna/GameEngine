@@ -5,7 +5,7 @@ import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Rectangle;
 
 
-public class RectangularHitBoxComponent extends Component {
+public class RectangularHitBoxComponent extends HitBoxComponent {
     private Rectangle hitBox;
     public RectangularHitBoxComponent(Point topLeft, Point topRight, Point bottomLeft, Point bottomRight) {
         this.hitBox = new Rectangle(topLeft, topRight, bottomLeft, bottomRight);

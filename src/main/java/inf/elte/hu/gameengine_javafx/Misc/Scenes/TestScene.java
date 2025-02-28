@@ -12,9 +12,11 @@ import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Entities.*;
 import inf.elte.hu.gameengine_javafx.Entities.UIEntities.*;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.MouseInputHandler;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
+import inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.GameLoopStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.ResourceStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
@@ -38,8 +40,8 @@ public class TestScene extends GameScene{
     public void setup() {
         getStylesheets().add(Objects.requireNonNull(getClass().getResource("/assets/styles/styles.css")).toExternalForm());
         new ResourceStartUp();
-        WorldEntity map = WorldEntity.getInstance(30, 15, "/assets/maps/testMap.txt", "/assets/tileSets/testTiles2.txt");
-        Entity entity2 = entitySetup(map);
+        WorldEntity.getInstance(30, 15, "/assets/maps/testMap.txt", "/assets/tileSets/testTiles2.txt");
+        Entity entity2 = entitySetup();
         cameraSetup();
         interactionSetup(entity2);
         new GameLoopStartUp();
@@ -58,9 +60,13 @@ public class TestScene extends GameScene{
         if (dummyEntityManager != null) {
             dummyEntityManager.unloadAll();
         }
+        EntityManager<PlayerEntity> playerEntityManager = entityHub.getEntityManager(PlayerEntity.class);
+        if (playerEntityManager != null) {
+            playerEntityManager.unloadAll();
+        }
         WorldEntity.resetInstance();
-        if (Globals.playerEntity != null) {
-            InteractiveComponent interactiveComponent = Globals.playerEntity.getComponent(InteractiveComponent.class);
+        if (EntityHub.getInstance().getEntitiesWithComponent(PlayerComponent.class).getFirst() != null) {
+            InteractiveComponent interactiveComponent = EntityHub.getInstance().getEntitiesWithComponent(PlayerComponent.class).getFirst().getComponent(InteractiveComponent.class);
             if (interactiveComponent != null) {
                 interactiveComponent.clearMappings();
             }
@@ -69,29 +75,17 @@ public class TestScene extends GameScene{
         SystemHub.getInstance().shutDownSystems();
         GameLoopStartUp.stopGameLoop();
         ResourceHub.getInstance().clearResources();
-        Globals.playerEntity = null;
+        uiRoot.getInstance().unloadAll();
     }
 
     private void cameraSetup() {
         CameraEntity.getInstance(1920, 1080, 30*Globals.tileSize, 15*Globals.tileSize);
-        CameraEntity.getInstance().attachTo(Globals.playerEntity);
+        CameraEntity.getInstance().attachTo(EntityHub.getInstance().getEntitiesWithComponent(PlayerComponent.class).getFirst());
     }
 
-    private Entity entitySetup(WorldEntity map) {
-        Globals.playerEntity = new DummyEntity(420, 100, "idle", "/assets/images/PlayerIdle.png", 0.8*Globals.tileSize, 0.8*Globals.tileSize);
-
-        EntityManager<TileEntity> tileEntityManager = new EntityManager<>();
-        for (List<TileEntity> row : map.getComponent(WorldDataComponent.class).getMapData()) {
-            tileEntityManager.registerAll(row);
-        }
-        EntityHub.getInstance().addEntityManager(TileEntity.class, tileEntityManager);
-
-        EntityManager<DummyEntity> dummyEntityManager = new EntityManager<>();
-        dummyEntityManager.register((DummyEntity) Globals.playerEntity);
+    private Entity entitySetup() {
+        new PlayerEntity(420, 100, "idle", "/assets/images/PlayerIdle.png", 0.8*Globals.tileSize, 0.8*Globals.tileSize);
         DummyEntity entity2 = new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80);
-        dummyEntityManager.register(entity2);
-        EntityHub.getInstance().addEntityManager(DummyEntity.class, dummyEntityManager);
-
         ButtonEntity be = new ButtonEntity();
         be.addStyleClass("my-custom-button");
         new SliderEntity();
@@ -104,15 +98,16 @@ public class TestScene extends GameScene{
     }
 
     private void interactionSetup(Entity entity2) {
-        InteractiveComponent dummyInteractiveComponent = Globals.playerEntity.getComponent(InteractiveComponent.class);
-        dummyInteractiveComponent.mapInput(KeyCode.UP, () -> moveUp(Globals.playerEntity), () -> counterVertical(Globals.playerEntity));
-        dummyInteractiveComponent.mapInput(KeyCode.DOWN, () -> moveDown(Globals.playerEntity), () -> counterVertical(Globals.playerEntity));
-        dummyInteractiveComponent.mapInput(KeyCode.LEFT, () -> moveLeft(Globals.playerEntity), () -> counterHorizontal(Globals.playerEntity));
-        dummyInteractiveComponent.mapInput(KeyCode.RIGHT, () -> moveRight(Globals.playerEntity), () -> counterHorizontal(Globals.playerEntity));
-        dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> {Globals.playerEntity.getComponent(PositionComponent.class).setLocalX(MouseInputHandler.getInstance().getMouseX(), Globals.playerEntity); Globals.playerEntity.getComponent(PositionComponent.class).setLocalY(MouseInputHandler.getInstance().getMouseY(), Globals.playerEntity);});
+        PlayerEntity player = (PlayerEntity)EntityHub.getInstance().getEntitiesWithComponent(PlayerComponent.class).getFirst();
+        InteractiveComponent dummyInteractiveComponent = player.getComponent(InteractiveComponent.class);
+        dummyInteractiveComponent.mapInput(KeyCode.UP, () -> moveUp(player), () -> counterVertical(player));
+        dummyInteractiveComponent.mapInput(KeyCode.DOWN, () -> moveDown(player), () -> counterVertical(player));
+        dummyInteractiveComponent.mapInput(KeyCode.LEFT, () -> moveLeft(player), () -> counterHorizontal(player));
+        dummyInteractiveComponent.mapInput(KeyCode.RIGHT, () -> moveRight(player), () -> counterHorizontal(player));
+        dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> {player.getComponent(PositionComponent.class).setLocalX(MouseInputHandler.getInstance().getMouseX(), player); player.getComponent(PositionComponent.class).setLocalY(MouseInputHandler.getInstance().getMouseY(), player);});
         //dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> System.out.println(MouseInputHandler.getInstance().getMouseX() + " " + MouseInputHandler.getInstance().getMouseY()));
-        dummyInteractiveComponent.mapInput(MouseButton.SECONDARY, () -> Globals.playerEntity.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion"), ()->Globals.playerEntity.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
-        dummyInteractiveComponent.mapInput(KeyCode.F2, () -> CameraEntity.getInstance().attachTo(entity2), () -> CameraEntity.getInstance().attachTo(Globals.playerEntity));
+        dummyInteractiveComponent.mapInput(MouseButton.SECONDARY, () -> player.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion"), ()->player.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
+        dummyInteractiveComponent.mapInput(KeyCode.F2, () -> CameraEntity.getInstance().attachTo(entity2), () -> CameraEntity.getInstance().attachTo(player));
         dummyInteractiveComponent.mapInput(KeyCode.F3, () -> SystemHub.getInstance().getSystem(SceneManagementSystem.class).requestSceneChange(new Test2Scene(new BorderPane(), 1920, 1080)));
     }
 

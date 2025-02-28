@@ -3,6 +3,7 @@ package inf.elte.hu.gameengine_javafx.Core;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 
@@ -89,7 +90,7 @@ public class EntityHub {
         return visibleEntities;
     }
 
-    public List<Entity> getEntitiesWithComponent(Class<? extends Entity> type) {
+    public List<Entity> getEntitiesWithComponent(Class<? extends Component> type) {
         List<Entity> entitiesWithComponent = new ArrayList<>();
         synchronized (entities) {
             for (Entity entity : entities) {

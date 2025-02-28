@@ -1,5 +1,6 @@
 package inf.elte.hu.gameengine_javafx.Misc.Layers;
 
+import javafx.application.Platform;
 import javafx.scene.layout.Pane;
 
 public class uiRoot extends Pane {
@@ -14,5 +15,9 @@ public class uiRoot extends Pane {
             instance = new uiRoot();
         }
         return instance;
+    }
+
+    public void unloadAll() {
+        Platform.runLater(()->this.getChildren().clear());
     }
 }

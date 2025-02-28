@@ -3,7 +3,7 @@ package inf.elte.hu.gameengine_javafx.Components.HitBoxComponents;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Triangle;
 
-public class TriangularHitBoxComponent extends Component {
+public class TriangularHitBoxComponent extends HitBoxComponent {
     private Triangle hitBox;
 
     public TriangularHitBoxComponent(Triangle hitBox) {
