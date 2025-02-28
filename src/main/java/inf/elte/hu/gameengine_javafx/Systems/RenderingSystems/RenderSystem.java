@@ -8,18 +8,22 @@ import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComp
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ZIndexComponent;
+import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
+import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 import java.util.List;
 
@@ -102,6 +106,14 @@ public class RenderSystem extends GameSystem {
                     ComplexHitBoxComponent hitBox4 = entity.getComponent(ComplexHitBoxComponent.class);
                     if (hitBox4 != null) {
                         hitBox4.getHitBox().render(gc);
+                    }
+                }
+            }
+            MapMeshComponent meshComponent = WorldEntity.getInstance().getComponent(MapMeshComponent.class);
+            if (meshComponent != null) {
+                for (List<Point> row : meshComponent.getMapCoordinates()) {
+                    for (Point point : row) {
+                        point.render(gc, 5);
                     }
                 }
             }

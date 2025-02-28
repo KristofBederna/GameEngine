@@ -1,5 +1,10 @@
 package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+
 public class Point {
     private double x, y;
 
@@ -33,5 +38,15 @@ public class Point {
         double dx = this.x - other.getX();
         double dy = this.y - other.getY();
         return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    public void render(GraphicsContext gc, double radius) {
+        CameraEntity cameraEntity = CameraEntity.getInstance();
+
+        gc.setFill(Color.BLUE);
+        double x = this.getX() - cameraEntity.getComponent(PositionComponent.class).getGlobalX();
+        double y = this.getY() - cameraEntity.getComponent(PositionComponent.class).getGlobalY();
+
+        gc.fillOval(x - radius, y - radius, radius * 2, radius * 2);
     }
 }

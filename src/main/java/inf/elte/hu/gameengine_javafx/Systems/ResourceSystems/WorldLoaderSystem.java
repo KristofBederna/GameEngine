@@ -2,9 +2,11 @@ package inf.elte.hu.gameengine_javafx.Systems.ResourceSystems;
 
 import inf.elte.hu.gameengine_javafx.Components.*;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
+import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.TileSetComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
@@ -13,6 +15,7 @@ import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.MapSaver;
 
@@ -38,18 +41,23 @@ public class WorldLoaderSystem extends GameSystem {
             for (int y = 0; y < height; y++) {
                 String[] row = reader.readLine().split(" ");
                 List<TileEntity> worldRow = new ArrayList<>();
+                List<Point> meshRow = new ArrayList<>();
                 for (int x = 0; x < width; x++) {
                     int value = Integer.parseInt(row[x]);
                     String name = map.getComponent(TileSetComponent.class).getTileLoader().getTilePath(value);
+                    TileEntity tile;
                     if (name == null) {
                         name = String.valueOf(value);
                     }
                     if (value == 9) {
-                        worldRow.add(new TileEntity(value,x* Globals.tileSize, y*Globals.tileSize, "/assets/tiles/" + name+".png", Globals.tileSize, Globals.tileSize));
+                        tile = new TileEntity(value,x* Globals.tileSize, y*Globals.tileSize, "/assets/tiles/" + name+".png", Globals.tileSize, Globals.tileSize);
                     } else {
-                        worldRow.add(new TileEntity(value,x*Globals.tileSize, y*Globals.tileSize, "/assets/tiles/" + name+".png", Globals.tileSize, Globals.tileSize, true));
+                        tile = new TileEntity(value,x*Globals.tileSize, y*Globals.tileSize, "/assets/tiles/" + name+".png", Globals.tileSize, Globals.tileSize, true);
                     }
+                    worldRow.add(tile);
+                    meshRow.add(new Point(tile.getComponent(CentralMassComponent.class).getCentralX(), tile.getComponent(CentralMassComponent.class).getCentralY()));
                 }
+                map.getComponent(MapMeshComponent.class).addRow(meshRow);
                 map.getComponent(WorldDataComponent.class).addRow(worldRow);
             }
         } catch (IOException e) {

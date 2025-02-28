@@ -1,6 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Entities;
 
 import inf.elte.hu.gameengine_javafx.Components.FilePathComponent;
+import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.TileSetComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionComponent;
@@ -16,6 +17,7 @@ public class WorldEntity extends Entity {
         this.addComponent(new WorldDataComponent());
         this.addComponent(new FilePathComponent(filePath));
         this.addComponent(new TileSetComponent(tileSetPath, separator));
+        this.addComponent(new MapMeshComponent());
         addToManager();
     }
 
@@ -24,6 +26,7 @@ public class WorldEntity extends Entity {
         this.addComponent(new WorldDataComponent());
         this.addComponent(new FilePathComponent(filePath));
         this.addComponent(new TileSetComponent(tileSetPath));
+        this.addComponent(new MapMeshComponent());
         addToManager();
     }
 
