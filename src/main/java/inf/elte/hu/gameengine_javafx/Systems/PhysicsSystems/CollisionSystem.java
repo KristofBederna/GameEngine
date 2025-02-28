@@ -1,6 +1,5 @@
 package inf.elte.hu.gameengine_javafx.Systems.PhysicsSystems;
 
-
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.ComplexHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.NSidedHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitBoxComponent;
@@ -40,73 +39,73 @@ public class CollisionSystem extends GameSystem {
             if (dimension == null) continue;
             if (position == null) continue;
             if (hitBox == null && triBox == null && circBox == null && complexBox == null) continue;
+
             Shape futureHitBox = null;
             if (hitBox != null) {
                 futureHitBox = new Rectangle(hitBox.getHitBox());
+                ((Rectangle)futureHitBox).moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
             }
             if (triBox != null) {
                 futureHitBox = new Triangle(triBox.getHitBox());
+                ((Triangle)futureHitBox).moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
             }
             if (circBox != null) {
                 futureHitBox = new NSidedShape(circBox.getHitBox());
+                ((NSidedShape)futureHitBox).moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
             }
             if (complexBox != null) {
                 futureHitBox = new ComplexShape(complexBox.getHitBox());
+                ((ComplexShape)futureHitBox).moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
             }
-            if (futureHitBox.getClass() == Rectangle.class) {
-                ((Rectangle) futureHitBox).moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
-                horizontalCollisionCheck(EntityHub.getInstance().getAllEntities(), entity, futureHitBox, velocity);
-                ((Rectangle) futureHitBox).moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
-                verticalCollisionCheck(EntityHub.getInstance().getAllEntities(), entity, futureHitBox, velocity);
-                ((Rectangle) futureHitBox).moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
-            } else if (futureHitBox.getClass() == Triangle.class) {
-                ((Triangle) futureHitBox).moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
-                horizontalCollisionCheck(EntityHub.getInstance().getAllEntities(), entity, futureHitBox, velocity);
-                ((Triangle) futureHitBox).moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
-                verticalCollisionCheck(EntityHub.getInstance().getAllEntities(), entity, futureHitBox, velocity);
-                ((Triangle) futureHitBox).moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
-            } else if (futureHitBox.getClass() == NSidedShape.class) {
-                ((NSidedShape) futureHitBox).moveTo(new Point(position.getGlobalX()+dimension.getWidth()/2, position.getGlobalY()+dimension.getHeight()/2));
-                horizontalCollisionCheck(EntityHub.getInstance().getAllEntities(), entity, futureHitBox, velocity);
-                ((NSidedShape) futureHitBox).moveTo(new Point(position.getGlobalX()+dimension.getWidth()/2, position.getGlobalY()+dimension.getHeight()/2));
-                verticalCollisionCheck(EntityHub.getInstance().getAllEntities(), entity, futureHitBox, velocity);
-                ((NSidedShape) futureHitBox).moveTo(new Point(position.getGlobalX()+dimension.getWidth()/2, position.getGlobalY()+dimension.getHeight()/2));
-            } else {
-                ((ComplexShape) futureHitBox).moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
-                horizontalCollisionCheck(EntityHub.getInstance().getAllEntities(), entity, futureHitBox, velocity);
-                ((ComplexShape) futureHitBox).moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
-                verticalCollisionCheck(EntityHub.getInstance().getAllEntities(), entity, futureHitBox, velocity);
-                ((ComplexShape) futureHitBox).moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
-            }
+
+            moveDiagonally(EntityHub.getInstance().getAllEntities(), entity, futureHitBox, velocity);
         }
     }
 
-    private static void verticalCollisionCheck(List<Entity> entities, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
-        if (futureHitBox instanceof Rectangle) {
-            ((Rectangle) futureHitBox).translate(0, (int) velocity.getDy());
-        } else if (futureHitBox instanceof Triangle) {
-            ((Triangle) futureHitBox).translate(0, (int) velocity.getDy());
-        } else if (futureHitBox instanceof NSidedShape) {
-            ((NSidedShape) futureHitBox).translate(0, (int) velocity.getDy());
-        } else if (futureHitBox instanceof ComplexShape) {
-            ((ComplexShape) futureHitBox).translate(0, (int) velocity.getDy());
+    private static void moveDiagonally(List<Entity> entities, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
+        checkCollisionAndMove(entities, entity, futureHitBox, velocity);
+        if (velocity.getDy() != 0) {
+            verticalCollisionCheck(entities, entity, futureHitBox, velocity);
         }
+        if (velocity.getDx() != 0) {
+            horizontalCollisionCheck(entities, entity, futureHitBox, velocity);
+        }
+    }
 
-        // Check against all shape types
+    private static void checkCollisionAndMove(List<Entity> entities, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
+        horizontalCollisionCheck(entities, entity, futureHitBox, velocity);
+        verticalCollisionCheck(entities, entity, futureHitBox, velocity);
+    }
+
+    private static void horizontalCollisionCheck(List<Entity> entities, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
+        translateHitBoxHorizontally(futureHitBox, velocity);
+
         for (Entity otherEntity : entities) {
             if (otherEntity == entity) continue;
 
             Shape otherHitBox = getHitBoxOfEntity(otherEntity);
-            if (otherHitBox == null) continue;
-
-            if (Shape.intersect(futureHitBox, otherHitBox)) {
-                velocity.setDy(0); // Stop vertical movement
+            if (otherHitBox != null && Shape.intersect(futureHitBox, otherHitBox)) {
+                velocity.setDx(0);
                 break;
             }
         }
     }
 
-    private static void horizontalCollisionCheck(List<Entity> entities, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
+    private static void verticalCollisionCheck(List<Entity> entities, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
+        translateHitBoxVertically(futureHitBox, velocity);
+
+        for (Entity otherEntity : entities) {
+            if (otherEntity == entity) continue;
+
+            Shape otherHitBox = getHitBoxOfEntity(otherEntity);
+            if (otherHitBox != null && Shape.intersect(futureHitBox, otherHitBox)) {
+                velocity.setDy(0);
+                break;
+            }
+        }
+    }
+
+    private static void translateHitBoxHorizontally(Shape futureHitBox, VelocityComponent velocity) {
         if (futureHitBox instanceof Rectangle) {
             ((Rectangle) futureHitBox).translate((int) velocity.getDx(), 0);
         } else if (futureHitBox instanceof Triangle) {
@@ -116,18 +115,17 @@ public class CollisionSystem extends GameSystem {
         } else if (futureHitBox instanceof ComplexShape) {
             ((ComplexShape) futureHitBox).translate((int) velocity.getDx(), 0);
         }
+    }
 
-        // Check against all shape types, not just rectangles!
-        for (Entity otherEntity : entities) {
-            if (otherEntity == entity) continue;
-
-            Shape otherHitBox = getHitBoxOfEntity(otherEntity);
-            if (otherHitBox == null) continue;
-
-            if (Shape.intersect(futureHitBox, otherHitBox)) {
-                velocity.setDx(0); // Stop horizontal movement
-                break;
-            }
+    private static void translateHitBoxVertically(Shape futureHitBox, VelocityComponent velocity) {
+        if (futureHitBox instanceof Rectangle) {
+            ((Rectangle) futureHitBox).translate(0, (int) velocity.getDy());
+        } else if (futureHitBox instanceof Triangle) {
+            ((Triangle) futureHitBox).translate(0, (int) velocity.getDy());
+        } else if (futureHitBox instanceof NSidedShape) {
+            ((NSidedShape) futureHitBox).translate(0, (int) velocity.getDy());
+        } else if (futureHitBox instanceof ComplexShape) {
+            ((ComplexShape) futureHitBox).translate(0, (int) velocity.getDy());
         }
     }
 
@@ -144,5 +142,4 @@ public class CollisionSystem extends GameSystem {
 
         return null;
     }
-
 }

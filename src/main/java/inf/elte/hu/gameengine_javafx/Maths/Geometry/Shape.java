@@ -25,6 +25,11 @@ public class Shape {
     }
 
     private static boolean doIntersect(Point p1, Point p2, Point q1, Point q2) {
+        // Check if the two segments are parallel
+        if (areParallel(p1, p2, q1, q2)) {
+            return false; // Parallel segments don't intersect in this case
+        }
+
         // Find the four orientations needed for general and special cases
         int o1 = orientation(p1, p2, q1);
         int o2 = orientation(p1, p2, q2);
@@ -42,8 +47,15 @@ public class Shape {
         if (o3 == 0 && onSegment(q1, p1, q2)) return true;
         if (o4 == 0 && onSegment(q1, p2, q2)) return true;
 
-        return false; // Doesn't intersect
+        return false;
     }
+
+    private static boolean areParallel(Point p1, Point p2, Point q1, Point q2) {
+        double crossProduct = (p2.getX() - p1.getX()) * (q2.getY() - q1.getY())
+                - (p2.getY() - p1.getY()) * (q2.getX() - q1.getX());
+        return Math.abs(crossProduct) < 1e-9;
+    }
+
 
     // Function to calculate the orientation of the triplet (p, q, r)
     private static int orientation(Point p, Point q, Point r) {
