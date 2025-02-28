@@ -1,6 +1,8 @@
 package inf.elte.hu.gameengine_javafx.Components.PropertyComponents;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 
 public class VelocityComponent extends Component {
     private double Dx;
@@ -24,8 +26,28 @@ public class VelocityComponent extends Component {
         Dy = dy;
     }
 
+    public void moveTowards(Point node, Entity entity) {
+        double currentX = entity.getComponent(PositionComponent.class).getGlobalX();
+        double currentY = entity.getComponent(PositionComponent.class).getGlobalY();
+
+        double deltaX = node.getX() - currentX;
+        double deltaY = node.getY() - currentY;
+        double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        if (distance > 0) {
+            Dx = deltaX / distance;
+            Dy = deltaY / distance;
+        }
+    }
+
+    public void stopMovement() {
+        Dx = 0;
+        Dy = 0;
+    }
+
     @Override
     public String getStatus() {
         return (this.getClass().getSimpleName() + ": Dx: " + Dx + ", Dy: " + Dy);
     }
+
 }

@@ -13,26 +13,32 @@ public class InteractiveComponent extends Component {
     private final Map<MouseButton, Tuple<Runnable, Runnable>> mouseInputMapping;
     private Runnable scrollAction;
     private Runnable mouseMoveAction;
+    private Map<Tuple<KeyCode, MouseButton>, Tuple<Long, Long>> lastTimeCalled;
 
     public InteractiveComponent() {
         this.keyInputMapping = new HashMap<>();
         this.mouseInputMapping = new HashMap<>();
+        this.lastTimeCalled = new HashMap<>();
     }
 
-    public void mapInput(KeyCode keyCode, Runnable action) {
+    public void mapInput(KeyCode keyCode, long millis, Runnable action) {
         keyInputMapping.put(keyCode, new Tuple<>(action, null));
+        lastTimeCalled.put(new Tuple<>(keyCode, null), new Tuple<>(System.currentTimeMillis(), millis));
     }
 
-    public void mapInput(KeyCode keyCode, Runnable action, Runnable counterAction) {
+    public void mapInput(KeyCode keyCode, long millis, Runnable action, Runnable counterAction) {
         keyInputMapping.put(keyCode, new Tuple<>(action, counterAction));
+        lastTimeCalled.put(new Tuple<>(keyCode, null), new Tuple<>(System.currentTimeMillis(), millis));
     }
 
-    public void mapInput(MouseButton button, Runnable action) {
+    public void mapInput(MouseButton button, long millis, Runnable action) {
         mouseInputMapping.put(button, new Tuple<>(action, null));
+        lastTimeCalled.put(new Tuple<>(null, button), new Tuple<>(System.currentTimeMillis(), millis));
     }
 
-    public void mapInput(MouseButton button, Runnable action, Runnable counterAction) {
+    public void mapInput(MouseButton button, long millis, Runnable action, Runnable counterAction) {
         mouseInputMapping.put(button, new Tuple<>(action, counterAction));
+        lastTimeCalled.put(new Tuple<>(null, button), new Tuple<>(System.currentTimeMillis(), millis));
     }
 
     public void setMouseMoveAction(Runnable action) {
@@ -45,6 +51,10 @@ public class InteractiveComponent extends Component {
 
     public Map<MouseButton, Tuple<Runnable, Runnable>> getMouseInputMapping() {
         return mouseInputMapping;
+    }
+
+    public Map<Tuple<KeyCode, MouseButton>, Tuple<Long, Long>> getLastTimeCalled() {
+        return lastTimeCalled;
     }
 
     public Runnable getMouseMoveAction() {

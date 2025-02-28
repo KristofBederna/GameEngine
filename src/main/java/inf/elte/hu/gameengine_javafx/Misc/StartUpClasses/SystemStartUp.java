@@ -23,6 +23,7 @@ public class SystemStartUp {
         SystemHub systemHub = SystemHub.getInstance();
         systemHub.addSystem(AnimationSystem.class, new AnimationSystem(), 1);
         systemHub.addSystem(RenderSystem.class, new RenderSystem(),2);
+        systemHub.addSystem(PathfindingSystem.class, new PathfindingSystem(),3);
         systemHub.addSystem(MovementSystem.class, new MovementSystem(),4);
         systemHub.addSystem(InputHandlingSystem.class, new InputHandlingSystem(),5);
         systemHub.addSystem(CollisionSystem.class, new CollisionSystem(),6);

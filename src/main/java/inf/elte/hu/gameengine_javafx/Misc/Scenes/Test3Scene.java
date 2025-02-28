@@ -84,7 +84,7 @@ public class Test3Scene extends GameScene{
     }
 
     private Entity entitySetup() {
-        new PlayerEntity(420, 100, "idle", "/assets/images/PlayerIdle.png", 0.8*Globals.tileSize, 0.8*Globals.tileSize);
+        new PlayerEntity(420, 120, "idle", "/assets/images/PlayerIdle.png", 0.8*Globals.tileSize, 0.8*Globals.tileSize);
         DummyEntity entity2 = new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80);
         ButtonEntity be = new ButtonEntity();
         be.addStyleClass("my-custom-button-green");
@@ -100,15 +100,15 @@ public class Test3Scene extends GameScene{
     private void interactionSetup(Entity entity2) {
         PlayerEntity player = (PlayerEntity)EntityHub.getInstance().getEntitiesWithComponent(PlayerComponent.class).getFirst();
         InteractiveComponent dummyInteractiveComponent = player.getComponent(InteractiveComponent.class);
-        dummyInteractiveComponent.mapInput(KeyCode.UP, () -> moveUp(player), () -> counterVertical(player));
-        dummyInteractiveComponent.mapInput(KeyCode.DOWN, () -> moveDown(player), () -> counterVertical(player));
-        dummyInteractiveComponent.mapInput(KeyCode.LEFT, () -> moveLeft(player), () -> counterHorizontal(player));
-        dummyInteractiveComponent.mapInput(KeyCode.RIGHT, () -> moveRight(player), () -> counterHorizontal(player));
-        dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> {player.getComponent(PositionComponent.class).setLocalX(MouseInputHandler.getInstance().getMouseX(), player); player.getComponent(PositionComponent.class).setLocalY(MouseInputHandler.getInstance().getMouseY(), player);});
+        dummyInteractiveComponent.mapInput(KeyCode.UP, 10, () -> moveUp(player), () -> counterVertical(player));
+        dummyInteractiveComponent.mapInput(KeyCode.DOWN, 10, () -> moveDown(player), () -> counterVertical(player));
+        dummyInteractiveComponent.mapInput(KeyCode.LEFT, 10, () -> moveLeft(player), () -> counterHorizontal(player));
+        dummyInteractiveComponent.mapInput(KeyCode.RIGHT, 10, () -> moveRight(player), () -> counterHorizontal(player));
+        dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, 100, () -> {player.getComponent(PositionComponent.class).setLocalX(MouseInputHandler.getInstance().getMouseX(), player); player.getComponent(PositionComponent.class).setLocalY(MouseInputHandler.getInstance().getMouseY(), player);});
         //dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> System.out.println(MouseInputHandler.getInstance().getMouseX() + " " + MouseInputHandler.getInstance().getMouseY()));
-        dummyInteractiveComponent.mapInput(MouseButton.SECONDARY, () -> player.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion"), ()->player.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
-        dummyInteractiveComponent.mapInput(KeyCode.F2, () -> CameraEntity.getInstance().attachTo(entity2), () -> CameraEntity.getInstance().attachTo(player));
-        dummyInteractiveComponent.mapInput(KeyCode.BACK_SPACE, () -> SystemHub.getInstance().getSystem(SceneManagementSystem.class).requestSceneChange(new Test2Scene(new BorderPane(), 1920, 1080)));
+        dummyInteractiveComponent.mapInput(MouseButton.SECONDARY, 250, () -> player.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion"), ()->player.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
+        dummyInteractiveComponent.mapInput(KeyCode.F2, 10, () -> CameraEntity.getInstance().attachTo(entity2), () -> CameraEntity.getInstance().attachTo(player));
+        dummyInteractiveComponent.mapInput(KeyCode.BACK_SPACE, 100, () -> SystemHub.getInstance().getSystem(SceneManagementSystem.class).requestSceneChange(new Test2Scene(new BorderPane(), 1920, 1080)));
     }
 
 

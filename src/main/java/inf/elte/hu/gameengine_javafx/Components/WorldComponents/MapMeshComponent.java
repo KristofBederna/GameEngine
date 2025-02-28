@@ -26,7 +26,7 @@ public class MapMeshComponent extends Component {
     }
 
     public Point getMapCoordinate(int x, int y) {
-        return mapCoordinates.get(x).get(y);
+        return mapCoordinates.get(y).get(x);
     }
 
     public void setMapCoordinate(int x, int y, Point mapCoordinate) {

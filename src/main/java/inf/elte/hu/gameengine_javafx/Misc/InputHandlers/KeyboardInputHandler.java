@@ -13,9 +13,6 @@ public class KeyboardInputHandler {
     private static KeyboardInputHandler instance = null;
     private final Set<KeyCode> pressedKeys = new HashSet<>();
     private final Set<KeyCode> releasedKeys = new HashSet<>();
-    private final Map<KeyCode, Long> lastPressedTime = new HashMap<>();
-
-    private static final long PRESS_COOLDOWN = 100;
 
     private KeyboardInputHandler() {
         GameCanvas.getInstance().getScene().setOnKeyPressed(this::keyPressed);
@@ -30,15 +27,11 @@ public class KeyboardInputHandler {
     }
 
     private void keyPressed(KeyEvent event) {
-        long currentTime = System.currentTimeMillis();
         KeyCode key = event.getCode();
 
-        if (!pressedKeys.contains(key) ||
-                (lastPressedTime.getOrDefault(key, 0L) + PRESS_COOLDOWN < currentTime)) {
-
-            lastPressedTime.put(key, currentTime);
+        if (!pressedKeys.contains(key)) {
             pressedKeys.add(key);
-            releasedKeys.clear();
+            releasedKeys.remove(key);
         }
     }
 

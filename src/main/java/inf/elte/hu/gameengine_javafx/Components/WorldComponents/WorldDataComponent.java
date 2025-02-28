@@ -32,17 +32,17 @@ public class WorldDataComponent extends Component {
     }
 
     public void setElement(int x, int y, TileEntity tileEntity) {
-        if (x < 0 || y < 0 || x >= tileEntities.size() || y >= tileEntities.get(x).size()) {
+        if (x < 0 || y < 0 || y >= tileEntities.size() || x >= tileEntities.get(y).size()) {
             return;
         }
-        tileEntities.get(x).set(y, tileEntity);
+        tileEntities.get(y).set(x, tileEntity);
     }
 
     public TileEntity getElement(int x, int y) {
-        if (x < 0 || y < 0 || x >= tileEntities.size() || y >= tileEntities.get(x).size()) {
+        if (x < 0 || y < 0 || y >= tileEntities.size() || x >= tileEntities.get(y).size()) {
             return null;
         }
-        return tileEntities.get(x).get(y);
+        return tileEntities.get(y).get(x);
     }
 
     public void clear() {

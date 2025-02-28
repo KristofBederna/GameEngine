@@ -49,4 +49,13 @@ public class Point {
 
         gc.fillOval(x - radius, y - radius, radius * 2, radius * 2);
     }
+
+    public boolean compareCoordinates(Point other) {
+        return Math.abs(this.getX() - other.getX()) < 1 && Math.abs(this.getY()-other.getY()) < 1;
+    }
+
+    public void setCoordinates(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 }

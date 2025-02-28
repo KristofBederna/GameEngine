@@ -4,6 +4,8 @@ import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.ComplexHitBoxCo
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.NSidedHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.TriangularHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.PathfindingComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
@@ -16,6 +18,7 @@ import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.Line;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
@@ -115,6 +118,19 @@ public class RenderSystem extends GameSystem {
                     for (Point point : row) {
                         point.render(gc, 5);
                     }
+                }
+            }
+            for (Entity entity : EntityHub.getInstance().getEntitiesWithComponent(PathfindingComponent.class)) {
+                PathfindingComponent pathfindingComponent = entity.getComponent(PathfindingComponent.class);
+                if (pathfindingComponent.getPath() == null) {
+                    continue;
+                }
+                if (pathfindingComponent.getPath().getFirst() == null) {
+                    continue;
+                }
+                for (Point neighbour : pathfindingComponent.getNeighbours(pathfindingComponent.getPath().getFirst())) {
+                    Line line = new Line(pathfindingComponent.getPath().getFirst(), neighbour);
+                    line.render(gc);
                 }
             }
             if (!GameCanvas.getInstance().isFocused()) {

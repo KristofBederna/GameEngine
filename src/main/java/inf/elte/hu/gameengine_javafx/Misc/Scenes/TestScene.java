@@ -1,6 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Misc.Scenes;
 
 import inf.elte.hu.gameengine_javafx.Components.*;
+import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.StateComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
@@ -28,6 +29,7 @@ import javafx.scene.layout.BorderPane;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 
 public class TestScene extends GameScene{
@@ -84,15 +86,15 @@ public class TestScene extends GameScene{
     }
 
     private Entity entitySetup() {
-        new PlayerEntity(420, 100, "idle", "/assets/images/PlayerIdle.png", 0.8*Globals.tileSize, 0.8*Globals.tileSize);
+        new PlayerEntity(420, 120, "idle", "/assets/images/PlayerIdle.png", 0.8*Globals.tileSize, 0.8*Globals.tileSize);
         DummyEntity entity2 = new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80);
-        ButtonEntity be = new ButtonEntity();
-        be.addStyleClass("my-custom-button");
-        new SliderEntity();
-        new CheckBoxEntity();
-        new LabelEntity();
-        new TextFieldEntity();
-        new ProgressBarEntity();
+//        ButtonEntity be = new ButtonEntity();
+//        be.addStyleClass("my-custom-button");
+//        new SliderEntity();
+//        new CheckBoxEntity();
+//        new LabelEntity();
+//        new TextFieldEntity();
+//        new ProgressBarEntity();
 
         return entity2;
     }
@@ -100,15 +102,47 @@ public class TestScene extends GameScene{
     private void interactionSetup(Entity entity2) {
         PlayerEntity player = (PlayerEntity)EntityHub.getInstance().getEntitiesWithComponent(PlayerComponent.class).getFirst();
         InteractiveComponent dummyInteractiveComponent = player.getComponent(InteractiveComponent.class);
-        dummyInteractiveComponent.mapInput(KeyCode.UP, () -> moveUp(player), () -> counterVertical(player));
-        dummyInteractiveComponent.mapInput(KeyCode.DOWN, () -> moveDown(player), () -> counterVertical(player));
-        dummyInteractiveComponent.mapInput(KeyCode.LEFT, () -> moveLeft(player), () -> counterHorizontal(player));
-        dummyInteractiveComponent.mapInput(KeyCode.RIGHT, () -> moveRight(player), () -> counterHorizontal(player));
-        dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> {player.getComponent(PositionComponent.class).setLocalX(MouseInputHandler.getInstance().getMouseX(), player); player.getComponent(PositionComponent.class).setLocalY(MouseInputHandler.getInstance().getMouseY(), player);});
+        dummyInteractiveComponent.mapInput(KeyCode.UP, 10, () -> moveUp(player), () -> counterVertical(player));
+        dummyInteractiveComponent.mapInput(KeyCode.DOWN, 10, () -> moveDown(player), () -> counterVertical(player));
+        dummyInteractiveComponent.mapInput(KeyCode.LEFT, 10, () -> moveLeft(player), () -> counterHorizontal(player));
+        dummyInteractiveComponent.mapInput(KeyCode.RIGHT, 10, () -> moveRight(player), () -> counterHorizontal(player));
+        dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, 100, () -> {player.getComponent(PositionComponent.class).setLocalX(MouseInputHandler.getInstance().getMouseX(), player); player.getComponent(PositionComponent.class).setLocalY(MouseInputHandler.getInstance().getMouseY(), player);});
         //dummyInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> System.out.println(MouseInputHandler.getInstance().getMouseX() + " " + MouseInputHandler.getInstance().getMouseY()));
-        dummyInteractiveComponent.mapInput(MouseButton.SECONDARY, () -> player.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion"), ()->player.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
-        dummyInteractiveComponent.mapInput(KeyCode.F2, () -> CameraEntity.getInstance().attachTo(entity2), () -> CameraEntity.getInstance().attachTo(player));
-        dummyInteractiveComponent.mapInput(KeyCode.F3, () -> SystemHub.getInstance().getSystem(SceneManagementSystem.class).requestSceneChange(new Test2Scene(new BorderPane(), 1920, 1080)));
+        dummyInteractiveComponent.mapInput(MouseButton.SECONDARY, 250, () -> player.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion"), ()->player.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
+        dummyInteractiveComponent.mapInput(KeyCode.F2, 10, () -> CameraEntity.getInstance().attachTo(entity2), () -> CameraEntity.getInstance().attachTo(player));
+        dummyInteractiveComponent.mapInput(KeyCode.F3, 100, () -> SystemHub.getInstance().getSystem(SceneManagementSystem.class).requestSceneChange(new Test2Scene(new BorderPane(), 1920, 1080)));
+
+        dummyInteractiveComponent.mapInput(KeyCode.F4, 1000, () -> {
+            Random random = new Random();
+            int x, y;
+            boolean hasBlockingHitBox;
+
+            do {
+                x = random.nextInt(1, 29) * 100 + 50;
+                y = random.nextInt(1, 14) * 100 + 50;
+
+                var worldData = WorldEntity.getInstance().getComponent(WorldDataComponent.class);
+                var element = worldData.getElement((int) Math.floor(x/Globals.tileSize), (int) Math.floor(y/Globals.tileSize));
+
+                if (element == null) {
+                    hasBlockingHitBox = true; // Skip this point if it doesn't exist in the world
+                    continue;
+                }
+
+                hasBlockingHitBox = element.getAllComponents()
+                        .keySet()
+                        .stream()
+                        .anyMatch(HitBoxComponent.class::isAssignableFrom);
+
+            } while (hasBlockingHitBox); // Repeat until a valid (x, y) is found
+
+            // Ensure PathfindingComponent exists
+            PathfindingComponent pathfinding = entity2.getComponent(PathfindingComponent.class);
+            if (pathfinding != null && pathfinding.getEnd() != null) {
+                pathfinding.getEnd().setCoordinates(x, y);
+                pathfinding.resetPathing();
+            }
+        });
     }
 
 
