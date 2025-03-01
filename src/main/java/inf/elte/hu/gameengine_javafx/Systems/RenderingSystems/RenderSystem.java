@@ -1,10 +1,16 @@
 package inf.elte.hu.gameengine_javafx.Systems.RenderingSystems;
 
+import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.ComplexHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.NSidedHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.TriangularHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.PathfindingComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ParticleComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ZIndexComponent;
+import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
@@ -12,10 +18,14 @@ import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
+import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.Line;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 import java.util.List;
 
@@ -85,19 +95,19 @@ public class RenderSystem extends GameSystem {
 
 //                    RectangularHitBoxComponent hitBox = entity.getComponent(RectangularHitBoxComponent.class);
 //                    if (hitBox != null) {
-//                        hitBox.getHitBox().render(gc);
+//                        hitBox.getHitBox().render(gc, Color.RED);
 //                    }
 //                    TriangularHitBoxComponent hitBox2 = entity.getComponent(TriangularHitBoxComponent.class);
 //                    if (hitBox2 != null) {
-//                        hitBox2.getHitBox().render(gc);
+//                        hitBox2.getHitBox().render(gc, Color.RED);
 //                    }
 //                    NSidedHitBoxComponent hitBox3 = entity.getComponent(NSidedHitBoxComponent.class);
 //                    if (hitBox3 != null) {
-//                        hitBox3.getHitBox().render(gc);
+//                        hitBox3.getHitBox().render(gc, Color.RED);
 //                    }
 //                    ComplexHitBoxComponent hitBox4 = entity.getComponent(ComplexHitBoxComponent.class);
 //                    if (hitBox4 != null) {
-//                        hitBox4.getHitBox().render(gc);
+//                        hitBox4.getHitBox().render(gc, Color.RED);
 //                    }
                 }
             }
@@ -106,7 +116,7 @@ public class RenderSystem extends GameSystem {
 //                for (List<Point> row : meshComponent.getMapCoordinates()) {
 //                    for (Point point : row) {
 //                        if (point == null) continue;
-//                        point.render(gc, 5);
+//                        point.render(gc, 5, Color.YELLOW);
 //                    }
 //                }
 //            }
@@ -120,7 +130,7 @@ public class RenderSystem extends GameSystem {
 //                }
 //                for (Point neighbour : pathfindingComponent.getNeighbours(pathfindingComponent.getPath().getFirst())) {
 //                    Line line = new Line(pathfindingComponent.getPath().getFirst(), neighbour);
-//                    line.render(gc);
+//                    line.render(gc, Color.ORANGE, 5);
 //                }
 //            }
             for (Entity entity : EntityHub.getInstance().getEntitiesWithComponent(ParticleComponent.class)) {

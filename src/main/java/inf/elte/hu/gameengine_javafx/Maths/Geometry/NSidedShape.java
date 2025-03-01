@@ -84,10 +84,10 @@ public class NSidedShape extends Shape {
     }
 
 
-    public void render(GraphicsContext gc) {
+    public void render(GraphicsContext gc, Color color) {
         CameraEntity cameraEntity = CameraEntity.getInstance();
 
-        gc.setStroke(Color.GREEN);
+        gc.setStroke(color);
         gc.setLineWidth(2);
 
         if (points.isEmpty()) {
@@ -106,6 +106,44 @@ public class NSidedShape extends Shape {
             prev = p;
         }
     }
+
+    public void renderFill(GraphicsContext gc, Color color) {
+        CameraEntity cameraEntity = CameraEntity.getInstance();
+
+        if (points.isEmpty()) {
+            generateApproximation();
+            updateEdges();
+        }
+
+        double[] xPoints = new double[points.size()];
+        double[] yPoints = new double[points.size()];
+
+        double cameraX = cameraEntity.getComponent(PositionComponent.class).getGlobalX();
+        double cameraY = cameraEntity.getComponent(PositionComponent.class).getGlobalY();
+
+        for (int i = 0; i < points.size(); i++) {
+            xPoints[i] = points.get(i).getX() - cameraX;
+            yPoints[i] = points.get(i).getY() - cameraY;
+        }
+
+        gc.setFill(color);
+        gc.fillPolygon(xPoints, yPoints, points.size()); // Fill the shape
+
+        gc.setStroke(color);
+        gc.setLineWidth(2);
+
+        Point prev = points.getLast();
+        for (Point p : points) {
+            double x1 = prev.getX() - cameraX;
+            double y1 = prev.getY() - cameraY;
+            double x2 = p.getX() - cameraX;
+            double y2 = p.getY() - cameraY;
+
+            gc.strokeLine(x1, y1, x2, y2); // Draw the outline
+            prev = p;
+        }
+    }
+
 
     public void moveTo(Point newPoint) {
         center = newPoint;

@@ -24,11 +24,11 @@ public class Line extends Shape {
         }
     }
 
-    public void render(GraphicsContext gc) {
+    public void render(GraphicsContext gc, Color color, int thickness) {
         CameraEntity cameraEntity = CameraEntity.getInstance();
 
-        gc.setStroke(Color.ORANGE);
-        gc.setLineWidth(2);
+        gc.setStroke(color);
+        gc.setLineWidth(thickness);
 
         if (points.size() >= 2) {
             Point start = points.get(0);

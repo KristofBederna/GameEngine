@@ -40,10 +40,20 @@ public class Point {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    public void render(GraphicsContext gc, double radius) {
+    public void render(GraphicsContext gc, double radius, Color color) {
         CameraEntity cameraEntity = CameraEntity.getInstance();
 
-        gc.setFill(Color.BLUE);
+        gc.setStroke(color);
+        double x = this.getX() - cameraEntity.getComponent(PositionComponent.class).getGlobalX();
+        double y = this.getY() - cameraEntity.getComponent(PositionComponent.class).getGlobalY();
+
+        gc.strokeOval(x - radius, y - radius, radius * 2, radius * 2);
+    }
+
+    public void renderFill(GraphicsContext gc, double radius, Color color) {
+        CameraEntity cameraEntity = CameraEntity.getInstance();
+
+        gc.setFill(color);
         double x = this.getX() - cameraEntity.getComponent(PositionComponent.class).getGlobalX();
         double y = this.getY() - cameraEntity.getComponent(PositionComponent.class).getGlobalY();
 

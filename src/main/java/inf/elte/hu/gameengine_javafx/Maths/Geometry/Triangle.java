@@ -103,8 +103,8 @@ public class Triangle extends Shape {
         return contains(p) && !getAb().contains(p) && !getBc().contains(p) && !getCa().contains(p);
     }
 
-    public void render(GraphicsContext gc) {
-        gc.setStroke(Color.BLUE);
+    public void render(GraphicsContext gc, Color color) {
+        gc.setStroke(color);
         gc.setLineWidth(2);
 
         CameraEntity cameraEntity = CameraEntity.getInstance();
@@ -122,4 +122,29 @@ public class Triangle extends Shape {
         gc.strokeLine(renderBX, renderBY, renderCX, renderCY);
         gc.strokeLine(renderCX, renderCY, renderAX, renderAY);
     }
+
+    public void renderFill(GraphicsContext gc, Color color) {
+        CameraEntity cameraEntity = CameraEntity.getInstance();
+        PositionComponent playerPos = cameraEntity.getOwner().getComponent(PositionComponent.class);
+
+        double renderAX = points.get(0).getX() - playerPos.getGlobalX();
+        double renderAY = points.get(0).getY() - playerPos.getGlobalY();
+        double renderBX = points.get(1).getX() - playerPos.getGlobalX();
+        double renderBY = points.get(1).getY() - playerPos.getGlobalY();
+        double renderCX = points.get(2).getX() - playerPos.getGlobalX();
+        double renderCY = points.get(2).getY() - playerPos.getGlobalY();
+
+        gc.setFill(color);
+        double[] xPoints = { renderAX, renderBX, renderCX };
+        double[] yPoints = { renderAY, renderBY, renderCY };
+        gc.fillPolygon(xPoints, yPoints, 3);
+
+        gc.setStroke(color);
+        gc.setLineWidth(2);
+
+        gc.strokeLine(renderAX, renderAY, renderBX, renderBY);
+        gc.strokeLine(renderBX, renderBY, renderCX, renderCY);
+        gc.strokeLine(renderCX, renderCY, renderAX, renderAY);
+    }
+
 }

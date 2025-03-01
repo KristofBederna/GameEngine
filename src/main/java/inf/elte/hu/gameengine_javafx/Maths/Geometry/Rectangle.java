@@ -113,8 +113,8 @@ public class Rectangle extends Shape {
                 p.getY() >= points.get(0).getY() && p.getY() <= points.get(2).getY();
     }
 
-    public void render(GraphicsContext gc) {
-        gc.setStroke(Color.RED);
+    public void render(GraphicsContext gc, Color color) {
+        gc.setStroke(color);
         gc.setLineWidth(2);
 
         CameraEntity cameraEntity = CameraEntity.getInstance();
@@ -135,4 +135,33 @@ public class Rectangle extends Shape {
         gc.strokeLine(renderBottomRightX, renderBottomRightY, renderBottomLeftX, renderBottomLeftY);
         gc.strokeLine(renderBottomLeftX, renderBottomLeftY, renderTopLeftX, renderTopLeftY);
     }
+
+    public void renderFill(GraphicsContext gc, Color color) {
+        CameraEntity cameraEntity = CameraEntity.getInstance();
+        double cameraX = cameraEntity.getComponent(PositionComponent.class).getGlobalX();
+        double cameraY = cameraEntity.getComponent(PositionComponent.class).getGlobalY();
+
+        double renderTopLeftX = points.get(0).getX() - cameraX;
+        double renderTopLeftY = points.get(0).getY() - cameraY;
+        double renderTopRightX = points.get(1).getX() - cameraX;
+        double renderTopRightY = points.get(1).getY() - cameraY;
+        double renderBottomRightX = points.get(2).getX() - cameraX;
+        double renderBottomRightY = points.get(2).getY() - cameraY;
+        double renderBottomLeftX = points.get(3).getX() - cameraX;
+        double renderBottomLeftY = points.get(3).getY() - cameraY;
+
+        gc.setFill(color);
+        double[] xPoints = { renderTopLeftX, renderTopRightX, renderBottomRightX, renderBottomLeftX };
+        double[] yPoints = { renderTopLeftY, renderTopRightY, renderBottomRightY, renderBottomLeftY };
+        gc.fillPolygon(xPoints, yPoints, 4);
+
+        gc.setStroke(color);
+        gc.setLineWidth(2);
+
+        gc.strokeLine(renderTopLeftX, renderTopLeftY, renderTopRightX, renderTopRightY);
+        gc.strokeLine(renderTopRightX, renderTopRightY, renderBottomRightX, renderBottomRightY);
+        gc.strokeLine(renderBottomRightX, renderBottomRightY, renderBottomLeftX, renderBottomLeftY);
+        gc.strokeLine(renderBottomLeftX, renderBottomLeftY, renderTopLeftX, renderTopLeftY);
+    }
+
 }
