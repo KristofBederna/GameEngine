@@ -89,6 +89,7 @@ public class TestScene extends GameScene{
     private Entity entitySetup() {
         new PlayerEntity(420, 120, "idle", "/assets/images/PlayerIdle.png", 0.8*Globals.tileSize, 0.8*Globals.tileSize);
         DummyEntity entity2 = new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80);
+        ParticleEntity particleEntity = new ParticleEntity();
 //        ButtonEntity be = new ButtonEntity();
 //        be.addStyleClass("my-custom-button");
 //        new SliderEntity();
