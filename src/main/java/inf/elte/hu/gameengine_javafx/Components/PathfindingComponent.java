@@ -87,27 +87,44 @@ public class PathfindingComponent extends Component {
         int worldWidth = (int) WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldWidth();
         int worldHeight = (int) WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldHeight();
 
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                if (i == 0 && j == 0) {
-                    continue; // Skip the current node
-                }
+        // Define directions
+        int[][] directions = {
+                {-1, 0}, {1, 0}, {0, -1}, {0, 1}, // Cardinal (Up, Down, Left, Right)
+                {-1, -1}, {-1, 1}, {1, -1}, {1, 1} // Diagonal
+        };
 
-                int neighbourX = currentX + i;
-                int neighbourY = currentY + j;
+        for (int[] dir : directions) {
+            int neighbourX = currentX + dir[0];
+            int neighbourY = currentY + dir[1];
 
-
-                if (neighbourX < 0 || neighbourX >= worldWidth || neighbourY < 0 || neighbourY >= worldHeight) {
-                    continue; // Skip out-of-bounds neighbors
-                }
-
-                Point neighbour = mapMeshComponent.getMapCoordinate(neighbourX, neighbourY);
-                if (neighbour == null) {
-                    continue; // Skip if there's no valid point in the map mesh
-                }
-                neighbours.add(neighbour);
+            // Out of bounds check
+            if (neighbourX < 0 || neighbourX >= worldWidth || neighbourY < 0 || neighbourY >= worldHeight) {
+                continue;
             }
+
+            // Get the neighbour point
+            Point neighbour = mapMeshComponent.getMapCoordinate(neighbourX, neighbourY);
+            if (neighbour == null) {
+                continue; // Skip invalid points
+            }
+
+            boolean isDiagonal = (dir[0] != 0 && dir[1] != 0);
+            if (isDiagonal) {
+                // Check if at least one adjacent tile is passable
+                boolean canMoveDiagonally =
+                        (mapMeshComponent.getMapCoordinate(currentX + dir[0], currentY) != null) ||
+                                (mapMeshComponent.getMapCoordinate(currentX, currentY + dir[1]) != null);
+
+                if (!canMoveDiagonally) {
+                    continue; // Skip this diagonal move
+                }
+            }
+
+            // Add valid neighbour
+            neighbours.add(neighbour);
         }
+
         return neighbours;
     }
+
 }

@@ -43,7 +43,7 @@ public class TestScene extends GameScene{
     public void setup() {
         getStylesheets().add(Objects.requireNonNull(getClass().getResource("/assets/styles/styles.css")).toExternalForm());
         new ResourceStartUp();
-        WorldEntity.getInstance(30, 15, "/assets/maps/testMap.txt", "/assets/tileSets/testTiles2.txt");
+        WorldEntity.getInstance(30, 15, "/assets/maps/hardForAIMap.txt", "/assets/tileSets/testTiles.txt");
         Entity entity2 = entitySetup();
         cameraSetup();
         interactionSetup(entity2);

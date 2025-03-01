@@ -1,9 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Systems;
 
-import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.PathfindingComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
@@ -41,7 +39,6 @@ public class PathfindingSystem extends GameSystem {
                             entity.getComponent(CentralMassComponent.class).getCentralY());
                     entity.getComponent(VelocityComponent.class).moveTowards(node, entity);
                     if (position.compareCoordinates(node)) {
-                        System.out.println("Entity reached checkpoint");
                         pathfindingComponent.getPath().removeFirst();
                     }
                 }
@@ -54,7 +51,7 @@ public class PathfindingSystem extends GameSystem {
 
     private List<Point> selectPath(Point start, Point end, Entity entity) {
         List<Point> path = new ArrayList<>();
-        Map<Point, Point> cameFrom = new HashMap<>(); // To reconstruct the path
+        Map<Point, Point> cameFrom = new HashMap<>();
         PriorityQueue<Point> openSet = new PriorityQueue<>(Comparator.comparingDouble(p -> p.distanceTo(end)));
         Set<Point> closedSet = new HashSet<>();
         Map<Point, Double> gScore = new HashMap<>();
@@ -83,7 +80,7 @@ public class PathfindingSystem extends GameSystem {
                 }
             }
         }
-        return path; // No valid path found
+        return path;
     }
 
     private List<Point> reconstructPath(Map<Point, Point> cameFrom, Point current) {
