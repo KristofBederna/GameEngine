@@ -102,4 +102,15 @@ public class EntityHub {
         return entitiesWithComponent;
     }
 
+    public List<Entity> getEntitiesWithType(Class<? extends Entity> type) {
+        List<Entity> entitiesWithType = new ArrayList<>();
+        synchronized (entities) {
+            for (Entity entity : entities) {
+                if (type.isInstance(entity)) {
+                    entitiesWithType.add(entity);
+                }
+            }
+        }
+        return entitiesWithType;
+    }
 }

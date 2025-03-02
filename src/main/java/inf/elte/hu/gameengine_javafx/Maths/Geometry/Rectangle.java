@@ -125,10 +125,10 @@ public class Rectangle extends Shape {
         double renderTopLeftY = points.get(0).getY() - cameraY;
         double renderTopRightX = points.get(1).getX() - cameraX;
         double renderTopRightY = points.get(1).getY() - cameraY;
-        double renderBottomRightX = points.get(2).getX() - cameraX; // Corrected index
-        double renderBottomRightY = points.get(2).getY() - cameraY; // Corrected index
-        double renderBottomLeftX = points.get(3).getX() - cameraX;  // Corrected index
-        double renderBottomLeftY = points.get(3).getY() - cameraY;  // Corrected index
+        double renderBottomRightX = points.get(2).getX() - cameraX;
+        double renderBottomRightY = points.get(2).getY() - cameraY;
+        double renderBottomLeftX = points.get(3).getX() - cameraX;
+        double renderBottomLeftY = points.get(3).getY() - cameraY;
 
         gc.strokeLine(renderTopLeftX, renderTopLeftY, renderTopRightX, renderTopRightY);
         gc.strokeLine(renderTopRightX, renderTopRightY, renderBottomRightX, renderBottomRightY);

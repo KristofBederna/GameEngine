@@ -127,7 +127,7 @@ public class NSidedShape extends Shape {
         }
 
         gc.setFill(color);
-        gc.fillPolygon(xPoints, yPoints, points.size()); // Fill the shape
+        gc.fillPolygon(xPoints, yPoints, points.size());
 
         gc.setStroke(color);
         gc.setLineWidth(2);
@@ -139,7 +139,7 @@ public class NSidedShape extends Shape {
             double x2 = p.getX() - cameraX;
             double y2 = p.getY() - cameraY;
 
-            gc.strokeLine(x1, y1, x2, y2); // Draw the outline
+            gc.strokeLine(x1, y1, x2, y2);
             prev = p;
         }
     }
@@ -156,6 +156,5 @@ public class NSidedShape extends Shape {
         generateApproximation();
         updateEdges();
     }
-
 }
 

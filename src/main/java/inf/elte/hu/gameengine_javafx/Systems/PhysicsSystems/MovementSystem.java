@@ -12,6 +12,8 @@ import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityCompo
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+import inf.elte.hu.gameengine_javafx.Entities.ParticleEntity;
+import inf.elte.hu.gameengine_javafx.Misc.Time;
 
 import java.util.ArrayList;
 
@@ -61,6 +63,9 @@ public class MovementSystem extends GameSystem {
                 if (complexBox != null)
                 {
                     complexBox.getHitBox().translate(velocity.getDx(), velocity.getDy());
+                }
+                if (entity instanceof ParticleEntity) {
+                    ((ParticleEntity) entity).alignShapeWithEntity(entity);
                 }
             }
         }
