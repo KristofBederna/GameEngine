@@ -125,6 +125,7 @@ public class RenderSystem extends GameSystem {
 //                }
 //            }
             for (Entity entity : EntityHub.getInstance().getEntitiesWithType(ParticleEntity.class)) {
+                ((ParticleEntity) entity).alignShapeWithEntity(entity);
                 ((ParticleEntity)entity).render(gc);
             }
             if (!GameCanvas.getInstance().isFocused()) {

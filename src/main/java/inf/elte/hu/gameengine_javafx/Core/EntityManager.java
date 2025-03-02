@@ -34,11 +34,15 @@ public class EntityManager<T extends Entity> {
     public void unload(Integer id) {
         entities.remove(id);
         lastAccessed.remove(id);
+
+        EntityHub.getInstance().refreshEntitiesList();
     }
 
     public void unloadAll() {
         entities.clear();
         lastAccessed.clear();
+
+        EntityHub.getInstance().refreshEntitiesList();
     }
 
     public Map<Integer, T> getEntities() {

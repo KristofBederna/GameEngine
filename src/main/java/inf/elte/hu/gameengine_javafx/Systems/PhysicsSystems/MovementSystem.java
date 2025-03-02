@@ -64,9 +64,6 @@ public class MovementSystem extends GameSystem {
                 {
                     complexBox.getHitBox().translate(velocity.getDx(), velocity.getDy());
                 }
-                if (entity instanceof ParticleEntity) {
-                    ((ParticleEntity) entity).alignShapeWithEntity(entity);
-                }
             }
         }
     }

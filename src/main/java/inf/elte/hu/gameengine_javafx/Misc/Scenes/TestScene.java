@@ -86,8 +86,7 @@ public class TestScene extends GameScene{
     private void entitySetup() {
         new PlayerEntity(420, 120, "idle", "/assets/images/PlayerIdle.png", 0.8*Globals.tileSize, 0.8*Globals.tileSize);
         new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80);
-        new ParticleEntity(200, 200, 50, 50, new Rectangle(new Point(200, 200), 50, 50), Color.ORANGE);
-        new ParticleEntity(200, 300, 50, 50, new Rectangle(new Point(200, 300), 50, 50), Color.CYAN);
+        new ParticleEmitterEntity(400, 400, new ParticleEntity(0, 0, 5, 5, new Rectangle(new Point(0, 0), 5, 5), Color.ORANGE));
 //        ButtonEntity be = new ButtonEntity();
 //        be.addStyleClass("my-custom-button");
 //        new SliderEntity();

@@ -1,5 +1,6 @@
 package inf.elte.hu.gameengine_javafx.Entities;
 
+import inf.elte.hu.gameengine_javafx.Components.ParentComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
@@ -20,6 +21,7 @@ public class ParticleEntity extends Entity {
         addComponent(new DimensionComponent(width, height));
         addComponent(new ShapeComponent<>(shape));
         addComponent(new ColorComponent(color));
+        addComponent(new ParentComponent());
 
         addToManager();
     }
@@ -28,6 +30,7 @@ public class ParticleEntity extends Entity {
         addComponent(new VelocityComponent());
         addComponent(new DimensionComponent(width, height));
         addComponent(new ImageComponent(imagePath, width, height));
+        addComponent(new ParentComponent());
 
         addToManager();
     }
@@ -70,5 +73,21 @@ public class ParticleEntity extends Entity {
         } else if (shape instanceof Triangle) {
             ((Triangle)shape).moveTo(new Point(x, y));
         }
+    }
+
+    public static ParticleEntity hardCopySelf(Entity entity) {
+        PositionComponent pos = entity.getComponent(PositionComponent.class);
+        DimensionComponent dim = entity.getComponent(DimensionComponent.class);
+        ShapeComponent shapeComponent = entity.getComponent(ShapeComponent.class);
+        ImageComponent imageComponent = entity.getComponent(ImageComponent.class);
+        ColorComponent col = entity.getComponent(ColorComponent.class);
+        if (shapeComponent != null) {
+            return new ParticleEntity(pos.getGlobalX(), pos.getGlobalY(), dim.getWidth(), dim.getHeight(), shapeComponent.getShape(), col.getColor());
+        }
+        if (imageComponent != null) {
+            return new ParticleEntity(pos.getGlobalX(), pos.getGlobalY(), dim.getWidth(), dim.getHeight(), imageComponent.getImagePath());
+        }
+        System.err.println("Couldn't hard copy particle entity");
+        return null;
     }
 }
