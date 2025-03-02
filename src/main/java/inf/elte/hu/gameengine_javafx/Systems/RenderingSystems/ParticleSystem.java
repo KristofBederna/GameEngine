@@ -4,6 +4,7 @@ import inf.elte.hu.gameengine_javafx.Components.DirectionComponent;
 import inf.elte.hu.gameengine_javafx.Components.ParentComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
+import inf.elte.hu.gameengine_javafx.Components.TimeComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
@@ -17,7 +18,7 @@ import java.util.Random;
 import java.util.Set;
 
 public class ParticleSystem extends GameSystem {
-    private static final double MAX_DISTANCE = 200.0;
+    private static final double MAX_DISTANCE = 2500.0;
 
     @Override
     public void start() {
@@ -27,6 +28,11 @@ public class ParticleSystem extends GameSystem {
     @Override
     protected void update() {
         for (Entity entity : EntityHub.getInstance().getEntitiesWithType(ParticleEmitterEntity.class)) {
+            if (System.currentTimeMillis() < entity.getComponent(TimeComponent.class).getLastOccurrence() + entity.getComponent(TimeComponent.class).getTimeBetweenOccurrences()) {
+                continue;
+            }
+            entity.getComponent(TimeComponent.class).setLastOccurrence();
+
             ParentComponent parent = entity.getComponent(ParentComponent.class);
             DirectionComponent directionComponent = entity.getComponent(DirectionComponent.class);
             Direction direction = directionComponent.getDirection();
@@ -34,6 +40,8 @@ public class ParticleSystem extends GameSystem {
             PositionComponent emitterPosition = entity.getComponent(PositionComponent.class);
             double emitterX = emitterPosition.getGlobalX();
             double emitterY = emitterPosition.getGlobalY();
+
+            ((ParticleEmitterEntity)entity).createParticles((ParticleEntity)parent.getChildren().iterator().next(),250, entity.getComponent(ParentComponent.class));
 
             if (parent == null) {
                 continue;
@@ -60,20 +68,20 @@ public class ParticleSystem extends GameSystem {
 
                     switch (direction) {
                         case UP:
-                            dx = random.nextDouble(-50, 50) * Time.getInstance().getDeltaTime();
+                            dx = random.nextDouble(-500, 500) * Time.getInstance().getDeltaTime();
                             dy = -speed * Time.getInstance().getDeltaTime();
                             break;
                         case DOWN:
-                            dx = random.nextDouble(-50, 50) * Time.getInstance().getDeltaTime();
+                            dx = random.nextDouble(-500, 500) * Time.getInstance().getDeltaTime();
                             dy = speed * Time.getInstance().getDeltaTime();
                             break;
                         case LEFT:
                             dx = -speed * Time.getInstance().getDeltaTime();
-                            dy = random.nextDouble(-50, 50) * Time.getInstance().getDeltaTime();
+                            dy = random.nextDouble(-500, 500) * Time.getInstance().getDeltaTime();
                             break;
                         case RIGHT:
                             dx = speed * Time.getInstance().getDeltaTime();
-                            dy = random.nextDouble(-50, 50) * Time.getInstance().getDeltaTime();
+                            dy = random.nextDouble(-500, 500) * Time.getInstance().getDeltaTime();
                             break;
                     }
 

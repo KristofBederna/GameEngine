@@ -6,6 +6,7 @@ import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionCompo
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ColorComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
+import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ZIndexComponent;
 import inf.elte.hu.gameengine_javafx.Components.ShapeComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.*;
@@ -22,6 +23,7 @@ public class ParticleEntity extends Entity {
         addComponent(new ShapeComponent<>(shape));
         addComponent(new ColorComponent(color));
         addComponent(new ParentComponent());
+        addComponent(new ZIndexComponent(3));
 
         addToManager();
     }
@@ -31,6 +33,7 @@ public class ParticleEntity extends Entity {
         addComponent(new DimensionComponent(width, height));
         addComponent(new ImageComponent(imagePath, width, height));
         addComponent(new ParentComponent());
+        addComponent(new ZIndexComponent(3));
 
         addToManager();
     }
@@ -57,6 +60,9 @@ public class ParticleEntity extends Entity {
     }
 
     public void alignShapeWithEntity(Entity entity) {
+        if (getComponent(ShapeComponent.class) == null) {
+            return;
+        }
         Shape shape = entity.getComponent(ShapeComponent.class).getShape();
         PositionComponent positionComponent = getComponent(PositionComponent.class);
         double x = positionComponent.getGlobalX();
