@@ -112,7 +112,7 @@ public class WorldLoaderSystem extends GameSystem {
                     String key = tileX + "," + tileY;
                     if (!existingTiles.contains(key)) {
                         boolean hasHitBox = data.getComponent(RectangularHitBoxComponent.class) != null;
-                        TileEntity newTile = new TileEntity(data.getValue(), tileX, tileY,
+                        TileEntity newTile = new TileEntity(data.getComponent(TileValueComponent.class).getTileValue(), tileX, tileY,
                                 data.getComponent(ImageComponent.class).getImagePath(),
                                 Globals.tileSize, Globals.tileSize, hasHitBox);
                         tileManager.register(newTile);

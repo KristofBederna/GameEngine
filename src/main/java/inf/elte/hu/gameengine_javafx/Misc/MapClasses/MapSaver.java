@@ -1,4 +1,5 @@
 package inf.elte.hu.gameengine_javafx.Misc.MapClasses;
+import inf.elte.hu.gameengine_javafx.Components.TileValueComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionComponent;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
@@ -14,7 +15,7 @@ public class MapSaver {
 
             for (int y = 0; y < map.getComponent(WorldDimensionComponent.class).getWorldHeight()/Globals.tileSize; y++) {
                 for (int x = 0; x < map.getComponent(WorldDimensionComponent.class).getWorldWidth()/Globals.tileSize; x++) {
-                    writer.write(map.getComponent(WorldDataComponent.class).getElement(x, y).getValue() + " ");
+                    writer.write(map.getComponent(WorldDataComponent.class).getElement(x, y).getComponent(TileValueComponent.class).getTileValue() + " ");
                 }
                 writer.newLine();
             }

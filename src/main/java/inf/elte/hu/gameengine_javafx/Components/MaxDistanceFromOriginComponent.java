@@ -38,8 +38,6 @@ public class MaxDistanceFromOriginComponent extends Component {
 
         double distance = Math.sqrt(Math.pow(x1, 2) + Math.pow(y1, 2));
 
-        System.out.println(distance);
-
         return distance > maxDistance;
     }
 

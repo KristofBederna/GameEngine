@@ -18,6 +18,7 @@ import inf.elte.hu.gameengine_javafx.Misc.Direction;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.MouseInputHandler;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot;
+import inf.elte.hu.gameengine_javafx.Misc.LightType;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.GameLoopStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.ResourceStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
@@ -90,7 +91,9 @@ public class TestScene extends GameScene{
         new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80);
         //new ParticleEmitterEntity(400, 400, new ParticleEntity(0, 0, 2, 2, new Rectangle(new Point(0, 0), 2, 2), Color.ORANGE), Direction.RIGHT);
         new ParticleEmitterEntity(15*Globals.tileSize, 750, new ParticleEntity(0, 0, 20, 20, "/assets/images/snowflake.png", 1000), Direction.ALL, 200, 2500);
-//        ButtonEntity be = new ButtonEntity();
+        new LightingEntity(500, 500, LightType.POINT, 0.01, Color.WHITE, 100);
+
+        //        ButtonEntity be = new ButtonEntity();
 //        be.addStyleClass("my-custom-button");
 //        new SliderEntity();
 //        new CheckBoxEntity();
