@@ -1,5 +1,6 @@
 package inf.elte.hu.gameengine_javafx.Systems.RenderingSystems;
 
+import inf.elte.hu.gameengine_javafx.Components.LightComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
@@ -12,11 +13,16 @@ import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
+import inf.elte.hu.gameengine_javafx.Entities.LightingEntity;
 import inf.elte.hu.gameengine_javafx.Entities.ParticleEntity;
+import inf.elte.hu.gameengine_javafx.Entities.PlayerEntity;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.ComplexShape;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 import java.util.List;
 
@@ -128,6 +134,15 @@ public class RenderSystem extends GameSystem {
                 ((ParticleEntity) entity).alignShapeWithEntity(entity);
                 ((ParticleEntity)entity).render(gc);
             }
+            for (Entity entity : EntityHub.getInstance().getEntitiesWithComponent(LightComponent.class)) {
+                ((LightingEntity)entity).matchPositionToEntity(EntityHub.getInstance().getEntitiesWithType(PlayerEntity.class).getFirst());
+
+                ((LightingEntity)entity).calculateCollisions();
+
+                ComplexShape complexShape = ((LightingEntity)entity).createShapeFromLines();
+                complexShape.renderFill(gc, new Color(1, 1, 1, 0.8));
+            }
+
             if (!GameCanvas.getInstance().isFocused()) {
                 GameCanvas.getInstance().requestFocus();
             }
