@@ -1,5 +1,6 @@
 package inf.elte.hu.gameengine_javafx.Entities;
 
+import inf.elte.hu.gameengine_javafx.Components.MaxDistanceFromOriginComponent;
 import inf.elte.hu.gameengine_javafx.Components.ParentComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
@@ -16,7 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class ParticleEntity extends Entity {
-    public ParticleEntity(double x, double y, double width, double height, Shape shape, Color color) {
+    public ParticleEntity(double x, double y, double width, double height, Shape shape, Color color, double maxDistance) {
         addComponent(new PositionComponent(x, y, this));
         addComponent(new VelocityComponent());
         addComponent(new DimensionComponent(width, height));
@@ -24,16 +25,18 @@ public class ParticleEntity extends Entity {
         addComponent(new ColorComponent(color));
         addComponent(new ParentComponent());
         addComponent(new ZIndexComponent(3));
+        addComponent(new MaxDistanceFromOriginComponent(maxDistance));
 
         addToManager();
     }
-    public ParticleEntity(double x, double y, double width, double height, String imagePath) {
+    public ParticleEntity(double x, double y, double width, double height, String imagePath, double maxDistance) {
         addComponent(new PositionComponent(x, y, this));
         addComponent(new VelocityComponent());
         addComponent(new DimensionComponent(width, height));
         addComponent(new ImageComponent(imagePath, width, height));
         addComponent(new ParentComponent());
         addComponent(new ZIndexComponent(3));
+        addComponent(new MaxDistanceFromOriginComponent(maxDistance));
 
         addToManager();
     }
@@ -87,11 +90,12 @@ public class ParticleEntity extends Entity {
         ShapeComponent shapeComponent = entity.getComponent(ShapeComponent.class);
         ImageComponent imageComponent = entity.getComponent(ImageComponent.class);
         ColorComponent col = entity.getComponent(ColorComponent.class);
+        MaxDistanceFromOriginComponent maxDistance = entity.getComponent(MaxDistanceFromOriginComponent.class);
         if (shapeComponent != null) {
-            return new ParticleEntity(pos.getGlobalX(), pos.getGlobalY(), dim.getWidth(), dim.getHeight(), shapeComponent.getShape(), col.getColor());
+            return new ParticleEntity(pos.getGlobalX(), pos.getGlobalY(), dim.getWidth(), dim.getHeight(), shapeComponent.getShape(), col.getColor(), maxDistance.getMaxDistance());
         }
         if (imageComponent != null) {
-            return new ParticleEntity(pos.getGlobalX(), pos.getGlobalY(), dim.getWidth(), dim.getHeight(), imageComponent.getImagePath());
+            return new ParticleEntity(pos.getGlobalX(), pos.getGlobalY(), dim.getWidth(), dim.getHeight(), imageComponent.getImagePath(), maxDistance.getMaxDistance());
         }
         System.err.println("Couldn't hard copy particle entity");
         return null;

@@ -34,6 +34,7 @@ public class ParticleEmitterEntity extends Entity {
             }
             copy.getComponent(ParentComponent.class).setParent(this);
             parent.addChild(copy);
+            copy.getComponent(PositionComponent.class).setLocalPosition(0, 0, copy);
         }
     }
 }
