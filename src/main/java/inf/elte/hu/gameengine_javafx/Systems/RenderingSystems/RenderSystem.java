@@ -153,7 +153,7 @@ public class RenderSystem extends GameSystem {
                 }
 
                 ((LightingEntity)entity).calculateCollisions();
-//                ((LightingEntity)entity).renderRays(gc);
+                //((LightingEntity)entity).renderRays(gc);
 
                 ComplexShape complexShape = ((LightingEntity)entity).createShapeFromLines();
                 double firstPos = complexShape.getPoints().getFirst().getX();

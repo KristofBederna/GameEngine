@@ -17,6 +17,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class LightingEntity extends Entity {
@@ -92,8 +93,28 @@ public class LightingEntity extends Entity {
         for (Line line : listOfRays) {
             points.add(line.getEdges().getFirst().getEnd());
         }
-        return new ComplexShape(points);
+        int rightMostIndex = -1;
+        Point rightMostPoint = null;
+
+        for (int i = 0; i < points.size(); i++) {
+            if (rightMostPoint == null || points.get(i).getX() > rightMostPoint.getX()) {
+                rightMostPoint = points.get(i);
+                rightMostIndex = i;
+            }
+        }
+        List<Point> reorderedPoints = new ArrayList<>();
+        for (int i = rightMostIndex; i < points.size(); i++) {
+            reorderedPoints.add(points.get(i));
+        }
+        for (int i = 0; i < rightMostIndex; i++) {
+            reorderedPoints.add(points.get(i));
+        }
+
+        return new ComplexShape(reorderedPoints);
     }
+
+
+
 
     public void matchPositionToEntity(Entity entity) {
         PositionComponent pos = getComponent(PositionComponent.class);
