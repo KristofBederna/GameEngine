@@ -91,7 +91,10 @@ public class TestScene extends GameScene{
         new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80);
         //new ParticleEmitterEntity(400, 400, new ParticleEntity(0, 0, 2, 2, new Rectangle(new Point(0, 0), 2, 2), Color.ORANGE), Direction.RIGHT);
         new ParticleEmitterEntity(15*Globals.tileSize, 750, new ParticleEntity(0, 0, 20, 20, "/assets/images/snowflake.png", 1000), Direction.ALL, 200, 2500);
-        new LightingEntity(550, 550, LightType.POINT, 0.01, Color.YELLOW, 400, 200);
+        new LightingEntity(250, 250, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
+        new LightingEntity(1050, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
+        new LightingEntity(750, 650, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
+        new LightingEntity(250, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
         //        ButtonEntity be = new ButtonEntity();
 //        be.addStyleClass("my-custom-button");
 //        new SliderEntity();

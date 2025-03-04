@@ -16,7 +16,11 @@ public class Line extends Shape {
     }
 
     public void updateEdges() {
-        this.edges = new ArrayList<>();
+        if (this.edges == null) {
+            this.edges = new ArrayList<>();
+        } else {
+            this.edges.clear();
+        }
         if (points.size() >= 2) {
             Point p1 = points.get(0);
             Point p2 = points.get(1);

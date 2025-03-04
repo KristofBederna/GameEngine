@@ -4,10 +4,7 @@ import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitB
 import inf.elte.hu.gameengine_javafx.Components.InteractiveComponent;
 import inf.elte.hu.gameengine_javafx.Components.ParentComponent;
 import inf.elte.hu.gameengine_javafx.Components.PlayerComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.StateComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.*;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.AnimationComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ZIndexComponent;
@@ -22,7 +19,7 @@ import java.util.Objects;
 
 public class PlayerEntity extends Entity {
     private String lastState;
-    public PlayerEntity(int x, int y, String state, String path, double width, double height) {
+    public PlayerEntity(double x, double y, String state, String path, double width, double height) {
         this.addComponent(new PositionComponent(x, y, this));
         this.addComponent(new VelocityComponent());
         this.addComponent(new StateComponent(state));
@@ -36,6 +33,7 @@ public class PlayerEntity extends Entity {
         this.addComponent(new ZIndexComponent(2));
         this.addComponent(new ParentComponent());
         this.addComponent(PlayerComponent.getInstance());
+        this.addComponent(new CentralMassComponent(x+width/2, y+height/2));
 
         addToManager();
     }

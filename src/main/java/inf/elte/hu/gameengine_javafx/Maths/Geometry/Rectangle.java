@@ -33,7 +33,7 @@ public class Rectangle extends Shape {
 
 
     public Point getTopLeft() {
-        return points.get(0);
+        return points.getFirst();
     }
 
     public void setTopLeft(Point topLeft) {

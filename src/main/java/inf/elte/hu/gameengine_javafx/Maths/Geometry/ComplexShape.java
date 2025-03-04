@@ -79,20 +79,38 @@ public class ComplexShape extends Shape {
 
         gc.setFill(color);
         gc.fillPolygon(xPoints, yPoints, points.size());
-        gc.setStroke(color);
-        gc.setLineWidth(2);
-
-        Point prev = points.getLast();
-        for (Point p : points) {
-            double x1 = prev.getX() - cameraX;
-            double y1 = prev.getY() - cameraY;
-            double x2 = p.getX() - cameraX;
-            double y2 = p.getY() - cameraY;
-
-            gc.strokeLine(x1, y1, x2, y2);
-            prev = p;
-        }
     }
+
+    public void renderFillWithStroke(GraphicsContext gc, Color color, double outerStrokeWidth) {
+        CameraEntity cameraEntity = CameraEntity.getInstance();
+
+        if (points.isEmpty()) {
+            updateEdges();
+        }
+
+        double[] xPoints = new double[points.size()];
+        double[] yPoints = new double[points.size()];
+
+        double cameraX = cameraEntity.getComponent(PositionComponent.class).getGlobalX();
+        double cameraY = cameraEntity.getComponent(PositionComponent.class).getGlobalY();
+
+        for (int i = 0; i < points.size(); i++) {
+            xPoints[i] = points.get(i).getX() - cameraX;
+            yPoints[i] = points.get(i).getY() - cameraY;
+        }
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(outerStrokeWidth);
+
+        for (int i = 0; i < points.size(); i++) {
+            xPoints[i] += outerStrokeWidth / 2;
+            yPoints[i] += outerStrokeWidth / 2;
+        }
+        gc.strokePolygon(xPoints, yPoints, points.size());
+
+        gc.setFill(color);
+        gc.fillPolygon(xPoints, yPoints, points.size());
+    }
+
 
 
     public void moveTo(Point newPoint) {

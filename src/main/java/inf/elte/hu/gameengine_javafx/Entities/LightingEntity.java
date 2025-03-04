@@ -3,6 +3,8 @@ package inf.elte.hu.gameengine_javafx.Entities;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.LightComponent;
 import inf.elte.hu.gameengine_javafx.Components.ParentComponent;
+import inf.elte.hu.gameengine_javafx.Components.PlayerComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
 import inf.elte.hu.gameengine_javafx.Components.RadiusComponent;
@@ -27,13 +29,13 @@ public class LightingEntity extends Entity {
         addComponent(new VelocityComponent());
         addComponent(new ParentComponent());
 
-        listOfRays.addAll(calculateRays(rays));
+        calculateRays(rays);
 
         addToManager();
     }
 
-    private List<Line> calculateRays(int rays) {
-        List<Line> listOfRays = new ArrayList<>();
+    private void calculateRays(int rays) {
+        listOfRays.clear();
         PositionComponent pos = getComponent(PositionComponent.class);
         RadiusComponent rad = getComponent(RadiusComponent.class);
         double centerX = pos.getGlobalX();
@@ -48,29 +50,23 @@ public class LightingEntity extends Entity {
             Line ray = new Line(new Point(centerX, centerY), new Point(endX, endY));
             listOfRays.add(ray);
         }
-
-        return listOfRays;
     }
 
     public void calculateCollisions() {
-        listOfRays.clear();
-        listOfRays.addAll(calculateRays(400));
-        List<Entity> tileEntities = EntityHub.getInstance().getEntitiesWithType(TileEntity.class);
-        RadiusComponent radiusComp = getComponent(RadiusComponent.class);
-        double maxRayDistance = radiusComp.getRadius() + 100;
+        calculateRays(100);
+        List<Entity> entities = EntityHub.getInstance().getEntitiesWithComponent(RectangularHitBoxComponent.class);
 
         for (Line line : listOfRays) {
             Point start = line.getPoints().getFirst();
             Point closestIntersection = null;
             double minDistance = Double.MAX_VALUE;
 
-            for (Entity tileEntity : tileEntities) {
-                RectangularHitBoxComponent hitboxComponent = tileEntity.getComponent(RectangularHitBoxComponent.class);
-                if (hitboxComponent == null) continue;
-
+            for (Entity entity : entities) {
+                if (entity instanceof PlayerEntity) {
+                    continue;
+                }
+                RectangularHitBoxComponent hitboxComponent = entity.getComponent(RectangularHitBoxComponent.class);
                 Rectangle hitbox = hitboxComponent.getHitBox();
-
-                if (start.distanceTo(hitbox.getTopLeft()) > maxRayDistance) continue;
 
                 for (Edge edge : hitbox.getEdges()) {
                     Point intersection = Shape.getIntersection(line, edge);
@@ -101,8 +97,8 @@ public class LightingEntity extends Entity {
 
     public void matchPositionToEntity(Entity entity) {
         PositionComponent pos = getComponent(PositionComponent.class);
-        PositionComponent parentPos = entity.getComponent(PositionComponent.class);
-        pos.setLocalPosition(parentPos.getGlobalX(), parentPos.getGlobalY(), this);
+        CentralMassComponent parentPos = entity.getComponent(CentralMassComponent.class);
+        pos.setLocalPosition(parentPos.getCentralX(), parentPos.getCentralY(), this);
         pos.updateGlobalPosition(this);
     }
 
