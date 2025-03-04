@@ -88,7 +88,11 @@ public class LightingEntity extends Entity {
         }
     }
 
-    public ComplexShape createShapeFromLines() {
+    public void mergeRays(LightingEntity other) {
+        this.listOfRays.addAll(other.getRays());
+    }
+
+    public ComplexShape createShapeFromRays() {
         List<Point> points = new ArrayList<>();
         for (Line line : listOfRays) {
             points.add(line.getEdges().getFirst().getEnd());
@@ -129,5 +133,9 @@ public class LightingEntity extends Entity {
         for (Line ray : listOfRays) {
             ray.render(gc, getComponent(ColorComponent.class).getColor(), 5);
         }
+    }
+
+    public List<Line> getRays() {
+        return listOfRays;
     }
 }
