@@ -158,12 +158,15 @@ public class RenderSystem extends GameSystem {
                 ComplexShape complexShape = ((LightingEntity)entity).createShapeFromLines();
                 double firstPos = complexShape.getPoints().getFirst().getX();
                 darkness.getPoints().add(new Point(firstPos, 0));
+                darkness.updateEdges();
                 darkness.addShape(complexShape);
                 darkness.getPoints().add(new Point(firstPos, complexShape.getPoints().getFirst().getY()));
+                darkness.updateEdges();
                 darkness.getPoints().add(new Point(firstPos, 0));
+                darkness.updateEdges();
                 complexShape.renderFill(gc, new Color(1,1,1,0.2));
             }
-            darkness.renderFillWithStroke(gc, new Color(0, 0, 0, 0.7), 3);
+            darkness.renderFill(gc, new Color(0, 0, 0, 0.7));
 
             if (!GameCanvas.getInstance().isFocused()) {
                 GameCanvas.getInstance().requestFocus();

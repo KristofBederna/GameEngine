@@ -69,7 +69,7 @@ public class LightingEntity extends Entity {
                 Rectangle hitbox = hitboxComponent.getHitBox();
 
                 for (Edge edge : hitbox.getEdges()) {
-                    Point intersection = Shape.getIntersection(line, edge);
+                    Point intersection = Shape.getIntersection(line.getEdges().getFirst(), edge);
                     if (intersection != null) {
                         double distance = start.distanceTo(intersection);
                         if (distance < minDistance) {

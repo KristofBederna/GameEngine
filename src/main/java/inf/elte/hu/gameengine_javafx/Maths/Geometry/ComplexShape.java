@@ -133,6 +133,7 @@ public class ComplexShape extends Shape {
 
     public void addShape(Shape shape) {
         points.addAll(shape.getPoints());
+        updateEdges();
     }
 
 }
