@@ -27,10 +27,6 @@ public class Shape {
     }
 
     private static boolean doIntersect(Point p1, Point p2, Point q1, Point q2) {
-        if (areParallel(p1, p2, q1, q2)) {
-            return false;
-        }
-
         int o1 = orientation(p1, p2, q1);
         int o2 = orientation(p1, p2, q2);
         int o3 = orientation(q1, q2, p1);
@@ -46,12 +42,6 @@ public class Shape {
         if (o4 == 0 && onSegment(q1, p2, q2)) return true;
 
         return false;
-    }
-
-    private static boolean areParallel(Point p1, Point p2, Point q1, Point q2) {
-        double crossProduct = (p2.getX() - p1.getX()) * (q2.getY() - q1.getY())
-                - (p2.getY() - p1.getY()) * (q2.getX() - q1.getX());
-        return Math.abs(crossProduct) < 1e-9;
     }
 
     private static int orientation(Point p, Point q, Point r) {

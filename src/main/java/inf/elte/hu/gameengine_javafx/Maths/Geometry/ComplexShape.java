@@ -136,5 +136,21 @@ public class ComplexShape extends Shape {
         updateEdges();
     }
 
+    public boolean isPointInside(Point point) {
+        int intersectionCount = 0;
+        for (Edge edge : edges) {
+            Point p1 = edge.getBeginning();
+            Point p2 = edge.getEnd();
+
+            if (point.getY() > Math.min(p1.getY(), p2.getY()) && point.getY() <= Math.max(p1.getY(), p2.getY())) {
+                double intersectionX = p1.getX() + (point.getY() - p1.getY()) * (p2.getX() - p1.getX()) / (p2.getY() - p1.getY());
+                if (point.getX() < intersectionX) {
+                    intersectionCount++;
+                }
+            }
+        }
+        return intersectionCount % 2 == 1;
+    }
+
 }
 

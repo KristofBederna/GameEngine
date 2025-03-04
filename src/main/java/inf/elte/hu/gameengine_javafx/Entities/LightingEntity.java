@@ -1,9 +1,9 @@
 package inf.elte.hu.gameengine_javafx.Entities;
 
+import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.LightHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.LightComponent;
 import inf.elte.hu.gameengine_javafx.Components.ParentComponent;
-import inf.elte.hu.gameengine_javafx.Components.PlayerComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
@@ -17,7 +17,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class LightingEntity extends Entity {
@@ -29,6 +28,7 @@ public class LightingEntity extends Entity {
         addComponent(new PositionComponent(x, y, this));
         addComponent(new VelocityComponent());
         addComponent(new ParentComponent());
+        addComponent(new LightHitBoxComponent(new ArrayList<>()));
 
         calculateRays(rays);
 
@@ -109,8 +109,9 @@ public class LightingEntity extends Entity {
         for (int i = 0; i < rightMostIndex; i++) {
             reorderedPoints.add(points.get(i));
         }
-
-        return new ComplexShape(reorderedPoints);
+        ComplexShape complexShape = new ComplexShape(reorderedPoints);
+        getComponent(LightHitBoxComponent.class).setHitBox(complexShape);
+        return complexShape;
     }
 
 

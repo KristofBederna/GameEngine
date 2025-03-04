@@ -3,6 +3,7 @@ package inf.elte.hu.gameengine_javafx.Systems.RenderingSystems;
 import inf.elte.hu.gameengine_javafx.Components.LightComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Components.RadiusComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ZIndexComponent;
 import inf.elte.hu.gameengine_javafx.Components.ShapeComponent;
@@ -16,10 +17,7 @@ import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Entities.LightingEntity;
 import inf.elte.hu.gameengine_javafx.Entities.ParticleEntity;
 import inf.elte.hu.gameengine_javafx.Entities.PlayerEntity;
-import inf.elte.hu.gameengine_javafx.Maths.Geometry.ComplexShape;
-import inf.elte.hu.gameengine_javafx.Maths.Geometry.Line;
-import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Maths.Geometry.Rectangle;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.*;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
 import javafx.application.Platform;
@@ -145,9 +143,6 @@ public class RenderSystem extends GameSystem {
             points.add(new Point(3000, 0));
             ComplexShape darkness = new ComplexShape(points);
             for (Entity entity : EntityHub.getInstance().getEntitiesWithComponent(LightComponent.class)) {
-//                if (!EntityHub.getInstance().getEntitiesInsideViewport(CameraEntity.getInstance()).contains(entity)) {
-//                    continue;
-//                }
                 if (entity.getId() == EntityHub.getInstance().getEntitiesWithComponent(LightComponent.class).getFirst().getId()) {
                     ((LightingEntity)entity).matchPositionToEntity(EntityHub.getInstance().getEntitiesWithType(PlayerEntity.class).getFirst());
                 }
@@ -167,6 +162,30 @@ public class RenderSystem extends GameSystem {
                 complexShape.renderFill(gc, new Color(1,1,1,0.2));
             }
             darkness.renderFill(gc, new Color(0, 0, 0, 0.7));
+            for (Edge edge : darkness.getEdges()) {
+                new Line(edge.getBeginning(), edge.getEnd()).render(gc, Color.YELLOW, 3);
+            }
+            for (Entity entity : EntityHub.getInstance().getEntitiesWithType(LightingEntity.class)) {
+                new Point(entity.getComponent(PositionComponent.class).getGlobalX(), entity.getComponent(PositionComponent.class).getGlobalY()).render(gc, 3, Color.CYAN);
+            }
+            for (Point point : darkness.getPoints()) {
+                boolean isLit = false;
+
+                for (Entity entity : EntityHub.getInstance().getEntitiesWithType(LightingEntity.class)) {
+                    double entityX = entity.getComponent(PositionComponent.class).getGlobalX();
+                    double entityY = entity.getComponent(PositionComponent.class).getGlobalY();
+                    double radius = entity.getComponent(RadiusComponent.class).getRadius();
+
+                    if (point.distanceTo(new Point(entityX, entityY)) <= radius-1) {
+                        isLit = true;
+                        break;
+                    }
+                }
+
+                if (!isLit) {
+                    point.renderFill(gc, 3, Color.ORANGE);
+                }
+            }
 
             if (!GameCanvas.getInstance().isFocused()) {
                 GameCanvas.getInstance().requestFocus();
