@@ -1,17 +1,21 @@
 package inf.elte.hu.gameengine_javafx.Misc.MapClasses;
 
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
+import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.TileSetComponent;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
+import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class WorldGenerator {
-    private static final Random RANDOM = new Random();
-
     public static Chunk generateChunk(int chunkX, int chunkY, int chunkSize) {
         List<List<TileEntity>> tiles = new ArrayList<>();
         TileSetComponent tileSet = WorldEntity.getInstance().getComponent(TileSetComponent.class);

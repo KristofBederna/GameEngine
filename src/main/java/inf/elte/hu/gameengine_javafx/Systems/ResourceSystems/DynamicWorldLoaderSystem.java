@@ -1,11 +1,19 @@
 package inf.elte.hu.gameengine_javafx.Systems.ResourceSystems;
 
+import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
+import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
+import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
+import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.Chunk;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.WorldGenerator;
@@ -21,11 +29,6 @@ public class DynamicWorldLoaderSystem extends GameSystem {
     private static final int LOAD_DISTANCE = 2;
 
     private final Map<Tuple<Integer, Integer>, Chunk> savedChunks = new HashMap<>();
-    private final World worldData;
-
-    public DynamicWorldLoaderSystem() {
-        this.worldData = new World();
-    }
 
     @Override
     public void start() {
@@ -59,7 +62,7 @@ public class DynamicWorldLoaderSystem extends GameSystem {
     }
 
     private void loadSurroundingChunks(int playerChunkX, int playerChunkY) {
-        Set<Tuple<Integer, Integer>> loadedChunks = worldData.getWorld().keySet();
+        Set<Tuple<Integer, Integer>> loadedChunks = WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getWorld().keySet();
         for (int dx = -LOAD_DISTANCE; dx <= LOAD_DISTANCE; dx++) {
             for (int dy = -LOAD_DISTANCE; dy <= LOAD_DISTANCE; dy++) {
                 int chunkX = playerChunkX + dx;
@@ -75,12 +78,13 @@ public class DynamicWorldLoaderSystem extends GameSystem {
     }
 
     private void unloadFarChunks(int playerChunkX, int playerChunkY) {
-        Iterator<Map.Entry<Tuple<Integer, Integer>, Chunk>> iterator = worldData.getWorld().entrySet().iterator();
+        Iterator<Map.Entry<Tuple<Integer, Integer>, Chunk>> iterator = WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getWorld().entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<Tuple<Integer, Integer>, Chunk> entry = iterator.next();
             int chunkX = entry.getKey().first();
             int chunkY = entry.getKey().second();
             if (Math.abs(chunkX - playerChunkX) > LOAD_DISTANCE || Math.abs(chunkY - playerChunkY) > LOAD_DISTANCE) {
+                savedChunks.put(entry.getKey(), entry.getValue());
                 iterator.remove();
             }
         }
@@ -89,11 +93,33 @@ public class DynamicWorldLoaderSystem extends GameSystem {
     private void loadOrGenerateChunk(int chunkX, int chunkY) {
         Tuple<Integer, Integer> chunkKey = new Tuple<>(chunkX, chunkY);
 
-        if (!worldData.getWorld().containsKey(chunkKey)) {
+        if (savedChunks.containsKey(chunkKey)) {
+            WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().addChunk(chunkX, chunkY, savedChunks.get(chunkKey));
+        } else {
             Chunk newChunk = WorldGenerator.generateChunk(chunkX, chunkY, CHUNK_SIZE);
-            addBoundaryWalls(newChunk, chunkX, chunkY);
-            worldData.addChunk(chunkX, chunkY, newChunk);
+            savedChunks.put(chunkKey, newChunk);
+            WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().addChunk(chunkX, chunkY, newChunk);
         }
+        addBoundaryWalls(WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getWorld().get(chunkKey), chunkX, chunkY);
+        addWorldMesh();
+    }
+
+    private void addWorldMesh() {
+        WorldEntity map = WorldEntity.getInstance();
+        if (map == null) return;
+        MapMeshComponent mapMesh = map.getComponent(MapMeshComponent.class);
+        List<Point> meshRow = new ArrayList<>();
+        map.getComponent(WorldDataComponent.class).getMapData().getWorld().values().forEach(chunk -> {
+            for (List<TileEntity> tileEntities : chunk.getChunk()) {
+                for (TileEntity tileEntity : tileEntities) {
+                    if (tileEntity.getComponent(RectangularHitBoxComponent.class) != null) {
+                        continue;
+                    }
+                    meshRow.add(new Point(tileEntity.getComponent(CentralMassComponent.class).getCentralX(), tileEntity.getComponent(CentralMassComponent.class).getCentralY()));
+                }
+                mapMesh.addRow(meshRow);
+            }
+        });
     }
 
     private void addBoundaryWalls(Chunk chunk, int chunkX, int chunkY) {

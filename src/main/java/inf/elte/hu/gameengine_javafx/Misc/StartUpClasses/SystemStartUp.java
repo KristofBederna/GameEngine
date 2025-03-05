@@ -27,7 +27,7 @@ public class SystemStartUp {
         systemHub.addSystem(ResourceSystem.class, new ResourceSystem(),9);
         systemHub.addSystem(CameraSystem.class, new CameraSystem(), 10);
         systemHub.addSystem(SoundSystem.class, new SoundSystem(), 11);
-        systemHub.addSystem(DynamicWorldLoaderSystem.class, new DynamicWorldLoaderSystem(), 12);
+        systemHub.addSystem(InfiniteWorldLoaderSystem.class, new InfiniteWorldLoaderSystem(), 12);
     }
 
     public void startUpSceneManagementSystem() {

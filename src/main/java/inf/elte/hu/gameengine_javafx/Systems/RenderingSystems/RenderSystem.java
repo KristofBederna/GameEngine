@@ -8,16 +8,14 @@ import inf.elte.hu.gameengine_javafx.Components.RadiusComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ZIndexComponent;
 import inf.elte.hu.gameengine_javafx.Components.ShapeComponent;
+import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
-import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
+import inf.elte.hu.gameengine_javafx.Entities.*;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
-import inf.elte.hu.gameengine_javafx.Entities.LightingEntity;
-import inf.elte.hu.gameengine_javafx.Entities.ParticleEntity;
-import inf.elte.hu.gameengine_javafx.Entities.PlayerEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.*;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
@@ -111,15 +109,15 @@ public class RenderSystem extends GameSystem {
 //                    }
                 }
             }
-//            MapMeshComponent meshComponent = WorldEntity.getInstance().getComponent(MapMeshComponent.class);
-//            if (meshComponent != null) {
-//                for (List<Point> row : meshComponent.getMapCoordinates()) {
-//                    for (Point point : row) {
-//                        if (point == null) continue;
-//                        point.render(gc, 5, Color.YELLOW);
-//                    }
-//                }
-//            }
+            MapMeshComponent meshComponent = WorldEntity.getInstance().getComponent(MapMeshComponent.class);
+            if (meshComponent != null) {
+                for (List<Point> row : meshComponent.getMapCoordinates()) {
+                    for (Point point : row) {
+                        if (point == null) continue;
+                        point.renderFill(gc, 5, Color.YELLOW);
+                    }
+                }
+            }
 //            for (Entity entity : EntityHub.getInstance().getEntitiesWithComponent(PathfindingComponent.class)) {
 //                PathfindingComponent pathfindingComponent = entity.getComponent(PathfindingComponent.class);
 //                if (pathfindingComponent.getPath() == null) {

@@ -34,11 +34,11 @@ public class World {
     }
 
     public TileEntity getElementAt(int tileX, int tileY) {
-        int chunkX = Math.floorDiv(tileX, 16);
-        int chunkY = Math.floorDiv(tileY, 16);
+        int chunkX = Math.floorDiv(tileX, 8);
+        int chunkY = Math.floorDiv(tileY, 8);
 
-        int localX = Math.floorMod(tileX, 16);
-        int localY = Math.floorMod(tileY, 16);
+        int localX = Math.floorMod(tileX, 8);
+        int localY = Math.floorMod(tileY, 8);
 
         Chunk chunk = chunks.get(new Tuple<>(chunkX, chunkY));
         if (chunk != null) {
