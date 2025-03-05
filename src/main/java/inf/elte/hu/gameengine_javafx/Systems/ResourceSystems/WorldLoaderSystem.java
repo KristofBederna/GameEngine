@@ -17,7 +17,10 @@ import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Misc.Globals;
+import inf.elte.hu.gameengine_javafx.Misc.MapClasses.Chunk;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.MapSaver;
+import inf.elte.hu.gameengine_javafx.Misc.MapClasses.World;
+import inf.elte.hu.gameengine_javafx.Misc.Tuple;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,7 +40,7 @@ public class WorldLoaderSystem extends GameSystem {
             String[] dimensions = reader.readLine().split(" ");
             int width = Integer.parseInt(dimensions[0]);
             int height = Integer.parseInt(dimensions[1]);
-
+            List<List<TileEntity>> chunkGenerator = new ArrayList<>();
             for (int y = 0; y < height; y++) {
                 String[] row = reader.readLine().split(" ");
                 List<TileEntity> worldRow = new ArrayList<>();
@@ -50,17 +53,18 @@ public class WorldLoaderSystem extends GameSystem {
                         name = String.valueOf(value);
                     }
                     if (value == 9) {
-                        tile = new TileEntity(value,x* Globals.tileSize, y*Globals.tileSize, "/assets/tiles/" + name+".png", Globals.tileSize, Globals.tileSize);
+                        tile = new TileEntity(value, x * Globals.tileSize, y * Globals.tileSize, "/assets/tiles/" + name + ".png", Globals.tileSize, Globals.tileSize);
                         meshRow.add(new Point(tile.getComponent(CentralMassComponent.class).getCentralX(), tile.getComponent(CentralMassComponent.class).getCentralY()));
                     } else {
-                        tile = new TileEntity(value,x*Globals.tileSize, y*Globals.tileSize, "/assets/tiles/" + name+".png", Globals.tileSize, Globals.tileSize, true);
+                        tile = new TileEntity(value, x * Globals.tileSize, y * Globals.tileSize, "/assets/tiles/" + name + ".png", Globals.tileSize, Globals.tileSize, true);
                         meshRow.add(null);
                     }
                     worldRow.add(tile);
                 }
                 map.getComponent(MapMeshComponent.class).addRow(meshRow);
-                map.getComponent(WorldDataComponent.class).addRow(worldRow);
+                chunkGenerator.add(worldRow);
             }
+            map.getComponent(WorldDataComponent.class).setMapData(0, 0, new Chunk(chunkGenerator));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -85,8 +89,7 @@ public class WorldLoaderSystem extends GameSystem {
             double tileX = tile.getComponent(PositionComponent.class).getGlobalX();
             double tileY = tile.getComponent(PositionComponent.class).getGlobalY();
 
-            if (tileX + Globals.tileSize < camX || tileX > camX + camWidth ||
-                    tileY + Globals.tileSize < camY || tileY > camY + camHeight) {
+            if (tileX + Globals.tileSize < camX || tileX > camX + camWidth || tileY + Globals.tileSize < camY || tileY > camY + camHeight) {
                 toRemove.add(tile);
             }
         }
@@ -95,27 +98,23 @@ public class WorldLoaderSystem extends GameSystem {
             tileManager.unload(tile.getId());
         }
 
-        List<List<TileEntity>> worldData = map.getComponent(WorldDataComponent.class).getMapData();
-        Set<String> existingTiles = tileManager.getEntities().values().stream()
-                .map(t -> t.getComponent(PositionComponent.class).getGlobalX() + "," +
-                        t.getComponent(PositionComponent.class).getGlobalY())
-                .collect(Collectors.toSet());
+        World worldData = map.getComponent(WorldDataComponent.class).getMapData();
+        Set<String> existingTiles = tileManager.getEntities().values().stream().map(t -> t.getComponent(PositionComponent.class).getGlobalX() + "," + t.getComponent(PositionComponent.class).getGlobalY()).collect(Collectors.toSet());
 
-        for (List<TileEntity> row : worldData) {
-            for (TileEntity data : row) {
-                double tileX = data.getComponent(PositionComponent.class).getGlobalX();
-                double tileY = data.getComponent(PositionComponent.class).getGlobalY();
+        for (Chunk row : worldData.getWorld().values()) {
+            for (List<TileEntity> tiles : row.getChunk()) {
+                for (TileEntity tileEntity : tiles) {
+                    double tileX = tileEntity.getComponent(PositionComponent.class).getGlobalX();
+                    double tileY = tileEntity.getComponent(PositionComponent.class).getGlobalY();
 
-                if (tileX + Globals.tileSize >= camX && tileX <= camX + camWidth &&
-                        tileY + Globals.tileSize >= camY && tileY <= camY + camHeight) {
+                    if (tileX + Globals.tileSize >= camX && tileX <= camX + camWidth && tileY + Globals.tileSize >= camY && tileY <= camY + camHeight) {
 
-                    String key = tileX + "," + tileY;
-                    if (!existingTiles.contains(key)) {
-                        boolean hasHitBox = data.getComponent(RectangularHitBoxComponent.class) != null;
-                        TileEntity newTile = new TileEntity(data.getComponent(TileValueComponent.class).getTileValue(), tileX, tileY,
-                                data.getComponent(ImageComponent.class).getImagePath(),
-                                Globals.tileSize, Globals.tileSize, hasHitBox);
-                        tileManager.register(newTile);
+                        String key = tileX + "," + tileY;
+                        if (!existingTiles.contains(key)) {
+                            boolean hasHitBox = tileEntity.getComponent(RectangularHitBoxComponent.class) != null;
+                            TileEntity newTile = new TileEntity(tileEntity.getComponent(TileValueComponent.class).getTileValue(), tileX, tileY, tileEntity.getComponent(ImageComponent.class).getImagePath(), Globals.tileSize, Globals.tileSize, hasHitBox);
+                            tileManager.register(newTile);
+                        }
                     }
                 }
             }

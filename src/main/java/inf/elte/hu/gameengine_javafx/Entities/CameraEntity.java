@@ -20,9 +20,24 @@ public class CameraEntity extends Entity  {
         addToManager();
     }
 
+    private CameraEntity(double width, double height) {
+        this.addComponent(new DimensionComponent(width, height));
+        this.addComponent(new PositionComponent(0, 0, this));
+        this.addComponent(new ParentComponent());
+
+        addToManager();
+    }
+
     public static CameraEntity getInstance(double width, double height, double worldWidth, double worldHeight) {
         if (instance == null) {
             instance = new CameraEntity(width, height, worldWidth, worldHeight);
+        }
+        return instance;
+    }
+
+    public static CameraEntity getInstance(double width, double height) {
+        if (instance == null) {
+            instance = new CameraEntity(width, height);
         }
         return instance;
     }
@@ -36,6 +51,10 @@ public class CameraEntity extends Entity  {
     }
 
     public void setPosition(double x, double y) {
+        this.getComponent(PositionComponent.class).setLocalPosition(x, y, this);
+    }
+
+    public void setClampedPosition(double x, double y) {
         this.getComponent(PositionComponent.class).setLocalPosition((Math.max(0, Math.min(x, this.getComponent(WorldDimensionComponent.class).getWorldWidth() - this.getComponent(DimensionComponent.class).getWidth()))), (Math.max(0, Math.min(y, this.getComponent(WorldDimensionComponent.class).getWorldHeight() - this.getComponent(DimensionComponent.class).getHeight()))), this);
     }
 
