@@ -1,5 +1,9 @@
 package inf.elte.hu.gameengine_javafx.Misc.MapClasses;
 
+import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 
 import java.util.ArrayList;
@@ -47,6 +51,12 @@ public class Chunk {
 
     public TileEntity getElement(int x, int y) {
         return chunk.get(x).get(y);
+    }
+
+    public void setElement(int x, int y, int value) {
+        TileEntity tileEntity = chunk.get(x).get(y);
+        TileEntity newTileEntity = new TileEntity(value, tileEntity.getComponent(PositionComponent.class).getGlobalX(), tileEntity.getComponent(PositionComponent.class).getGlobalY(), "/assets/tiles/" + TileLoader.getTilePath(value) + ".png", tileEntity.getComponent(DimensionComponent.class).getWidth(), tileEntity.getComponent(DimensionComponent.class).getHeight(), value != 9);
+        chunk.get(x).set(y, newTileEntity);
     }
 
     public int getWidth() {

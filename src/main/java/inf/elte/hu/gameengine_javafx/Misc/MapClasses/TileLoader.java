@@ -8,7 +8,7 @@ public class TileLoader {
     public void addTilePath(Integer value, String path) {
         tilePaths.put(value, path);
     }
-    public String getTilePath(Integer value) {
+    public static String getTilePath(Integer value) {
         return tilePaths.get(value);
     }
     public Integer getTileValue(String path) {

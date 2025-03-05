@@ -42,7 +42,7 @@ public class GeneratorTestScene extends GameScene {
     }
 
     private void entitySetup() {
-        new PlayerEntity(0, 0, "idle", "/assets/images/PlayerIdle.png", 0.8*Globals.tileSize, 0.8*Globals.tileSize);
+        new PlayerEntity(220, 220, "idle", "/assets/images/PlayerIdle.png", 0.8*Globals.tileSize, 0.8*Globals.tileSize);
     }
 
     private void interactionSetup() {

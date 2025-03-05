@@ -36,7 +36,7 @@ public class TileEntity extends Entity {
 
         addToManager();
     }
-    public TileEntity(int value, int x, int y, String path) {
+    public TileEntity(int value, double x, double y, String path) {
         this.addComponent(new TileValueComponent(value));
         this.addComponent(new ImageComponent(path));
         this.addComponent(new PositionComponent(x, y, this));
