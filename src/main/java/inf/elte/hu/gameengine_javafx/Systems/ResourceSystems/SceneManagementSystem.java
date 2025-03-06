@@ -15,7 +15,7 @@ public class SceneManagementSystem extends GameSystem {
 
     public SceneManagementSystem() {
         // Initialize with a default scene
-        currentScene = new GeneratorTestScene(new BorderPane(), 1920, 1080);
+        currentScene = new TestScene(new BorderPane(), 1920, 1080);
     }
 
     @Override

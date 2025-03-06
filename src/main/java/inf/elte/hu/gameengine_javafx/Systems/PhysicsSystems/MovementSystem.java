@@ -38,8 +38,7 @@ public class MovementSystem extends GameSystem {
                 var velocity = entity.getComponent(VelocityComponent.class);
                 var position = entity.getComponent(PositionComponent.class);
 
-                position.setLocalX(position.getLocalX() + velocity.getVelocity().getDx(), entity);
-                position.setLocalY(position.getLocalY() + velocity.getVelocity().getDy(), entity);
+                position.setLocalPosition(position.getLocalX() + velocity.getVelocity().getDx(), position.getLocalY() + velocity.getVelocity().getDy(), entity);
 
                 if (entity.getComponent(DimensionComponent.class) != null) {
                     var dimension = entity.getComponent(DimensionComponent.class);
@@ -48,8 +47,10 @@ public class MovementSystem extends GameSystem {
                         entity.getComponent(CentralMassComponent.class).setCentralY(position.getGlobalY() + dimension.getHeight()/2);
                     }
                 }
-
                 position.updateGlobalPosition(entity);
+                if (entity instanceof ParticleEntity) {
+                    System.out.println(position.getGlobalX() + " " + position.getGlobalY());
+                }
                 RectangularHitBoxComponent hitBox = entity.getComponent(RectangularHitBoxComponent.class);
                 TriangularHitBoxComponent triBox = entity.getComponent(TriangularHitBoxComponent.class);
                 NSidedHitBoxComponent circBox = entity.getComponent(NSidedHitBoxComponent.class);

@@ -89,12 +89,12 @@ public class TestScene extends GameScene{
     private void entitySetup() {
         new PlayerEntity(420, 120, "idle", "/assets/images/PlayerIdle.png", 0.8*Globals.tileSize, 0.8*Globals.tileSize);
         new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80);
-        //new ParticleEmitterEntity(400, 400, new ParticleEntity(0, 0, 2, 2, new Rectangle(new Point(0, 0), 2, 2), Color.ORANGE), Direction.RIGHT);
-        new ParticleEmitterEntity(15*Globals.tileSize, 750, new ParticleEntity(0, 0, 20, 20, "/assets/images/snowflake.png", 1000), Direction.ALL, 200, 2500);
-        new LightingEntity(250, 250, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
-        new LightingEntity(1050, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
-        new LightingEntity(750, 650, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
-        new LightingEntity(250, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
+//        new ParticleEmitterEntity(400, 400, new ParticleEntity(0, 0, 2, 2, new Rectangle(new Point(0, 0), 2, 2), Color.ORANGE, 300), Direction.RIGHT, 50, 100);
+//        new ParticleEmitterEntity(5*Globals.tileSize, 500, new ParticleEntity(0, 0, 20, 20, "/assets/images/snowflake.png", 1000), Direction.ALL, 200, 2500);
+//        new LightingEntity(250, 250, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
+//        new LightingEntity(1050, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
+//        new LightingEntity(750, 650, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
+//        new LightingEntity(250, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
         //        ButtonEntity be = new ButtonEntity();
 //        be.addStyleClass("my-custom-button");
 //        new SliderEntity();
@@ -124,7 +124,7 @@ public class TestScene extends GameScene{
             Random random = new Random();
             Point target = null;
             while (target == null) {
-                target = WorldEntity.getInstance().getComponent(MapMeshComponent.class).getMapCoordinates().get(random.nextInt(15)).get(random.nextInt(30));
+                target = WorldEntity.getInstance().getComponent(MapMeshComponent.class).getMapCoordinates().get(random.nextInt(8)).get(random.nextInt(16));
             }
             PathfindingComponent pathfinding = entity2.getComponent(PathfindingComponent.class);
             if (pathfinding != null && pathfinding.getEnd() != null) {
