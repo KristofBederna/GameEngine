@@ -38,8 +38,8 @@ public class MovementSystem extends GameSystem {
                 var velocity = entity.getComponent(VelocityComponent.class);
                 var position = entity.getComponent(PositionComponent.class);
 
-                position.setLocalX(position.getLocalX() + velocity.getDx(), entity);
-                position.setLocalY(position.getLocalY() + velocity.getDy(), entity);
+                position.setLocalX(position.getLocalX() + velocity.getVelocity().getDx(), entity);
+                position.setLocalY(position.getLocalY() + velocity.getVelocity().getDy(), entity);
 
                 if (entity.getComponent(DimensionComponent.class) != null) {
                     var dimension = entity.getComponent(DimensionComponent.class);
@@ -55,17 +55,17 @@ public class MovementSystem extends GameSystem {
                 NSidedHitBoxComponent circBox = entity.getComponent(NSidedHitBoxComponent.class);
                 ComplexHitBoxComponent complexBox = entity.getComponent(ComplexHitBoxComponent.class);
                 if (hitBox != null) {
-                    hitBox.getHitBox().translate(velocity.getDx(), velocity.getDy());
+                    hitBox.getHitBox().translate(velocity.getVelocity().getDx(), velocity.getVelocity().getDy());
                 }
                 if (triBox != null) {
-                    triBox.getHitBox().translate(velocity.getDx(), velocity.getDy());
+                    triBox.getHitBox().translate(velocity.getVelocity().getDx(), velocity.getVelocity().getDy());
                 }
                 if (circBox != null) {
-                    circBox.getHitBox().translate(velocity.getDx(), velocity.getDy());
+                    circBox.getHitBox().translate(velocity.getVelocity().getDx(), velocity.getVelocity().getDy());
                 }
                 if (complexBox != null)
                 {
-                    complexBox.getHitBox().translate(velocity.getDx(), velocity.getDy());
+                    complexBox.getHitBox().translate(velocity.getVelocity().getDx(), velocity.getVelocity().getDy());
                 }
             }
         }

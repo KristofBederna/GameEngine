@@ -112,36 +112,36 @@ public class Test2Scene extends GameScene{
 
     private void moveUp(Entity e) {
         double dy = -400 * Time.getInstance().getDeltaTime();
-        e.getComponent(VelocityComponent.class).setDy(dy);
+        e.getComponent(VelocityComponent.class).getVelocity().setDy(dy);
         e.getComponent(StateComponent.class).setCurrentState("up");
     }
 
     private void moveDown(Entity e) {
         double dy = 400 * Time.getInstance().getDeltaTime();
-        e.getComponent(VelocityComponent.class).setDy(dy);
+        e.getComponent(VelocityComponent.class).getVelocity().setDy(dy);
         e.getComponent(StateComponent.class).setCurrentState("down");
     }
 
     private void moveLeft(Entity e) {
         double dx = -400 * Time.getInstance().getDeltaTime();
-        e.getComponent(VelocityComponent.class).setDx(dx);
+        e.getComponent(VelocityComponent.class).getVelocity().setDx(dx);
         e.getComponent(StateComponent.class).setCurrentState("left");
     }
 
     private void moveRight(Entity e) {
         double dx = 400 * Time.getInstance().getDeltaTime();
-        e.getComponent(VelocityComponent.class).setDx(dx);
+        e.getComponent(VelocityComponent.class).getVelocity().setDx(dx);
         e.getComponent(StateComponent.class).setCurrentState("right");
     }
 
     private void counterVertical(Entity e) {
-        e.getComponent(VelocityComponent.class).setDy(0);
+        e.getComponent(VelocityComponent.class).getVelocity().setDy(0);
         e.getComponent(StateComponent.class).setCurrentState("idle");
     }
 
 
     private void counterHorizontal(Entity e) {
-        e.getComponent(VelocityComponent.class).setDx(0);
+        e.getComponent(VelocityComponent.class).getVelocity().setDx(0);
         e.getComponent(StateComponent.class).setCurrentState("idle");
     }
 }

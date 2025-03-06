@@ -68,4 +68,13 @@ public class Point {
         this.x = x;
         this.y = y;
     }
+
+    public void setCoordinates(Point other) {
+        this.x = other.getX();
+        this.y = other.getY();
+    }
+
+    public Point getCoordinates() {
+        return new Point(x, y);
+    }
 }

@@ -42,7 +42,7 @@ public class DummyEntity extends Entity {
 
     @Override
     public String toString() {
-        return this.getComponent(PositionComponent.class).getGlobalX() + " " + this.getComponent(PositionComponent.class).getGlobalY() + " " + this.getComponent(VelocityComponent.class).getDx() + " " + this.getComponent(VelocityComponent.class).getDy();
+        return this.getComponent(PositionComponent.class).getGlobalX() + " " + this.getComponent(PositionComponent.class).getGlobalY() + " " + this.getComponent(VelocityComponent.class).getVelocity().getDx() + " " + this.getComponent(VelocityComponent.class).getVelocity().getDy();
     }
 
     public void setAnimationState() {

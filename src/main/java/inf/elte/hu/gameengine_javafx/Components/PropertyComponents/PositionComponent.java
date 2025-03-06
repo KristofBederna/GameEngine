@@ -3,48 +3,64 @@ package inf.elte.hu.gameengine_javafx.Components.PropertyComponents;
 import inf.elte.hu.gameengine_javafx.Components.ParentComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 
 public class PositionComponent extends Component {
-    private double localX;
-    private double localY;
-    private double globalX;
-    private double globalY;
+    private Point local;
+    private Point global;
 
     public PositionComponent(double localX, double localY, Entity entity) {
-        this.localX = localX;
-        this.localY = localY;
+        this.local = new Point(localX, localY);
+        this.global = new Point(localX, localY);
         updateGlobalPosition(entity);
     }
 
     public double getLocalX() {
-        return localX;
+        return this.local.getX();
     }
 
     public double getLocalY() {
-        return localY;
+        return this.local.getY();
+    }
+
+    public Point getLocal() {
+        return local;
+    }
+
+    public void setLocal(Point local, Entity entity) {
+        this.local = local;
+        updateGlobalPosition(entity);
     }
 
     public double getGlobalX() {
-        return globalX;
+        return this.global.getX();
     }
 
     public double getGlobalY() {
-        return globalY;
+        return this.global.getY();
     }
 
-    public void setLocalX(double localX,  Entity entity) {
-        this.localX = localX;
+    public Point getGlobal() {
+        return global;
+    }
+
+    public void setGlobal(Point global) {
+        this.global = global;
+    }
+
+    public void setLocalX(double localX, Entity entity) {
+        this.local.setX(localX);
         updateGlobalPosition(entity);
     }
 
     public void setLocalY(double localY,  Entity entity) {
-        this.localY = localY;
+        this.local.setY(localY);
         updateGlobalPosition(entity);
     }
 
-    public void setLocalPosition(double x, double y,  Entity entity) {
-        this.localX = x;
-        this.localY = y;
+    public void setLocalPosition(double localX, double localY,  Entity entity) {
+        this.local.setX(localX);
+        this.local.setY(localY);
         updateGlobalPosition(entity);
     }
 
@@ -54,19 +70,16 @@ public class PositionComponent extends Component {
             if (parentComponent != null && parentComponent.getParent() != null) {
                 PositionComponent parentPosition = parentComponent.getParent().getComponent(PositionComponent.class);
                 if (parentPosition != null) {
-                    this.globalX = parentPosition.getGlobalX() + localX;
-                    this.globalY = parentPosition.getGlobalY() + localY;
+                    this.global.setCoordinates(parentPosition.getGlobal());
                     return;
                 }
             }
         }
-        this.globalX = localX;
-        this.globalY = localY;
+        this.global.setCoordinates(this.local.getCoordinates());
     }
 
     @Override
     public String getStatus() {
-        return this.getClass().getSimpleName() +
-                ": Local(X: " + localX + ", Y: " + localY + ") | Global(X: " + globalX + ", Y: " + globalY + ")";
+        return "";
     }
 }

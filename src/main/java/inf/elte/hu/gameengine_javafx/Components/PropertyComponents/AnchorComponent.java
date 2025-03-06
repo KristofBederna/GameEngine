@@ -1,26 +1,25 @@
 package inf.elte.hu.gameengine_javafx.Components.PropertyComponents;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 
 public class AnchorComponent extends Component {
-    private double anchorX;
-    private double anchorY;
+    private Point anchor;
 
     public AnchorComponent(double anchorX, double anchorY) {
-        this.anchorX = anchorX;
-        this.anchorY = anchorY;
+        anchor = new Point(anchorX, anchorY);
     }
     public double getAnchorX() {
-        return anchorX;
+        return anchor.getX();
     }
     public void setAnchorX(double anchorX) {
-        this.anchorX = anchorX;
+        this.anchor.setX(anchorX);
     }
     public double getAnchorY() {
-        return anchorY;
+        return this.anchor.getY();
     }
     public void setAnchorY(double anchorY) {
-        this.anchorY = anchorY;
+        this.anchor.setY(anchorY);
     }
 
     @Override

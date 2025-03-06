@@ -50,7 +50,7 @@ public class ParticleSystem extends GameSystem {
                     continue;
                 }
 
-                if (velocity.getDx() == 0 && velocity.getDy() == 0) {
+                if (velocity.getVelocity().getDx() == 0 && velocity.getVelocity().getDy() == 0) {
                     Random random = new Random();
 
                     double speed = 50 + random.nextDouble(0, 50);
@@ -83,12 +83,9 @@ public class ParticleSystem extends GameSystem {
                     dx += Math.cos(angle) * random.nextDouble(0, 20) * Time.getInstance().getDeltaTime();
                     dy += Math.sin(angle) * random.nextDouble(0, 20) * Time.getInstance().getDeltaTime();
 
-                    velocity.setDx(dx);
-                    velocity.setDy(dy);
-
+                    velocity.setVelocity(dx, dy);
                     double drag = 0.98;
-                    velocity.setDx(velocity.getDx() * drag);
-                    velocity.setDy(velocity.getDy() * drag);
+                    velocity.setVelocity(velocity.getVelocity().getDx() * drag, velocity.getVelocity().getDy() * drag);
                 }
 
                 if (particleEntity.getComponent(MaxDistanceFromOriginComponent.class).isOverMaxDistance(particleEntity)) {

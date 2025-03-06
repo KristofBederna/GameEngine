@@ -37,7 +37,7 @@ public class PathfindingSystem extends GameSystem {
                     Point node = pathfindingComponent.getPath().getFirst();
                     Point position = new Point(entity.getComponent(CentralMassComponent.class).getCentralX(),
                             entity.getComponent(CentralMassComponent.class).getCentralY());
-                    entity.getComponent(VelocityComponent.class).moveTowards(node, entity);
+                    entity.getComponent(VelocityComponent.class).getVelocity().moveTowards(node, entity);
                     if (position.compareCoordinates(node)) {
                         pathfindingComponent.getPath().removeFirst();
                     }
