@@ -4,8 +4,8 @@ import javafx.scene.control.CheckBox;
 
 public class CheckBoxComponent extends UIComponent<CheckBox> {
 
-    public CheckBoxComponent(String text, double x, double y) {
-        super(x, y, 0, 0);  // No width and height as it depends on the CheckBox size
+    public CheckBoxComponent(String text, double x, double y, double width, double height) {
+        super(x, y, width, height);
         this.uiElement = new CheckBox(text);
         uiElement.setLayoutX(x);
         uiElement.setLayoutY(y);

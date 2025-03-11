@@ -45,7 +45,7 @@ public class ParticleEntity extends Entity {
         if (getComponent(ImageComponent.class) != null) {
             return;
         }
-        ShapeComponent shapeComponent = getComponent(ShapeComponent.class);
+        ShapeComponent<?> shapeComponent = getComponent(ShapeComponent.class);
         if (shapeComponent != null) {
             Shape shape = shapeComponent.getShape();
             if (shape instanceof Rectangle) {

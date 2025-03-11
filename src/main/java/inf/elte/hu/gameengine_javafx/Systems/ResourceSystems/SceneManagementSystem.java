@@ -1,6 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Systems.ResourceSystems;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
+import inf.elte.hu.gameengine_javafx.Misc.Config;
 import inf.elte.hu.gameengine_javafx.Misc.Scenes.GameScene;
 import inf.elte.hu.gameengine_javafx.Misc.Scenes.GeneratorTestScene;
 import inf.elte.hu.gameengine_javafx.Misc.Scenes.TestScene;
@@ -15,7 +16,7 @@ public class SceneManagementSystem extends GameSystem {
 
     public SceneManagementSystem() {
         // Initialize with a default scene
-        currentScene = new TestScene(new BorderPane(), 1920, 1080);
+        currentScene = new TestScene(new BorderPane(), Config.gameCanvasWidth, Config.gameCanvasHeight);
     }
 
     @Override

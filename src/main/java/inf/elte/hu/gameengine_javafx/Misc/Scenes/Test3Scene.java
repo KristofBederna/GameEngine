@@ -4,7 +4,6 @@ import inf.elte.hu.gameengine_javafx.Components.*;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.StateComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
-import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
@@ -12,13 +11,11 @@ import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Entities.*;
 import inf.elte.hu.gameengine_javafx.Entities.UIEntities.*;
-import inf.elte.hu.gameengine_javafx.Misc.Globals;
+import inf.elte.hu.gameengine_javafx.Misc.Config;
 import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.MouseInputHandler;
-import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.GameLoopStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.ResourceStartUp;
-import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.SystemStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
 import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SceneManagementSystem;
 import javafx.scene.Parent;
@@ -26,7 +23,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 
-import java.util.List;
 import java.util.Objects;
 
 
@@ -79,12 +75,12 @@ public class Test3Scene extends GameScene{
     }
 
     private void cameraSetup() {
-        CameraEntity.getInstance(1920, 1080, 30*Globals.tileSize, 15*Globals.tileSize);
+        CameraEntity.getInstance(1920, 1080, 30* Config.tileSize, 15* Config.tileSize);
         CameraEntity.getInstance().attachTo(EntityHub.getInstance().getEntitiesWithComponent(PlayerComponent.class).getFirst());
     }
 
     private Entity entitySetup() {
-        new PlayerEntity(420, 120, "idle", "/assets/images/PlayerIdle.png", 0.8*Globals.tileSize, 0.8*Globals.tileSize);
+        new PlayerEntity(420, 120, "idle", "/assets/images/PlayerIdle.png", 0.8* Config.tileSize, 0.8* Config.tileSize);
         DummyEntity entity2 = new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80);
         ButtonEntity be = new ButtonEntity("String", 100, 100, 100, 100, ()->{
             System.out.println("Clicked");

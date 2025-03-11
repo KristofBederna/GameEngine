@@ -1,5 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
+import inf.elte.hu.gameengine_javafx.Misc.Config;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,9 +41,7 @@ public class Shape {
         if (o1 == 0 && onSegment(p1, q1, p2)) return true;
         if (o2 == 0 && onSegment(p1, q2, p2)) return true;
         if (o3 == 0 && onSegment(q1, p1, q2)) return true;
-        if (o4 == 0 && onSegment(q1, p2, q2)) return true;
-
-        return false;
+        return o4 == 0 && onSegment(q1, p2, q2);
     }
 
     private static int orientation(Point p, Point q, Point r) {
@@ -73,7 +73,7 @@ public class Shape {
 
         double denominator = x1 * y2 - y1 * x2;
 
-        if (Math.abs(denominator) < 1e-9) {
+        if (Math.abs(denominator) < Config.EPSILON) {
             return null;
         }
 

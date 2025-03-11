@@ -1,38 +1,31 @@
 package inf.elte.hu.gameengine_javafx.Misc.MapClasses;
 
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
-import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.TileSetComponent;
-import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
-import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Misc.Globals;
-import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
-import javafx.scene.paint.Color;
+import inf.elte.hu.gameengine_javafx.Misc.Config;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class WorldGenerator {
-    public static Chunk generateChunk(int chunkX, int chunkY, int chunkSize) {
+    public static Chunk generateChunk(int chunkX, int chunkY, int chunkWidth, int chunkHeight) {
         List<List<TileEntity>> tiles = new ArrayList<>();
         TileSetComponent tileSet = WorldEntity.getInstance().getComponent(TileSetComponent.class);
 
-        int[][] tileValues = new int[chunkSize][chunkSize];
+        int[][] tileValues = new int[chunkWidth][chunkHeight];
 
-        for (int y = 0; y < chunkSize; y++) {
-            for (int x = 0; x < chunkSize; x++) {
-                tileValues[y][x] = getNextTileValue(x, y, tileValues, chunkSize);
+        for (int y = 0; y < chunkHeight; y++) {
+            for (int x = 0; x < chunkWidth; x++) {
+                tileValues[y][x] = getNextTileValue(x, y, tileValues, chunkWidth, chunkHeight);
             }
         }
 
-        for (int y = 0; y < chunkSize; y++) {
+        for (int y = 0; y < chunkHeight; y++) {
             List<TileEntity> row = new ArrayList<>();
-            for (int x = 0; x < chunkSize; x++) {
-                int worldX = chunkX * chunkSize * Globals.tileSize + x * Globals.tileSize;
-                int worldY = chunkY * chunkSize * Globals.tileSize + y * Globals.tileSize;
+            for (int x = 0; x < chunkWidth; x++) {
+                int worldX = chunkX * chunkWidth * Config.tileSize + x * Config.tileSize;
+                int worldY = chunkY * chunkHeight * Config.tileSize + y * Config.tileSize;
 
                 int tileValue = tileValues[y][x];
                 String tilePath = tileSet.getTileLoader().getTilePath(tileValue);
@@ -40,7 +33,7 @@ public class WorldGenerator {
                     tilePath = "default.png";
                 }
 
-                TileEntity tile = new TileEntity(tileValue, worldX, worldY, "/assets/tiles/" + tilePath + ".png", Globals.tileSize, Globals.tileSize, tileValue != 9);
+                TileEntity tile = new TileEntity(tileValue, worldX, worldY, "/assets/tiles/" + tilePath + ".png", Config.tileSize, Config.tileSize, tileValue != 9);
                 row.add(tile);
             }
             tiles.add(row);
@@ -49,7 +42,7 @@ public class WorldGenerator {
         return new Chunk(tiles);
     }
 
-    private static int getNextTileValue(int x, int y, int[][] tileValues, int chunkSize) {
+    private static int getNextTileValue(int x, int y, int[][] tileValues, int chunkWidth, int chunkHeight) {
         return 9;
     }
 }

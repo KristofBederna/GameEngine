@@ -11,7 +11,7 @@ import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Misc.Globals;
+import inf.elte.hu.gameengine_javafx.Misc.Config;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.Chunk;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.World;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.WorldGenerator;
@@ -54,8 +54,8 @@ public class InfiniteWorldLoaderSystem extends GameSystem {
         World worldData = map.getComponent(WorldDataComponent.class).getMapData();
         Set<Tuple<Integer, Integer>> loadedChunks = worldData.getWorld().keySet();
 
-        int playerChunkX = Math.floorDiv((int) (camX + camWidth / 2), CHUNK_SIZE * Globals.tileSize);
-        int playerChunkY = Math.floorDiv((int) (camY + camHeight / 2), CHUNK_SIZE * Globals.tileSize);
+        int playerChunkX = Math.floorDiv((int) (camX + camWidth / 2), CHUNK_SIZE * Config.tileSize);
+        int playerChunkY = Math.floorDiv((int) (camY + camHeight / 2), CHUNK_SIZE * Config.tileSize);
 
         for (int dx = -LOAD_DISTANCE; dx <= LOAD_DISTANCE; dx++) {
             for (int dy = -LOAD_DISTANCE; dy <= LOAD_DISTANCE; dy++) {
@@ -127,7 +127,7 @@ public class InfiniteWorldLoaderSystem extends GameSystem {
         if (savedChunks.containsKey(chunkKey)) {
             worldData.addChunk(chunkX, chunkY, savedChunks.get(chunkKey));
         } else {
-            Chunk newChunk = WorldGenerator.generateChunk(chunkX, chunkY, CHUNK_SIZE);
+            Chunk newChunk = WorldGenerator.generateChunk(chunkX, chunkY, CHUNK_SIZE, Config.chunkHeight);
             savedChunks.put(chunkKey, newChunk);
             worldData.addChunk(chunkX, chunkY, newChunk);
         }

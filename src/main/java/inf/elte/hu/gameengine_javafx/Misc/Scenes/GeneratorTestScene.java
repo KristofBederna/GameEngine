@@ -1,9 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Misc.Scenes;
 
 import inf.elte.hu.gameengine_javafx.Components.InteractiveComponent;
-import inf.elte.hu.gameengine_javafx.Components.PathfindingComponent;
 import inf.elte.hu.gameengine_javafx.Components.PlayerComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.StateComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
@@ -12,7 +10,7 @@ import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Entities.*;
-import inf.elte.hu.gameengine_javafx.Misc.Globals;
+import inf.elte.hu.gameengine_javafx.Misc.Config;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.GameLoopStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.ResourceStartUp;
@@ -42,7 +40,7 @@ public class GeneratorTestScene extends GameScene {
     }
 
     private void entitySetup() {
-        new PlayerEntity(220, 220, "idle", "/assets/images/PlayerIdle.png", 0.8*Globals.tileSize, 0.8*Globals.tileSize);
+        new PlayerEntity(220, 220, "idle", "/assets/images/PlayerIdle.png", 0.8* Config.tileSize, 0.8* Config.tileSize);
     }
 
     private void interactionSetup() {

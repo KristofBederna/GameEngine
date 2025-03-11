@@ -16,11 +16,10 @@ import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Misc.Globals;
+import inf.elte.hu.gameengine_javafx.Misc.Config;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.Chunk;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.MapSaver;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.World;
-import inf.elte.hu.gameengine_javafx.Misc.Tuple;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -56,10 +55,10 @@ public class WorldLoaderSystem extends GameSystem {
                         name = String.valueOf(value);
                     }
                     if (value == 9) {
-                        tile = new TileEntity(value, x * Globals.tileSize, y * Globals.tileSize, "/assets/tiles/" + name + ".png", Globals.tileSize, Globals.tileSize);
+                        tile = new TileEntity(value, x * Config.tileSize, y * Config.tileSize, "/assets/tiles/" + name + ".png", Config.tileSize, Config.tileSize);
                         meshRow.add(new Point(tile.getComponent(CentralMassComponent.class).getCentralX(), tile.getComponent(CentralMassComponent.class).getCentralY()));
                     } else {
-                        tile = new TileEntity(value, x * Globals.tileSize, y * Globals.tileSize, "/assets/tiles/" + name + ".png", Globals.tileSize, Globals.tileSize, true);
+                        tile = new TileEntity(value, x * Config.tileSize, y * Config.tileSize, "/assets/tiles/" + name + ".png", Config.tileSize, Config.tileSize, true);
                         meshRow.add(null);
                     }
                     worldRow.add(tile);
@@ -92,7 +91,7 @@ public class WorldLoaderSystem extends GameSystem {
             double tileX = tile.getComponent(PositionComponent.class).getGlobalX();
             double tileY = tile.getComponent(PositionComponent.class).getGlobalY();
 
-            if (tileX + Globals.tileSize < camX || tileX > camX + camWidth || tileY + Globals.tileSize < camY || tileY > camY + camHeight) {
+            if (tileX + Config.tileSize < camX || tileX > camX + camWidth || tileY + Config.tileSize < camY || tileY > camY + camHeight) {
                 toRemove.add(tile);
             }
         }
@@ -110,12 +109,12 @@ public class WorldLoaderSystem extends GameSystem {
                     double tileX = tileEntity.getComponent(PositionComponent.class).getGlobalX();
                     double tileY = tileEntity.getComponent(PositionComponent.class).getGlobalY();
 
-                    if (tileX + Globals.tileSize >= camX && tileX <= camX + camWidth && tileY + Globals.tileSize >= camY && tileY <= camY + camHeight) {
+                    if (tileX + Config.tileSize >= camX && tileX <= camX + camWidth && tileY + Config.tileSize >= camY && tileY <= camY + camHeight) {
 
                         String key = tileX + "," + tileY;
                         if (!existingTiles.contains(key)) {
                             boolean hasHitBox = tileEntity.getComponent(RectangularHitBoxComponent.class) != null;
-                            TileEntity newTile = new TileEntity(tileEntity.getComponent(TileValueComponent.class).getTileValue(), tileX, tileY, tileEntity.getComponent(ImageComponent.class).getImagePath(), Globals.tileSize, Globals.tileSize, hasHitBox);
+                            TileEntity newTile = new TileEntity(tileEntity.getComponent(TileValueComponent.class).getTileValue(), tileX, tileY, tileEntity.getComponent(ImageComponent.class).getImagePath(), Config.tileSize, Config.tileSize, hasHitBox);
                             tileManager.register(newTile);
                         }
                     }

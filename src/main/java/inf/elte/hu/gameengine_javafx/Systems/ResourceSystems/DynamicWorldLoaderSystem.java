@@ -1,34 +1,35 @@
 package inf.elte.hu.gameengine_javafx.Systems.ResourceSystems;
 
-import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
-import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
-import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Misc.Globals;
+import inf.elte.hu.gameengine_javafx.Misc.Config;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.Chunk;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.WorldGenerator;
-import inf.elte.hu.gameengine_javafx.Misc.MapClasses.World;
 import inf.elte.hu.gameengine_javafx.Misc.Tuple;
 
 import java.util.*;
 
 public class DynamicWorldLoaderSystem extends GameSystem {
-    private static final int MAX_WORLD_WIDTH = 2;
-    private static final int MAX_WORLD_HEIGHT = 1;
-    private static final int CHUNK_SIZE = 8;
-    private static final int LOAD_DISTANCE = 2;
+    private int width;
+    private int height;
+    private int loadDistance;
 
     private final Map<Tuple<Integer, Integer>, Chunk> savedChunks = new HashMap<>();
+
+    public DynamicWorldLoaderSystem(int width, int height, int loadDistance) {
+        this.width = width;
+        this.height = height;
+        this.loadDistance = loadDistance;
+    }
 
     @Override
     public void start() {
@@ -47,15 +48,15 @@ public class DynamicWorldLoaderSystem extends GameSystem {
         double camY = camera.getComponent(PositionComponent.class).getGlobalY();
         double camWidth = camera.getComponent(DimensionComponent.class).getWidth();
         double camHeight = camera.getComponent(DimensionComponent.class).getHeight();
-        int playerChunkX = Math.floorDiv((int) (camX + camWidth / 2), CHUNK_SIZE * Globals.tileSize);
-        int playerChunkY = Math.floorDiv((int) (camY + camHeight / 2), CHUNK_SIZE * Globals.tileSize);
+        int playerChunkX = Math.floorDiv((int) (camX + camWidth / 2), Config.chunkWidth * Config.tileSize);
+        int playerChunkY = Math.floorDiv((int) (camY + camHeight / 2), Config.chunkHeight * Config.tileSize);
         loadSurroundingChunks(playerChunkX, playerChunkY);
         unloadFarChunks(playerChunkX, playerChunkY);
     }
 
     private void loadFullWorld() {
-        for (int cx = 0; cx < MAX_WORLD_WIDTH; cx++) {
-            for (int cy = 0; cy < MAX_WORLD_HEIGHT; cy++) {
+        for (int cx = 0; cx < width; cx++) {
+            for (int cy = 0; cy < height; cy++) {
                 loadOrGenerateChunk(cx, cy);
             }
         }
@@ -63,11 +64,11 @@ public class DynamicWorldLoaderSystem extends GameSystem {
 
     private void loadSurroundingChunks(int playerChunkX, int playerChunkY) {
         Set<Tuple<Integer, Integer>> loadedChunks = WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getWorld().keySet();
-        for (int dx = -LOAD_DISTANCE; dx <= LOAD_DISTANCE; dx++) {
-            for (int dy = -LOAD_DISTANCE; dy <= LOAD_DISTANCE; dy++) {
+        for (int dx = -loadDistance; dx <= loadDistance; dx++) {
+            for (int dy = -loadDistance; dy <= loadDistance; dy++) {
                 int chunkX = playerChunkX + dx;
                 int chunkY = playerChunkY + dy;
-                if (chunkX >= 0 && chunkX < MAX_WORLD_WIDTH && chunkY >= 0 && chunkY < MAX_WORLD_HEIGHT) {
+                if (chunkX >= 0 && chunkX < width && chunkY >= 0 && chunkY < height) {
                     Tuple<Integer, Integer> chunkKey = new Tuple<>(chunkX, chunkY);
                     if (!loadedChunks.contains(chunkKey)) {
                         loadOrGenerateChunk(chunkX, chunkY);
@@ -83,7 +84,7 @@ public class DynamicWorldLoaderSystem extends GameSystem {
             Map.Entry<Tuple<Integer, Integer>, Chunk> entry = iterator.next();
             int chunkX = entry.getKey().first();
             int chunkY = entry.getKey().second();
-            if (Math.abs(chunkX - playerChunkX) > LOAD_DISTANCE || Math.abs(chunkY - playerChunkY) > LOAD_DISTANCE) {
+            if (Math.abs(chunkX - playerChunkX) > loadDistance || Math.abs(chunkY - playerChunkY) > loadDistance) {
                 savedChunks.put(entry.getKey(), entry.getValue());
                 iterator.remove();
             }
@@ -96,7 +97,7 @@ public class DynamicWorldLoaderSystem extends GameSystem {
         if (savedChunks.containsKey(chunkKey)) {
             WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().addChunk(chunkX, chunkY, savedChunks.get(chunkKey));
         } else {
-            Chunk newChunk = WorldGenerator.generateChunk(chunkX, chunkY, CHUNK_SIZE);
+            Chunk newChunk = WorldGenerator.generateChunk(chunkX, chunkY, Config.chunkWidth, Config.chunkHeight);
             savedChunks.put(chunkKey, newChunk);
             WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().addChunk(chunkX, chunkY, newChunk);
         }
@@ -123,23 +124,23 @@ public class DynamicWorldLoaderSystem extends GameSystem {
     }
 
     private void addBoundaryWalls(Chunk chunk, int chunkX, int chunkY) {
-        for (int x = 0; x < CHUNK_SIZE; x++) {
-            for (int y = 0; y < CHUNK_SIZE; y++) {
+        for (int x = 0; x < Config.chunkWidth; x++) {
+            for (int y = 0; y < Config.chunkHeight; y++) {
                 if (x == 0 && y == 0 && chunkX == 0 && chunkY == 0) {
                     chunk.setElement(x, y, 3); // topLeftWall
-                } else if (x == CHUNK_SIZE - 1 && y == 0 && chunkX == 0 && chunkY == MAX_WORLD_HEIGHT-1) {
+                } else if (x == Config.chunkWidth - 1 && y == 0 && chunkX == 0 && chunkY == height -1) {
                     chunk.setElement(x, y, 1); // BottomLeftWall
-                } else if (x == 0 && y == CHUNK_SIZE - 1 && chunkX == MAX_WORLD_WIDTH-1 && chunkY == 0) {
+                } else if (x == 0 && y == Config.chunkHeight - 1 && chunkX == width -1 && chunkY == 0) {
                     chunk.setElement(x, y, 4); // topRightWall
-                } else if (x == CHUNK_SIZE - 1 && y == CHUNK_SIZE - 1 && chunkX == MAX_WORLD_WIDTH-1 && chunkY == MAX_WORLD_HEIGHT-1) {
+                } else if (x == Config.chunkWidth - 1 && y == Config.chunkHeight - 1 && chunkX == width -1 && chunkY == height -1) {
                     chunk.setElement(x, y, 2); // bottomRightWall
                 } else if (x == 0) {
                     chunk.setElement(x, y, 7); // topWall
-                } else if (x == CHUNK_SIZE - 1) {
+                } else if (x == Config.chunkWidth - 1) {
                     chunk.setElement(x, y, 8); // bottomWall
                 } else if (y == 0 && chunkX == 0) {
                     chunk.setElement(x, y, 5); // leftWall
-                } else if (y == CHUNK_SIZE - 1  && chunkX == MAX_WORLD_WIDTH-1) {
+                } else if (y == Config.chunkHeight - 1  && chunkX == width -1) {
                     chunk.setElement(x, y, 6); // rightWall
                 } else {
                     chunk.setElement(x, y, 9); // windowWall

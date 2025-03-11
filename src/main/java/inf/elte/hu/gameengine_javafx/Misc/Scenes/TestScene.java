@@ -11,11 +11,8 @@ import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Entities.*;
-import inf.elte.hu.gameengine_javafx.Maths.Geometry.NSidedShape;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Maths.Geometry.Rectangle;
-import inf.elte.hu.gameengine_javafx.Misc.Direction;
-import inf.elte.hu.gameengine_javafx.Misc.Globals;
+import inf.elte.hu.gameengine_javafx.Misc.Config;
 import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.MouseInputHandler;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot;
 import inf.elte.hu.gameengine_javafx.Misc.LightType;
@@ -106,19 +103,19 @@ public class TestScene extends GameScene{
     }
 
     private void cameraSetup() {
-        CameraEntity.getInstance(1920, 1080, 30*Globals.tileSize, 15*Globals.tileSize);
+        CameraEntity.getInstance(Config.gameCanvasWidth, Config.gameCanvasHeight, 30* Config.tileSize, 15* Config.tileSize);
         CameraEntity.getInstance().attachTo(EntityHub.getInstance().getEntitiesWithComponent(PlayerComponent.class).getFirst());
     }
 
     private void entitySetup() {
-        new PlayerEntity(420, 120, "idle", "/assets/images/PlayerIdle.png", 0.8*Globals.tileSize, 0.8*Globals.tileSize);
-        new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80);
+        new PlayerEntity(420, 120, "idle", "/assets/images/PlayerIdle.png", 0.8* Config.tileSize, 0.8* Config.tileSize);
+        new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 0.8* Config.tileSize, 0.8* Config.tileSize);
 //        new ParticleEmitterEntity(400, 400, new ParticleEntity(0, 0, 2, 2, new Rectangle(new Point(0, 0), 2, 2), Color.ORANGE, 300), Direction.RIGHT, 50, 100);
 //        new ParticleEmitterEntity(5*Globals.tileSize, 500, new ParticleEntity(0, 0, 20, 20, "/assets/images/snowflake.png", 1000), Direction.ALL, 200, 2500);
-//        new LightingEntity(250, 250, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
-//        new LightingEntity(1050, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
-//        new LightingEntity(750, 650, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
-//        new LightingEntity(250, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
+        new LightingEntity(250, 250, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
+        new LightingEntity(1050, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
+        new LightingEntity(750, 650, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
+        new LightingEntity(250, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
         //        ButtonEntity be = new ButtonEntity();
 //        be.addStyleClass("my-custom-button");
 //        new SliderEntity();

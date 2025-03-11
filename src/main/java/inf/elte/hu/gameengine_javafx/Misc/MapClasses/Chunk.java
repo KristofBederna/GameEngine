@@ -7,13 +7,14 @@ import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageCompone
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
+import inf.elte.hu.gameengine_javafx.Misc.Config;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Chunk {
     List<List<TileEntity>> chunk;
-    final int width = 16, height = 16;
+    final int width = Config.chunkWidth, height = Config.chunkHeight;
 
     public Chunk(List<List<TileEntity>> chunk) {
         this.chunk = chunk;

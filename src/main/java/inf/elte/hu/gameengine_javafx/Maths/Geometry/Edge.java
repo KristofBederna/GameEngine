@@ -1,5 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
+import inf.elte.hu.gameengine_javafx.Misc.Config;
+
 public class Edge {
     private Point beginning, end;
 
@@ -28,7 +30,7 @@ public class Edge {
         double crossProduct = (p.getY() - beginning.getY()) * (end.getX() - beginning.getX())
                 - (p.getX() - beginning.getX()) * (end.getY() - beginning.getY());
 
-        if (Math.abs(crossProduct) > 1e-9) {
+        if (Math.abs(crossProduct) > Config.EPSILON) {
             return false;
         }
 

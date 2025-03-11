@@ -1,6 +1,7 @@
 package inf.elte.hu.gameengine_javafx;
 
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
+import inf.elte.hu.gameengine_javafx.Misc.Config;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.*;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.SystemStartUp;
 import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SceneManagementSystem;
@@ -27,7 +28,7 @@ public class Main extends Application {
 
         BorderPane root = (BorderPane) sceneManagementSystem.getCurrentScene().getRoot();
 
-        GameCanvas gameCanvas = GameCanvas.createInstance(1920, 1080);
+        GameCanvas gameCanvas = GameCanvas.createInstance(Config.gameCanvasWidth, Config.gameCanvasHeight);
         uiRoot uiRoot = inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot.getInstance();
         GameLayer gameLayer = GameLayer.getInstance();
         gameLayer.getChildren().addAll(gameCanvas, uiRoot);
@@ -43,14 +44,13 @@ public class Main extends Application {
         Scene scene = SystemHub.getInstance().getSystem(SceneManagementSystem.class).getCurrentScene();
 
         // Set window title here
-        stage.setTitle("JavaFX Game Engine");
+        stage.setTitle(Config.gameTitle);
 
         // Assigns the stage as the parent container of the scene
         stage.setScene(scene);
 
         // Define on close behaviour here
         stage.setOnCloseRequest(event -> {
-            System.out.println("Window is closing!");
             System.exit(0);
         });
 

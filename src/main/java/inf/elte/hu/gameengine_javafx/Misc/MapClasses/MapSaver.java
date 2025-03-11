@@ -3,18 +3,18 @@ import inf.elte.hu.gameengine_javafx.Components.TileValueComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionComponent;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
-import inf.elte.hu.gameengine_javafx.Misc.Globals;
+import inf.elte.hu.gameengine_javafx.Misc.Config;
 
 import java.io.*;
 
 public class MapSaver {
     public static void saveMap(WorldEntity map, String path, TileLoader tileLoader) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
-            writer.write(map.getComponent(WorldDimensionComponent.class).getWorldWidth()/ Globals.tileSize + " " + map.getComponent(WorldDimensionComponent.class).getWorldHeight()/ Globals.tileSize);
+            writer.write(map.getComponent(WorldDimensionComponent.class).getWorldWidth()/ Config.tileSize + " " + map.getComponent(WorldDimensionComponent.class).getWorldHeight()/ Config.tileSize);
             writer.newLine();
 
-            for (int y = 0; y < map.getComponent(WorldDimensionComponent.class).getWorldHeight()/Globals.tileSize; y++) {
-                for (int x = 0; x < map.getComponent(WorldDimensionComponent.class).getWorldWidth()/Globals.tileSize; x++) {
+            for (int y = 0; y < map.getComponent(WorldDimensionComponent.class).getWorldHeight()/ Config.tileSize; y++) {
+                for (int x = 0; x < map.getComponent(WorldDimensionComponent.class).getWorldWidth()/ Config.tileSize; x++) {
                     writer.write(map.getComponent(WorldDataComponent.class).getElement(x, y).getComponent(TileValueComponent.class).getTileValue() + " ");
                 }
                 writer.newLine();

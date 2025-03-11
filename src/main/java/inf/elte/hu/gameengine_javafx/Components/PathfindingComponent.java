@@ -1,15 +1,13 @@
 package inf.elte.hu.gameengine_javafx.Components;
 
-import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
-import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Misc.Globals;
+import inf.elte.hu.gameengine_javafx.Misc.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,8 +79,8 @@ public class PathfindingComponent extends Component {
         List<Point> neighbours = new ArrayList<>();
         MapMeshComponent mapMeshComponent = WorldEntity.getInstance().getComponent(MapMeshComponent.class);
 
-        int currentX = (int) Math.floor(current.getX() / Globals.tileSize);
-        int currentY = (int) Math.floor(current.getY() / Globals.tileSize);
+        int currentX = (int) Math.floor(current.getX() / Config.tileSize);
+        int currentY = (int) Math.floor(current.getY() / Config.tileSize);
 
         int worldWidth = (int) WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldWidth();
         int worldHeight = (int) WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldHeight();

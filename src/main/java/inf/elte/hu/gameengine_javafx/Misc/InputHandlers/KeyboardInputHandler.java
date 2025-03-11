@@ -1,12 +1,10 @@
 package inf.elte.hu.gameengine_javafx.Misc.InputHandlers;
 
-import inf.elte.hu.gameengine_javafx.Misc.Globals;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import java.util.HashMap;
+
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class KeyboardInputHandler {

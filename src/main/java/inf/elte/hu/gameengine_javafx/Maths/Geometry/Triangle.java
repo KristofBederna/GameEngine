@@ -2,6 +2,7 @@ package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
+import inf.elte.hu.gameengine_javafx.Misc.Config;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -96,7 +97,7 @@ public class Triangle extends Shape {
         double A2 = new Triangle(getA(), p, getC()).getArea();
         double A3 = new Triangle(getA(), getB(), p).getArea();
 
-        return Math.abs(A - (A1 + A2 + A3)) < 1e-9;
+        return Math.abs(A - (A1 + A2 + A3)) < Config.EPSILON;
     }
 
     public boolean isInside(Point p) {

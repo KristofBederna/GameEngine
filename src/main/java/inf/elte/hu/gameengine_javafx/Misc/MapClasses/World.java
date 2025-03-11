@@ -1,6 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Misc.MapClasses;
 
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
+import inf.elte.hu.gameengine_javafx.Misc.Config;
 import inf.elte.hu.gameengine_javafx.Misc.Tuple;
 
 import java.util.HashMap;
@@ -34,11 +35,11 @@ public class World {
     }
 
     public TileEntity getElementAt(int tileX, int tileY) {
-        int chunkX = Math.floorDiv(tileX, 8);
-        int chunkY = Math.floorDiv(tileY, 8);
+        int chunkX = Math.floorDiv(tileX, Config.chunkWidth);
+        int chunkY = Math.floorDiv(tileY, Config.chunkHeight);
 
-        int localX = Math.floorMod(tileX, 8);
-        int localY = Math.floorMod(tileY, 8);
+        int localX = Math.floorMod(tileX, Config.chunkWidth);
+        int localY = Math.floorMod(tileY, Config.chunkHeight);
 
         Chunk chunk = chunks.get(new Tuple<>(chunkX, chunkY));
         if (chunk != null) {
