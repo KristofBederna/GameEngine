@@ -1,6 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Systems.RenderingSystems;
 
 
+import inf.elte.hu.gameengine_javafx.Components.AnimationStateMachineComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.AnimationComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
@@ -32,7 +33,7 @@ public class AnimationSystem extends GameSystem {
                 ((DummyEntity) entity).setAnimationState();
             }
             else if (entity.getClass() == PlayerEntity.class) {
-                ((PlayerEntity) entity).setAnimationState();
+                entity.getComponent(AnimationStateMachineComponent.class).getAnimationStateMachine().setAnimationState();
             }
             AnimationComponent animation = entity.getComponent(AnimationComponent.class);
 
