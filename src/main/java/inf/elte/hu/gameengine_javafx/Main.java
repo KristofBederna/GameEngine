@@ -44,7 +44,7 @@ public class Main extends Application {
         Scene scene = SystemHub.getInstance().getSystem(SceneManagementSystem.class).getCurrentScene();
 
         // Set window title here
-        stage.setTitle(Config.gameTitle);
+        stage.setTitle(Config.windowTitle);
 
         // Assigns the stage as the parent container of the scene
         stage.setScene(scene);
