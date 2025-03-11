@@ -2,6 +2,7 @@ package inf.elte.hu.gameengine_javafx.Systems.RenderingSystems;
 
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.LightHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.LightComponent;
+import inf.elte.hu.gameengine_javafx.Components.PathfindingComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.RadiusComponent;
@@ -35,6 +36,12 @@ public class RenderSystem extends GameSystem {
 
     @Override
     public void update() {
+        if (CameraEntity.getInstance() == null) {
+            return;
+        }
+        if (CameraEntity.getInstance().getOwner() == null) {
+            return;
+        }
         GraphicsContext gc = GameCanvas.getInstance().getGraphicsContext2D();
         CameraEntity cameraEntity = CameraEntity.getInstance();
 
@@ -109,15 +116,15 @@ public class RenderSystem extends GameSystem {
 //                    }
                 }
             }
-            MapMeshComponent meshComponent = WorldEntity.getInstance().getComponent(MapMeshComponent.class);
-            if (meshComponent != null) {
-                for (List<Point> row : meshComponent.getMapCoordinates()) {
-                    for (Point point : row) {
-                        if (point == null) continue;
-                        point.renderFill(gc, 5, Color.YELLOW);
-                    }
-                }
-            }
+//            MapMeshComponent meshComponent = WorldEntity.getInstance().getComponent(MapMeshComponent.class);
+//            if (meshComponent != null) {
+//                for (List<Point> row : meshComponent.getMapCoordinates()) {
+//                    for (Point point : row) {
+//                        if (point == null) continue;
+//                        point.renderFill(gc, 5, Color.YELLOW);
+//                    }
+//                }
+//            }
 //            for (Entity entity : EntityHub.getInstance().getEntitiesWithComponent(PathfindingComponent.class)) {
 //                PathfindingComponent pathfindingComponent = entity.getComponent(PathfindingComponent.class);
 //                if (pathfindingComponent.getPath() == null) {
@@ -135,7 +142,7 @@ public class RenderSystem extends GameSystem {
                 ((ParticleEntity) entity).alignShapeWithEntity(entity);
                 ((ParticleEntity)entity).render(gc);
             }
-//            handleLighting(gc);
+            //handleLighting(gc);
 
             if (!GameCanvas.getInstance().isFocused()) {
                 GameCanvas.getInstance().requestFocus();

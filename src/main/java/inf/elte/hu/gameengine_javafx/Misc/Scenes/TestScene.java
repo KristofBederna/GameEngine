@@ -21,8 +21,14 @@ import inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot;
 import inf.elte.hu.gameengine_javafx.Misc.LightType;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.GameLoopStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.ResourceStartUp;
+import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.SystemStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
-import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SceneManagementSystem;
+import inf.elte.hu.gameengine_javafx.Systems.InputHandlingSystem;
+import inf.elte.hu.gameengine_javafx.Systems.PathfindingSystem;
+import inf.elte.hu.gameengine_javafx.Systems.PhysicsSystems.CollisionSystem;
+import inf.elte.hu.gameengine_javafx.Systems.PhysicsSystems.MovementSystem;
+import inf.elte.hu.gameengine_javafx.Systems.RenderingSystems.*;
+import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.*;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -47,6 +53,7 @@ public class TestScene extends GameScene{
         entitySetup();
         cameraSetup();
         interactionSetup();
+        new SystemStartUp(this::SystemStartUp);
         new GameLoopStartUp();
     }
 
@@ -81,6 +88,23 @@ public class TestScene extends GameScene{
         uiRoot.getInstance().unloadAll();
     }
 
+    private void SystemStartUp() {
+        //Define systems to be started up here
+        SystemHub systemHub = SystemHub.getInstance();
+        systemHub.addSystem(AnimationSystem.class, new AnimationSystem(), 1);
+        systemHub.addSystem(RenderSystem.class, new RenderSystem(),2);
+        systemHub.addSystem(LightingSystem.class, new LightingSystem(),3);
+        systemHub.addSystem(PathfindingSystem.class, new PathfindingSystem(),4);
+        systemHub.addSystem(MovementSystem.class, new MovementSystem(),5);
+        systemHub.addSystem(ParticleSystem.class, new ParticleSystem(),6);
+        systemHub.addSystem(InputHandlingSystem.class, new InputHandlingSystem(),7);
+        systemHub.addSystem(CollisionSystem.class, new CollisionSystem(),8);
+        systemHub.addSystem(ResourceSystem.class, new ResourceSystem(),9);
+        systemHub.addSystem(CameraSystem.class, new CameraSystem(), 10);
+        systemHub.addSystem(SoundSystem.class, new SoundSystem(), 11);
+        systemHub.addSystem(WorldLoaderSystem.class, new WorldLoaderSystem(), 12);
+    }
+
     private void cameraSetup() {
         CameraEntity.getInstance(1920, 1080, 30*Globals.tileSize, 15*Globals.tileSize);
         CameraEntity.getInstance().attachTo(EntityHub.getInstance().getEntitiesWithComponent(PlayerComponent.class).getFirst());
@@ -89,12 +113,12 @@ public class TestScene extends GameScene{
     private void entitySetup() {
         new PlayerEntity(420, 120, "idle", "/assets/images/PlayerIdle.png", 0.8*Globals.tileSize, 0.8*Globals.tileSize);
         new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80);
-        //new ParticleEmitterEntity(400, 400, new ParticleEntity(0, 0, 2, 2, new Rectangle(new Point(0, 0), 2, 2), Color.ORANGE), Direction.RIGHT);
-        new ParticleEmitterEntity(15*Globals.tileSize, 750, new ParticleEntity(0, 0, 20, 20, "/assets/images/snowflake.png", 1000), Direction.ALL, 200, 2500);
-        new LightingEntity(250, 250, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
-        new LightingEntity(1050, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
-        new LightingEntity(750, 650, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
-        new LightingEntity(250, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
+//        new ParticleEmitterEntity(400, 400, new ParticleEntity(0, 0, 2, 2, new Rectangle(new Point(0, 0), 2, 2), Color.ORANGE, 300), Direction.RIGHT, 50, 100);
+//        new ParticleEmitterEntity(5*Globals.tileSize, 500, new ParticleEntity(0, 0, 20, 20, "/assets/images/snowflake.png", 1000), Direction.ALL, 200, 2500);
+//        new LightingEntity(250, 250, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
+//        new LightingEntity(1050, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
+//        new LightingEntity(750, 650, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
+//        new LightingEntity(250, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
         //        ButtonEntity be = new ButtonEntity();
 //        be.addStyleClass("my-custom-button");
 //        new SliderEntity();
@@ -124,7 +148,7 @@ public class TestScene extends GameScene{
             Random random = new Random();
             Point target = null;
             while (target == null) {
-                target = WorldEntity.getInstance().getComponent(MapMeshComponent.class).getMapCoordinates().get(random.nextInt(15)).get(random.nextInt(30));
+                target = WorldEntity.getInstance().getComponent(MapMeshComponent.class).getMapCoordinates().get(random.nextInt(8)).get(random.nextInt(16));
             }
             PathfindingComponent pathfinding = entity2.getComponent(PathfindingComponent.class);
             if (pathfinding != null && pathfinding.getEnd() != null) {

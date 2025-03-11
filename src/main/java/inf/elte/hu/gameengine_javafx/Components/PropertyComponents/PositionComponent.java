@@ -70,7 +70,7 @@ public class PositionComponent extends Component {
             if (parentComponent != null && parentComponent.getParent() != null) {
                 PositionComponent parentPosition = parentComponent.getParent().getComponent(PositionComponent.class);
                 if (parentPosition != null) {
-                    this.global.setCoordinates(parentPosition.getGlobal());
+                    this.setGlobal(new Point(parentPosition.getGlobal().getX() + this.local.getX(), parentPosition.getGlobal().getY() + this.local.getY()));
                     return;
                 }
             }

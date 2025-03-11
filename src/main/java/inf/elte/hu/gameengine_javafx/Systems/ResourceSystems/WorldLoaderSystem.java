@@ -36,6 +36,9 @@ public class WorldLoaderSystem extends GameSystem {
     public void start() {
         this.active = true;
         WorldEntity map = WorldEntity.getInstance();
+        if (map == null) {
+            return;
+        }
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(MapSaver.class.getResourceAsStream(map.getComponent(FilePathComponent.class).getFilePath()))))) {
             String[] dimensions = reader.readLine().split(" ");
             int width = Integer.parseInt(dimensions[0]);

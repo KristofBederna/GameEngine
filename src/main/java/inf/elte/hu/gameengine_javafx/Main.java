@@ -20,7 +20,7 @@ public class Main extends Application {
     }
 
     private void startUpGame(Stage stage) {
-        SystemStartUp systemStartUp = new SystemStartUp();
+        SystemStartUp systemStartUp = new SystemStartUp(()->{});
         systemStartUp.startUpSceneManagementSystem();
         SceneManagementSystem sceneManagementSystem = SystemHub.getInstance().getSystem(SceneManagementSystem.class);
         sceneManagementSystem.setStage(stage);

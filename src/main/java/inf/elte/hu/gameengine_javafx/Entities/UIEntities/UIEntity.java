@@ -17,6 +17,9 @@ public abstract class UIEntity<T extends UIComponent<?>> extends Entity {
 
     public void addToUI() {
         Platform.runLater(() -> {
+            if (uiRoot.getInstance().getChildren().contains(uiComponent.getNode())) {
+                return;
+            }
             uiRoot.getInstance().getChildren().add(uiComponent.getNode());
         });
     }

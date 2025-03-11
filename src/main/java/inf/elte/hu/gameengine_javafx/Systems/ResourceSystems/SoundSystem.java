@@ -28,6 +28,12 @@ public class SoundSystem extends GameSystem {
 
     @Override
     public void update() {
+        if (CameraEntity.getInstance() == null) {
+            return;
+        }
+        if (CameraEntity.getInstance().getOwner() == null) {
+            return;
+        }
         listenerEntity = CameraEntity.getInstance().getOwner();
         var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getAllEntities());
 

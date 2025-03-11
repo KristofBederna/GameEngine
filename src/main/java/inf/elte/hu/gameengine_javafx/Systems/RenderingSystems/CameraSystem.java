@@ -15,6 +15,12 @@ public class CameraSystem extends GameSystem {
 
     @Override
     public void update() {
+        if (CameraEntity.getInstance() == null) {
+            return;
+        }
+        if (CameraEntity.getInstance().getOwner() == null) {
+            return;
+        }
         PositionComponent playerPos = CameraEntity.getInstance().getOwner().getComponent(PositionComponent.class);
         ImageComponent playerImg = CameraEntity.getInstance().getOwner().getComponent(ImageComponent.class);
         CameraEntity cameraEntity = CameraEntity.getInstance();
