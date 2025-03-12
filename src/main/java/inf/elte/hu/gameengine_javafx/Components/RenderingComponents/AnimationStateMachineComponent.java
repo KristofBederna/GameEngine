@@ -1,4 +1,4 @@
-package inf.elte.hu.gameengine_javafx.Components;
+package inf.elte.hu.gameengine_javafx.Components.RenderingComponents;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Misc.AnimationStateMachine;

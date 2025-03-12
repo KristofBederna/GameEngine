@@ -7,10 +7,7 @@ import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitB
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.TriangularHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.LightComponent;
 import inf.elte.hu.gameengine_javafx.Components.ParentComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.*;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
@@ -28,7 +25,8 @@ public class MovementSystem extends GameSystem {
 
     @Override
     public void update() {
-        var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getAllEntities());
+        var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getEntitiesWithComponent(VelocityComponent.class));
+        entitiesSnapshot.retainAll(EntityHub.getInstance().getEntitiesWithComponent(PositionComponent.class));
         if (entitiesSnapshot.isEmpty()) {
             return;
         }
@@ -37,6 +35,23 @@ public class MovementSystem extends GameSystem {
             if (entity.getComponent(PositionComponent.class) != null && entity.getComponent(VelocityComponent.class) != null) {
                 var velocity = entity.getComponent(VelocityComponent.class);
                 var position = entity.getComponent(PositionComponent.class);
+
+                if (entity.getComponent(AccelerationComponent.class) != null) {
+                    var acceleration = entity.getComponent(AccelerationComponent.class);
+                    double newDx = velocity.getVelocity().getDx() + acceleration.getAcceleration().getDx();
+                    double newDy = velocity.getVelocity().getDy() + acceleration.getAcceleration().getDy();
+
+                    if (Math.signum(newDx) != Math.signum(velocity.getVelocity().getDx()) && Math.abs(newDx) < Math.abs(acceleration.getAcceleration().getDx())) {
+                        newDx = 0;
+                        acceleration.getAcceleration().setDx(newDx);
+                    }
+                    if (Math.signum(newDy) != Math.signum(velocity.getVelocity().getDy()) && Math.abs(newDy) < Math.abs(acceleration.getAcceleration().getDy())) {
+                        newDy = 0;
+                        acceleration.getAcceleration().setDy(newDy);
+                    }
+
+                    velocity.setVelocity(newDx, newDy);
+                }
 
                 position.setLocalPosition(position.getLocalX() + velocity.getVelocity().getDx(), position.getLocalY() + velocity.getVelocity().getDy(), entity);
 

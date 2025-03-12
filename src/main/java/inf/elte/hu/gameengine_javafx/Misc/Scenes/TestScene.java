@@ -1,9 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Misc.Scenes;
 
 import inf.elte.hu.gameengine_javafx.Components.*;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.StateComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.*;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
@@ -131,10 +129,10 @@ public class TestScene extends GameScene{
         DummyEntity entity2 = (DummyEntity)EntityHub.getInstance().getEntitiesWithType(DummyEntity.class).getFirst();
 
         InteractiveComponent playerInteractiveComponent = player.getComponent(InteractiveComponent.class);
-        playerInteractiveComponent.mapInput(KeyCode.UP, 10, () -> moveUp(player), () -> counterVertical(player));
-        playerInteractiveComponent.mapInput(KeyCode.DOWN, 10, () -> moveDown(player), () -> counterVertical(player));
-        playerInteractiveComponent.mapInput(KeyCode.LEFT, 10, () -> moveLeft(player), () -> counterHorizontal(player));
-        playerInteractiveComponent.mapInput(KeyCode.RIGHT, 10, () -> moveRight(player), () -> counterHorizontal(player));
+        playerInteractiveComponent.mapInput(KeyCode.UP, 10, () -> moveUp(player), () -> counterUp(player));
+        playerInteractiveComponent.mapInput(KeyCode.DOWN, 10, () -> moveDown(player), () -> counterDown(player));
+        playerInteractiveComponent.mapInput(KeyCode.LEFT, 10, () -> moveLeft(player), () -> counterLeft(player));
+        playerInteractiveComponent.mapInput(KeyCode.RIGHT, 10, () -> moveRight(player), () -> counterRight(player));
         playerInteractiveComponent.mapInput(MouseButton.PRIMARY, 100, () -> {player.getComponent(PositionComponent.class).setLocalX(MouseInputHandler.getInstance().getMouseX(), player); player.getComponent(PositionComponent.class).setLocalY(MouseInputHandler.getInstance().getMouseY(), player);});
         //playerInteractiveComponent.mapInput(MouseButton.PRIMARY, () -> System.out.println(MouseInputHandler.getInstance().getMouseX() + " " + MouseInputHandler.getInstance().getMouseY()));
         playerInteractiveComponent.mapInput(MouseButton.SECONDARY, 5000, () -> player.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion"), ()->player.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
@@ -157,37 +155,50 @@ public class TestScene extends GameScene{
 
 
     private void moveUp(Entity e) {
-        double dy = -400 * Time.getInstance().getDeltaTime();
-        e.getComponent(VelocityComponent.class).getVelocity().setDy(dy);
+        double dy = -4 * Time.getInstance().getDeltaTime();
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDy(dy);
         e.getComponent(StateComponent.class).setCurrentState("up");
     }
 
     private void moveDown(Entity e) {
-        double dy = 400 * Time.getInstance().getDeltaTime();
-        e.getComponent(VelocityComponent.class).getVelocity().setDy(dy);
+        double dy = 4 * Time.getInstance().getDeltaTime();
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDy(dy);
         e.getComponent(StateComponent.class).setCurrentState("down");
     }
 
     private void moveLeft(Entity e) {
-        double dx = -400 * Time.getInstance().getDeltaTime();
-        e.getComponent(VelocityComponent.class).getVelocity().setDx(dx);
+        double dx = -4 * Time.getInstance().getDeltaTime();
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(dx);
         e.getComponent(StateComponent.class).setCurrentState("left");
     }
 
     private void moveRight(Entity e) {
-        double dx = 400 * Time.getInstance().getDeltaTime();
-        e.getComponent(VelocityComponent.class).getVelocity().setDx(dx);
+        double dx = 4 * Time.getInstance().getDeltaTime();
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(dx);
         e.getComponent(StateComponent.class).setCurrentState("right");
     }
 
-    private void counterVertical(Entity e) {
-        e.getComponent(VelocityComponent.class).getVelocity().setDy(0);
+    private void counterUp(Entity e) {
+        double dy = 4 * Time.getInstance().getDeltaTime();
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDy(dy);
         e.getComponent(StateComponent.class).setCurrentState("idle");
     }
 
+    private void counterDown(Entity e) {
+        double dy = 4 * Time.getInstance().getDeltaTime();
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDy(-dy);
+        e.getComponent(StateComponent.class).setCurrentState("idle");
+    }
 
-    private void counterHorizontal(Entity e) {
-        e.getComponent(VelocityComponent.class).getVelocity().setDx(0);
+    private void counterRight(Entity e) {
+        double dx = 4 * Time.getInstance().getDeltaTime();
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(-dx);
+        e.getComponent(StateComponent.class).setCurrentState("idle");
+    }
+
+    private void counterLeft(Entity e) {
+        double dx = 4 * Time.getInstance().getDeltaTime();
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(dx);
         e.getComponent(StateComponent.class).setCurrentState("idle");
     }
 }

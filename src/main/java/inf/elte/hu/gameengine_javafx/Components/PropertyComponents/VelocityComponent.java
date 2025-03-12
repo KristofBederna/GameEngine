@@ -7,8 +7,19 @@ import inf.elte.hu.gameengine_javafx.Maths.Vector;
 
 public class VelocityComponent extends Component {
     Vector velocity;
+    double maxVelocity;
     public VelocityComponent() {
         velocity = new Vector(0, 0);
+    }
+
+    public VelocityComponent(double maxVelocity) {
+        this.velocity = new Vector(0, 0);
+        this.maxVelocity = maxVelocity;
+    }
+
+    public VelocityComponent(Vector velocity, double maxVelocity) {
+        this.velocity = velocity;
+        this.maxVelocity = maxVelocity;
     }
 
     public Vector getVelocity() {
@@ -18,7 +29,15 @@ public class VelocityComponent extends Component {
         this.velocity = velocity;
     }
     public void setVelocity(double x, double y) {
-        this.velocity = new Vector(x, y);
+        this.velocity = new Vector(Math.min(x, maxVelocity == 0 ? x : maxVelocity), Math.min(y, maxVelocity == 0 ? x : maxVelocity));
+    }
+
+    public double getMaxVelocity() {
+        return maxVelocity;
+    }
+
+    public void setMaxVelocity(double maxVelocity) {
+        this.maxVelocity = maxVelocity;
     }
 
     public void stopMovement() {

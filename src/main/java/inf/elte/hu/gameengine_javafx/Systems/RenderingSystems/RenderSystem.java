@@ -1,6 +1,6 @@
 package inf.elte.hu.gameengine_javafx.Systems.RenderingSystems;
 
-import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.LightHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.*;
 import inf.elte.hu.gameengine_javafx.Components.LightComponent;
 import inf.elte.hu.gameengine_javafx.Components.PathfindingComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
@@ -99,22 +99,22 @@ public class RenderSystem extends GameSystem {
 
                     gc.drawImage(img, renderX, renderY, width, height);
 
-//                    RectangularHitBoxComponent hitBox = entity.getComponent(RectangularHitBoxComponent.class);
-//                    if (hitBox != null) {
-//                        hitBox.getHitBox().render(gc, Color.RED);
-//                    }
-//                    TriangularHitBoxComponent hitBox2 = entity.getComponent(TriangularHitBoxComponent.class);
-//                    if (hitBox2 != null) {
-//                        hitBox2.getHitBox().render(gc, Color.RED);
-//                    }
-//                    NSidedHitBoxComponent hitBox3 = entity.getComponent(NSidedHitBoxComponent.class);
-//                    if (hitBox3 != null) {
-//                        hitBox3.getHitBox().render(gc, Color.RED);
-//                    }
-//                    ComplexHitBoxComponent hitBox4 = entity.getComponent(ComplexHitBoxComponent.class);
-//                    if (hitBox4 != null) {
-//                        hitBox4.getHitBox().render(gc, Color.RED);
-//                    }
+                    RectangularHitBoxComponent hitBox = entity.getComponent(RectangularHitBoxComponent.class);
+                    if (hitBox != null) {
+                        hitBox.getHitBox().render(gc, Color.RED);
+                    }
+                    TriangularHitBoxComponent hitBox2 = entity.getComponent(TriangularHitBoxComponent.class);
+                    if (hitBox2 != null) {
+                        hitBox2.getHitBox().render(gc, Color.RED);
+                    }
+                    NSidedHitBoxComponent hitBox3 = entity.getComponent(NSidedHitBoxComponent.class);
+                    if (hitBox3 != null) {
+                        hitBox3.getHitBox().render(gc, Color.RED);
+                    }
+                    ComplexHitBoxComponent hitBox4 = entity.getComponent(ComplexHitBoxComponent.class);
+                    if (hitBox4 != null) {
+                        hitBox4.getHitBox().render(gc, Color.RED);
+                    }
                 }
             }
 //            MapMeshComponent meshComponent = WorldEntity.getInstance().getComponent(MapMeshComponent.class);

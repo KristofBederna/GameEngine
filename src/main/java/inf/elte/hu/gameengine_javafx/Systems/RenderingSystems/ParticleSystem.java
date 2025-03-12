@@ -1,6 +1,6 @@
 package inf.elte.hu.gameengine_javafx.Systems.RenderingSystems;
 
-import inf.elte.hu.gameengine_javafx.Components.DirectionComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DirectionComponent;
 import inf.elte.hu.gameengine_javafx.Components.MaxDistanceFromOriginComponent;
 import inf.elte.hu.gameengine_javafx.Components.ParentComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;

@@ -1,7 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Systems.RenderingSystems;
 
 
-import inf.elte.hu.gameengine_javafx.Components.AnimationStateMachineComponent;
+import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.AnimationStateMachineComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.AnimationComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;

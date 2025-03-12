@@ -4,6 +4,7 @@ import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.ComplexHitBoxCo
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.NSidedHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.TriangularHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.AccelerationComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
@@ -93,6 +94,9 @@ public class CollisionSystem extends GameSystem {
                 Shape otherHitBox = getHitBoxOfEntity(otherEntity);
                 if (otherHitBox != null && Shape.intersect(futureHitBox, otherHitBox)) {
                     velocity.setVelocity(0, velocity.getVelocity().getDy());
+                    if (entity.getComponent(AccelerationComponent.class) != null) {
+                        entity.getComponent(AccelerationComponent.class).getAcceleration().setDx(0);
+                    }
                     break;
                 }
             }
@@ -109,6 +113,9 @@ public class CollisionSystem extends GameSystem {
                 Shape otherHitBox = getHitBoxOfEntity(otherEntity);
                 if (otherHitBox != null && Shape.intersect(futureHitBox, otherHitBox)) {
                     velocity.setVelocity(velocity.getVelocity().getDx(), 0);
+                    if (entity.getComponent(AccelerationComponent.class) != null) {
+                        entity.getComponent(AccelerationComponent.class).getAcceleration().setDy(0);
+                    }
                     break;
                 }
             }

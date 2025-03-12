@@ -1,4 +1,4 @@
-package inf.elte.hu.gameengine_javafx.Components;
+package inf.elte.hu.gameengine_javafx.Components.PropertyComponents;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 
