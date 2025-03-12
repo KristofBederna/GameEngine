@@ -14,7 +14,6 @@ import java.util.List;
 
 public class Chunk {
     List<List<TileEntity>> chunk;
-    final int width = Config.chunkWidth, height = Config.chunkHeight;
 
     public Chunk(List<List<TileEntity>> chunk) {
         this.chunk = chunk;
@@ -60,13 +59,5 @@ public class Chunk {
         TileEntity tileEntity = chunk.get(x).get(y);
         TileEntity newTileEntity = new TileEntity(value, tileEntity.getComponent(PositionComponent.class).getGlobalX(), tileEntity.getComponent(PositionComponent.class).getGlobalY(), "/assets/tiles/" + TileLoader.getTilePath(value) + ".png", tileEntity.getComponent(DimensionComponent.class).getWidth(), tileEntity.getComponent(DimensionComponent.class).getHeight(), value != 9);
         chunk.get(x).set(y, newTileEntity);
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
     }
 }

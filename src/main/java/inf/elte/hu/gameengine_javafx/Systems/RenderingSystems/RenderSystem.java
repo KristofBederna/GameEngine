@@ -3,6 +3,7 @@ package inf.elte.hu.gameengine_javafx.Systems.RenderingSystems;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.*;
 import inf.elte.hu.gameengine_javafx.Components.LightComponent;
 import inf.elte.hu.gameengine_javafx.Components.PathfindingComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.RadiusComponent;
@@ -10,6 +11,7 @@ import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageCompone
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ZIndexComponent;
 import inf.elte.hu.gameengine_javafx.Components.ShapeComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
+import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
@@ -117,6 +119,10 @@ public class RenderSystem extends GameSystem {
                     }
                 }
             }
+            TileEntity tile = WorldEntity.getInstance().getComponent(WorldDataComponent.class).getElement(EntityHub.getInstance().getEntitiesWithType(PlayerEntity.class).getFirst().getComponent(PositionComponent.class).getGlobal());
+
+            Rectangle rectangle = new Rectangle(tile.getComponent(PositionComponent.class).getGlobal(),tile.getComponent(DimensionComponent.class).getWidth(), tile.getComponent(DimensionComponent.class).getHeight());
+            rectangle.renderFill(GameCanvas.getInstance().getGraphicsContext2D(), Color.ORANGE);
 //            MapMeshComponent meshComponent = WorldEntity.getInstance().getComponent(MapMeshComponent.class);
 //            if (meshComponent != null) {
 //                for (List<Point> row : meshComponent.getMapCoordinates()) {

@@ -21,14 +21,10 @@ import java.util.*;
 public class DynamicWorldLoaderSystem extends GameSystem {
     private int width;
     private int height;
-    private int loadDistance;
 
-    private final Map<Tuple<Integer, Integer>, Chunk> savedChunks = new HashMap<>();
-
-    public DynamicWorldLoaderSystem(int width, int height, int loadDistance) {
+    public DynamicWorldLoaderSystem(int width, int height) {
         this.width = width;
         this.height = height;
-        this.loadDistance = loadDistance;
     }
 
     @Override
@@ -64,8 +60,8 @@ public class DynamicWorldLoaderSystem extends GameSystem {
 
     private void loadSurroundingChunks(int playerChunkX, int playerChunkY) {
         Set<Tuple<Integer, Integer>> loadedChunks = WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getWorld().keySet();
-        for (int dx = -loadDistance; dx <= loadDistance; dx++) {
-            for (int dy = -loadDistance; dy <= loadDistance; dy++) {
+        for (int dx = -Config.loadDistance; dx <= Config.loadDistance; dx++) {
+            for (int dy = -Config.loadDistance; dy <= Config.loadDistance; dy++) {
                 int chunkX = playerChunkX + dx;
                 int chunkY = playerChunkY + dy;
                 if (chunkX >= 0 && chunkX < width && chunkY >= 0 && chunkY < height) {
@@ -84,8 +80,8 @@ public class DynamicWorldLoaderSystem extends GameSystem {
             Map.Entry<Tuple<Integer, Integer>, Chunk> entry = iterator.next();
             int chunkX = entry.getKey().first();
             int chunkY = entry.getKey().second();
-            if (Math.abs(chunkX - playerChunkX) > loadDistance || Math.abs(chunkY - playerChunkY) > loadDistance) {
-                savedChunks.put(entry.getKey(), entry.getValue());
+            if (Math.abs(chunkX - playerChunkX) > Config.loadDistance || Math.abs(chunkY - playerChunkY) > Config.loadDistance) {
+                WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getSavedChunks().put(entry.getKey(), entry.getValue());
                 iterator.remove();
             }
         }
@@ -94,11 +90,11 @@ public class DynamicWorldLoaderSystem extends GameSystem {
     private void loadOrGenerateChunk(int chunkX, int chunkY) {
         Tuple<Integer, Integer> chunkKey = new Tuple<>(chunkX, chunkY);
 
-        if (savedChunks.containsKey(chunkKey)) {
-            WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().addChunk(chunkX, chunkY, savedChunks.get(chunkKey));
+        if (WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getSavedChunks().containsKey(chunkKey)) {
+            WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().addChunk(chunkX, chunkY, WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getSavedChunks().get(chunkKey));
         } else {
             Chunk newChunk = WorldGenerator.generateChunk(chunkX, chunkY, Config.chunkWidth, Config.chunkHeight);
-            savedChunks.put(chunkKey, newChunk);
+            WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getSavedChunks().put(chunkKey, newChunk);
             WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().addChunk(chunkX, chunkY, newChunk);
         }
         addBoundaryWalls(WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getWorld().get(chunkKey), chunkX, chunkY);

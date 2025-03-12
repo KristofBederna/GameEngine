@@ -2,6 +2,9 @@ package inf.elte.hu.gameengine_javafx.Entities;
 
 import inf.elte.hu.gameengine_javafx.Components.*;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.AccelerationComponent;
+import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.DragComponent;
+import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.MassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.*;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.AnimationComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.AnimationStateMachineComponent;
@@ -21,6 +24,8 @@ public class PlayerEntity extends Entity {
         this.addComponent(new PositionComponent(x, y, this));
         this.addComponent(new VelocityComponent(12));
         this.addComponent(new AccelerationComponent());
+        this.addComponent(new DragComponent(0.98));
+        this.addComponent(new MassComponent(0.5));
         this.addComponent(new StateComponent(state));
         this.addComponent(new ImageComponent(path, width, height));
         this.addComponent(new InteractiveComponent());

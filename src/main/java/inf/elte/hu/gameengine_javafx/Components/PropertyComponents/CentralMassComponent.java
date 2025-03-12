@@ -27,4 +27,8 @@ public class CentralMassComponent extends Component {
     public String getStatus() {
         return "";
     }
+
+    public Point getCentral() {
+        return central;
+    }
 }

@@ -20,11 +20,6 @@ import inf.elte.hu.gameengine_javafx.Misc.Tuple;
 import java.util.*;
 
 public class InfiniteWorldLoaderSystem extends GameSystem {
-    private static final int CHUNK_SIZE = 8;
-    private static final int LOAD_DISTANCE = 2;
-
-    private final Map<Tuple<Integer, Integer>, Chunk> savedChunks = new HashMap<>();
-
     @Override
     public void start() {
         this.active = true;
@@ -54,11 +49,11 @@ public class InfiniteWorldLoaderSystem extends GameSystem {
         World worldData = map.getComponent(WorldDataComponent.class).getMapData();
         Set<Tuple<Integer, Integer>> loadedChunks = worldData.getWorld().keySet();
 
-        int playerChunkX = Math.floorDiv((int) (camX + camWidth / 2), CHUNK_SIZE * Config.tileSize);
-        int playerChunkY = Math.floorDiv((int) (camY + camHeight / 2), CHUNK_SIZE * Config.tileSize);
+        int playerChunkX = Math.floorDiv((int) (camX + camWidth / 2), Config.chunkWidth * Config.tileSize);
+        int playerChunkY = Math.floorDiv((int) (camY + camHeight / 2), Config.chunkHeight * Config.tileSize);
 
-        for (int dx = -LOAD_DISTANCE; dx <= LOAD_DISTANCE; dx++) {
-            for (int dy = -LOAD_DISTANCE; dy <= LOAD_DISTANCE; dy++) {
+        for (int dx = -Config.loadDistance; dx <= Config.loadDistance; dx++) {
+            for (int dy = -Config.loadDistance; dy <= Config.loadDistance; dy++) {
                 int chunkX = playerChunkX + dx;
                 int chunkY = playerChunkY + dy;
                 Tuple<Integer, Integer> chunkKey = new Tuple<>(chunkX, chunkY);
@@ -114,8 +109,8 @@ public class InfiniteWorldLoaderSystem extends GameSystem {
             int chunkX = entry.getKey().first();
             int chunkY = entry.getKey().second();
 
-            if (Math.abs(chunkX - playerChunkX) > LOAD_DISTANCE || Math.abs(chunkY - playerChunkY) > LOAD_DISTANCE) {
-                savedChunks.put(entry.getKey(), entry.getValue());
+            if (Math.abs(chunkX - playerChunkX) > Config.loadDistance || Math.abs(chunkY - playerChunkY) > Config.loadDistance) {
+                worldData.getSavedChunks().put(entry.getKey(), entry.getValue());
                 iterator.remove();
             }
         }
@@ -124,11 +119,11 @@ public class InfiniteWorldLoaderSystem extends GameSystem {
     private void loadOrGenerateChunk(World worldData, int chunkX, int chunkY) {
         Tuple<Integer, Integer> chunkKey = new Tuple<>(chunkX, chunkY);
 
-        if (savedChunks.containsKey(chunkKey)) {
-            worldData.addChunk(chunkX, chunkY, savedChunks.get(chunkKey));
+        if (worldData.getSavedChunks().containsKey(chunkKey)) {
+            worldData.addChunk(chunkX, chunkY, worldData.getSavedChunks().get(chunkKey));
         } else {
-            Chunk newChunk = WorldGenerator.generateChunk(chunkX, chunkY, CHUNK_SIZE, Config.chunkHeight);
-            savedChunks.put(chunkKey, newChunk);
+            Chunk newChunk = WorldGenerator.generateChunk(chunkX, chunkY, Config.chunkWidth, Config.chunkHeight);
+            worldData.getSavedChunks().put(chunkKey, newChunk);
             worldData.addChunk(chunkX, chunkY, newChunk);
         }
 

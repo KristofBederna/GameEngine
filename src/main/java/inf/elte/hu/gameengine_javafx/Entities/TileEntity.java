@@ -1,6 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Entities;
 
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.FrictionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
@@ -20,6 +21,7 @@ public class TileEntity extends Entity {
         this.addComponent(new ZIndexComponent(0));
         this.addComponent(new DimensionComponent(width, height));
         this.addComponent(new CentralMassComponent(x+width/2, y+height/2));
+        this.addComponent(new FrictionComponent(4));
 
         addToManager();
     }
@@ -33,6 +35,7 @@ public class TileEntity extends Entity {
         if (hasHitBox) {
             this.addComponent(new RectangularHitBoxComponent(new Point(x, y), width, height));
         }
+        this.addComponent(new FrictionComponent(4));
 
         addToManager();
     }

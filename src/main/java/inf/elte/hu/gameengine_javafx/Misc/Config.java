@@ -8,5 +8,7 @@ public class Config {
     public static double EPSILON = 1e-9;
     public static int chunkWidth = 16;
     public static int chunkHeight = 16;
+    public static int loadDistance = 2;
     public static double drag = 0.001;
+    public static double friction = 0.001;
 }

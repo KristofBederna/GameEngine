@@ -1,6 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Misc.Scenes;
 
 import inf.elte.hu.gameengine_javafx.Components.*;
+import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.AccelerationComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.*;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
@@ -44,7 +45,7 @@ public class TestScene extends GameScene{
     public void setup() {
         getStylesheets().add(Objects.requireNonNull(getClass().getResource("/assets/styles/styles.css")).toExternalForm());
         new ResourceStartUp();
-        WorldEntity.getInstance(30, 15, "/assets/maps/hardForAIMap.txt", "/assets/tileSets/testTiles.txt");
+        WorldEntity.getInstance(32, 16, "/assets/maps/hardForAIMap.txt", "/assets/tileSets/testTiles.txt");
         entitySetup();
         cameraSetup();
         interactionSetup();

@@ -20,8 +20,10 @@ import inf.elte.hu.gameengine_javafx.Misc.Config;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.Chunk;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.MapSaver;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.World;
+import inf.elte.hu.gameengine_javafx.Misc.Tuple;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -34,41 +36,62 @@ public class WorldLoaderSystem extends GameSystem {
     @Override
     public void start() {
         this.active = true;
+        ArrayList<ArrayList<Integer>> data = new ArrayList<>();
+        int width, height;
+
+
         WorldEntity map = WorldEntity.getInstance();
+
         if (map == null) {
             return;
         }
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(MapSaver.class.getResourceAsStream(map.getComponent(FilePathComponent.class).getFilePath()))))) {
+            String line;
             String[] dimensions = reader.readLine().split(" ");
-            int width = Integer.parseInt(dimensions[0]);
-            int height = Integer.parseInt(dimensions[1]);
-            List<List<TileEntity>> chunkGenerator = new ArrayList<>();
-            for (int y = 0; y < height; y++) {
-                String[] row = reader.readLine().split(" ");
-                List<TileEntity> worldRow = new ArrayList<>();
-                List<Point> meshRow = new ArrayList<>();
-                for (int x = 0; x < width; x++) {
-                    int value = Integer.parseInt(row[x]);
-                    String name = map.getComponent(TileSetComponent.class).getTileLoader().getTilePath(value);
-                    TileEntity tile;
-                    if (name == null) {
-                        name = String.valueOf(value);
-                    }
-                    if (value == 9) {
-                        tile = new TileEntity(value, x * Config.tileSize, y * Config.tileSize, "/assets/tiles/" + name + ".png", Config.tileSize, Config.tileSize);
-                        meshRow.add(new Point(tile.getComponent(CentralMassComponent.class).getCentralX(), tile.getComponent(CentralMassComponent.class).getCentralY()));
-                    } else {
-                        tile = new TileEntity(value, x * Config.tileSize, y * Config.tileSize, "/assets/tiles/" + name + ".png", Config.tileSize, Config.tileSize, true);
-                        meshRow.add(null);
-                    }
-                    worldRow.add(tile);
+            width = Integer.parseInt(dimensions[0]);
+            height = Integer.parseInt(dimensions[1]);
+            while ((line = reader.readLine()) != null) {
+                String[] values = line.split(" ");
+                ArrayList<Integer> row = new ArrayList<>();
+                for (String value : values) {
+                    row.add(Integer.parseInt(value));
                 }
-                map.getComponent(MapMeshComponent.class).addRow(meshRow);
-                chunkGenerator.add(worldRow);
+                data.add(row);
             }
-            map.getComponent(WorldDataComponent.class).setMapData(0, 0, new Chunk(chunkGenerator));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error reading file", e);
+        }
+
+        int chunkWidth = Math.floorDiv(width, Config.chunkWidth);
+        int chunkHeight = Math.floorDiv(height, Config.chunkHeight);
+        for (int i = 0; i < chunkWidth; i++) {
+            for (int j = 0; j < chunkHeight; j++) {
+                Tuple<Integer, Integer> coordinates = new Tuple(i, j);
+                Chunk chunkTiles = new Chunk();
+                for (int y = j * Config.chunkHeight; y < height; y++) {
+                    List<TileEntity> chunkRow = new ArrayList<>();
+                    List<Point> meshRow = new ArrayList<>();
+                    for (int x = i * Config.chunkWidth; x < width; x++) {
+                        int value = data.get(y).get(x);
+                        String name = map.getComponent(TileSetComponent.class).getTileLoader().getTilePath(value);
+                        TileEntity tile;
+                        if (name == null) {
+                            name = String.valueOf(value);
+                        }
+                        if (value == 9) {
+                            tile = new TileEntity(value, x * Config.tileSize, y * Config.tileSize, "/assets/tiles/" + name + ".png", Config.tileSize, Config.tileSize);
+                            meshRow.add(new Point(tile.getComponent(CentralMassComponent.class).getCentralX(), tile.getComponent(CentralMassComponent.class).getCentralY()));
+                        } else {
+                            tile = new TileEntity(value, x * Config.tileSize, y * Config.tileSize, "/assets/tiles/" + name + ".png", Config.tileSize, Config.tileSize, true);
+                            meshRow.add(null);
+                        }
+                        chunkRow.add(tile);
+                    }
+                    chunkTiles.getChunk().add(chunkRow);
+                    map.getComponent(MapMeshComponent.class).addRow(meshRow);
+                }
+                map.getComponent(WorldDataComponent.class).getMapData().getWorld().putIfAbsent(coordinates, chunkTiles);
+            }
         }
     }
 
