@@ -179,26 +179,22 @@ public class TestScene extends GameScene{
     }
 
     private void counterUp(Entity e) {
-        double dy = 4 * Time.getInstance().getDeltaTime();
-        e.getComponent(AccelerationComponent.class).getAcceleration().setDy(dy);
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDy(0);
         e.getComponent(StateComponent.class).setCurrentState("idle");
     }
 
     private void counterDown(Entity e) {
-        double dy = 4 * Time.getInstance().getDeltaTime();
-        e.getComponent(AccelerationComponent.class).getAcceleration().setDy(-dy);
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDy(0);
         e.getComponent(StateComponent.class).setCurrentState("idle");
     }
 
     private void counterRight(Entity e) {
-        double dx = 4 * Time.getInstance().getDeltaTime();
-        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(-dx);
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(0);
         e.getComponent(StateComponent.class).setCurrentState("idle");
     }
 
     private void counterLeft(Entity e) {
-        double dx = 4 * Time.getInstance().getDeltaTime();
-        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(dx);
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(0);
         e.getComponent(StateComponent.class).setCurrentState("idle");
     }
 }

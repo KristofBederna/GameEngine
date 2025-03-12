@@ -19,7 +19,7 @@ import java.util.Objects;
 public class PlayerEntity extends Entity {
     public PlayerEntity(double x, double y, String state, String path, double width, double height) {
         this.addComponent(new PositionComponent(x, y, this));
-        this.addComponent(new VelocityComponent(40));
+        this.addComponent(new VelocityComponent(12));
         this.addComponent(new AccelerationComponent());
         this.addComponent(new StateComponent(state));
         this.addComponent(new ImageComponent(path, width, height));

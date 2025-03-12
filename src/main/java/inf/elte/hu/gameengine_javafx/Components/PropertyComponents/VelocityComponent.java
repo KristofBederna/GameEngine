@@ -29,8 +29,11 @@ public class VelocityComponent extends Component {
         this.velocity = velocity;
     }
     public void setVelocity(double x, double y) {
-        this.velocity = new Vector(Math.min(x, maxVelocity == 0 ? x : maxVelocity), Math.min(y, maxVelocity == 0 ? x : maxVelocity));
+        double clampedX = Math.max(-maxVelocity, Math.min(x, maxVelocity));
+        double clampedY = Math.max(-maxVelocity, Math.min(y, maxVelocity));
+        this.velocity = new Vector(clampedX, clampedY);
     }
+
 
     public double getMaxVelocity() {
         return maxVelocity;

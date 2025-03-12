@@ -85,7 +85,7 @@ public class CollisionSystem extends GameSystem {
     }
 
     private static void horizontalCollisionCheck(List<Entity> entities, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
-        translateHitBoxHorizontally(futureHitBox, velocity);
+        translateHitBoxHorizontally(entity, futureHitBox, velocity);
 
         synchronized (entities) {
             for (Entity otherEntity : entities) {
@@ -104,7 +104,7 @@ public class CollisionSystem extends GameSystem {
     }
 
     private static void verticalCollisionCheck(List<Entity> entities, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
-        translateHitBoxVertically(futureHitBox, velocity);
+        translateHitBoxVertically(entity, futureHitBox, velocity);
 
         synchronized (entities) {
             for (Entity otherEntity : entities) {
@@ -122,29 +122,45 @@ public class CollisionSystem extends GameSystem {
         }
     }
 
-    private static void translateHitBoxHorizontally(Shape futureHitBox, VelocityComponent velocity) {
+    private static void translateHitBoxHorizontally(Entity entity, Shape futureHitBox, VelocityComponent velocity) {
+        double dx = velocity.getVelocity().getDx();
+
+        AccelerationComponent accelerationComponent = entity.getComponent(AccelerationComponent.class);
+        if (accelerationComponent != null) {
+            dx += accelerationComponent.getAcceleration().getDx();
+        }
+
         if (futureHitBox instanceof Rectangle) {
-            ((Rectangle) futureHitBox).translate((int) velocity.getVelocity().getDx(), 0);
+            ((Rectangle) futureHitBox).translate(dx, 0);
         } else if (futureHitBox instanceof Triangle) {
-            ((Triangle) futureHitBox).translate((int) velocity.getVelocity().getDx(), 0);
+            ((Triangle) futureHitBox).translate(dx, 0);
         } else if (futureHitBox instanceof NSidedShape) {
-            ((NSidedShape) futureHitBox).translate((int) velocity.getVelocity().getDx(), 0);
+            ((NSidedShape) futureHitBox).translate(dx, 0);
         } else if (futureHitBox instanceof ComplexShape) {
-            ((ComplexShape) futureHitBox).translate((int) velocity.getVelocity().getDx(), 0);
+            ((ComplexShape) futureHitBox).translate(dx, 0);
         }
     }
 
-    private static void translateHitBoxVertically(Shape futureHitBox, VelocityComponent velocity) {
+    private static void translateHitBoxVertically(Entity entity, Shape futureHitBox, VelocityComponent velocity) {
+        double dy = velocity.getVelocity().getDy();
+
+        AccelerationComponent accelerationComponent = entity.getComponent(AccelerationComponent.class);
+        if (accelerationComponent != null) {
+            dy += accelerationComponent.getAcceleration().getDy();
+        }
+
         if (futureHitBox instanceof Rectangle) {
-            ((Rectangle) futureHitBox).translate(0, (int) velocity.getVelocity().getDy());
+            ((Rectangle) futureHitBox).translate(0, dy);
         } else if (futureHitBox instanceof Triangle) {
-            ((Triangle) futureHitBox).translate(0, (int) velocity.getVelocity().getDy());
+            ((Triangle) futureHitBox).translate(0, dy);
         } else if (futureHitBox instanceof NSidedShape) {
-            ((NSidedShape) futureHitBox).translate(0, (int) velocity.getVelocity().getDy());
+            ((NSidedShape) futureHitBox).translate(0, dy);
         } else if (futureHitBox instanceof ComplexShape) {
-            ((ComplexShape) futureHitBox).translate(0, (int) velocity.getVelocity().getDy());
+            ((ComplexShape) futureHitBox).translate(0, dy);
         }
     }
+
+
 
     private static Shape getHitBoxOfEntity(Entity entity) {
         RectangularHitBoxComponent rectHitBox = entity.getComponent(RectangularHitBoxComponent.class);

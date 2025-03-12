@@ -13,6 +13,7 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Entities.LightingEntity;
 import inf.elte.hu.gameengine_javafx.Entities.ParticleEntity;
+import inf.elte.hu.gameengine_javafx.Misc.Config;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
 
 import java.util.ArrayList;
@@ -41,6 +42,16 @@ public class MovementSystem extends GameSystem {
                     double newDx = velocity.getVelocity().getDx() + acceleration.getAcceleration().getDx();
                     double newDy = velocity.getVelocity().getDy() + acceleration.getAcceleration().getDy();
 
+                    double dragFactor = Math.pow(Config.drag, Time.getInstance().getDeltaTime());
+
+                    if (newDx == velocity.getVelocity().getDx()) {
+                        newDx *= dragFactor;
+                    }
+                    if (newDy == velocity.getVelocity().getDy()) {
+                        newDy *= dragFactor;
+                    }
+
+
                     if (Math.signum(newDx) != Math.signum(velocity.getVelocity().getDx()) && Math.abs(newDx) < Math.abs(acceleration.getAcceleration().getDx())) {
                         newDx = 0;
                         acceleration.getAcceleration().setDx(newDx);
@@ -63,9 +74,7 @@ public class MovementSystem extends GameSystem {
                     }
                 }
                 position.updateGlobalPosition(entity);
-                if (entity instanceof ParticleEntity) {
-                    System.out.println(position.getGlobalX() + " " + position.getGlobalY());
-                }
+
                 RectangularHitBoxComponent hitBox = entity.getComponent(RectangularHitBoxComponent.class);
                 TriangularHitBoxComponent triBox = entity.getComponent(TriangularHitBoxComponent.class);
                 NSidedHitBoxComponent circBox = entity.getComponent(NSidedHitBoxComponent.class);
