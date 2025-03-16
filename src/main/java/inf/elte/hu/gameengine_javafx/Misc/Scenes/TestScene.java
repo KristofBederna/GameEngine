@@ -12,6 +12,9 @@ import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Entities.*;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Misc.Config;
+import inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventManager;
+import inf.elte.hu.gameengine_javafx.Misc.EventHandling.Events.TestEvent;
+import inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventListeners.TestEventListener;
 import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.MouseInputHandler;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot;
 import inf.elte.hu.gameengine_javafx.Misc.LightType;
@@ -139,6 +142,11 @@ public class TestScene extends GameScene{
         playerInteractiveComponent.mapInput(MouseButton.SECONDARY, 5000, () -> player.getComponent(SoundEffectStoreComponent.class).addSoundEffect("/assets/sound/sfx/explosion.wav","explosion"), ()->player.getComponent(SoundEffectStoreComponent.class).removeSoundEffect("/assets/sound/sfx/explosion.wav"));
         playerInteractiveComponent.mapInput(KeyCode.F2, 10, () -> CameraEntity.getInstance().attachTo(entity2), () -> CameraEntity.getInstance().attachTo(player));
         playerInteractiveComponent.mapInput(KeyCode.F3, 100, () -> SystemHub.getInstance().getSystem(SceneManagementSystem.class).requestSceneChange(new Test2Scene(new BorderPane(), 1920, 1080)));
+
+        EventManager eventManager = new EventManager();
+        eventManager.registerListener(TestEvent.class, new TestEventListener());
+
+        playerInteractiveComponent.mapInput(KeyCode.E, 100, () -> eventManager.fireEvent(new TestEvent()));
 
         playerInteractiveComponent.mapInput(KeyCode.F4, 1000, () -> {
             Random random = new Random();
