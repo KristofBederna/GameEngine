@@ -21,12 +21,36 @@ import inf.elte.hu.gameengine_javafx.Misc.Time;
 
 import java.util.ArrayList;
 
+/**
+ * This class is responsible for updating the movement of entities in the game world. It calculates the entity's
+ * new position based on velocity, acceleration, mass, drag, and friction components.
+ * The system also updates the entity's hitbox according to its movement.
+ *
+ * The movement system works with various physics components such as:
+ * - Velocity
+ * - Acceleration
+ * - Mass
+ * - Drag
+ * - Friction
+ *
+ * The system ensures entities respect a maximum velocity, apply friction forces, and simulate drag over time.
+ * Additionally, it updates the central mass for entities that have a {@link CentralMassComponent}.
+ */
 public class MovementSystem extends GameSystem {
+
+    /**
+     * Starts the movement system by activating it.
+     */
     @Override
     public void start() {
         this.active = true;
     }
 
+    /**
+     * Updates the movement for all entities with the required components (Position, Velocity, Acceleration).
+     * This method applies physics updates to the entities based on their components and updates their position
+     * accordingly.
+     */
     @Override
     public void update() {
         var entitiesSnapshot = getEntities();
@@ -40,6 +64,13 @@ public class MovementSystem extends GameSystem {
         }
     }
 
+    /**
+     * Processes each entity to update its position and velocity based on its components.
+     * This method applies acceleration, mass, friction, drag, and velocity limits to compute the new velocity
+     * and position of the entity.
+     *
+     * @param entity The entity to process.
+     */
     private void processEntity(Entity entity) {
         if (entity == null) return;
 
@@ -108,6 +139,13 @@ public class MovementSystem extends GameSystem {
         updateHitBoxes(entity, velocity);
     }
 
+    /**
+     * Gets the tile the entity is currently on.
+     * This method checks both the position and central mass components to return the correct tile.
+     *
+     * @param entity The entity for which the tile is to be retrieved.
+     * @return The {@link TileEntity} that the entity is currently on.
+     */
     private static TileEntity getCurrentTile(Entity entity) {
         TileEntity tile = WorldEntity.getInstance().getComponent(WorldDataComponent.class).getElement(entity.getComponent(PositionComponent.class).getGlobal());
 
@@ -117,6 +155,11 @@ public class MovementSystem extends GameSystem {
         return tile;
     }
 
+    /**
+     * Retrieves a snapshot of all entities that are inside the camera's viewport and have the required components.
+     *
+     * @return A list of entities that have a PositionComponent, VelocityComponent, and are inside the viewport.
+     */
     private static ArrayList<Entity> getEntities() {
         var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getEntitiesInsideViewport(CameraEntity.getInstance()));
         entitiesSnapshot.retainAll(EntityHub.getInstance().getEntitiesWithComponent(PositionComponent.class));
@@ -124,6 +167,12 @@ public class MovementSystem extends GameSystem {
         return entitiesSnapshot;
     }
 
+    /**
+     * Updates the hitboxes of the entities by translating them based on their current velocity.
+     *
+     * @param entity The entity whose hitbox needs to be updated.
+     * @param velocity The velocity component of the entity.
+     */
     private void updateHitBoxes(Entity entity, VelocityComponent velocity) {
         double dx = velocity.getVelocity().getDx();
         double dy = velocity.getVelocity().getDy();

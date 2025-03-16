@@ -10,22 +10,38 @@ import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 
 import java.util.*;
 
+/**
+ * The PathfindingSystem is responsible for calculating and managing the movement path of entities
+ * using pathfinding algorithms. It updates the movement of entities with a `PathfindingComponent`
+ * based on their current position and target destination.
+ */
 public class PathfindingSystem extends GameSystem {
+
+    /**
+     * Starts the pathfinding system, setting it as active.
+     */
     @Override
     public void start() {
         this.active = true;
     }
 
+    /**
+     * Updates the pathfinding system. For each entity with a `PathfindingComponent`, it calculates
+     * the entity's movement path and updates the entity's position towards its target.
+     */
     @Override
     protected void update() {
         var pathfinderEntities = EntityHub.getInstance().getEntitiesWithComponent(PathfindingComponent.class);
+
         for (var entity : pathfinderEntities) {
             PathfindingComponent pathfindingComponent = entity.getComponent(PathfindingComponent.class);
             Point start = pathfindingComponent.getStart();
             Point end = pathfindingComponent.getEnd();
+
             if (start == null || end == null) {
                 continue;
             }
+
             if (pathfindingComponent.getPath() == null) {
                 pathfindingComponent.setPath(selectPath(start, end, entity));
             } else {
@@ -33,15 +49,18 @@ public class PathfindingSystem extends GameSystem {
                     System.out.println("Entity has no velocity component");
                     continue;
                 }
+
                 if (!pathfindingComponent.getPath().isEmpty()) {
                     Point node = pathfindingComponent.getPath().getFirst();
                     Point position = new Point(entity.getComponent(CentralMassComponent.class).getCentralX(),
                             entity.getComponent(CentralMassComponent.class).getCentralY());
                     entity.getComponent(VelocityComponent.class).getVelocity().moveTowards(node, entity);
+
                     if (position.compareCoordinates(node)) {
                         pathfindingComponent.getPath().removeFirst();
                     }
                 }
+
                 if (pathfindingComponent.getPath().isEmpty()) {
                     entity.getComponent(VelocityComponent.class).stopMovement();
                 }
@@ -49,6 +68,15 @@ public class PathfindingSystem extends GameSystem {
         }
     }
 
+    /**
+     * Selects a path from the start point to the end point using the A* algorithm.
+     * The algorithm calculates the shortest path considering the neighbors of each point.
+     *
+     * @param start The start point of the pathfinding.
+     * @param end The end point of the pathfinding.
+     * @param entity The entity for which the pathfinding is being calculated.
+     * @return A list of points representing the path from start to end.
+     */
     private List<Point> selectPath(Point start, Point end, Entity entity) {
         List<Point> path = new ArrayList<>();
         Map<Point, Point> cameFrom = new HashMap<>();
@@ -83,6 +111,13 @@ public class PathfindingSystem extends GameSystem {
         return path;
     }
 
+    /**
+     * Reconstructs the path from the start to the end based on the `cameFrom` map.
+     *
+     * @param cameFrom The map that tracks the best previous point for each point.
+     * @param current The current point from which the path is being reconstructed.
+     * @return A list of points representing the reconstructed path from start to end.
+     */
     private List<Point> reconstructPath(Map<Point, Point> cameFrom, Point current) {
         List<Point> path = new LinkedList<>();
         while (cameFrom.containsKey(current)) {

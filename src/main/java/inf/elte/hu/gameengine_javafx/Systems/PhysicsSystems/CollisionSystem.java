@@ -14,13 +14,25 @@ import inf.elte.hu.gameengine_javafx.Maths.Geometry.Shape;
 
 import java.util.List;
 
+/**
+ * The {@code CollisionSystem} class is responsible for detecting and resolving collisions
+ * between entities in the game world. It uses hitboxes and velocity data to check if entities
+ * collide with one another, and adjusts their positions and velocities accordingly.
+ */
 public class CollisionSystem extends GameSystem {
 
+    /**
+     * Initializes the system, setting it as active.
+     */
     @Override
     public void start() {
         this.active = true;
     }
 
+    /**
+     * Updates the collision system, checking for collisions and moving entities
+     * based on their velocity and acceleration.
+     */
     @Override
     public void update() {
         List<Entity> filteredEntities = getEntities();
@@ -33,6 +45,12 @@ public class CollisionSystem extends GameSystem {
         processEntities(filteredEntities, hitBoxes);
     }
 
+    /**
+     * Processes each entity by checking for collisions and adjusting their movement.
+     *
+     * @param filteredEntities list of entities to be processed
+     * @param hitBoxes list of entities with hitboxes
+     */
     private static void processEntities(List<Entity> filteredEntities, List<Entity> hitBoxes) {
         synchronized (filteredEntities) {
             for (Entity entity : filteredEntities) {
@@ -41,6 +59,12 @@ public class CollisionSystem extends GameSystem {
         }
     }
 
+    /**
+     * Processes a single entity to check for collisions and adjust its position and velocity.
+     *
+     * @param hitBoxes list of entities with hitboxes
+     * @param entity the entity to be processed
+     */
     private static void processEntity(List<Entity> hitBoxes, Entity entity) {
         HitBoxComponent hitBox = entity.getComponent(HitBoxComponent.class);
         VelocityComponent velocity = entity.getComponent(VelocityComponent.class);
@@ -55,6 +79,11 @@ public class CollisionSystem extends GameSystem {
         moveDiagonally(hitBoxes, entity, futureHitBox, velocity);
     }
 
+    /**
+     * Retrieves a list of entities that are within the camera's viewport and have the necessary components.
+     *
+     * @return a list of filtered entities that include hitboxes, velocity, and position components
+     */
     private static List<Entity> getEntities() {
         List<Entity> filteredEntities = EntityHub.getInstance().getEntitiesInsideViewport(CameraEntity.getInstance());
         filteredEntities.retainAll(EntityHub.getInstance().getEntitiesWithComponent(HitBoxComponent.class));
@@ -63,6 +92,14 @@ public class CollisionSystem extends GameSystem {
         return filteredEntities;
     }
 
+    /**
+     * Moves the entity diagonally and checks for collisions in both horizontal and vertical directions.
+     *
+     * @param entities list of entities to check for collisions
+     * @param entity the entity to move and check for collisions
+     * @param futureHitBox the future position of the entity's hitbox
+     * @param velocity the velocity component of the entity
+     */
     private static void moveDiagonally(List<Entity> entities, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
         checkCollisionAndMove(entities, entity, futureHitBox, velocity);
         if (velocity.getVelocity().getDy() != 0) {
@@ -73,11 +110,27 @@ public class CollisionSystem extends GameSystem {
         }
     }
 
+    /**
+     * Checks for collisions and moves the entity based on the result.
+     *
+     * @param entities list of entities to check for collisions
+     * @param entity the entity to move and check for collisions
+     * @param futureHitBox the future position of the entity's hitbox
+     * @param velocity the velocity component of the entity
+     */
     private static void checkCollisionAndMove(List<Entity> entities, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
         horizontalCollisionCheck(entities, entity, futureHitBox, velocity);
         verticalCollisionCheck(entities, entity, futureHitBox, velocity);
     }
 
+    /**
+     * Checks for horizontal collisions and updates the entity's velocity if necessary.
+     *
+     * @param entities list of entities to check for collisions
+     * @param entity the entity to check for collisions
+     * @param futureHitBox the future position of the entity's hitbox
+     * @param velocity the velocity component of the entity
+     */
     private static void horizontalCollisionCheck(List<Entity> entities, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
         translateHitBoxHorizontally(entity, futureHitBox, velocity);
 
@@ -97,6 +150,14 @@ public class CollisionSystem extends GameSystem {
         }
     }
 
+    /**
+     * Checks for vertical collisions and updates the entity's velocity if necessary.
+     *
+     * @param entities list of entities to check for collisions
+     * @param entity the entity to check for collisions
+     * @param futureHitBox the future position of the entity's hitbox
+     * @param velocity the velocity component of the entity
+     */
     private static void verticalCollisionCheck(List<Entity> entities, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
         translateHitBoxVertically(entity, futureHitBox, velocity);
 
@@ -116,6 +177,13 @@ public class CollisionSystem extends GameSystem {
         }
     }
 
+    /**
+     * Translates the entity's hitbox horizontally based on its velocity and acceleration.
+     *
+     * @param entity the entity whose hitbox is to be translated
+     * @param futureHitBox the future position of the entity's hitbox
+     * @param velocity the velocity component of the entity
+     */
     private static void translateHitBoxHorizontally(Entity entity, Shape futureHitBox, VelocityComponent velocity) {
         double dx = velocity.getVelocity().getDx();
 
@@ -126,6 +194,13 @@ public class CollisionSystem extends GameSystem {
         futureHitBox.translate(dx, 0);
     }
 
+    /**
+     * Translates the entity's hitbox vertically based on its velocity and acceleration.
+     *
+     * @param entity the entity whose hitbox is to be translated
+     * @param futureHitBox the future position of the entity's hitbox
+     * @param velocity the velocity component of the entity
+     */
     private static void translateHitBoxVertically(Entity entity, Shape futureHitBox, VelocityComponent velocity) {
         double dy = velocity.getVelocity().getDy();
 

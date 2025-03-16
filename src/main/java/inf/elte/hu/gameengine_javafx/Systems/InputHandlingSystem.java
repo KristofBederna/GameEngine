@@ -16,12 +16,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The InputHandlingSystem processes keyboard and mouse input for interactive entities.
+ * It maps keyboard and mouse button presses to actions and counteractions defined in
+ * the entities' InteractiveComponent.
+ */
 public class InputHandlingSystem extends GameSystem {
+
+    /**
+     * Starts the input handling system, setting it as active.
+     */
     @Override
     public void start() {
         this.active = true;
     }
 
+    /**
+     * Updates the input handling system. It processes all entities with an
+     * InteractiveComponent to check and handle user input.
+     */
     @Override
     public void update() {
         var entitiesSnapshot = EntityHub.getInstance().getEntitiesWithComponent(InteractiveComponent.class);
@@ -35,6 +48,12 @@ public class InputHandlingSystem extends GameSystem {
         }
     }
 
+    /**
+     * Processes input for a given entity. This involves handling both keyboard and
+     * mouse inputs through their respective handlers.
+     *
+     * @param entity The entity whose input needs to be processed.
+     */
     private void processEntity(Entity entity) {
         if (entity == null) return;
         PositionComponent position = entity.getComponent(PositionComponent.class);
@@ -47,6 +66,13 @@ public class InputHandlingSystem extends GameSystem {
         }
     }
 
+    /**
+     * Handles keyboard input for a given entity. It processes key press and release events
+     * and executes the corresponding actions or counteractions as defined in the entity's
+     * InteractiveComponent.
+     *
+     * @param interactive The InteractiveComponent containing the key mappings and actions.
+     */
     private void handleKeyboardInput(InteractiveComponent interactive) {
         KeyboardInputHandler keyboardInputHandler = KeyboardInputHandler.getInstance();
         List<Map.Entry<KeyCode, Tuple<Runnable, Runnable>>> snapshot = new ArrayList<>(interactive.getKeyInputMapping().entrySet());
@@ -67,12 +93,19 @@ public class InputHandlingSystem extends GameSystem {
                 counterAction.run();
             }
         }
-
     }
 
+    /**
+     * Handles mouse input for a given entity. It processes mouse button press and release events
+     * and invokes the corresponding actions or counteractions defined in the entity's
+     * InteractiveComponent.
+     *
+     * @param interactive The InteractiveComponent containing the mouse button mappings and actions.
+     */
     private void handleMouseInput(InteractiveComponent interactive) {
         MouseInputHandler mouseInputHandler = MouseInputHandler.getInstance();
         Map<Tuple<KeyCode, MouseButton>, Tuple<Long, Long>> lastTimeCalled = interactive.getLastTimeCalled();
+
         for (Map.Entry<MouseButton, Tuple<Runnable, Runnable>> entry : interactive.getMouseInputMapping().entrySet()) {
             MouseButton mouseButton = entry.getKey();
             Runnable action = entry.getValue().first();

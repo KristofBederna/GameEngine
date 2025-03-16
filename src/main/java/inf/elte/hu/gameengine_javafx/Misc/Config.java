@@ -11,4 +11,5 @@ public class Config {
     public static int loadDistance = 2;
     public static double drag = 0.001;
     public static double friction = 0.001;
+    public static boolean renderDebugMode = false;
 }

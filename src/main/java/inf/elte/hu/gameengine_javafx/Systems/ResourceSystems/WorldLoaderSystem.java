@@ -32,19 +32,29 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * The WorldLoaderSystem is responsible for loading the world map data from a file and managing tile entities in the game world.
+ * It handles the initial map data loading, the chunk-based map division, and dynamically loads and unloads tiles based on the camera's viewport.
+ */
 public class WorldLoaderSystem extends GameSystem {
+
+    /**
+     * Starts the system, loading the world map data from the file and dividing the map into chunks.
+     * This method also initializes the tile entities for the map.
+     */
     @Override
     public void start() {
         this.active = true;
         ArrayList<ArrayList<Integer>> data = new ArrayList<>();
         int width, height;
 
-
+        // Get the instance of the world entity
         WorldEntity map = WorldEntity.getInstance();
-
         if (map == null) {
             return;
         }
+
+        // Read map data from file
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(MapSaver.class.getResourceAsStream(map.getComponent(FilePathComponent.class).getFilePath()))))) {
             String line;
             String[] dimensions = reader.readLine().split(" ");
@@ -62,6 +72,7 @@ public class WorldLoaderSystem extends GameSystem {
             throw new RuntimeException("Error reading file", e);
         }
 
+        // Divide map into chunks
         int chunkWidth = Math.floorDiv(width, Config.chunkWidth);
         int chunkHeight = Math.floorDiv(height, Config.chunkHeight);
         for (int i = 0; i < chunkWidth; i++) {
@@ -79,6 +90,7 @@ public class WorldLoaderSystem extends GameSystem {
                             name = String.valueOf(value);
                         }
                         if (value == 9) {
+                            // Special tile handling
                             tile = new TileEntity(value, x * Config.tileSize, y * Config.tileSize, "/assets/tiles/" + name + ".png", Config.tileSize, Config.tileSize);
                             meshRow.add(new Point(tile.getComponent(CentralMassComponent.class).getCentralX(), tile.getComponent(CentralMassComponent.class).getCentralY()));
                         } else {
@@ -95,21 +107,26 @@ public class WorldLoaderSystem extends GameSystem {
         }
     }
 
+    /**
+     * Updates the world by dynamically loading and unloading tiles based on the camera's position and viewport.
+     * Tiles outside the camera's view are unloaded, while new tiles inside the viewport are loaded.
+     */
     @Override
     public void update() {
         CameraEntity camera = CameraEntity.getInstance();
         WorldEntity map = WorldEntity.getInstance();
-        if (map == null) return;
-        if (camera == null) return;
+        if (map == null || camera == null) return;
 
         double camX = camera.getComponent(PositionComponent.class).getGlobalX();
         double camY = camera.getComponent(PositionComponent.class).getGlobalY();
         double camWidth = camera.getComponent(DimensionComponent.class).getWidth();
         double camHeight = camera.getComponent(DimensionComponent.class).getHeight();
 
+        // Get the tile manager to manage the loaded tiles
         EntityManager<TileEntity> tileManager = EntityHub.getInstance().getEntityManager(TileEntity.class);
         List<TileEntity> toRemove = new ArrayList<>();
 
+        // Unload tiles that are outside of the camera's viewport
         for (TileEntity tile : tileManager.getEntities().values()) {
             double tileX = tile.getComponent(PositionComponent.class).getGlobalX();
             double tileY = tile.getComponent(PositionComponent.class).getGlobalY();
@@ -119,13 +136,18 @@ public class WorldLoaderSystem extends GameSystem {
             }
         }
 
+        // Remove the tiles that are outside of the camera's viewport
         for (TileEntity tile : toRemove) {
             tileManager.unload(tile.getId());
         }
 
+        // Get the world data from the map
         World worldData = map.getComponent(WorldDataComponent.class).getMapData();
-        Set<String> existingTiles = tileManager.getEntities().values().stream().map(t -> t.getComponent(PositionComponent.class).getGlobalX() + "," + t.getComponent(PositionComponent.class).getGlobalY()).collect(Collectors.toSet());
+        Set<String> existingTiles = tileManager.getEntities().values().stream()
+                .map(t -> t.getComponent(PositionComponent.class).getGlobalX() + "," + t.getComponent(PositionComponent.class).getGlobalY())
+                .collect(Collectors.toSet());
 
+        // Load tiles that are inside the camera's viewport
         for (Chunk row : worldData.getWorld().values()) {
             for (List<TileEntity> tiles : row.getChunk()) {
                 for (TileEntity tileEntity : tiles) {

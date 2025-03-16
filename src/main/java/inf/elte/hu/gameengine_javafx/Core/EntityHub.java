@@ -113,7 +113,6 @@ public class EntityHub {
     /**
      * Refreshes the list of entities by retrieving entities from all entity managers.
      */
-    @SuppressWarnings("unchecked")
     public void refreshEntitiesList() {
         synchronized (entities) {
             entities.clear();

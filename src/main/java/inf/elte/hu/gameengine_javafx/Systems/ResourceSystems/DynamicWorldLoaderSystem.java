@@ -18,15 +18,28 @@ import inf.elte.hu.gameengine_javafx.Misc.Tuple;
 
 import java.util.*;
 
+/**
+ * The DynamicWorldLoaderSystem is responsible for dynamically loading and unloading chunks of the world
+ * based on the player's position in the game world.
+ */
 public class DynamicWorldLoaderSystem extends GameSystem {
     private int width;
     private int height;
 
+    /**
+     * Constructor to initialize the system with the specified world dimensions.
+     *
+     * @param width The width of the world in chunks.
+     * @param height The height of the world in chunks.
+     */
     public DynamicWorldLoaderSystem(int width, int height) {
         this.width = width;
         this.height = height;
     }
 
+    /**
+     * Starts the world loading process by loading the full world initially.
+     */
     @Override
     public void start() {
         this.active = true;
@@ -35,21 +48,30 @@ public class DynamicWorldLoaderSystem extends GameSystem {
         loadFullWorld();
     }
 
+    /**
+     * Updates the system by checking the player's position and loading/unloading chunks accordingly.
+     */
     @Override
     public void update() {
         CameraEntity camera = CameraEntity.getInstance();
         WorldEntity map = WorldEntity.getInstance();
         if (map == null || camera == null) return;
+
         double camX = camera.getComponent(PositionComponent.class).getGlobalX();
         double camY = camera.getComponent(PositionComponent.class).getGlobalY();
         double camWidth = camera.getComponent(DimensionComponent.class).getWidth();
         double camHeight = camera.getComponent(DimensionComponent.class).getHeight();
+
         int playerChunkX = Math.floorDiv((int) (camX + camWidth / 2), Config.chunkWidth * Config.tileSize);
         int playerChunkY = Math.floorDiv((int) (camY + camHeight / 2), Config.chunkHeight * Config.tileSize);
+
         loadSurroundingChunks(playerChunkX, playerChunkY);
         unloadFarChunks(playerChunkX, playerChunkY);
     }
 
+    /**
+     * Loads the entire world initially, chunk by chunk.
+     */
     private void loadFullWorld() {
         for (int cx = 0; cx < width; cx++) {
             for (int cy = 0; cy < height; cy++) {
@@ -58,6 +80,12 @@ public class DynamicWorldLoaderSystem extends GameSystem {
         }
     }
 
+    /**
+     * Loads the chunks surrounding the player based on the player's chunk coordinates.
+     *
+     * @param playerChunkX The player's current chunk X coordinate.
+     * @param playerChunkY The player's current chunk Y coordinate.
+     */
     private void loadSurroundingChunks(int playerChunkX, int playerChunkY) {
         Set<Tuple<Integer, Integer>> loadedChunks = WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getWorld().keySet();
         for (int dx = -Config.loadDistance; dx <= Config.loadDistance; dx++) {
@@ -74,6 +102,12 @@ public class DynamicWorldLoaderSystem extends GameSystem {
         }
     }
 
+    /**
+     * Unloads chunks that are too far away from the player and stores them in the saved chunks map.
+     *
+     * @param playerChunkX The player's current chunk X coordinate.
+     * @param playerChunkY The player's current chunk Y coordinate.
+     */
     private void unloadFarChunks(int playerChunkX, int playerChunkY) {
         Iterator<Map.Entry<Tuple<Integer, Integer>, Chunk>> iterator = WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getWorld().entrySet().iterator();
         while (iterator.hasNext()) {
@@ -87,6 +121,12 @@ public class DynamicWorldLoaderSystem extends GameSystem {
         }
     }
 
+    /**
+     * Loads a chunk from saved data or generates it if it doesn't exist yet.
+     *
+     * @param chunkX The X coordinate of the chunk to load or generate.
+     * @param chunkY The Y coordinate of the chunk to load or generate.
+     */
     private void loadOrGenerateChunk(int chunkX, int chunkY) {
         Tuple<Integer, Integer> chunkKey = new Tuple<>(chunkX, chunkY);
 
@@ -101,6 +141,9 @@ public class DynamicWorldLoaderSystem extends GameSystem {
         addWorldMesh();
     }
 
+    /**
+     * Adds a mesh for the world, creating a list of points for all tiles in the world.
+     */
     private void addWorldMesh() {
         WorldEntity map = WorldEntity.getInstance();
         if (map == null) return;
@@ -119,6 +162,13 @@ public class DynamicWorldLoaderSystem extends GameSystem {
         });
     }
 
+    /**
+     * Adds boundary walls to a chunk, determining wall types based on chunk and tile positions.
+     *
+     * @param chunk The chunk to which boundary walls should be added.
+     * @param chunkX The X coordinate of the chunk.
+     * @param chunkY The Y coordinate of the chunk.
+     */
     private void addBoundaryWalls(Chunk chunk, int chunkX, int chunkY) {
         for (int x = 0; x < Config.chunkWidth; x++) {
             for (int y = 0; y < Config.chunkHeight; y++) {
