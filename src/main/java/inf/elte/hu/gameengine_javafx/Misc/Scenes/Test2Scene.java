@@ -4,7 +4,7 @@ import inf.elte.hu.gameengine_javafx.Components.InteractiveComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PlayerComponent;
 import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.StateComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
+import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.VelocityComponent;
 import inf.elte.hu.gameengine_javafx.Components.SoundEffectStoreComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;

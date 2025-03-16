@@ -1,4 +1,4 @@
-package inf.elte.hu.gameengine_javafx.Components.PropertyComponents;
+package inf.elte.hu.gameengine_javafx.Components.PhysicsComponents;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Maths.Vector;

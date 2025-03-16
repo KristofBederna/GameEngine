@@ -8,7 +8,7 @@ import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.MassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
+import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.VelocityComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
