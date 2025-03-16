@@ -11,6 +11,7 @@ import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Entities.*;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
+import inf.elte.hu.gameengine_javafx.Maths.Vector;
 import inf.elte.hu.gameengine_javafx.Misc.Config;
 import inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventManager;
 import inf.elte.hu.gameengine_javafx.Misc.EventHandling.Events.TestEvent;
@@ -111,7 +112,7 @@ public class TestScene extends GameScene{
 
     private void entitySetup() {
         new PlayerEntity(420, 120, "idle", "/assets/images/PlayerIdle.png", 0.8* Config.tileSize, 0.8* Config.tileSize);
-        new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 0.8* Config.tileSize, 0.8* Config.tileSize);
+        new DummyEntity(120, 120, "idle", "/assets/images/PlayerIdle.png", 0.8* Config.tileSize, 0.8* Config.tileSize);
 //        new ParticleEmitterEntity(400, 400, new ParticleEntity(0, 0, 2, 2, new Rectangle(new Point(0, 0), 2, 2), Color.ORANGE, 300), Direction.RIGHT, 50, 100);
 //        new ParticleEmitterEntity(5*Globals.tileSize, 500, new ParticleEntity(0, 0, 20, 20, "/assets/images/snowflake.png", 1000), Direction.ALL, 200, 2500);
         new LightingEntity(250, 250, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
@@ -152,7 +153,7 @@ public class TestScene extends GameScene{
             Random random = new Random();
             Point target = null;
             while (target == null) {
-                target = WorldEntity.getInstance().getComponent(MapMeshComponent.class).getMapCoordinates().get(random.nextInt(8)).get(random.nextInt(16));
+                target = WorldEntity.getInstance().getComponent(MapMeshComponent.class).getMapCoordinates().get(random.nextInt(16)).get(random.nextInt(16));
             }
             PathfindingComponent pathfinding = entity2.getComponent(PathfindingComponent.class);
             if (pathfinding != null && pathfinding.getEnd() != null) {

@@ -25,7 +25,7 @@ public class InputHandlingSystem extends GameSystem {
 
     @Override
     public void update() {
-        var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getAllEntities());
+        var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getEntitiesWithComponent(InteractiveComponent.class));
         if (entitiesSnapshot.isEmpty()) {
             return;
         }

@@ -21,7 +21,10 @@ public class AnimationSystem extends GameSystem {
 
     @Override
     public void update() {
-        var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getAllEntities());
+        var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getEntitiesWithComponent(AnimationStateMachineComponent.class));
+        entitiesSnapshot.retainAll(EntityHub.getInstance().getEntitiesWithComponent(PositionComponent.class));
+        entitiesSnapshot.retainAll(EntityHub.getInstance().getEntitiesWithComponent(ImageComponent.class));
+
         if (entitiesSnapshot.isEmpty()) {
             return;
         }

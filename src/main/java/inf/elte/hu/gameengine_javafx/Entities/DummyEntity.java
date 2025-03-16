@@ -2,6 +2,7 @@ package inf.elte.hu.gameengine_javafx.Entities;
 
 import inf.elte.hu.gameengine_javafx.Components.*;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.AccelerationComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.*;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.AnimationComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
@@ -26,6 +27,7 @@ public class DummyEntity extends Entity {
         this.addComponent(new ImageComponent(path, width, height));
         this.addComponent(new InteractiveComponent());
         this.addComponent(new DimensionComponent(width, height));
+        this.addComponent(new AccelerationComponent());
         this.addComponent(new HitBoxComponent(new Rectangle(new Point(x, y), width, height).getPoints()));
         this.addComponent(new SoundEffectStoreComponent());
         this.addComponent(new ZIndexComponent(2));

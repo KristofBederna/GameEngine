@@ -29,9 +29,10 @@ public class MovementSystem extends GameSystem {
 
     @Override
     public void update() {
-        var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getEntitiesWithComponent(VelocityComponent.class));
+        var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getEntitiesInsideViewport(CameraEntity.getInstance()));
         entitiesSnapshot.retainAll(EntityHub.getInstance().getEntitiesWithComponent(PositionComponent.class));
-        entitiesSnapshot.retainAll(EntityHub.getInstance().getEntitiesInsideViewport(CameraEntity.getInstance()));
+        entitiesSnapshot.retainAll(EntityHub.getInstance().getEntitiesWithComponent(VelocityComponent.class));
+
         if (entitiesSnapshot.isEmpty()) {
             return;
         }
