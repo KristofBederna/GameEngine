@@ -2,7 +2,7 @@ package inf.elte.hu.gameengine_javafx.Entities;
 
 import inf.elte.hu.gameengine_javafx.Components.MaxDistanceFromOriginComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ColorComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
@@ -15,7 +15,7 @@ import javafx.scene.paint.Color;
 
 public class ParticleEntity extends Entity {
     public ParticleEntity(double x, double y, double width, double height, Shape shape, Color color, double maxDistance) {
-        addComponent(new PositionComponent(x, y, this));
+        this.getComponent(PositionComponent.class).setLocalPosition(x, y, this);
         addComponent(new VelocityComponent());
         addComponent(new DimensionComponent(width, height));
         addComponent(new ShapeComponent<>(shape));
@@ -27,7 +27,7 @@ public class ParticleEntity extends Entity {
     }
 
     public ParticleEntity(double x, double y, double width, double height, String imagePath, double maxDistance) {
-        addComponent(new PositionComponent(x, y, this));
+        this.getComponent(PositionComponent.class).setLocalPosition(x, y, this);
         addComponent(new VelocityComponent());
         addComponent(new DimensionComponent(width, height));
         addComponent(new ImageComponent(imagePath, width, height));

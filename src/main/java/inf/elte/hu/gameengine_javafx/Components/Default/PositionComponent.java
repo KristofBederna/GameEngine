@@ -1,6 +1,5 @@
-package inf.elte.hu.gameengine_javafx.Components.PropertyComponents;
+package inf.elte.hu.gameengine_javafx.Components.Default;
 
-import inf.elte.hu.gameengine_javafx.Components.ParentComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
@@ -12,6 +11,12 @@ public class PositionComponent extends Component {
     public PositionComponent(double localX, double localY, Entity entity) {
         this.local = new Point(localX, localY);
         this.global = new Point(localX, localY);
+        updateGlobalPosition(entity);
+    }
+
+    public PositionComponent(Entity entity) {
+        this.local = new Point(0.0, 0.0);
+        this.global = new Point(0.0, 0.0);
         updateGlobalPosition(entity);
     }
 

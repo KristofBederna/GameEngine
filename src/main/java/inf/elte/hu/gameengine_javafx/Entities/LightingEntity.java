@@ -4,7 +4,7 @@ import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.LightHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.LightComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
 import inf.elte.hu.gameengine_javafx.Components.RadiusComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ColorComponent;
@@ -25,7 +25,7 @@ public class LightingEntity extends Entity {
         addComponent(new LightComponent(type, intensity));
         addComponent(new ColorComponent(color));
         addComponent(new RadiusComponent(radius));
-        addComponent(new PositionComponent(x, y, this));
+        this.getComponent(PositionComponent.class).setLocalPosition(x, y, this);
         addComponent(new VelocityComponent());
         addComponent(new LightHitBoxComponent(new ArrayList<>()));
 

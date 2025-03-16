@@ -4,7 +4,7 @@ import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent
 import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.FrictionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ZIndexComponent;
 import inf.elte.hu.gameengine_javafx.Components.TileValueComponent;
@@ -16,7 +16,7 @@ public class TileEntity extends Entity {
     public TileEntity(int value, double x, double y, String path, double width, double height) {
         this.addComponent(new TileValueComponent(value));
         this.addComponent(new ImageComponent(path, width, height));
-        this.addComponent(new PositionComponent(x, y, this));
+        this.getComponent(PositionComponent.class).setLocalPosition(x, y, this);
         this.addComponent(new ZIndexComponent(0));
         this.addComponent(new DimensionComponent(width, height));
         this.addComponent(new CentralMassComponent(x + width / 2, y + height / 2));
@@ -28,7 +28,7 @@ public class TileEntity extends Entity {
     public TileEntity(int value, double x, double y, String path, double width, double height, boolean hasHitBox) {
         this.addComponent(new TileValueComponent(value));
         this.addComponent(new ImageComponent(path, width, height));
-        this.addComponent(new PositionComponent(x, y, this));
+        this.getComponent(PositionComponent.class).setLocalPosition(x, y, this);
         this.addComponent(new ZIndexComponent(0));
         this.addComponent(new DimensionComponent(width, height));
         this.addComponent(new CentralMassComponent(x + width / 2, y + height / 2));
@@ -43,7 +43,7 @@ public class TileEntity extends Entity {
     public TileEntity(int value, double x, double y, String path) {
         this.addComponent(new TileValueComponent(value));
         this.addComponent(new ImageComponent(path));
-        this.addComponent(new PositionComponent(x, y, this));
+        this.getComponent(PositionComponent.class).setLocalPosition(x, y, this);
         this.addComponent(new ZIndexComponent(0));
 
         addToManager();

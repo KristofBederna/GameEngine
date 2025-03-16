@@ -1,8 +1,8 @@
 package inf.elte.hu.gameengine_javafx.Entities;
 
-import inf.elte.hu.gameengine_javafx.Components.ParentComponent;
+import inf.elte.hu.gameengine_javafx.Components.Default.ParentComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 
@@ -11,7 +11,7 @@ public class CameraEntity extends Entity {
 
     private CameraEntity(double width, double height, double worldWidth, double worldHeight) {
         this.addComponent(new DimensionComponent(width, height));
-        this.addComponent(new PositionComponent(0, 0, this));
+        this.getComponent(PositionComponent.class).setLocalPosition(0, 0, this);
         this.addComponent(new WorldDimensionComponent(worldWidth, worldHeight));
 
         addToManager();
@@ -19,7 +19,7 @@ public class CameraEntity extends Entity {
 
     private CameraEntity(double width, double height) {
         this.addComponent(new DimensionComponent(width, height));
-        this.addComponent(new PositionComponent(0, 0, this));
+        this.getComponent(PositionComponent.class).setLocalPosition(0, 0, this);
 
         addToManager();
     }

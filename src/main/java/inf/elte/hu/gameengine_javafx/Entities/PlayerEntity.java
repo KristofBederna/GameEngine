@@ -1,5 +1,6 @@
 package inf.elte.hu.gameengine_javafx.Entities;
 
+import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.InteractiveComponent;
 import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.AccelerationComponent;
@@ -23,7 +24,7 @@ import java.util.Objects;
 
 public class PlayerEntity extends Entity {
     public PlayerEntity(double x, double y, String state, String path, double width, double height) {
-        this.addComponent(new PositionComponent(x, y, this));
+        this.getComponent(PositionComponent.class).setLocalPosition(x, y, this);
         this.addComponent(new VelocityComponent(12));
         this.addComponent(new AccelerationComponent());
         this.addComponent(new DragComponent(0.98));

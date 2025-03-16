@@ -1,6 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Core.Architecture;
 
-import inf.elte.hu.gameengine_javafx.Components.ParentComponent;
+import inf.elte.hu.gameengine_javafx.Components.Default.ParentComponent;
+import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 
@@ -24,6 +25,7 @@ public abstract class Entity {
     public Entity() {
         this.id = ++nextId;
         this.addComponent(new ParentComponent());
+        this.addComponent(new PositionComponent(this));
     }
 
     /**
