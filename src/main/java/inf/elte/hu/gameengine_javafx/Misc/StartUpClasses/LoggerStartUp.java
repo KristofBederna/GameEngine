@@ -6,6 +6,7 @@ import inf.elte.hu.gameengine_javafx.Entities.LoggerEntity;
 
 public class LoggerStartUp {
     LoggerEntity loggerEntity = new LoggerEntity();
+
     public LoggerStartUp() {
         EntityManager<LoggerEntity> loggerEntityManager = new EntityManager<>();
         loggerEntityManager.register(loggerEntity);

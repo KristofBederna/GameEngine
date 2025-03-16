@@ -3,6 +3,7 @@ package inf.elte.hu.gameengine_javafx.Components.HitBoxComponents;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.ComplexShape;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
+
 import java.util.List;
 
 public class HitBoxComponent extends Component {

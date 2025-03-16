@@ -13,6 +13,7 @@ public class DirectionComponent extends Component {
     public Direction getDirection() {
         return direction;
     }
+
     public void setDirection(Direction direction) {
         this.direction = direction;
     }

@@ -14,6 +14,7 @@ public class MaxDistanceFromOriginComponent extends Component {
     public double getMaxDistance() {
         return maxDistance;
     }
+
     public void setMaxDistance(double maxDistance) {
         this.maxDistance = maxDistance;
     }

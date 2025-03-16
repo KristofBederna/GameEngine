@@ -1,8 +1,8 @@
 package inf.elte.hu.gameengine_javafx.Systems.RenderingSystems;
 
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DirectionComponent;
 import inf.elte.hu.gameengine_javafx.Components.MaxDistanceFromOriginComponent;
 import inf.elte.hu.gameengine_javafx.Components.ParentComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DirectionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
 import inf.elte.hu.gameengine_javafx.Components.TimeComponent;
@@ -36,7 +36,7 @@ public class ParticleSystem extends GameSystem {
             }
 
             if (System.currentTimeMillis() >= entity.getComponent(TimeComponent.class).getLastOccurrence() + entity.getComponent(TimeComponent.class).getTimeBetweenOccurrences()) {
-                ((ParticleEmitterEntity)entity).createParticles((ParticleEntity)parent.getChildren().iterator().next(),250, entity.getComponent(ParentComponent.class));
+                ((ParticleEmitterEntity) entity).createParticles((ParticleEntity) parent.getChildren().iterator().next(), 250, entity.getComponent(ParentComponent.class));
                 entity.getComponent(TimeComponent.class).setLastOccurrence();
             }
 

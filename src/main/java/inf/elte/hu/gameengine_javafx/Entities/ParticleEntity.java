@@ -1,7 +1,6 @@
 package inf.elte.hu.gameengine_javafx.Entities;
 
 import inf.elte.hu.gameengine_javafx.Components.MaxDistanceFromOriginComponent;
-import inf.elte.hu.gameengine_javafx.Components.ParentComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
@@ -11,9 +10,7 @@ import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ZIndexCompon
 import inf.elte.hu.gameengine_javafx.Components.ShapeComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.*;
-import inf.elte.hu.gameengine_javafx.Misc.Time;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class ParticleEntity extends Entity {
@@ -23,18 +20,17 @@ public class ParticleEntity extends Entity {
         addComponent(new DimensionComponent(width, height));
         addComponent(new ShapeComponent<>(shape));
         addComponent(new ColorComponent(color));
-        addComponent(new ParentComponent());
         addComponent(new ZIndexComponent(3));
         addComponent(new MaxDistanceFromOriginComponent(maxDistance));
 
         addToManager();
     }
+
     public ParticleEntity(double x, double y, double width, double height, String imagePath, double maxDistance) {
         addComponent(new PositionComponent(x, y, this));
         addComponent(new VelocityComponent());
         addComponent(new DimensionComponent(width, height));
         addComponent(new ImageComponent(imagePath, width, height));
-        addComponent(new ParentComponent());
         addComponent(new ZIndexComponent(3));
         addComponent(new MaxDistanceFromOriginComponent(maxDistance));
 
@@ -49,15 +45,15 @@ public class ParticleEntity extends Entity {
         if (shapeComponent != null) {
             Shape shape = shapeComponent.getShape();
             if (shape instanceof Rectangle) {
-                ((Rectangle)shape).renderFill(gc, getComponent(ColorComponent.class).getColor());
+                ((Rectangle) shape).renderFill(gc, getComponent(ColorComponent.class).getColor());
             } else if (shape instanceof ComplexShape) {
-                ((ComplexShape)shape).renderFill(gc, getComponent(ColorComponent.class).getColor());
+                ((ComplexShape) shape).renderFill(gc, getComponent(ColorComponent.class).getColor());
             } else if (shape instanceof Line) {
-                ((Line)shape).render(gc, getComponent(ColorComponent.class).getColor(), 5);
+                ((Line) shape).render(gc, getComponent(ColorComponent.class).getColor(), 5);
             } else if (shape instanceof NSidedShape) {
-                ((NSidedShape)shape).renderFill(gc, getComponent(ColorComponent.class).getColor());
+                ((NSidedShape) shape).renderFill(gc, getComponent(ColorComponent.class).getColor());
             } else if (shape instanceof Triangle) {
-                ((Triangle)shape).renderFill(gc, getComponent(ColorComponent.class).getColor());
+                ((Triangle) shape).renderFill(gc, getComponent(ColorComponent.class).getColor());
             }
         }
     }
@@ -72,15 +68,15 @@ public class ParticleEntity extends Entity {
         double y = positionComponent.getGlobalY();
 
         if (shape instanceof Rectangle) {
-            ((Rectangle)shape).moveTo(new Point(x, y));
+            ((Rectangle) shape).moveTo(new Point(x, y));
         } else if (shape instanceof ComplexShape) {
-            ((ComplexShape)shape).moveTo(new Point(x, y));
+            ((ComplexShape) shape).moveTo(new Point(x, y));
         } else if (shape instanceof Line) {
-            ((Line)shape).moveTo(new Point(x, y));
+            ((Line) shape).moveTo(new Point(x, y));
         } else if (shape instanceof NSidedShape) {
-            ((NSidedShape)shape).moveTo(new Point(x, y));
+            ((NSidedShape) shape).moveTo(new Point(x, y));
         } else if (shape instanceof Triangle) {
-            ((Triangle)shape).moveTo(new Point(x, y));
+            ((Triangle) shape).moveTo(new Point(x, y));
         }
     }
 

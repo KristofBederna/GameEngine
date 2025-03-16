@@ -35,16 +35,16 @@ public class GeneratorTestScene extends GameScene {
     }
 
     private void cameraSetup() {
-        CameraEntity.getInstance(1920,1080);
+        CameraEntity.getInstance(1920, 1080);
         CameraEntity.getInstance().attachTo(EntityHub.getInstance().getEntitiesWithComponent(PlayerComponent.class).getFirst());
     }
 
     private void entitySetup() {
-        new PlayerEntity(220, 220, "idle", "/assets/images/PlayerIdle.png", 0.8* Config.tileSize, 0.8* Config.tileSize);
+        new PlayerEntity(220, 220, "idle", "/assets/images/PlayerIdle.png", 0.8 * Config.tileSize, 0.8 * Config.tileSize);
     }
 
     private void interactionSetup() {
-        PlayerEntity player = (PlayerEntity)EntityHub.getInstance().getEntitiesWithComponent(PlayerComponent.class).getFirst();
+        PlayerEntity player = (PlayerEntity) EntityHub.getInstance().getEntitiesWithComponent(PlayerComponent.class).getFirst();
         InteractiveComponent playerInteractiveComponent = player.getComponent(InteractiveComponent.class);
         playerInteractiveComponent.mapInput(KeyCode.UP, 10, () -> moveUp(player), () -> counterVertical(player));
         playerInteractiveComponent.mapInput(KeyCode.DOWN, 10, () -> moveDown(player), () -> counterVertical(player));

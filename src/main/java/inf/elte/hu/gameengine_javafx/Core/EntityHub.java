@@ -1,13 +1,16 @@
 package inf.elte.hu.gameengine_javafx.Core;
 
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
-import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The {@code EntityHub} class is a singleton responsible for managing entities and their associated
@@ -45,9 +48,9 @@ public class EntityHub {
     /**
      * Adds an entity manager to the hub for managing entities of a specific type.
      *
-     * @param type the type of entities managed by the entity manager
+     * @param type          the type of entities managed by the entity manager
      * @param entityManager the entity manager to be added
-     * @param <T> the type of entities managed by the entity manager
+     * @param <T>           the type of entities managed by the entity manager
      */
     public <T extends Entity> void addEntityManager(Class<T> type, EntityManager<T> entityManager) {
         entityManagers.put(type, entityManager);
@@ -58,7 +61,7 @@ public class EntityHub {
      * Retrieves the entity manager for a specific entity type.
      *
      * @param type the type of entities managed by the entity manager
-     * @param <T> the type of entities managed by the entity manager
+     * @param <T>  the type of entities managed by the entity manager
      * @return the entity manager for the specified type, or {@code null} if not found
      */
     @SuppressWarnings("unchecked")

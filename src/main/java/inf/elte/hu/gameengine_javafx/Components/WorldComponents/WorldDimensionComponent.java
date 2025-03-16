@@ -13,6 +13,7 @@ public class WorldDimensionComponent extends Component {
     public double getWorldWidth() {
         return worldWidth;
     }
+
     public double getWorldHeight() {
         return worldHeight;
     }
@@ -20,6 +21,7 @@ public class WorldDimensionComponent extends Component {
     public void setWorldWidth(double worldWidth) {
         this.worldWidth = worldWidth;
     }
+
     public void setWorldHeight(double worldHeight) {
         this.worldHeight = worldHeight;
     }

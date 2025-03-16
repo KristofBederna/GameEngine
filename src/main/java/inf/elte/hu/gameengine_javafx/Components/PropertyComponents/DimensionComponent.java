@@ -14,6 +14,7 @@ public class DimensionComponent extends Component {
     public double getWidth() {
         return width;
     }
+
     public double getHeight() {
         return height;
     }
@@ -21,6 +22,7 @@ public class DimensionComponent extends Component {
     public void setWidth(double width) {
         this.width = width;
     }
+
     public void setHeight(double height) {
         this.height = height;
     }

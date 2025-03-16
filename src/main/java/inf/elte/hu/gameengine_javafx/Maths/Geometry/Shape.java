@@ -1,12 +1,9 @@
 package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
-import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Misc.Config;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Shape {
@@ -93,10 +90,21 @@ public class Shape {
         return null;
     }
 
-    public void updateEdges() {}
-    public void render(GraphicsContext gc, Color color) {}
-    public void renderFill(GraphicsContext gc, Color color) {}
-    public void renderFillWithStroke(GraphicsContext gc, Color color, double outerStrokeWidth) {}
-    public void moveTo(Point newPoint) {}
-    public void translate(double x, double y) {}
+    public void updateEdges() {
+    }
+
+    public void render(GraphicsContext gc, Color color) {
+    }
+
+    public void renderFill(GraphicsContext gc, Color color) {
+    }
+
+    public void renderFillWithStroke(GraphicsContext gc, Color color, double outerStrokeWidth) {
+    }
+
+    public void moveTo(Point newPoint) {
+    }
+
+    public void translate(double x, double y) {
+    }
 }

@@ -6,8 +6,6 @@ import inf.elte.hu.gameengine_javafx.Components.WorldComponents.TileSetComponent
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
-import inf.elte.hu.gameengine_javafx.Core.EntityHub;
-import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 
 public class WorldEntity extends Entity {
     private static WorldEntity instance;

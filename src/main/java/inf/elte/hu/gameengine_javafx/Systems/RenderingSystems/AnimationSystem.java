@@ -1,10 +1,10 @@
 package inf.elte.hu.gameengine_javafx.Systems.RenderingSystems;
 
 
-import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.AnimationStateMachineComponent;
-import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.AnimationComponent;
-import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
+import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.AnimationComponent;
+import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.AnimationStateMachineComponent;
+import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
@@ -34,8 +34,7 @@ public class AnimationSystem extends GameSystem {
             ImageComponent img = entity.getComponent(ImageComponent.class);
             if (entity.getClass() == DummyEntity.class) {
                 ((DummyEntity) entity).setAnimationState();
-            }
-            else if (entity.getClass() == PlayerEntity.class) {
+            } else if (entity.getClass() == PlayerEntity.class) {
                 entity.getComponent(AnimationStateMachineComponent.class).getAnimationStateMachine().setAnimationState();
             }
             AnimationComponent animation = entity.getComponent(AnimationComponent.class);

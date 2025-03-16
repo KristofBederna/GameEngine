@@ -12,6 +12,7 @@ public class ResourceStartUp {
         ResourceHub.getInstance();
         startUpResourceManagers();
     }
+
     public void startUpResourceManagers() {
         //Define resourceManagers here
         ResourceHub.getInstance().addResourceManager(Image.class, new ImageResourceManager());

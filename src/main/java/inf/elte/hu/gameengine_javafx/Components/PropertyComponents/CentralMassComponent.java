@@ -9,9 +9,11 @@ public class CentralMassComponent extends Component {
     public CentralMassComponent(double centralX, double centralY) {
         this.central = new Point(centralX, centralY);
     }
+
     public double getCentralX() {
         return central.getX();
     }
+
     public double getCentralY() {
         return central.getY();
     }
@@ -23,6 +25,7 @@ public class CentralMassComponent extends Component {
     public void setCentralY(double centralY) {
         this.central.setY(centralY);
     }
+
     @Override
     public String getStatus() {
         return "";

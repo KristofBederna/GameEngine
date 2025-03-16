@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class World {
-    Map<Tuple<Integer,Integer>, Chunk> chunks = new HashMap<>();
+    Map<Tuple<Integer, Integer>, Chunk> chunks = new HashMap<>();
     Map<Tuple<Integer, Integer>, Chunk> savedChunks = new HashMap<>();
 
 
@@ -36,7 +36,7 @@ public class World {
         return chunks.size();
     }
 
-    public Map<Tuple<Integer,Integer>, Chunk> getWorld() {
+    public Map<Tuple<Integer, Integer>, Chunk> getWorld() {
         return chunks;
     }
 

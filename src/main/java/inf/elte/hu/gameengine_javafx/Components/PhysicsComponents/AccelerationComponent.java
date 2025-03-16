@@ -11,12 +11,13 @@ public class AccelerationComponent extends Component {
     }
 
     public AccelerationComponent() {
-        acceleration = new Vector(0,0);
+        acceleration = new Vector(0, 0);
     }
 
     public Vector getAcceleration() {
         return acceleration;
     }
+
     public void setAcceleration(Vector acceleration) {
         this.acceleration = acceleration;
     }

@@ -11,14 +11,17 @@ import java.util.Objects;
 
 public class TileSetComponent extends Component {
     private TileLoader tileLoader;
+
     public TileSetComponent(String tileSetPath) {
         this.tileLoader = new TileLoader();
         loadSet(tileSetPath, tileLoader);
     }
+
     public TileSetComponent(String tileSetPath, String separator) {
         this.tileLoader = new TileLoader();
         loadSet(tileSetPath, tileLoader, separator);
     }
+
     public static void loadSet(String path, TileLoader tileLoader) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(MapSaver.class.getResourceAsStream(path))))) {
 
@@ -34,6 +37,7 @@ public class TileSetComponent extends Component {
             throw new RuntimeException(e);
         }
     }
+
     public static void loadSet(String path, TileLoader tileLoader, String separator) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(MapSaver.class.getResourceAsStream(path))))) {
 

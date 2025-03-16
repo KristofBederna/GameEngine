@@ -8,7 +8,6 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.KeyboardInputHandler;
 import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.MouseInputHandler;
-import inf.elte.hu.gameengine_javafx.Misc.Time;
 import inf.elte.hu.gameengine_javafx.Misc.Tuple;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;

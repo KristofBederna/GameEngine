@@ -35,9 +35,9 @@ public class ResourceHub {
     /**
      * Adds a {@code ResourceManager} to the {@code ResourceHub}.
      *
-     * @param classType the class type of the resource managed by the {@code ResourceManager}
+     * @param classType       the class type of the resource managed by the {@code ResourceManager}
      * @param resourceManager the {@code ResourceManager} instance to add
-     * @param <T> the type of resource managed by the {@code ResourceManager}
+     * @param <T>             the type of resource managed by the {@code ResourceManager}
      */
     public <T> void addResourceManager(Class<T> classType, ResourceManager<T> resourceManager) {
         resourceManagers.put(classType, resourceManager);
@@ -47,7 +47,7 @@ public class ResourceHub {
      * Retrieves the {@code ResourceManager} for a given resource type.
      *
      * @param classType the class type of the resource managed by the {@code ResourceManager}
-     * @param <T> the type of resource managed by the {@code ResourceManager}
+     * @param <T>       the type of resource managed by the {@code ResourceManager}
      * @return the {@code ResourceManager} for the specified resource type, or {@code null} if not found
      */
     @SuppressWarnings("unchecked")

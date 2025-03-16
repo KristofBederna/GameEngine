@@ -1,30 +1,27 @@
 package inf.elte.hu.gameengine_javafx.Systems.RenderingSystems;
 
-import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.*;
+import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.LightHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.LightComponent;
 import inf.elte.hu.gameengine_javafx.Components.PathfindingComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.RadiusComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ZIndexComponent;
-import inf.elte.hu.gameengine_javafx.Components.ShapeComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
+import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
 import inf.elte.hu.gameengine_javafx.Entities.*;
-import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.*;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
-import inf.elte.hu.gameengine_javafx.Misc.Time;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
@@ -92,8 +89,8 @@ public class RenderSystem extends GameSystem {
 
     private static void renderParticles(GraphicsContext gc) {
         for (Entity entity : EntityHub.getInstance().getEntitiesWithType(ParticleEntity.class)) {
-            ((ParticleEntity)entity).alignShapeWithEntity(entity);
-            ((ParticleEntity)entity).render(gc);
+            ((ParticleEntity) entity).alignShapeWithEntity(entity);
+            ((ParticleEntity) entity).render(gc);
         }
     }
 
@@ -105,7 +102,7 @@ public class RenderSystem extends GameSystem {
             if (imageManager == null) return;
             Image img = imageManager.get(imgComponent.getImagePath());
 
-            EntityManager<Entity> entityManager = (EntityManager<Entity>)EntityHub.getInstance().getEntityManager(entity.getClass());
+            EntityManager<Entity> entityManager = (EntityManager<Entity>) EntityHub.getInstance().getEntityManager(entity.getClass());
 
             if (entityManager == null) return;
 
@@ -142,7 +139,7 @@ public class RenderSystem extends GameSystem {
 
     private static void renderCurrentlyOccupiedTile() {
         TileEntity tile = WorldEntity.getInstance().getComponent(WorldDataComponent.class).getElement(EntityHub.getInstance().getEntitiesWithType(PlayerEntity.class).getFirst().getComponent(PositionComponent.class).getGlobal());
-        Rectangle rectangle = new Rectangle(tile.getComponent(PositionComponent.class).getGlobal(),tile.getComponent(DimensionComponent.class).getWidth(), tile.getComponent(DimensionComponent.class).getHeight());
+        Rectangle rectangle = new Rectangle(tile.getComponent(PositionComponent.class).getGlobal(), tile.getComponent(DimensionComponent.class).getWidth(), tile.getComponent(DimensionComponent.class).getHeight());
         rectangle.renderFill(GameCanvas.getInstance().getGraphicsContext2D(), Color.ORANGE);
     }
 
@@ -182,20 +179,20 @@ public class RenderSystem extends GameSystem {
 
     private void handleLighting(GraphicsContext gc) {
         List<Point> points = new ArrayList<>();
-        points.add(new Point(0,0));
+        points.add(new Point(0, 0));
         points.add(new Point(0, 1500));
         points.add(new Point(3000, 1500));
         points.add(new Point(3000, 0));
         ComplexShape darkness = new ComplexShape(points);
         for (Entity entity : EntityHub.getInstance().getEntitiesWithComponent(LightComponent.class)) {
             if (entity.getId() == EntityHub.getInstance().getEntitiesWithComponent(LightComponent.class).getFirst().getId()) {
-                ((LightingEntity)entity).matchPositionToEntity(EntityHub.getInstance().getEntitiesWithType(PlayerEntity.class).getFirst());
+                ((LightingEntity) entity).matchPositionToEntity(EntityHub.getInstance().getEntitiesWithType(PlayerEntity.class).getFirst());
             }
 
-            ((LightingEntity)entity).calculateCollisions();
+            ((LightingEntity) entity).calculateCollisions();
             //((LightingEntity)entity).renderRays(gc);
 
-            ComplexShape complexShape = ((LightingEntity)entity).createShapeFromRays();
+            ComplexShape complexShape = ((LightingEntity) entity).createShapeFromRays();
             double firstPos = complexShape.getPoints().getFirst().getX();
             darkness.getPoints().add(new Point(firstPos, 0));
             darkness.updateEdges();
@@ -204,7 +201,7 @@ public class RenderSystem extends GameSystem {
             darkness.updateEdges();
             darkness.getPoints().add(new Point(firstPos, 0));
             darkness.updateEdges();
-            complexShape.renderFill(gc, new Color(1,1,1,0.2));
+            complexShape.renderFill(gc, new Color(1, 1, 1, 0.2));
         }
         for (Edge edge : darkness.getEdges()) {
             new Line(edge.getBeginning(), edge.getEnd()).render(gc, Color.YELLOW, 3);
@@ -222,7 +219,7 @@ public class RenderSystem extends GameSystem {
                 double radius = entity.getComponent(RadiusComponent.class).getRadius();
                 LightHitBoxComponent hitBox = entity.getComponent(LightHitBoxComponent.class);
 
-                if (point.distanceTo(new Point(entityX, entityY)) <= radius-1) {
+                if (point.distanceTo(new Point(entityX, entityY)) <= radius - 1) {
                     if (!hitBox.getHitBox().getPoints().contains(point)) {
                         isLit = true;
                         toRemove.add(point);

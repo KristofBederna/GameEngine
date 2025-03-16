@@ -3,17 +3,14 @@ package inf.elte.hu.gameengine_javafx.Components.WorldComponents;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Misc.Config;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.Chunk;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.World;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class WorldDataComponent extends Component {
     private World world = new World();
 
-    public WorldDataComponent() {}
+    public WorldDataComponent() {
+    }
 
     public WorldDataComponent(World world) {
         this.world = world;

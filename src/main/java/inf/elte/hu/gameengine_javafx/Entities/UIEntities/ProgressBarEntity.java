@@ -1,4 +1,5 @@
 package inf.elte.hu.gameengine_javafx.Entities.UIEntities;
+
 import inf.elte.hu.gameengine_javafx.Components.UIComponents.ProgressBarComponent;
 
 public class ProgressBarEntity extends UIEntity<ProgressBarComponent> {

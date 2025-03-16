@@ -2,7 +2,6 @@ package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
-import inf.elte.hu.gameengine_javafx.Misc.Config;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -105,8 +104,8 @@ public class Triangle extends Shape {
         double renderCY = points.get(2).getY() - playerPos.getGlobalY();
 
         gc.setFill(color);
-        double[] xPoints = { renderAX, renderBX, renderCX };
-        double[] yPoints = { renderAY, renderBY, renderCY };
+        double[] xPoints = {renderAX, renderBX, renderCX};
+        double[] yPoints = {renderAY, renderBY, renderCY};
         gc.fillPolygon(xPoints, yPoints, 3);
 
         gc.setStroke(color);

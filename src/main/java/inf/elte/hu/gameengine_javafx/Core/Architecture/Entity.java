@@ -1,5 +1,6 @@
 package inf.elte.hu.gameengine_javafx.Core.Architecture;
 
+import inf.elte.hu.gameengine_javafx.Components.ParentComponent;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 
@@ -22,10 +23,12 @@ public abstract class Entity {
      */
     public Entity() {
         this.id = ++nextId;
+        this.addComponent(new ParentComponent());
     }
 
     /**
      * Puts a Component into the Entity's Component HashMap.
+     *
      * @param component
      * @param <T>
      */
@@ -35,8 +38,8 @@ public abstract class Entity {
 
     /**
      * @param componentType
-     * @return The Entity's Component associated with the Class in the parameter.
      * @param <T>
+     * @return The Entity's Component associated with the Class in the parameter.
      */
     public <T extends Component> T getComponent(Class<T> componentType) {
         return componentType.cast(components.get(componentType));
@@ -44,6 +47,7 @@ public abstract class Entity {
 
     /**
      * Removes the Entity's Component associated with the Class in the parameter.
+     *
      * @param componentType
      * @param <T>
      */
@@ -76,6 +80,7 @@ public abstract class Entity {
 
     /**
      * Adds this Entity to their respective Entity Manager.
+     *
      * @param <T>
      */
     @SuppressWarnings("unchecked")

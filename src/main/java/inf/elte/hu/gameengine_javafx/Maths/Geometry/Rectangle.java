@@ -14,7 +14,7 @@ public class Rectangle extends Shape {
     }
 
     public Rectangle(Point topLeft, double width, double height) {
-        this.points = List.of(topLeft, new Point(topLeft.getX()+width, topLeft.getY()), new Point(topLeft.getX()+width, topLeft.getY()+height), new Point(topLeft.getX(), topLeft.getY()+height));
+        this.points = List.of(topLeft, new Point(topLeft.getX() + width, topLeft.getY()), new Point(topLeft.getX() + width, topLeft.getY() + height), new Point(topLeft.getX(), topLeft.getY() + height));
         updateEdges();
     }
 
@@ -124,8 +124,8 @@ public class Rectangle extends Shape {
         double renderBottomLeftY = points.get(3).getY() - cameraY;
 
         gc.setFill(color);
-        double[] xPoints = { renderTopLeftX, renderTopRightX, renderBottomRightX, renderBottomLeftX };
-        double[] yPoints = { renderTopLeftY, renderTopRightY, renderBottomRightY, renderBottomLeftY };
+        double[] xPoints = {renderTopLeftX, renderTopRightX, renderBottomRightX, renderBottomLeftX};
+        double[] yPoints = {renderTopLeftY, renderTopRightY, renderBottomRightY, renderBottomLeftY};
         gc.fillPolygon(xPoints, yPoints, 4);
 
         gc.setStroke(color);

@@ -42,7 +42,6 @@ public class NSidedShape extends Shape {
     }
 
 
-
     private void generateApproximation() {
         points.clear();
 

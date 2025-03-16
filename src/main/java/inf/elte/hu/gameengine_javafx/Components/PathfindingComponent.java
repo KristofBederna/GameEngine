@@ -27,9 +27,11 @@ public class PathfindingComponent extends Component {
     public Point getStart() {
         return start;
     }
+
     public Point getEnd() {
         return end;
     }
+
     public List<Point> getPath() {
         return path;
     }

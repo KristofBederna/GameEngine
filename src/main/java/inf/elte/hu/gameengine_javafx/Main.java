@@ -2,7 +2,9 @@ package inf.elte.hu.gameengine_javafx;
 
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Misc.Config;
-import inf.elte.hu.gameengine_javafx.Misc.Layers.*;
+import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
+import inf.elte.hu.gameengine_javafx.Misc.Layers.GameLayer;
+import inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.SystemStartUp;
 import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SceneManagementSystem;
 import javafx.application.Application;
@@ -21,7 +23,8 @@ public class Main extends Application {
     }
 
     private void startUpGame(Stage stage) {
-        SystemStartUp systemStartUp = new SystemStartUp(()->{});
+        SystemStartUp systemStartUp = new SystemStartUp(() -> {
+        });
         systemStartUp.startUpSceneManagementSystem();
         SceneManagementSystem sceneManagementSystem = SystemHub.getInstance().getSystem(SceneManagementSystem.class);
         sceneManagementSystem.setStage(stage);

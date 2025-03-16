@@ -41,9 +41,9 @@ public class SystemHub {
      * The system will be stored in a TreeMap, where it is ordered by priority.
      *
      * @param systemClass the class type of the system
-     * @param system the system instance to add
-     * @param priority the priority level of the system (lower values are higher priority)
-     * @param <T> the type of the system
+     * @param system      the system instance to add
+     * @param priority    the priority level of the system (lower values are higher priority)
+     * @param <T>         the type of the system
      */
     public <T extends GameSystem> void addSystem(Class<T> systemClass, T system, int priority) {
         systemPriorities.put(systemClass, priority);
@@ -54,7 +54,7 @@ public class SystemHub {
      * Removes a system from the SystemHub.
      *
      * @param systemClass the class type of the system to remove
-     * @param <T> the type of the system
+     * @param <T>         the type of the system
      */
     public <T extends GameSystem> void removeSystem(Class<T> systemClass) {
         Integer priority = systemPriorities.remove(systemClass);
@@ -67,7 +67,7 @@ public class SystemHub {
      * Retrieves a system by its class type.
      *
      * @param systemClass the class type of the system to retrieve
-     * @param <T> the type of the system
+     * @param <T>         the type of the system
      * @return the system instance, or {@code null} if the system is not registered
      */
     public <T extends GameSystem> T getSystem(Class<T> systemClass) {

@@ -8,9 +8,11 @@ public class TileLoader {
     public void addTilePath(Integer value, String path) {
         tilePaths.put(value, path);
     }
+
     public static String getTilePath(Integer value) {
         return tilePaths.get(value);
     }
+
     public Integer getTileValue(String path) {
         for (HashMap.Entry<Integer, String> entry : tilePaths.entrySet()) {
             if (entry.getValue().equals(path)) {

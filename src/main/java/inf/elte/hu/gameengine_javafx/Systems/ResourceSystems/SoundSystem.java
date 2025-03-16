@@ -69,7 +69,7 @@ public class SoundSystem extends GameSystem {
 
     private float calculateVolume(double distance) {
         if (distance > MAX_DISTANCE) return MIN_VOLUME;
-        return (float)(MAX_VOLUME / (1 + (distance / MAX_DISTANCE) * (distance / MAX_DISTANCE)));
+        return (float) (MAX_VOLUME / (1 + (distance / MAX_DISTANCE) * (distance / MAX_DISTANCE)));
     }
 
     private void setVolume(Clip clip, float volume) {

@@ -1,13 +1,12 @@
 package inf.elte.hu.gameengine_javafx.Components.PropertyComponents;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
-import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
-import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Vector;
 
 public class VelocityComponent extends Component {
     Vector velocity;
     double maxVelocity;
+
     public VelocityComponent() {
         velocity = new Vector(0, 0);
     }
@@ -25,9 +24,11 @@ public class VelocityComponent extends Component {
     public Vector getVelocity() {
         return velocity;
     }
+
     public void setVelocity(Vector velocity) {
         this.velocity = velocity;
     }
+
     public void setVelocity(double x, double y) {
         double clampedX = Math.max(-maxVelocity, Math.min(x, maxVelocity));
         double clampedY = Math.max(-maxVelocity, Math.min(y, maxVelocity));

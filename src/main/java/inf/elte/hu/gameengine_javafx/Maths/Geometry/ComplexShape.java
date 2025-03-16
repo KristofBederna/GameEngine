@@ -112,14 +112,13 @@ public class ComplexShape extends Shape {
     }
 
 
-
     public void moveTo(Point newPoint) {
         double dx = newPoint.getX() - points.getFirst().getX();
         double dy = newPoint.getY() - points.getFirst().getY();
 
         for (Point p : points) {
-            p.setX(p.getX()+dx);
-            p.setY(p.getY()+dy);
+            p.setX(p.getX() + dx);
+            p.setY(p.getY() + dy);
         }
         updateEdges();
     }

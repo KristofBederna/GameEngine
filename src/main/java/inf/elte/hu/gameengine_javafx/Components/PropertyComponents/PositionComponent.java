@@ -53,12 +53,12 @@ public class PositionComponent extends Component {
         updateGlobalPosition(entity);
     }
 
-    public void setLocalY(double localY,  Entity entity) {
+    public void setLocalY(double localY, Entity entity) {
         this.local.setY(localY);
         updateGlobalPosition(entity);
     }
 
-    public void setLocalPosition(double localX, double localY,  Entity entity) {
+    public void setLocalPosition(double localX, double localY, Entity entity) {
         this.local.setX(localX);
         this.local.setY(localY);
         updateGlobalPosition(entity);

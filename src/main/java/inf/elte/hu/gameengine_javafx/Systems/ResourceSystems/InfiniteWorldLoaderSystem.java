@@ -101,7 +101,6 @@ public class InfiniteWorldLoaderSystem extends GameSystem {
     }
 
 
-
     private void unloadFarChunks(World worldData, int playerChunkX, int playerChunkY) {
         Iterator<Map.Entry<Tuple<Integer, Integer>, Chunk>> iterator = worldData.getWorld().entrySet().iterator();
         while (iterator.hasNext()) {

@@ -1,6 +1,9 @@
 package inf.elte.hu.gameengine_javafx.Misc.EventHandling;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Manages event listeners and dispatches events to registered listeners.
@@ -14,8 +17,8 @@ public class EventManager {
      * Registers an event listener for a specific type of event.
      *
      * @param eventType The class type of the event to listen for.
-     * @param listener The listener that will handle the event.
-     * @param <T> The type of event.
+     * @param listener  The listener that will handle the event.
+     * @param <T>       The type of event.
      */
     public <T extends Event> void registerListener(Class<T> eventType, EventListener<T> listener) {
         listeners.computeIfAbsent(eventType, k -> new ArrayList<>()).add(listener);
@@ -25,7 +28,7 @@ public class EventManager {
      * Fires an event, notifying all registered listeners of the event type.
      *
      * @param event The event instance to be dispatched.
-     * @param <T> The type of event being fired.
+     * @param <T>   The type of event being fired.
      */
     @SuppressWarnings("unchecked")
     public <T extends Event> void fireEvent(T event) {

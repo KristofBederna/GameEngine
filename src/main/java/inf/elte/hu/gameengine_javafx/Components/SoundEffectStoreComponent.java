@@ -3,7 +3,6 @@ package inf.elte.hu.gameengine_javafx.Components;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Misc.SoundEffect;
-import inf.elte.hu.gameengine_javafx.Core.ResourceManagers.SoundResourceManager;
 
 import javax.sound.sampled.Clip;
 import java.util.ArrayList;

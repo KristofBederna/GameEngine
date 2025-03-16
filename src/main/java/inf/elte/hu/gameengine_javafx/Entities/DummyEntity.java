@@ -1,12 +1,14 @@
 package inf.elte.hu.gameengine_javafx.Entities;
 
-import inf.elte.hu.gameengine_javafx.Components.*;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.InteractiveComponent;
+import inf.elte.hu.gameengine_javafx.Components.PathfindingComponent;
 import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.AccelerationComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.*;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.AnimationComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ZIndexComponent;
+import inf.elte.hu.gameengine_javafx.Components.SoundEffectStoreComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Rectangle;
@@ -20,6 +22,7 @@ import java.util.Objects;
 public class DummyEntity extends Entity {
 
     private String lastState;
+
     public DummyEntity(int x, int y, String state, String path, double width, double height) {
         this.addComponent(new PositionComponent(x, y, this));
         this.addComponent(new VelocityComponent());
@@ -31,9 +34,8 @@ public class DummyEntity extends Entity {
         this.addComponent(new HitBoxComponent(new Rectangle(new Point(x, y), width, height).getPoints()));
         this.addComponent(new SoundEffectStoreComponent());
         this.addComponent(new ZIndexComponent(2));
-        this.addComponent(new ParentComponent());
-        this.addComponent(new CentralMassComponent((double) x + width/2, (double) y+height/2));
-        this.addComponent(new PathfindingComponent(new Point(this.getComponent(CentralMassComponent.class).getCentralX(), this.getComponent(CentralMassComponent.class).getCentralY()), new Point(x+(Config.tileSize*21)+50, y+(Config.tileSize*7)+50)));
+        this.addComponent(new CentralMassComponent((double) x + width / 2, (double) y + height / 2));
+        this.addComponent(new PathfindingComponent(new Point(this.getComponent(CentralMassComponent.class).getCentralX(), this.getComponent(CentralMassComponent.class).getCentralY()), new Point(x + (Config.tileSize * 21) + 50, y + (Config.tileSize * 7) + 50)));
         addToManager();
     }
 
@@ -64,8 +66,8 @@ public class DummyEntity extends Entity {
         rightFramePath.add("/assets/images/" + "PlayerRight_2.png");
 
         ArrayList<Integer> durations = new ArrayList<>();
-        durations.add(15*Time.getInstance().getFPS()/60);
-        durations.add(15*Time.getInstance().getFPS()/60);
+        durations.add(15 * Time.getInstance().getFPS() / 60);
+        durations.add(15 * Time.getInstance().getFPS() / 60);
 
         String currentState = this.getComponent(StateComponent.class).getCurrentState();
         lastState = currentState;

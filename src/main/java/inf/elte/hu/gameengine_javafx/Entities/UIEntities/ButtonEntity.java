@@ -1,4 +1,5 @@
 package inf.elte.hu.gameengine_javafx.Entities.UIEntities;
+
 import inf.elte.hu.gameengine_javafx.Components.UIComponents.ButtonComponent;
 
 public class ButtonEntity extends UIEntity<ButtonComponent> {

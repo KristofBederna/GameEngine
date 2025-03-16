@@ -1,4 +1,5 @@
 package inf.elte.hu.gameengine_javafx.Entities.UIEntities;
+
 import inf.elte.hu.gameengine_javafx.Components.UIComponents.CheckBoxComponent;
 
 public class CheckBoxEntity extends UIEntity<CheckBoxComponent> {

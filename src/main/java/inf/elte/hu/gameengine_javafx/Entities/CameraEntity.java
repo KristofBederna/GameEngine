@@ -1,21 +1,18 @@
 package inf.elte.hu.gameengine_javafx.Entities;
 
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.ParentComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
-import inf.elte.hu.gameengine_javafx.Core.EntityHub;
-import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 
-public class CameraEntity extends Entity  {
+public class CameraEntity extends Entity {
     private static CameraEntity instance;
 
     private CameraEntity(double width, double height, double worldWidth, double worldHeight) {
         this.addComponent(new DimensionComponent(width, height));
         this.addComponent(new PositionComponent(0, 0, this));
         this.addComponent(new WorldDimensionComponent(worldWidth, worldHeight));
-        this.addComponent(new ParentComponent());
 
         addToManager();
     }
@@ -23,7 +20,6 @@ public class CameraEntity extends Entity  {
     private CameraEntity(double width, double height) {
         this.addComponent(new DimensionComponent(width, height));
         this.addComponent(new PositionComponent(0, 0, this));
-        this.addComponent(new ParentComponent());
 
         addToManager();
     }
@@ -61,6 +57,7 @@ public class CameraEntity extends Entity  {
     public void setWidth(double width) {
         this.getComponent(DimensionComponent.class).setWidth(width);
     }
+
     public void setHeight(double height) {
         this.getComponent(DimensionComponent.class).setHeight(height);
     }

@@ -1,7 +1,5 @@
 package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
-import inf.elte.hu.gameengine_javafx.Misc.Config;
-
 public class Edge {
     private Point beginning, end;
 

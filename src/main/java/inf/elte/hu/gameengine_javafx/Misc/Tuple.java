@@ -10,4 +10,5 @@ package inf.elte.hu.gameengine_javafx.Misc;
  * @param <T> the type of the first element of the tuple
  * @param <U> the type of the second element of the tuple
  */
-public record Tuple<T, U>(T first, U second) {}
+public record Tuple<T, U>(T first, U second) {
+}

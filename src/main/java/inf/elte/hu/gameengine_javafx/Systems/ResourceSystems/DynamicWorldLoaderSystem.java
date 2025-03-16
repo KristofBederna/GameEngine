@@ -124,11 +124,11 @@ public class DynamicWorldLoaderSystem extends GameSystem {
             for (int y = 0; y < Config.chunkHeight; y++) {
                 if (x == 0 && y == 0 && chunkX == 0 && chunkY == 0) {
                     chunk.setElement(x, y, 3); // topLeftWall
-                } else if (x == Config.chunkWidth - 1 && y == 0 && chunkX == 0 && chunkY == height -1) {
+                } else if (x == Config.chunkWidth - 1 && y == 0 && chunkX == 0 && chunkY == height - 1) {
                     chunk.setElement(x, y, 1); // BottomLeftWall
-                } else if (x == 0 && y == Config.chunkHeight - 1 && chunkX == width -1 && chunkY == 0) {
+                } else if (x == 0 && y == Config.chunkHeight - 1 && chunkX == width - 1 && chunkY == 0) {
                     chunk.setElement(x, y, 4); // topRightWall
-                } else if (x == Config.chunkWidth - 1 && y == Config.chunkHeight - 1 && chunkX == width -1 && chunkY == height -1) {
+                } else if (x == Config.chunkWidth - 1 && y == Config.chunkHeight - 1 && chunkX == width - 1 && chunkY == height - 1) {
                     chunk.setElement(x, y, 2); // bottomRightWall
                 } else if (x == 0) {
                     chunk.setElement(x, y, 7); // topWall
@@ -136,7 +136,7 @@ public class DynamicWorldLoaderSystem extends GameSystem {
                     chunk.setElement(x, y, 8); // bottomWall
                 } else if (y == 0 && chunkX == 0) {
                     chunk.setElement(x, y, 5); // leftWall
-                } else if (y == Config.chunkHeight - 1  && chunkX == width -1) {
+                } else if (y == Config.chunkHeight - 1 && chunkX == width - 1) {
                     chunk.setElement(x, y, 6); // rightWall
                 } else {
                     chunk.setElement(x, y, 9); // windowWall

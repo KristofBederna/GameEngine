@@ -3,7 +3,6 @@ package inf.elte.hu.gameengine_javafx.Entities;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.LightHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.LightComponent;
-import inf.elte.hu.gameengine_javafx.Components.ParentComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
@@ -21,13 +20,13 @@ import java.util.List;
 
 public class LightingEntity extends Entity {
     List<Line> listOfRays = new ArrayList<>();
+
     public LightingEntity(double x, double y, LightType type, double intensity, Color color, double radius, int rays) {
         addComponent(new LightComponent(type, intensity));
         addComponent(new ColorComponent(color));
         addComponent(new RadiusComponent(radius));
         addComponent(new PositionComponent(x, y, this));
         addComponent(new VelocityComponent());
-        addComponent(new ParentComponent());
         addComponent(new LightHitBoxComponent(new ArrayList<>()));
 
         calculateRays(rays);
@@ -117,8 +116,6 @@ public class LightingEntity extends Entity {
         getComponent(LightHitBoxComponent.class).setHitBox(complexShape);
         return complexShape;
     }
-
-
 
 
     public void matchPositionToEntity(Entity entity) {

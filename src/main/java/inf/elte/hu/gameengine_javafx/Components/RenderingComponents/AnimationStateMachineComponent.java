@@ -13,6 +13,7 @@ public class AnimationStateMachineComponent extends Component {
     public AnimationStateMachine getAnimationStateMachine() {
         return animationStateMachine;
     }
+
     public void setAnimationStateMachine(AnimationStateMachine animationStateMachine) {
         this.animationStateMachine = animationStateMachine;
     }

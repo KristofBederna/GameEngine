@@ -1,11 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Misc.StartUpClasses;
 
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
-import inf.elte.hu.gameengine_javafx.Systems.*;
-import inf.elte.hu.gameengine_javafx.Systems.PhysicsSystems.CollisionSystem;
-import inf.elte.hu.gameengine_javafx.Systems.PhysicsSystems.MovementSystem;
-import inf.elte.hu.gameengine_javafx.Systems.RenderingSystems.*;
-import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.*;
+import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SceneManagementSystem;
 
 /**
  * Initializes and manages the startup process of game systems.

@@ -86,7 +86,7 @@ public class Vector {
      * Moves the entity towards the specified point. The vector is updated to represent the direction
      * the entity should move in order to reach the point.
      *
-     * @param node the point the entity is moving towards
+     * @param node   the point the entity is moving towards
      * @param entity the entity that is moving
      */
     public void moveTowards(Point node, Entity entity) {
