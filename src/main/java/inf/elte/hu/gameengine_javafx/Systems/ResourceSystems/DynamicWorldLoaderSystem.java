@@ -1,6 +1,6 @@
 package inf.elte.hu.gameengine_javafx.Systems.ResourceSystems;
 
-import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
@@ -109,7 +109,7 @@ public class DynamicWorldLoaderSystem extends GameSystem {
         map.getComponent(WorldDataComponent.class).getMapData().getWorld().values().forEach(chunk -> {
             for (List<TileEntity> tileEntities : chunk.getChunk()) {
                 for (TileEntity tileEntity : tileEntities) {
-                    if (tileEntity.getComponent(RectangularHitBoxComponent.class) != null) {
+                    if (tileEntity.getComponent(HitBoxComponent.class) != null) {
                         continue;
                     }
                     meshRow.add(new Point(tileEntity.getComponent(CentralMassComponent.class).getCentralX(), tileEntity.getComponent(CentralMassComponent.class).getCentralY()));

@@ -116,17 +116,8 @@ public class MovementSystem extends GameSystem {
         double dx = velocity.getVelocity().getDx();
         double dy = velocity.getVelocity().getDy();
 
-        if (entity.getComponent(RectangularHitBoxComponent.class) != null) {
-            entity.getComponent(RectangularHitBoxComponent.class).getHitBox().translate(dx, dy);
-        }
-        if (entity.getComponent(TriangularHitBoxComponent.class) != null) {
-            entity.getComponent(TriangularHitBoxComponent.class).getHitBox().translate(dx, dy);
-        }
-        if (entity.getComponent(NSidedHitBoxComponent.class) != null) {
-            entity.getComponent(NSidedHitBoxComponent.class).getHitBox().translate(dx, dy);
-        }
-        if (entity.getComponent(ComplexHitBoxComponent.class) != null) {
-            entity.getComponent(ComplexHitBoxComponent.class).getHitBox().translate(dx, dy);
+        if (entity.getComponent(HitBoxComponent.class) != null) {
+            entity.getComponent(HitBoxComponent.class).getHitBox().translate(dx, dy);
         }
     }
 }

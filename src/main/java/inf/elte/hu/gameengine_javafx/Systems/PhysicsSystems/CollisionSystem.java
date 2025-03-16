@@ -1,11 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Systems.PhysicsSystems;
 
-import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.ComplexHitBoxComponent;
-import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.NSidedHitBoxComponent;
-import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitBoxComponent;
-import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.TriangularHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.AccelerationComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.VelocityComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
@@ -26,6 +22,11 @@ public class CollisionSystem extends GameSystem {
     @Override
     public void update() {
         List<Entity> filteredEntities = EntityHub.getInstance().getEntitiesInsideViewport(CameraEntity.getInstance());
+        filteredEntities.retainAll(EntityHub.getInstance().getEntitiesWithComponent(HitBoxComponent.class));
+        filteredEntities.retainAll(EntityHub.getInstance().getEntitiesWithComponent(VelocityComponent.class));
+        filteredEntities.retainAll(EntityHub.getInstance().getEntitiesWithComponent(PositionComponent.class));
+
+        List<Entity> hitBoxes = EntityHub.getInstance().getEntitiesWithComponent(HitBoxComponent.class);
 
         if (filteredEntities == null || filteredEntities.isEmpty()) {
             return;
@@ -34,37 +35,17 @@ public class CollisionSystem extends GameSystem {
         synchronized (filteredEntities) {
             for (Entity entity : filteredEntities) {
 
-                RectangularHitBoxComponent hitBox = entity.getComponent(RectangularHitBoxComponent.class);
-                TriangularHitBoxComponent triBox = entity.getComponent(TriangularHitBoxComponent.class);
-                NSidedHitBoxComponent circBox = entity.getComponent(NSidedHitBoxComponent.class);
-                ComplexHitBoxComponent complexBox = entity.getComponent(ComplexHitBoxComponent.class);
-                if (entity.getComponent(VelocityComponent.class) == null) continue;
+                HitBoxComponent hitBox = entity.getComponent(HitBoxComponent.class);
                 VelocityComponent velocity = entity.getComponent(VelocityComponent.class);
                 PositionComponent position = entity.getComponent(PositionComponent.class);
-                DimensionComponent dimension = entity.getComponent(DimensionComponent.class);
-                if (dimension == null) continue;
-                if (position == null) continue;
-                if (hitBox == null && triBox == null && circBox == null && complexBox == null) continue;
 
-                Shape futureHitBox = null;
+                ComplexShape futureHitBox = null;
                 if (hitBox != null) {
-                    futureHitBox = new Rectangle(hitBox.getHitBox());
-                    ((Rectangle)futureHitBox).moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
-                }
-                if (triBox != null) {
-                    futureHitBox = new Triangle(triBox.getHitBox());
-                    ((Triangle)futureHitBox).moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
-                }
-                if (circBox != null) {
-                    futureHitBox = new NSidedShape(circBox.getHitBox());
-                    ((NSidedShape)futureHitBox).moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
-                }
-                if (complexBox != null) {
-                    futureHitBox = new ComplexShape(complexBox.getHitBox());
-                    ((ComplexShape)futureHitBox).moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
+                    futureHitBox = new ComplexShape(hitBox.getHitBox());
+                    futureHitBox.moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
                 }
 
-                moveDiagonally(EntityHub.getInstance().getAllEntities(), entity, futureHitBox, velocity);
+                moveDiagonally(hitBoxes, entity, futureHitBox, velocity);
             }
         }
     }
@@ -91,7 +72,7 @@ public class CollisionSystem extends GameSystem {
             for (Entity otherEntity : entities) {
                 if (otherEntity == entity) continue;
 
-                Shape otherHitBox = getHitBoxOfEntity(otherEntity);
+                Shape otherHitBox = otherEntity.getComponent(HitBoxComponent.class).getHitBox();
                 if (otherHitBox != null && Shape.intersect(futureHitBox, otherHitBox)) {
                     velocity.setVelocity(0, velocity.getVelocity().getDy());
                     if (entity.getComponent(AccelerationComponent.class) != null) {
@@ -110,7 +91,7 @@ public class CollisionSystem extends GameSystem {
             for (Entity otherEntity : entities) {
                 if (otherEntity == entity) continue;
 
-                Shape otherHitBox = getHitBoxOfEntity(otherEntity);
+                Shape otherHitBox = otherEntity.getComponent(HitBoxComponent.class).getHitBox();
                 if (otherHitBox != null && Shape.intersect(futureHitBox, otherHitBox)) {
                     velocity.setVelocity(velocity.getVelocity().getDx(), 0);
                     if (entity.getComponent(AccelerationComponent.class) != null) {
@@ -129,16 +110,7 @@ public class CollisionSystem extends GameSystem {
         if (accelerationComponent != null) {
             dx += accelerationComponent.getAcceleration().getDx();
         }
-
-        if (futureHitBox instanceof Rectangle) {
-            ((Rectangle) futureHitBox).translate(dx, 0);
-        } else if (futureHitBox instanceof Triangle) {
-            ((Triangle) futureHitBox).translate(dx, 0);
-        } else if (futureHitBox instanceof NSidedShape) {
-            ((NSidedShape) futureHitBox).translate(dx, 0);
-        } else if (futureHitBox instanceof ComplexShape) {
-            ((ComplexShape) futureHitBox).translate(dx, 0);
-        }
+        ((ComplexShape)futureHitBox).translate(dx, 0);
     }
 
     private static void translateHitBoxVertically(Entity entity, Shape futureHitBox, VelocityComponent velocity) {
@@ -148,31 +120,6 @@ public class CollisionSystem extends GameSystem {
         if (accelerationComponent != null) {
             dy += accelerationComponent.getAcceleration().getDy();
         }
-
-        if (futureHitBox instanceof Rectangle) {
-            ((Rectangle) futureHitBox).translate(0, dy);
-        } else if (futureHitBox instanceof Triangle) {
-            ((Triangle) futureHitBox).translate(0, dy);
-        } else if (futureHitBox instanceof NSidedShape) {
-            ((NSidedShape) futureHitBox).translate(0, dy);
-        } else if (futureHitBox instanceof ComplexShape) {
-            ((ComplexShape) futureHitBox).translate(0, dy);
-        }
-    }
-
-
-
-    private static Shape getHitBoxOfEntity(Entity entity) {
-        RectangularHitBoxComponent rectHitBox = entity.getComponent(RectangularHitBoxComponent.class);
-        TriangularHitBoxComponent triHitBox = entity.getComponent(TriangularHitBoxComponent.class);
-        NSidedHitBoxComponent circHitBox = entity.getComponent(NSidedHitBoxComponent.class);
-        ComplexHitBoxComponent complexBox = entity.getComponent(ComplexHitBoxComponent.class);
-
-        if (rectHitBox != null) return rectHitBox.getHitBox();
-        if (triHitBox != null) return triHitBox.getHitBox();
-        if (circHitBox != null) return circHitBox.getHitBox();
-        if (complexBox != null) return complexBox.getHitBox();
-
-        return null;
+        ((ComplexShape)futureHitBox).translate(0, dy);
     }
 }

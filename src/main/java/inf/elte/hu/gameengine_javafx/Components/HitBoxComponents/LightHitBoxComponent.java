@@ -1,11 +1,12 @@
 package inf.elte.hu.gameengine_javafx.Components.HitBoxComponents;
 
+import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.ComplexShape;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 
 import java.util.List;
 
-public class LightHitBoxComponent extends HitBoxComponent {
+public class LightHitBoxComponent extends Component {
     private ComplexShape hitBox;
 
     public LightHitBoxComponent(List<Point> points) {

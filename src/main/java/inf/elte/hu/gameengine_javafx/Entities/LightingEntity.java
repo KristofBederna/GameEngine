@@ -1,7 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Entities;
 
+import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.LightHitBoxComponent;
-import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.LightComponent;
 import inf.elte.hu.gameengine_javafx.Components.ParentComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
@@ -55,7 +55,7 @@ public class LightingEntity extends Entity {
 
     public void calculateCollisions() {
         calculateRays(100);
-        List<Entity> entities = EntityHub.getInstance().getEntitiesWithComponent(RectangularHitBoxComponent.class);
+        List<Entity> entities = EntityHub.getInstance().getEntitiesWithComponent(HitBoxComponent.class);
 
         for (Line line : listOfRays) {
             Point start = line.getPoints().getFirst();
@@ -66,8 +66,8 @@ public class LightingEntity extends Entity {
                 if (entity instanceof PlayerEntity) {
                     continue;
                 }
-                RectangularHitBoxComponent hitboxComponent = entity.getComponent(RectangularHitBoxComponent.class);
-                Rectangle hitbox = hitboxComponent.getHitBox();
+                HitBoxComponent hitboxComponent = entity.getComponent(HitBoxComponent.class);
+                ComplexShape hitbox = hitboxComponent.getHitBox();
 
                 for (Edge edge : hitbox.getEdges()) {
                     Point intersection = Shape.getIntersection(line.getEdges().getFirst(), edge);

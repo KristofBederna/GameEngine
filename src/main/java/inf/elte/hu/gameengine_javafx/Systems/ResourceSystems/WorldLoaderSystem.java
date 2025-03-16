@@ -1,7 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Systems.ResourceSystems;
 
 import inf.elte.hu.gameengine_javafx.Components.*;
-import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.RectangularHitBoxComponent;
+import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PositionComponent;
@@ -135,7 +135,7 @@ public class WorldLoaderSystem extends GameSystem {
 
                         String key = tileX + "," + tileY;
                         if (!existingTiles.contains(key)) {
-                            boolean hasHitBox = tileEntity.getComponent(RectangularHitBoxComponent.class) != null;
+                            boolean hasHitBox = tileEntity.getComponent(HitBoxComponent.class) != null;
                             TileEntity newTile = new TileEntity(tileEntity.getComponent(TileValueComponent.class).getTileValue(), tileX, tileY, tileEntity.getComponent(ImageComponent.class).getImagePath(), Config.tileSize, Config.tileSize, hasHitBox);
                             tileManager.register(newTile);
                         }
