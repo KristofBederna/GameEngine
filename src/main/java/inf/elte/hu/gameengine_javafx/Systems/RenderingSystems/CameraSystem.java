@@ -27,6 +27,12 @@ public class CameraSystem extends GameSystem {
 
         if (playerPos == null || playerImg == null) return;
 
+        updateCameraPosition(playerPos, playerImg, cameraEntity);
+
+        EntityHub.getInstance().getEntityManager(CameraEntity.getInstance().getOwner().getClass()).updateLastUsed(CameraEntity.getInstance().getOwner().getId());
+    }
+
+    private static void updateCameraPosition(PositionComponent playerPos, ImageComponent playerImg, CameraEntity cameraEntity) {
         double playerCenterX = playerPos.getGlobalX() + playerImg.getWidth() / 2;
         double playerCenterY = playerPos.getGlobalY() + playerImg.getHeight() / 2;
 
@@ -34,7 +40,5 @@ public class CameraSystem extends GameSystem {
         double newY = playerCenterY - cameraEntity.getComponent(DimensionComponent.class).getHeight() / 2;
 
         cameraEntity.setPosition(newX, newY);
-
-        EntityHub.getInstance().getEntityManager(CameraEntity.getInstance().getOwner().getClass()).updateLastUsed(CameraEntity.getInstance().getOwner().getId());
     }
 }

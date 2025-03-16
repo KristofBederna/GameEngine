@@ -20,7 +20,7 @@ public class Triangle extends Shape {
         updateEdges();
     }
 
-    private void updateEdges() {
+    public void updateEdges() {
         edges = List.of(
                 new Edge(points.get(0), points.get(1)), // ab
                 new Edge(points.get(1), points.get(2)), // bc
@@ -55,18 +55,6 @@ public class Triangle extends Shape {
         updateEdges();
     }
 
-    public Edge getAb() {
-        return edges.get(0);
-    }
-
-    public Edge getBc() {
-        return edges.get(1);
-    }
-
-    public Edge getCa() {
-        return edges.get(2);
-    }
-
     public void translate(double x, double y) {
         for (Point p : points) {
             p.translate(x, y);
@@ -83,25 +71,6 @@ public class Triangle extends Shape {
             p.setY(p.getY() + deltaY);
         }
         updateEdges();
-    }
-
-    public double getArea() {
-        return Math.abs((points.get(0).getX() * (points.get(1).getY() - points.get(2).getY()) +
-                points.get(1).getX() * (points.get(2).getY() - points.get(0).getY()) +
-                points.get(2).getX() * (points.get(0).getY() - points.get(1).getY())) / 2);
-    }
-
-    public boolean contains(Point p) {
-        double A = getArea();
-        double A1 = new Triangle(p, getB(), getC()).getArea();
-        double A2 = new Triangle(getA(), p, getC()).getArea();
-        double A3 = new Triangle(getA(), getB(), p).getArea();
-
-        return Math.abs(A - (A1 + A2 + A3)) < Config.EPSILON;
-    }
-
-    public boolean isInside(Point p) {
-        return contains(p) && !getAb().contains(p) && !getBc().contains(p) && !getCa().contains(p);
     }
 
     public void render(GraphicsContext gc, Color color) {

@@ -21,33 +21,44 @@ public class CollisionSystem extends GameSystem {
 
     @Override
     public void update() {
-        List<Entity> filteredEntities = EntityHub.getInstance().getEntitiesInsideViewport(CameraEntity.getInstance());
-        filteredEntities.retainAll(EntityHub.getInstance().getEntitiesWithComponent(HitBoxComponent.class));
-        filteredEntities.retainAll(EntityHub.getInstance().getEntitiesWithComponent(VelocityComponent.class));
-        filteredEntities.retainAll(EntityHub.getInstance().getEntitiesWithComponent(PositionComponent.class));
-
+        List<Entity> filteredEntities = getEntities();
         List<Entity> hitBoxes = EntityHub.getInstance().getEntitiesWithComponent(HitBoxComponent.class);
 
         if (filteredEntities == null || filteredEntities.isEmpty()) {
             return;
         }
 
+        processEntities(filteredEntities, hitBoxes);
+    }
+
+    private static void processEntities(List<Entity> filteredEntities, List<Entity> hitBoxes) {
         synchronized (filteredEntities) {
             for (Entity entity : filteredEntities) {
-
-                HitBoxComponent hitBox = entity.getComponent(HitBoxComponent.class);
-                VelocityComponent velocity = entity.getComponent(VelocityComponent.class);
-                PositionComponent position = entity.getComponent(PositionComponent.class);
-
-                ComplexShape futureHitBox = null;
-                if (hitBox != null) {
-                    futureHitBox = new ComplexShape(hitBox.getHitBox());
-                    futureHitBox.moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
-                }
-
-                moveDiagonally(hitBoxes, entity, futureHitBox, velocity);
+                processEntity(hitBoxes, entity);
             }
         }
+    }
+
+    private static void processEntity(List<Entity> hitBoxes, Entity entity) {
+        HitBoxComponent hitBox = entity.getComponent(HitBoxComponent.class);
+        VelocityComponent velocity = entity.getComponent(VelocityComponent.class);
+        PositionComponent position = entity.getComponent(PositionComponent.class);
+
+        ComplexShape futureHitBox = null;
+        if (hitBox != null) {
+            futureHitBox = new ComplexShape(hitBox.getHitBox());
+            futureHitBox.moveTo(new Point(position.getGlobalX(), position.getGlobalY()));
+        }
+
+        moveDiagonally(hitBoxes, entity, futureHitBox, velocity);
+    }
+
+    private static List<Entity> getEntities() {
+        List<Entity> filteredEntities = EntityHub.getInstance().getEntitiesInsideViewport(CameraEntity.getInstance());
+        filteredEntities.retainAll(EntityHub.getInstance().getEntitiesWithComponent(HitBoxComponent.class));
+        filteredEntities.retainAll(EntityHub.getInstance().getEntitiesWithComponent(VelocityComponent.class));
+        filteredEntities.retainAll(EntityHub.getInstance().getEntitiesWithComponent(PositionComponent.class));
+        return filteredEntities;
     }
 
     private static void moveDiagonally(List<Entity> entities, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
@@ -110,7 +121,7 @@ public class CollisionSystem extends GameSystem {
         if (accelerationComponent != null) {
             dx += accelerationComponent.getAcceleration().getDx();
         }
-        ((ComplexShape)futureHitBox).translate(dx, 0);
+        futureHitBox.translate(dx, 0);
     }
 
     private static void translateHitBoxVertically(Entity entity, Shape futureHitBox, VelocityComponent velocity) {
@@ -120,6 +131,6 @@ public class CollisionSystem extends GameSystem {
         if (accelerationComponent != null) {
             dy += accelerationComponent.getAcceleration().getDy();
         }
-        ((ComplexShape)futureHitBox).translate(0, dy);
+        futureHitBox.translate(0, dy);
     }
 }

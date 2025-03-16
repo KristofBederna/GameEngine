@@ -29,91 +29,102 @@ public class MovementSystem extends GameSystem {
 
     @Override
     public void update() {
-        var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getEntitiesInsideViewport(CameraEntity.getInstance()));
-        entitiesSnapshot.retainAll(EntityHub.getInstance().getEntitiesWithComponent(PositionComponent.class));
-        entitiesSnapshot.retainAll(EntityHub.getInstance().getEntitiesWithComponent(VelocityComponent.class));
+        var entitiesSnapshot = getEntities();
 
         if (entitiesSnapshot.isEmpty()) {
             return;
         }
 
         for (Entity entity : entitiesSnapshot) {
-            if (entity == null) continue;
-
-            var velocity = entity.getComponent(VelocityComponent.class);
-            var position = entity.getComponent(PositionComponent.class);
-            var acceleration = entity.getComponent(AccelerationComponent.class);
-            var massComponent = entity.getComponent(MassComponent.class);
-            var dragComponent = entity.getComponent(DragComponent.class);
-
-            double mass = (massComponent != null) ? massComponent.getMass() : 1.0;
-            double drag = (dragComponent != null) ? dragComponent.getDrag() : Config.drag;
-            double dragFactor = Math.pow(1 - drag, Time.getInstance().getDeltaTime());
-            double maxSpeed = velocity.getMaxVelocity();
-
-            double newDx = velocity.getVelocity().getDx();
-            double newDy = velocity.getVelocity().getDy();
-
-            if (acceleration != null) {
-                newDx += acceleration.getAcceleration().getDx() / mass;
-                newDy += acceleration.getAcceleration().getDy() / mass;
-            }
-            TileEntity tile = WorldEntity.getInstance().getComponent(WorldDataComponent.class).getElement(entity.getComponent(PositionComponent.class).getGlobal());
-
-            if (entity.getComponent(CentralMassComponent.class) != null) {
-                tile = WorldEntity.getInstance().getComponent(WorldDataComponent.class).getElement(entity.getComponent(CentralMassComponent.class).getCentral());
-            }
-
-            if (tile.getComponent(FrictionComponent.class) != null) {
-                FrictionComponent frictionComponent = tile.getComponent(FrictionComponent.class);
-                double friction = (frictionComponent != null) ? frictionComponent.getFriction() : Config.friction;
-                double frictionForce = friction * Time.getInstance().getDeltaTime();
-
-                if (Math.abs(newDx) > frictionForce) {
-                    newDx -= Math.signum(newDx) * frictionForce;
-                } else {
-                    newDx = 0;
-                }
-
-                if (Math.abs(newDy) > frictionForce) {
-                    newDy -= Math.signum(newDy) * frictionForce;
-                } else {
-                    newDy = 0;
-                }
-            }
-
-            newDx = Math.max(-maxSpeed, Math.min(maxSpeed, newDx));
-            newDy = Math.max(-maxSpeed, Math.min(maxSpeed, newDy));
-
-            if (acceleration == null || (acceleration.getAcceleration().getDx() == 0)) {
-                newDx *= dragFactor;
-            }
-            if (acceleration == null || (acceleration.getAcceleration().getDy() == 0)) {
-                newDy *= dragFactor;
-            }
-
-            velocity.setVelocity(newDx, newDy);
-
-            position.setLocalPosition(
-                    position.getLocalX() + velocity.getVelocity().getDx(),
-                    position.getLocalY() + velocity.getVelocity().getDy(),
-                    entity
-            );
-
-            var dimension = entity.getComponent(DimensionComponent.class);
-            var centralMass = entity.getComponent(CentralMassComponent.class);
-            if (dimension != null && centralMass != null) {
-                centralMass.setCentralX(position.getGlobalX() + dimension.getWidth() / 2);
-                centralMass.setCentralY(position.getGlobalY() + dimension.getHeight() / 2);
-            }
-
-            position.updateGlobalPosition(entity);
-
-            updateHitboxes(entity, velocity);
+            processEntity(entity);
         }
     }
 
-    private void updateHitboxes(Entity entity, VelocityComponent velocity) {
+    private void processEntity(Entity entity) {
+        if (entity == null) return;
+
+        var velocity = entity.getComponent(VelocityComponent.class);
+        var position = entity.getComponent(PositionComponent.class);
+        var acceleration = entity.getComponent(AccelerationComponent.class);
+        var massComponent = entity.getComponent(MassComponent.class);
+        var dragComponent = entity.getComponent(DragComponent.class);
+
+        double mass = (massComponent != null) ? massComponent.getMass() : 1.0;
+        double drag = (dragComponent != null) ? dragComponent.getDrag() : Config.drag;
+        double dragFactor = Math.pow(1 - drag, Time.getInstance().getDeltaTime());
+        double maxSpeed = velocity.getMaxVelocity();
+
+        double newDx = velocity.getVelocity().getDx();
+        double newDy = velocity.getVelocity().getDy();
+
+        if (acceleration != null) {
+            newDx += acceleration.getAcceleration().getDx() / mass;
+            newDy += acceleration.getAcceleration().getDy() / mass;
+        }
+
+        TileEntity tile = getCurrentTile(entity);
+
+        if (tile.getComponent(FrictionComponent.class) != null) {
+            FrictionComponent frictionComponent = tile.getComponent(FrictionComponent.class);
+            double friction = (frictionComponent != null) ? frictionComponent.getFriction() : Config.friction;
+            double frictionForce = friction * Time.getInstance().getDeltaTime();
+
+            if (Math.abs(newDx) > frictionForce) {
+                newDx -= Math.signum(newDx) * frictionForce;
+            } else {
+                newDx = 0;
+            }
+
+            if (Math.abs(newDy) > frictionForce) {
+                newDy -= Math.signum(newDy) * frictionForce;
+            } else {
+                newDy = 0;
+            }
+        }
+
+        newDx = Math.max(-maxSpeed, Math.min(maxSpeed, newDx));
+        newDy = Math.max(-maxSpeed, Math.min(maxSpeed, newDy));
+
+        if (acceleration == null || (acceleration.getAcceleration().getDx() == 0)) {
+            newDx *= dragFactor;
+        }
+        if (acceleration == null || (acceleration.getAcceleration().getDy() == 0)) {
+            newDy *= dragFactor;
+        }
+
+        velocity.setVelocity(newDx, newDy);
+        position.setLocalPosition(
+                position.getLocalX() + velocity.getVelocity().getDx(),
+                position.getLocalY() + velocity.getVelocity().getDy(),
+                entity
+        );
+        var dimension = entity.getComponent(DimensionComponent.class);
+        var centralMass = entity.getComponent(CentralMassComponent.class);
+        if (dimension != null && centralMass != null) {
+            centralMass.setCentralX(position.getGlobalX() + dimension.getWidth() / 2);
+            centralMass.setCentralY(position.getGlobalY() + dimension.getHeight() / 2);
+        }
+        position.updateGlobalPosition(entity);
+        updateHitBoxes(entity, velocity);
+    }
+
+    private static TileEntity getCurrentTile(Entity entity) {
+        TileEntity tile = WorldEntity.getInstance().getComponent(WorldDataComponent.class).getElement(entity.getComponent(PositionComponent.class).getGlobal());
+
+        if (entity.getComponent(CentralMassComponent.class) != null) {
+            tile = WorldEntity.getInstance().getComponent(WorldDataComponent.class).getElement(entity.getComponent(CentralMassComponent.class).getCentral());
+        }
+        return tile;
+    }
+
+    private static ArrayList<Entity> getEntities() {
+        var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getEntitiesInsideViewport(CameraEntity.getInstance()));
+        entitiesSnapshot.retainAll(EntityHub.getInstance().getEntitiesWithComponent(PositionComponent.class));
+        entitiesSnapshot.retainAll(EntityHub.getInstance().getEntitiesWithComponent(VelocityComponent.class));
+        return entitiesSnapshot;
+    }
+
+    private void updateHitBoxes(Entity entity, VelocityComponent velocity) {
         double dx = velocity.getVelocity().getDx();
         double dy = velocity.getVelocity().getDy();
 

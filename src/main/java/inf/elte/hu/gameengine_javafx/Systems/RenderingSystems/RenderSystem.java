@@ -60,89 +60,124 @@ public class RenderSystem extends GameSystem {
             if (visibleEntities == null) {
                 return;
             }
-            List<Entity> sortedEntities = visibleEntities.stream()
-                    .filter(entity -> entity.getComponent(ZIndexComponent.class) != null)
-                    .sorted((e1, e2) -> {
-                        ZIndexComponent zIndex1 = e1.getComponent(ZIndexComponent.class);
-                        ZIndexComponent zIndex2 = e2.getComponent(ZIndexComponent.class);
-                        return Integer.compare(zIndex1.getZ_index(), zIndex2.getZ_index());
-                    })
-                    .toList();
+            List<Entity> sortedEntities = sortByZIndex(visibleEntities);
 
-            for (Entity entity : sortedEntities) {
-                PositionComponent position = entity.getComponent(PositionComponent.class);
-                ImageComponent imgComponent = entity.getComponent(ImageComponent.class);
-
-                if (position == null || imgComponent == null) continue;
-
-                double width = imgComponent.getWidth();
-                double height = imgComponent.getHeight();
-
-                double renderX = position.getGlobalX() - cameraEntity.getComponent(PositionComponent.class).getGlobalX();
-                double renderY = position.getGlobalY() - cameraEntity.getComponent(PositionComponent.class).getGlobalY();
-
-                if (renderX + width >= 0 && renderX <= cameraEntity.getComponent(DimensionComponent.class).getWidth() &&
-                        renderY + height >= 0 && renderY <= cameraEntity.getComponent(DimensionComponent.class).getHeight()) {
-
-                    ResourceManager<Image> imageManager = ResourceHub.getInstance().getResourceManager(Image.class);
-                    if (imageManager == null) continue;
-                    Image img = imageManager.get(imgComponent.getImagePath());
-
-                    EntityManager<Entity> entityManager = (EntityManager<Entity>)EntityHub.getInstance().getEntityManager(entity.getClass());
-
-                    if (entityManager == null) continue;
-
-                    entityManager.updateLastUsed(entity.getId());
-
-                    if (img == null) {
-                        System.err.println("RenderSystem: Missing image for " + imgComponent.getImagePath());
-                        continue;
-                    }
-
-                    gc.drawImage(img, renderX, renderY, width, height);
-
-                    HitBoxComponent hitBox = entity.getComponent(HitBoxComponent.class);
-                    if (hitBox != null) {
-                        hitBox.getHitBox().render(gc, Color.RED);
-                    }
-                }
-            }
-            TileEntity tile = WorldEntity.getInstance().getComponent(WorldDataComponent.class).getElement(EntityHub.getInstance().getEntitiesWithType(PlayerEntity.class).getFirst().getComponent(PositionComponent.class).getGlobal());
-
-            Rectangle rectangle = new Rectangle(tile.getComponent(PositionComponent.class).getGlobal(),tile.getComponent(DimensionComponent.class).getWidth(), tile.getComponent(DimensionComponent.class).getHeight());
-            rectangle.renderFill(GameCanvas.getInstance().getGraphicsContext2D(), Color.ORANGE);
-//            MapMeshComponent meshComponent = WorldEntity.getInstance().getComponent(MapMeshComponent.class);
-//            if (meshComponent != null) {
-//                for (List<Point> row : meshComponent.getMapCoordinates()) {
-//                    for (Point point : row) {
-//                        if (point == null) continue;
-//                        point.renderFill(gc, 5, Color.YELLOW);
-//                    }
-//                }
-//            }
-//            for (Entity entity : EntityHub.getInstance().getEntitiesWithComponent(PathfindingComponent.class)) {
-//                PathfindingComponent pathfindingComponent = entity.getComponent(PathfindingComponent.class);
-//                if (pathfindingComponent.getPath() == null) {
-//                    continue;
-//                }
-//                if (pathfindingComponent.getPath().isEmpty()) {
-//                    continue;
-//                }
-//                for (Point neighbour : pathfindingComponent.getNeighbours(pathfindingComponent.getPath().getFirst())) {
-//                    Line line = new Line(pathfindingComponent.getPath().getFirst(), neighbour);
-//                    line.render(gc, Color.ORANGE, 5);
-//                }
-//            }
-            for (Entity entity : EntityHub.getInstance().getEntitiesWithType(ParticleEntity.class)) {
-                ((ParticleEntity) entity).alignShapeWithEntity(entity);
-                ((ParticleEntity)entity).render(gc);
-            }
+            processEntities(sortedEntities, cameraEntity, gc);
+            renderCurrentlyOccupiedTile();
+            renderMapMesh(gc);
+            renderPathFindingRoute(gc);
+            renderParticles(gc);
             //handleLighting(gc);
 
-            if (!GameCanvas.getInstance().isFocused()) {
-                GameCanvas.getInstance().requestFocus();
-            }
+            setFocused();
         });
+    }
+
+    private static void processEntities(List<Entity> sortedEntities, CameraEntity cameraEntity, GraphicsContext gc) {
+        for (Entity entity : sortedEntities) {
+            PositionComponent position = entity.getComponent(PositionComponent.class);
+            ImageComponent imgComponent = entity.getComponent(ImageComponent.class);
+
+            if (position == null || imgComponent == null) continue;
+
+            double width = imgComponent.getWidth();
+            double height = imgComponent.getHeight();
+
+            double renderX = position.getGlobalX() - cameraEntity.getComponent(PositionComponent.class).getGlobalX();
+            double renderY = position.getGlobalY() - cameraEntity.getComponent(PositionComponent.class).getGlobalY();
+
+            renderEntity(entity, renderX, width, cameraEntity, renderY, height, imgComponent, gc);
+        }
+    }
+
+    private static void renderParticles(GraphicsContext gc) {
+        for (Entity entity : EntityHub.getInstance().getEntitiesWithType(ParticleEntity.class)) {
+            ((ParticleEntity)entity).alignShapeWithEntity(entity);
+            ((ParticleEntity)entity).render(gc);
+        }
+    }
+
+    private static void renderEntity(Entity entity, double renderX, double width, CameraEntity cameraEntity, double renderY, double height, ImageComponent imgComponent, GraphicsContext gc) {
+        if (renderX + width >= 0 && renderX <= cameraEntity.getComponent(DimensionComponent.class).getWidth() &&
+                renderY + height >= 0 && renderY <= cameraEntity.getComponent(DimensionComponent.class).getHeight()) {
+
+            ResourceManager<Image> imageManager = ResourceHub.getInstance().getResourceManager(Image.class);
+            if (imageManager == null) return;
+            Image img = imageManager.get(imgComponent.getImagePath());
+
+            EntityManager<Entity> entityManager = (EntityManager<Entity>)EntityHub.getInstance().getEntityManager(entity.getClass());
+
+            if (entityManager == null) return;
+
+            entityManager.updateLastUsed(entity.getId());
+
+            if (img == null) {
+                System.err.println("RenderSystem: Missing image for " + imgComponent.getImagePath());
+                return;
+            }
+
+            gc.drawImage(img, renderX, renderY, width, height);
+
+            renderHitBox(entity, gc);
+        }
+    }
+
+    private static void renderHitBox(Entity entity, GraphicsContext gc) {
+        HitBoxComponent hitBox = entity.getComponent(HitBoxComponent.class);
+        if (hitBox != null) {
+            hitBox.getHitBox().render(gc, Color.RED);
+        }
+    }
+
+    private static List<Entity> sortByZIndex(List<Entity> visibleEntities) {
+        return visibleEntities.stream()
+                .filter(entity -> entity.getComponent(ZIndexComponent.class) != null)
+                .sorted((e1, e2) -> {
+                    ZIndexComponent zIndex1 = e1.getComponent(ZIndexComponent.class);
+                    ZIndexComponent zIndex2 = e2.getComponent(ZIndexComponent.class);
+                    return Integer.compare(zIndex1.getZ_index(), zIndex2.getZ_index());
+                })
+                .toList();
+    }
+
+    private static void renderCurrentlyOccupiedTile() {
+        TileEntity tile = WorldEntity.getInstance().getComponent(WorldDataComponent.class).getElement(EntityHub.getInstance().getEntitiesWithType(PlayerEntity.class).getFirst().getComponent(PositionComponent.class).getGlobal());
+        Rectangle rectangle = new Rectangle(tile.getComponent(PositionComponent.class).getGlobal(),tile.getComponent(DimensionComponent.class).getWidth(), tile.getComponent(DimensionComponent.class).getHeight());
+        rectangle.renderFill(GameCanvas.getInstance().getGraphicsContext2D(), Color.ORANGE);
+    }
+
+    private static void setFocused() {
+        if (!GameCanvas.getInstance().isFocused()) {
+            GameCanvas.getInstance().requestFocus();
+        }
+    }
+
+    private static void renderPathFindingRoute(GraphicsContext gc) {
+        for (Entity entity : EntityHub.getInstance().getEntitiesWithComponent(PathfindingComponent.class)) {
+            PathfindingComponent pathfindingComponent = entity.getComponent(PathfindingComponent.class);
+            if (pathfindingComponent.getPath() == null) {
+                continue;
+            }
+            if (pathfindingComponent.getPath().isEmpty()) {
+                continue;
+            }
+            for (Point neighbour : pathfindingComponent.getNeighbours(pathfindingComponent.getPath().getFirst())) {
+                Line line = new Line(pathfindingComponent.getPath().getFirst(), neighbour);
+                line.render(gc, Color.ORANGE, 5);
+            }
+        }
+    }
+
+    private static void renderMapMesh(GraphicsContext gc) {
+        MapMeshComponent meshComponent = WorldEntity.getInstance().getComponent(MapMeshComponent.class);
+        if (meshComponent != null) {
+            for (List<Point> row : meshComponent.getMapCoordinates()) {
+                for (Point point : row) {
+                    if (point == null) continue;
+                    point.renderFill(gc, 5, Color.YELLOW);
+                }
+            }
+        }
     }
 
     private void handleLighting(GraphicsContext gc) {

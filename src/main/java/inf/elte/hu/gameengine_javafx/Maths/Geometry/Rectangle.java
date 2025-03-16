@@ -22,7 +22,7 @@ public class Rectangle extends Shape {
         this(rectangle.getTopLeft(), rectangle.getTopRight(), rectangle.getBottomLeft(), rectangle.getBottomRight());
     }
 
-    private void updateEdges() {
+    public void updateEdges() {
         edges = List.of(
                 new Edge(points.get(0), points.get(1)), // Top edge (topLeft -> topRight)
                 new Edge(points.get(1), points.get(2)), // Right edge (topRight -> bottomRight)
@@ -68,22 +68,6 @@ public class Rectangle extends Shape {
         updateEdges();
     }
 
-    public Edge getTop() {
-        return edges.get(0);
-    }
-
-    public Edge getRight() {
-        return edges.get(1);
-    }
-
-    public Edge getBottom() {
-        return edges.get(2);
-    }
-
-    public Edge getLeft() {
-        return edges.get(3);
-    }
-
     public void translate(double x, double y) {
         for (Point p : points) {
             p.translate(x, y);
@@ -100,17 +84,6 @@ public class Rectangle extends Shape {
             p.setY(p.getY() + deltaY);
         }
         updateEdges();
-    }
-
-    public double getArea() {
-        double width = points.get(0).distanceTo(points.get(1));
-        double height = points.get(0).distanceTo(points.get(2));
-        return width * height;
-    }
-
-    public boolean contains(Point p) {
-        return p.getX() >= points.get(0).getX() && p.getX() <= points.get(1).getX() &&
-                p.getY() >= points.get(0).getY() && p.getY() <= points.get(2).getY();
     }
 
     public void render(GraphicsContext gc, Color color) {

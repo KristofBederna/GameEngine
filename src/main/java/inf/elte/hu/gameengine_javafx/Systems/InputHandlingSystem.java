@@ -25,20 +25,26 @@ public class InputHandlingSystem extends GameSystem {
 
     @Override
     public void update() {
-        var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getEntitiesWithComponent(InteractiveComponent.class));
+        var entitiesSnapshot = EntityHub.getInstance().getEntitiesWithComponent(InteractiveComponent.class);
+
         if (entitiesSnapshot.isEmpty()) {
             return;
         }
-        for (Entity entity : entitiesSnapshot) {
-            if (entity == null) continue;
-            PositionComponent position = entity.getComponent(PositionComponent.class);
-            VelocityComponent velocity = entity.getComponent(VelocityComponent.class);
-            InteractiveComponent interactive = entity.getComponent(InteractiveComponent.class);
 
-            if (position != null && velocity != null && interactive != null) {
-                handleKeyboardInput(interactive);
-                handleMouseInput(interactive);
-            }
+        for (Entity entity : entitiesSnapshot) {
+            processEntity(entity);
+        }
+    }
+
+    private void processEntity(Entity entity) {
+        if (entity == null) return;
+        PositionComponent position = entity.getComponent(PositionComponent.class);
+        VelocityComponent velocity = entity.getComponent(VelocityComponent.class);
+        InteractiveComponent interactive = entity.getComponent(InteractiveComponent.class);
+
+        if (position != null && velocity != null && interactive != null) {
+            handleKeyboardInput(interactive);
+            handleMouseInput(interactive);
         }
     }
 
