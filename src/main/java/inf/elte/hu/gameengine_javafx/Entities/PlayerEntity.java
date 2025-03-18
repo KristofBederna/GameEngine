@@ -16,11 +16,13 @@ import inf.elte.hu.gameengine_javafx.Components.SoundEffectStoreComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Rectangle;
+import inf.elte.hu.gameengine_javafx.Misc.AnimationFrame;
 import inf.elte.hu.gameengine_javafx.Misc.AnimationStateMachine;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class PlayerEntity extends Entity {
@@ -48,22 +50,18 @@ public class PlayerEntity extends Entity {
 
                 AnimationComponent animationComponent = entity.getComponent(AnimationComponent.class);
 
-                ArrayList<String> downFramePath = new ArrayList<>();
-                downFramePath.add("/assets/images/" + "PlayerDown_1.png");
-                downFramePath.add("/assets/images/" + "PlayerDown_2.png");
-                ArrayList<String> upFramePath = new ArrayList<>();
-                upFramePath.add("/assets/images/" + "PlayerUp_1.png");
-                upFramePath.add("/assets/images/" + "PlayerUp_2.png");
-                ArrayList<String> leftFramePath = new ArrayList<>();
-                leftFramePath.add("/assets/images/" + "PlayerLeft_1.png");
-                leftFramePath.add("/assets/images/" + "PlayerLeft_2.png");
-                ArrayList<String> rightFramePath = new ArrayList<>();
-                rightFramePath.add("/assets/images/" + "PlayerRight_1.png");
-                rightFramePath.add("/assets/images/" + "PlayerRight_2.png");
+                AnimationFrame downFrame1 = new AnimationFrame("/assets/images/" + "PlayerDown_1.png", 15 * Time.getInstance().getFPS() / 60);
+                AnimationFrame downFrame2 = new AnimationFrame("/assets/images/" + "PlayerDown_2.png", 15 * Time.getInstance().getFPS() / 60);
 
-                ArrayList<Integer> durations = new ArrayList<>();
-                durations.add(15 * Time.getInstance().getFPS() / 60);
-                durations.add(15 * Time.getInstance().getFPS() / 60);
+                AnimationFrame upFrame1 = new AnimationFrame("/assets/images/" + "PlayerUp_1.png", 15 * Time.getInstance().getFPS() / 60);
+                AnimationFrame upFrame2 = new AnimationFrame("/assets/images/" + "PlayerUp_2.png", 15 * Time.getInstance().getFPS() / 60);
+
+                AnimationFrame leftFrame1 = new AnimationFrame("/assets/images/" + "PlayerLeft_1.png", 15 * Time.getInstance().getFPS() / 60);
+                AnimationFrame leftFrame2 = new AnimationFrame("/assets/images/" + "PlayerLeft_2.png", 15 * Time.getInstance().getFPS() / 60);
+
+                AnimationFrame rightFrame1 = new AnimationFrame("/assets/images/" + "PlayerRight_1.png", 15 * Time.getInstance().getFPS() / 60);
+                AnimationFrame rightFrame2 = new AnimationFrame("/assets/images/" + "PlayerRight_2.png", 15 * Time.getInstance().getFPS() / 60);
+
 
                 String currentState = entity.getComponent(StateComponent.class).getCurrentState();
                 lastState = currentState;
@@ -71,53 +69,34 @@ public class PlayerEntity extends Entity {
                 switch (currentState) {
                     case "up":
                         if (animationComponent != null) {
-                            try {
-                                animationComponent.setFrames(upFramePath);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                            animationComponent.setDurations(durations);
+                            animationComponent.setFrames(List.of(upFrame1, upFrame2));
                         } else {
-                            entity.addComponent(new AnimationComponent(upFramePath, durations));
+                            entity.addComponent(new AnimationComponent(List.of(upFrame1, upFrame2)));
                         }
                         break;
                     case "down":
                         if (animationComponent != null) {
-                            try {
-                                animationComponent.setFrames(downFramePath);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                            animationComponent.setDurations(durations);
+                            animationComponent.setFrames(List.of(downFrame1, downFrame2));
                         } else {
-                            entity.addComponent(new AnimationComponent(downFramePath, durations));
+                            entity.addComponent(new AnimationComponent(List.of(downFrame1, downFrame2)));
                         }
                         break;
                     case "left":
                         if (animationComponent != null) {
-                            try {
-                                animationComponent.setFrames(leftFramePath);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                            animationComponent.setDurations(durations);
+                            animationComponent.setFrames(List.of(leftFrame1, leftFrame2));
                         } else {
-                            entity.addComponent(new AnimationComponent(leftFramePath, durations));
+                            entity.addComponent(new AnimationComponent(List.of(leftFrame1, leftFrame2)));
                         }
                         break;
                     case "right":
                         if (animationComponent != null) {
-                            try {
-                                animationComponent.setFrames(rightFramePath);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                            animationComponent.setDurations(durations);
+                            animationComponent.setFrames(List.of(rightFrame1, rightFrame2));
                         } else {
-                            entity.addComponent(new AnimationComponent(rightFramePath, durations));
+                            entity.addComponent(new AnimationComponent(List.of(rightFrame1, rightFrame2)));
                         }
                         break;
                     case "idle":
+
                         entity.removeComponentsByType(AnimationComponent.class);
                         entity.getComponent(ImageComponent.class).setNextFrame("/assets/images/PlayerIdle.png");
                         break;
