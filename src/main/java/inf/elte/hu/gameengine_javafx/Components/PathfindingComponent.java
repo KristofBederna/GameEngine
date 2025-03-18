@@ -90,7 +90,7 @@ public class PathfindingComponent extends Component {
         // Define directions
         int[][] directions = {
                 {-1, 0}, {1, 0}, {0, -1}, {0, 1}, // Cardinal (Up, Down, Left, Right)
-                {-1, -1}, {-1, 1}, {1, -1}, {1, 1} // Diagonal
+               // {-1, -1}, {-1, 1}, {1, -1}, {1, 1} // Diagonal
         };
 
         for (int[] dir : directions) {

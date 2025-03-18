@@ -47,7 +47,7 @@ public class Shape {
 
     private static int orientation(Point p, Point q, Point r) {
         double val = (q.getY() - p.getY()) * (r.getX() - q.getX()) - (q.getX() - p.getX()) * (r.getY() - q.getY());
-        if (Math.abs(val) < 1e-9) {
+        if (Math.abs(val) < Config.EPSILON) {
             return 0;
         } else if (val > 0) {
             return 1;

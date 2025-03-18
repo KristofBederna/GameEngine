@@ -25,7 +25,7 @@ import java.util.Objects;
 public class PlayerEntity extends Entity {
     public PlayerEntity(double x, double y, String state, String path, double width, double height) {
         this.getComponent(PositionComponent.class).setLocalPosition(x, y, this);
-        this.addComponent(new VelocityComponent(12));
+        this.addComponent(new VelocityComponent(2));
         this.addComponent(new AccelerationComponent());
         this.addComponent(new DragComponent(0.98));
         this.addComponent(new MassComponent(0.5));

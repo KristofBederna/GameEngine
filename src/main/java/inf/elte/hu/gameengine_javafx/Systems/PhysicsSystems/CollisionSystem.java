@@ -85,8 +85,7 @@ public class CollisionSystem extends GameSystem {
      * @return a list of filtered entities that include hitboxes, velocity, and position components
      */
     private static List<Entity> getEntities() {
-        List<Entity> filteredEntities = EntityHub.getInstance().getEntitiesInsideViewport(CameraEntity.getInstance());
-        filteredEntities.retainAll(EntityHub.getInstance().getEntitiesWithComponent(HitBoxComponent.class));
+        List<Entity> filteredEntities = EntityHub.getInstance().getEntitiesWithComponent(HitBoxComponent.class);
         filteredEntities.retainAll(EntityHub.getInstance().getEntitiesWithComponent(VelocityComponent.class));
         filteredEntities.retainAll(EntityHub.getInstance().getEntitiesWithComponent(PositionComponent.class));
         return filteredEntities;

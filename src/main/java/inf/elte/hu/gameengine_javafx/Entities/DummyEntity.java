@@ -5,6 +5,8 @@ import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent
 import inf.elte.hu.gameengine_javafx.Components.InteractiveComponent;
 import inf.elte.hu.gameengine_javafx.Components.PathfindingComponent;
 import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.AccelerationComponent;
+import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.DragComponent;
+import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.MassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.VelocityComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.*;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.AnimationComponent;
@@ -28,12 +30,13 @@ public class DummyEntity extends Entity {
 
     public DummyEntity(int x, int y, String state, String path, double width, double height) {
         this.getComponent(PositionComponent.class).setLocalPosition(x, y, this);
-        this.addComponent(new VelocityComponent(12));
+        this.addComponent(new VelocityComponent(2));
         this.addComponent(new StateComponent(state));
         this.addComponent(new ImageComponent(path, width, height));
-        this.addComponent(new InteractiveComponent());
         this.addComponent(new DimensionComponent(width, height));
         this.addComponent(new AccelerationComponent());
+        this.addComponent(new DragComponent(0.98));
+        this.addComponent(new MassComponent(0.5));
         this.addComponent(new HitBoxComponent(new Rectangle(new Point(x, y), width, height).getPoints()));
         this.addComponent(new ZIndexComponent(2));
         this.addComponent(new CentralMassComponent((double) x + width / 2, (double) y + height / 2));

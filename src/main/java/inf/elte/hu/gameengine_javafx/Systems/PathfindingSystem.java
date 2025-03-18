@@ -1,6 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Systems;
 
 import inf.elte.hu.gameengine_javafx.Components.PathfindingComponent;
+import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.AccelerationComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.VelocityComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.StateComponent;
@@ -8,6 +9,7 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
+import inf.elte.hu.gameengine_javafx.Misc.Time;
 
 import java.util.*;
 
@@ -58,14 +60,22 @@ public class PathfindingSystem extends GameSystem {
                     if (Math.abs(deltaX) >= Math.abs(deltaY)) {
                         if (deltaX > 0) {
                             entity.getComponent(StateComponent.class).setCurrentState("right");
+                            moveRight(entity);
+                            counterLeft(entity);
                         } else {
                             entity.getComponent(StateComponent.class).setCurrentState("left");
+                            moveLeft(entity);
+                            counterRight(entity);
                         }
                     } else {
                         if (deltaY > 0) {
                             entity.getComponent(StateComponent.class).setCurrentState("down");
+                            moveDown(entity);
+                            counterUp(entity);
                         } else {
                             entity.getComponent(StateComponent.class).setCurrentState("up");
+                            moveUp(entity);
+                            counterDown(entity);
                         }
                     }
 
@@ -83,6 +93,42 @@ public class PathfindingSystem extends GameSystem {
                 }
             }
         }
+    }
+
+    private void moveUp(Entity e) {
+        double dy = -4 * Time.getInstance().getDeltaTime();
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDy(dy);
+    }
+
+    private void moveDown(Entity e) {
+        double dy = 4 * Time.getInstance().getDeltaTime();
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDy(dy);
+    }
+
+    private void moveLeft(Entity e) {
+        double dx = -4 * Time.getInstance().getDeltaTime();
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(dx);
+    }
+
+    private void moveRight(Entity e) {
+        double dx = 4 * Time.getInstance().getDeltaTime();
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(dx);
+    }
+
+    private void counterUp(Entity e) {
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDy(0);
+    }
+
+    private void counterDown(Entity e) {
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDy(0);
+    }
+
+    private void counterRight(Entity e) {
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(0);
+    }
+
+    private void counterLeft(Entity e) {
+        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(0);
     }
 
     /**

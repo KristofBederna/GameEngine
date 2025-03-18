@@ -20,6 +20,7 @@ import inf.elte.hu.gameengine_javafx.Misc.Config;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is responsible for updating the movement of entities in the game world. It calculates the entity's
@@ -160,9 +161,8 @@ public class MovementSystem extends GameSystem {
      *
      * @return A list of entities that have a PositionComponent, VelocityComponent, and are inside the viewport.
      */
-    private static ArrayList<Entity> getEntities() {
-        var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getEntitiesInsideViewport(CameraEntity.getInstance()));
-        entitiesSnapshot.retainAll(EntityHub.getInstance().getEntitiesWithComponent(PositionComponent.class));
+    private static List<Entity> getEntities() {
+        var entitiesSnapshot = EntityHub.getInstance().getEntitiesWithComponent(PositionComponent.class);
         entitiesSnapshot.retainAll(EntityHub.getInstance().getEntitiesWithComponent(VelocityComponent.class));
         return entitiesSnapshot;
     }
