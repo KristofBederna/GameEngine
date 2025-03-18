@@ -1,13 +1,12 @@
 package inf.elte.hu.gameengine_javafx.Systems.ResourceSystems;
 
 import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
-import inf.elte.hu.gameengine_javafx.Components.SoundEffectStoreComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
-import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Misc.SoundEffect;
+import inf.elte.hu.gameengine_javafx.Misc.SoundEffectStore;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
@@ -24,49 +23,52 @@ public class SoundSystem extends GameSystem {
             return;
         }
         Entity listenerEntity = CameraEntity.getInstance().getOwner();
-        var entitiesSnapshot = EntityHub.getInstance().getEntitiesWithComponent(SoundEffectStoreComponent.class);
-
         PositionComponent listenerPos = listenerEntity.getComponent(PositionComponent.class);
         if (listenerPos == null) return;
 
-        for (Entity entity : entitiesSnapshot) {
-            if (entity == null) continue;
+        SoundEffectStore soundStore = SoundEffectStore.getInstance();
 
-            SoundEffectStoreComponent soundStore = entity.getComponent(SoundEffectStoreComponent.class);
+        if (soundStore != null) {
+            for (SoundEffect soundEffect : soundStore.getSoundEffects()) {
+                Entity owner = soundEffect.getOwner();
+                PositionComponent entityPos = owner.getComponent(PositionComponent.class);
+                double maxDistance = soundEffect.getMaxDistance();
+                float minVolume = soundEffect.getMinVolume();
+                float maxVolume = soundEffect.getMaxVolume();
 
-            if (soundStore != null) {
-                for (SoundEffect soundEffect : soundStore.getSoundEffects()) {
-                    Entity owner = soundEffect.getOwner();
-                    PositionComponent entityPos = owner.getComponent(PositionComponent.class);
-                    double maxDistance = soundEffect.getMaxDistance();
-                    float minVolume = soundEffect.getMinVolume();
-                    float maxVolume = soundEffect.getMaxVolume();
+                double distance = calculateDistance(listenerPos, entityPos);
+                float volume = calculateVolume(distance, maxDistance, minVolume, maxVolume);
 
-                    double distance = calculateDistance(listenerPos, entityPos);
-                    float volume = calculateVolume(distance, maxDistance, minVolume, maxVolume);
+                Clip clip = ResourceHub.getInstance().getResourceManager(Clip.class).get(soundEffect.getPath());
 
-                    Clip clip = ResourceHub.getInstance().getResourceManager(Clip.class).get(soundEffect.getPath());
+                if (clip == null) {
+                    System.err.println("Clip not found for: " + soundEffect.getPath());
+                    continue;
+                }
 
-                    if (clip == null) {
-                        System.err.println("Clip not found for: " + soundEffect.getPath());
+                if (!clip.isOpen()) {
+                    try {
+                        clip.open();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                         continue;
                     }
+                }
 
-                    if (!clip.isOpen()) {
-                        try {
-                            clip.open();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            continue;
-                        }
-                    }
-
+                if (!soundEffect.isAlreadyPlayed()) {
                     setVolume(clip, volume);
                     playSound(clip, volume);
+                    soundEffect.setAlreadyPlayed(true);
+                } else if (soundEffect.isAllowLooping()) {
+                    if (!clip.isRunning()) {
+                        setVolume(clip, volume);
+                        playSound(clip, volume);
+                    }
                 }
             }
         }
     }
+
 
     private double calculateDistance(PositionComponent a, PositionComponent b) {
         double dx = b.getGlobalX() - a.getGlobalX();

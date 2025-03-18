@@ -7,13 +7,13 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class SoundResourceManager extends ResourceManager<Clip> {
-    public SoundResourceManager() {
+public class ClipResourceManager extends ResourceManager<Clip> {
+    public ClipResourceManager() {
         super(key -> {
             try {
                 AudioInputStream audioStream;
 
-                InputStream resource = SoundResourceManager.class.getResourceAsStream(key);
+                InputStream resource = ClipResourceManager.class.getResourceAsStream(key);
                 if (resource == null) {
                     System.err.println("Error: Sound file not found at " + key);
                     return null;

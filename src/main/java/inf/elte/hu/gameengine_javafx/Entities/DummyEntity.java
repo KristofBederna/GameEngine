@@ -10,7 +10,6 @@ import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.*;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.AnimationComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ZIndexComponent;
-import inf.elte.hu.gameengine_javafx.Components.SoundEffectStoreComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Rectangle;
@@ -18,8 +17,6 @@ import inf.elte.hu.gameengine_javafx.Misc.AnimationFrame;
 import inf.elte.hu.gameengine_javafx.Misc.Config;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,7 +33,6 @@ public class DummyEntity extends Entity {
         this.addComponent(new DimensionComponent(width, height));
         this.addComponent(new AccelerationComponent());
         this.addComponent(new HitBoxComponent(new Rectangle(new Point(x, y), width, height).getPoints()));
-        this.addComponent(new SoundEffectStoreComponent());
         this.addComponent(new ZIndexComponent(2));
         this.addComponent(new CentralMassComponent((double) x + width / 2, (double) y + height / 2));
         this.addComponent(new PathfindingComponent(new Point(this.getComponent(CentralMassComponent.class).getCentralX(), this.getComponent(CentralMassComponent.class).getCentralY()), new Point(x + (Config.tileSize * 21) + 50, y + (Config.tileSize * 7) + 50)));
