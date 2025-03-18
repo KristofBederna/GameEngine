@@ -3,6 +3,7 @@ package inf.elte.hu.gameengine_javafx.Systems;
 import inf.elte.hu.gameengine_javafx.Components.PathfindingComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.VelocityComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.StateComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
@@ -45,19 +46,35 @@ public class PathfindingSystem extends GameSystem {
             if (pathfindingComponent.getPath() == null) {
                 pathfindingComponent.setPath(selectPath(start, end, entity));
             } else {
-                if (entity.getComponent(VelocityComponent.class) == null) {
-                    System.out.println("Entity has no velocity component");
-                    continue;
-                }
-
                 if (!pathfindingComponent.getPath().isEmpty()) {
                     Point node = pathfindingComponent.getPath().getFirst();
                     Point position = new Point(entity.getComponent(CentralMassComponent.class).getCentralX(),
                             entity.getComponent(CentralMassComponent.class).getCentralY());
                     entity.getComponent(VelocityComponent.class).getVelocity().moveTowards(node, entity);
 
+                    double deltaX = node.getX() - position.getX();
+                    double deltaY = node.getY() - position.getY();
+
+                    if (Math.abs(deltaX) >= Math.abs(deltaY)) {
+                        if (deltaX > 0) {
+                            entity.getComponent(StateComponent.class).setCurrentState("right");
+                        } else {
+                            entity.getComponent(StateComponent.class).setCurrentState("left");
+                        }
+                    } else {
+                        if (deltaY > 0) {
+                            entity.getComponent(StateComponent.class).setCurrentState("down");
+                        } else {
+                            entity.getComponent(StateComponent.class).setCurrentState("up");
+                        }
+                    }
+
+
                     if (position.compareCoordinates(node)) {
                         pathfindingComponent.getPath().removeFirst();
+                        if (pathfindingComponent.getPath().isEmpty()) {
+                            entity.getComponent(StateComponent.class).setCurrentState("idle");
+                        }
                     }
                 }
 
