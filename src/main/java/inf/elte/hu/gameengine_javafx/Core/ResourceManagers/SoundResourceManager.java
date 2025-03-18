@@ -15,7 +15,7 @@ public class SoundResourceManager extends ResourceManager<Clip> {
 
                 InputStream resource = SoundResourceManager.class.getResourceAsStream(key);
                 if (resource == null) {
-                    System.err.println("Error: Sound file not found at" + key);
+                    System.err.println("Error: Sound file not found at " + key);
                     return null;
                 }
                 resource = new BufferedInputStream(resource);

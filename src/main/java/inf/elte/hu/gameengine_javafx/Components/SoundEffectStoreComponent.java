@@ -23,14 +23,14 @@ public class SoundEffectStoreComponent extends Component {
         this.soundEffects = soundEffects;
     }
 
-    public void addSoundEffect(String path, String identifier) {
+    public void addSoundEffect(SoundEffect newSoundEffect) {
         for (SoundEffect soundEffect : soundEffects) {
-            if (soundEffect.getPath().equals(path) && soundEffect.getIdentifier().equals(identifier)) {
+            if (soundEffect.equals(newSoundEffect)) {
                 return;
             }
         }
-        soundEffects.add(new SoundEffect(path, identifier));
-        ResourceHub.getInstance().getResourceManager(Clip.class).get(path);
+        soundEffects.add(newSoundEffect);
+        ResourceHub.getInstance().getResourceManager(Clip.class).get(newSoundEffect.getPath());
     }
 
     public void removeSoundEffect(String path) {

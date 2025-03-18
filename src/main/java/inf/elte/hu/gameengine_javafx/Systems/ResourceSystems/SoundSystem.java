@@ -11,16 +11,8 @@ import inf.elte.hu.gameengine_javafx.Misc.SoundEffect;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
-import java.util.ArrayList;
 
 public class SoundSystem extends GameSystem {
-    private static final float MAX_VOLUME = 1.0f;
-    private static final float MIN_VOLUME = 0;
-    private static final double MAX_DISTANCE = 1000;
-
-    private Entity listenerEntity;
-
-
     @Override
     public void start() {
         this.active = true;
@@ -28,14 +20,11 @@ public class SoundSystem extends GameSystem {
 
     @Override
     public void update() {
-        if (CameraEntity.getInstance() == null) {
+        if (CameraEntity.getInstance() == null || CameraEntity.getInstance().getOwner() == null) {
             return;
         }
-        if (CameraEntity.getInstance().getOwner() == null) {
-            return;
-        }
-        listenerEntity = CameraEntity.getInstance().getOwner();
-        var entitiesSnapshot = new ArrayList<>(EntityHub.getInstance().getAllEntities());
+        Entity listenerEntity = CameraEntity.getInstance().getOwner();
+        var entitiesSnapshot = EntityHub.getInstance().getEntitiesWithComponent(SoundEffectStoreComponent.class);
 
         PositionComponent listenerPos = listenerEntity.getComponent(PositionComponent.class);
         if (listenerPos == null) return;
@@ -44,18 +33,36 @@ public class SoundSystem extends GameSystem {
             if (entity == null) continue;
 
             SoundEffectStoreComponent soundStore = entity.getComponent(SoundEffectStoreComponent.class);
-            PositionComponent entityPos = entity.getComponent(PositionComponent.class);
 
-            if (soundStore != null && entityPos != null) {
-                double distance = calculateDistance(listenerPos, entityPos);
-                float volume = calculateVolume(distance);
-
+            if (soundStore != null) {
                 for (SoundEffect soundEffect : soundStore.getSoundEffects()) {
+                    Entity owner = soundEffect.getOwner();
+                    PositionComponent entityPos = owner.getComponent(PositionComponent.class);
+                    double maxDistance = soundEffect.getMaxDistance();
+                    float minVolume = soundEffect.getMinVolume();
+                    float maxVolume = soundEffect.getMaxVolume();
+
+                    double distance = calculateDistance(listenerPos, entityPos);
+                    float volume = calculateVolume(distance, maxDistance, minVolume, maxVolume);
+
                     Clip clip = ResourceHub.getInstance().getResourceManager(Clip.class).get(soundEffect.getPath());
-                    if (clip != null) {
-                        setVolume(clip, volume);
-                        playSound(clip, volume);
+
+                    if (clip == null) {
+                        System.err.println("Clip not found for: " + soundEffect.getPath());
+                        continue;
                     }
+
+                    if (!clip.isOpen()) {
+                        try {
+                            clip.open();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            continue;
+                        }
+                    }
+
+                    setVolume(clip, volume);
+                    playSound(clip, volume);
                 }
             }
         }
@@ -67,17 +74,22 @@ public class SoundSystem extends GameSystem {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    private float calculateVolume(double distance) {
-        if (distance > MAX_DISTANCE) return MIN_VOLUME;
-        return (float) (MAX_VOLUME / (1 + (distance / MAX_DISTANCE) * (distance / MAX_DISTANCE)));
+    private float calculateVolume(double distance, double maxDistance, float minVolume, float maxVolume) {
+        if (maxDistance == 0) return 0f;
+        if (distance > maxDistance) return minVolume;
+        return (float) (maxVolume / (1 + (distance / maxDistance) * (distance / maxDistance)));
     }
 
     private void setVolume(Clip clip, float volume) {
-        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        float minGain = gainControl.getMinimum();
-        float maxGain = gainControl.getMaximum();
-        float gain = minGain + (maxGain - minGain) * volume;
-        gainControl.setValue(gain);
+        try {
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            float minGain = gainControl.getMinimum();
+            float maxGain = gainControl.getMaximum();
+            float gain = minGain + (maxGain - minGain) * volume;
+            gainControl.setValue(gain);
+        } catch (Exception e) {
+            System.err.println("Failed to set volume: " + e.getMessage());
+        }
     }
 
     private void playSound(Clip clip, float volume) {
