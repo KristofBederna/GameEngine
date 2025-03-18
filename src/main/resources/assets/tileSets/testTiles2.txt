@@ -7,3 +7,4 @@
 8 topWall
 9 bottomWall
 1 windowWall
+0 default

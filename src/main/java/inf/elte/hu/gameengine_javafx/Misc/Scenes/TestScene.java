@@ -28,10 +28,7 @@ import inf.elte.hu.gameengine_javafx.Systems.PathfindingSystem;
 import inf.elte.hu.gameengine_javafx.Systems.PhysicsSystems.CollisionSystem;
 import inf.elte.hu.gameengine_javafx.Systems.PhysicsSystems.MovementSystem;
 import inf.elte.hu.gameengine_javafx.Systems.RenderingSystems.*;
-import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.ResourceSystem;
-import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SceneManagementSystem;
-import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SoundSystem;
-import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.WorldLoaderSystem;
+import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.*;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -105,7 +102,7 @@ public class TestScene extends GameScene {
         systemHub.addSystem(ResourceSystem.class, new ResourceSystem(), 9);
         systemHub.addSystem(CameraSystem.class, new CameraSystem(), 10);
         systemHub.addSystem(SoundSystem.class, new SoundSystem(), 11);
-        systemHub.addSystem(WorldLoaderSystem.class, new WorldLoaderSystem(), 12);
+        systemHub.addSystem(DynamicWorldLoaderSystem.class, new DynamicWorldLoaderSystem(2, 2), 12);
     }
 
     private void cameraSetup() {

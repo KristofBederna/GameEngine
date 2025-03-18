@@ -1,5 +1,6 @@
 package inf.elte.hu.gameengine_javafx.Misc.MapClasses;
 
+import inf.elte.hu.gameengine_javafx.Components.TileValueComponent;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Misc.Config;
@@ -129,5 +130,21 @@ public class World {
             return chunk.getElement(localX, localY);
         }
         return null;
+    }
+
+    public void setElementAt(Point point, TileEntity tile) {
+        int tileX = Math.floorDiv((int) point.getX(), Config.tileSize);
+        int tileY = Math.floorDiv((int) point.getY(), Config.tileSize);
+
+        int chunkX = Math.floorDiv(tileX, Config.chunkWidth);
+        int chunkY = Math.floorDiv(tileY, Config.chunkHeight);
+
+        int localX = Math.floorMod(tileY, Config.chunkWidth);
+        int localY = Math.floorMod(tileX, Config.chunkHeight);
+
+        Chunk chunk = chunks.get(new Tuple<>(chunkX, chunkY));
+        if (chunk != null) {
+            chunk.setElement(localX, localY, tile.getComponent(TileValueComponent.class).getTileValue());
+        }
     }
 }

@@ -15,6 +15,7 @@ import inf.elte.hu.gameengine_javafx.Misc.Config;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.Chunk;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.WorldGenerator;
 import inf.elte.hu.gameengine_javafx.Misc.Tuple;
+import inf.elte.hu.gameengine_javafx.Misc.Walker;
 
 import java.util.*;
 
@@ -46,7 +47,22 @@ public class DynamicWorldLoaderSystem extends GameSystem {
         WorldEntity map = WorldEntity.getInstance();
         if (map == null) return;
         loadFullWorld();
+        runWalkerAlgorithm(map);
     }
+
+    public void runWalkerAlgorithm(WorldEntity world) {
+        Random random = new Random();
+
+        // Start with one walker at a random position
+        int startX = random.nextInt(Config.chunkWidth);
+        int startY = random.nextInt(Config.chunkHeight);
+        Walker walker = new Walker(startX, startY, world, new ArrayList<>());
+
+        walker.walk();
+
+        System.out.println("Walker algorithm completed!");
+    }
+
 
     /**
      * Updates the system by checking the player's position and loading/unloading chunks accordingly.
