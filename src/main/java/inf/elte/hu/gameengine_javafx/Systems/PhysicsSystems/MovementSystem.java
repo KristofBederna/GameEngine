@@ -13,7 +13,9 @@ import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataCompone
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
+import inf.elte.hu.gameengine_javafx.Entities.ParticleEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Misc.Config;
@@ -96,21 +98,23 @@ public class MovementSystem extends GameSystem {
 
         TileEntity tile = getCurrentTile(entity);
 
-        if (tile.getComponent(FrictionComponent.class) != null) {
-            FrictionComponent frictionComponent = tile.getComponent(FrictionComponent.class);
-            double friction = (frictionComponent != null) ? frictionComponent.getFriction() : Config.friction;
-            double frictionForce = friction * Time.getInstance().getDeltaTime();
+        if (!(entity instanceof ParticleEntity)) {
+            if (tile.getComponent(FrictionComponent.class) != null) {
+                FrictionComponent frictionComponent = tile.getComponent(FrictionComponent.class);
+                double friction = (frictionComponent != null) ? frictionComponent.getFriction() : Config.friction;
+                double frictionForce = friction * Time.getInstance().getDeltaTime();
 
-            if (Math.abs(newDx) > frictionForce) {
-                newDx -= Math.signum(newDx) * frictionForce;
-            } else {
-                newDx = 0;
-            }
+                if (Math.abs(newDx) > frictionForce) {
+                    newDx -= Math.signum(newDx) * frictionForce;
+                } else {
+                    newDx = 0;
+                }
 
-            if (Math.abs(newDy) > frictionForce) {
-                newDy -= Math.signum(newDy) * frictionForce;
-            } else {
-                newDy = 0;
+                if (Math.abs(newDy) > frictionForce) {
+                    newDy -= Math.signum(newDy) * frictionForce;
+                } else {
+                    newDy = 0;
+                }
             }
         }
 
@@ -162,9 +166,7 @@ public class MovementSystem extends GameSystem {
      * @return A list of entities that have a PositionComponent, VelocityComponent, and are inside the viewport.
      */
     private static List<Entity> getEntities() {
-        var entitiesSnapshot = EntityHub.getInstance().getEntitiesWithComponent(PositionComponent.class);
-        entitiesSnapshot.retainAll(EntityHub.getInstance().getEntitiesWithComponent(VelocityComponent.class));
-        return entitiesSnapshot;
+        return EntityHub.getInstance().getEntitiesWithComponent(VelocityComponent.class);
     }
 
     /**

@@ -44,8 +44,10 @@ public abstract class Entity {
      * @return The Entity's Component associated with the Class in the parameter.
      */
     public <T extends Component> T getComponent(Class<T> componentType) {
-        return componentType.cast(components.get(componentType));
+        Component component = components.get(componentType);
+        return component != null ? componentType.cast(component) : null;
     }
+
 
     /**
      * Removes the Entity's Component associated with the Class in the parameter.

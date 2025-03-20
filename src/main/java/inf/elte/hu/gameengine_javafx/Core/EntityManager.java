@@ -1,7 +1,9 @@
 package inf.elte.hu.gameengine_javafx.Core;
 
+import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,8 +50,14 @@ public class EntityManager<T extends Entity> {
      */
     public void register(T entity) {
         this.entities.put(entity.getId(), entity);
+        for (Class<? extends Component> componentClass : entity.getAllComponents().keySet()) {
+            EntityHub.getInstance().getComponentCache()
+                    .computeIfAbsent(componentClass, k -> new ArrayList<>())
+                    .add(entity.getId());
+        }
         EntityHub.getInstance().refreshEntitiesList();
     }
+
 
     /**
      * Unloads an entity by its ID, removing it from the manager.

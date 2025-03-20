@@ -2,6 +2,8 @@ package inf.elte.hu.gameengine_javafx.Systems.RenderingSystems;
 
 import inf.elte.hu.gameengine_javafx.Components.MaxDistanceFromOriginComponent;
 import inf.elte.hu.gameengine_javafx.Components.Default.ParentComponent;
+import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.AccelerationComponent;
+import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.DragComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DirectionComponent;
 import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.VelocityComponent;
@@ -11,6 +13,7 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Entities.ParticleEmitterEntity;
 import inf.elte.hu.gameengine_javafx.Entities.ParticleEntity;
+import inf.elte.hu.gameengine_javafx.Maths.Vector;
 import inf.elte.hu.gameengine_javafx.Misc.Direction;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
 
@@ -36,56 +39,66 @@ public class ParticleSystem extends GameSystem {
             }
 
             if (System.currentTimeMillis() >= entity.getComponent(TimeComponent.class).getLastOccurrence() + entity.getComponent(TimeComponent.class).getTimeBetweenOccurrences()) {
-                ((ParticleEmitterEntity) entity).createParticles((ParticleEntity) parent.getChildren().iterator().next(), 250, entity.getComponent(ParentComponent.class));
+                ((ParticleEmitterEntity) entity).createParticles((ParticleEntity) parent.getChildren().iterator().next(), 10, entity.getComponent(ParentComponent.class));
                 entity.getComponent(TimeComponent.class).setLastOccurrence();
             }
 
             Set<Entity> toBeRemoved = new HashSet<>();
             for (Entity particle : parent.getChildren()) {
                 ParticleEntity particleEntity = (ParticleEntity) particle;
-                VelocityComponent velocity = particleEntity.getComponent(VelocityComponent.class);
+                AccelerationComponent accelerationComponent = particleEntity.getComponent(AccelerationComponent.class);
                 PositionComponent position = particleEntity.getComponent(PositionComponent.class);
 
-                if (velocity == null || position == null) {
+                if (accelerationComponent == null || position == null) {
                     continue;
                 }
 
-                if (velocity.getVelocity().getDx() == 0 && velocity.getVelocity().getDy() == 0) {
+                if (accelerationComponent.getAcceleration().getDx() == 0 && accelerationComponent.getAcceleration().getDy() == 0) {
                     Random random = new Random();
 
-                    double speed = 50 + random.nextDouble(0, 50);
+                    double minSpeed = -1;
+                    double maxSpeed = 1;
+
                     double angle = random.nextDouble(-Math.PI / 4, Math.PI / 4);
 
                     double dx = 0;
                     double dy = switch (direction) {
                         case UP -> {
-                            dx = random.nextDouble(-500, 500) * Time.getInstance().getDeltaTime();
-                            yield -speed * Time.getInstance().getDeltaTime();
+                            dx = random.nextDouble(minSpeed, maxSpeed) * Time.getInstance().getDeltaTime();
+                            yield minSpeed * Time.getInstance().getDeltaTime();
                         }
                         case DOWN -> {
-                            dx = random.nextDouble(-500, 500) * Time.getInstance().getDeltaTime();
-                            yield speed * Time.getInstance().getDeltaTime();
+                            dx = random.nextDouble(minSpeed, maxSpeed) * Time.getInstance().getDeltaTime();
+                            yield maxSpeed * Time.getInstance().getDeltaTime();
                         }
                         case LEFT -> {
-                            dx = -speed * Time.getInstance().getDeltaTime();
-                            yield random.nextDouble(-500, 500) * Time.getInstance().getDeltaTime();
+                            dx = minSpeed * Time.getInstance().getDeltaTime();
+                            yield random.nextDouble(minSpeed, maxSpeed) * Time.getInstance().getDeltaTime();
                         }
                         case RIGHT -> {
-                            dx = speed * Time.getInstance().getDeltaTime();
-                            yield random.nextDouble(-500, 500) * Time.getInstance().getDeltaTime();
+                            dx = maxSpeed * Time.getInstance().getDeltaTime();
+                            yield random.nextDouble(minSpeed, maxSpeed) * Time.getInstance().getDeltaTime();
                         }
                         case ALL -> {
-                            dx = random.nextDouble(-500, 500) * Time.getInstance().getDeltaTime();
-                            yield random.nextDouble(-500, 500) * Time.getInstance().getDeltaTime();
+                            double baseDx = random.nextDouble(minSpeed, maxSpeed) * Time.getInstance().getDeltaTime();
+                            double baseDy = random.nextDouble(minSpeed, maxSpeed) * Time.getInstance().getDeltaTime();
+
+                            double circleAngle = random.nextDouble(0, 2 * Math.PI);
+                            double magnitude = random.nextDouble(0, 20) * Time.getInstance().getDeltaTime();
+
+                            double angleDx = Math.cos(circleAngle) * magnitude;
+                            double angleDy = Math.sin(circleAngle) * magnitude;
+
+                            dx = baseDx + angleDx;
+                            yield  baseDy + angleDy;
                         }
                     };
 
                     dx += Math.cos(angle) * random.nextDouble(0, 20) * Time.getInstance().getDeltaTime();
                     dy += Math.sin(angle) * random.nextDouble(0, 20) * Time.getInstance().getDeltaTime();
 
-                    velocity.setVelocity(dx, dy);
-                    double drag = 0.98;
-                    velocity.setVelocity(velocity.getVelocity().getDx() * drag, velocity.getVelocity().getDy() * drag);
+                    double drag = particle.getComponent(DragComponent.class).getDrag();
+                    accelerationComponent.setAcceleration(new Vector(dx * drag, dy * drag));
                 }
 
                 if (particleEntity.getComponent(MaxDistanceFromOriginComponent.class).isOverMaxDistance(particleEntity)) {

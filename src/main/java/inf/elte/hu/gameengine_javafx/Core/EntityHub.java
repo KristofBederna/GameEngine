@@ -7,10 +7,7 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The {@code EntityHub} class is a singleton responsible for managing entities and their associated
@@ -24,7 +21,12 @@ import java.util.Map;
 public class EntityHub {
     private static EntityHub instance;
     private final Map<Class<?>, EntityManager<?>> entityManagers;
-    final List<Entity> entities = new ArrayList<>();
+    final Map<Integer, Entity> entities = new HashMap<>();
+    private final Map<Class<? extends Component>, List<Integer>> componentCache = new HashMap<>();
+
+    public Map<Class<? extends Component>, List<Integer>> getComponentCache() {
+        return componentCache;
+    }
 
     /**
      * Private constructor for initializing the entity hub.
@@ -107,7 +109,7 @@ public class EntityHub {
      * @return a list of all entities
      */
     public List<Entity> getAllEntities() {
-        return entities;
+        return entities.values().stream().toList();
     }
 
     /**
@@ -117,7 +119,9 @@ public class EntityHub {
         synchronized (entities) {
             entities.clear();
             for (EntityManager<?> entityManager : entityManagers.values()) {
-                entities.addAll(entityManager.getEntities().values());
+                for(Entity entity : entityManager.getEntities().values()) {
+                    entities.put(entity.getId(), entity);
+                }
             }
         }
     }
@@ -133,7 +137,7 @@ public class EntityHub {
 
         List<Entity> visibleEntities = new ArrayList<>();
         synchronized (entities) {
-            for (Entity entity : entities) {
+            for (Entity entity : entities.values()) {
                 PositionComponent position = entity.getComponent(PositionComponent.class);
                 if (position == null) continue;
 
@@ -159,16 +163,22 @@ public class EntityHub {
      * @return a list of entities that have the specified component
      */
     public List<Entity> getEntitiesWithComponent(Class<? extends Component> type) {
-        List<Entity> entitiesWithComponent = new ArrayList<>();
-        synchronized (entities) {
-            for (Entity entity : entities) {
-                if (entity.getAllComponents().containsKey(type)) {
-                    entitiesWithComponent.add(entity);
-                }
-            }
+        List<Integer> entityIds = componentCache.get(type);
+
+        if (entityIds == null || entityIds.isEmpty()) {
+            return new ArrayList<>(); // Modifiable empty list
         }
+
+        // Reuse existing list and map IDs to entities efficiently
+        List<Entity> entitiesWithComponent = new ArrayList<>(entityIds.size());
+        for (Integer id : entityIds) {
+            entitiesWithComponent.add(entities.get(id));
+        }
+
         return entitiesWithComponent;
     }
+
+
 
     /**
      * Returns a list of entities that are of a specific type.
@@ -179,7 +189,7 @@ public class EntityHub {
     public List<Entity> getEntitiesWithType(Class<? extends Entity> type) {
         List<Entity> entitiesWithType = new ArrayList<>();
         synchronized (entities) {
-            for (Entity entity : entities) {
+            for (Entity entity : entities.values()) {
                 if (type.isInstance(entity)) {
                     entitiesWithType.add(entity);
                 }
