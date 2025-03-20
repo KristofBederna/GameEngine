@@ -196,9 +196,9 @@ public class DynamicWorldLoaderSystem extends GameSystem {
                     chunk.setElement(x, y, 4); // topRightWall
                 } else if (x == Config.chunkWidth - 1 && y == Config.chunkHeight - 1 && chunkX == width - 1 && chunkY == height - 1) {
                     chunk.setElement(x, y, 2); // bottomRightWall
-                } else if (x == 0) {
+                } else if (x == 0 && chunkY == 0) {
                     chunk.setElement(x, y, 7); // topWall
-                } else if (x == Config.chunkWidth - 1) {
+                } else if (x == Config.chunkWidth - 1 && chunkY == height - 1) {
                     chunk.setElement(x, y, 8); // bottomWall
                 } else if (y == 0 && chunkX == 0) {
                     chunk.setElement(x, y, 5); // leftWall
