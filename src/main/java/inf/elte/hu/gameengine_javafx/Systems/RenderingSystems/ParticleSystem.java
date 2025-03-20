@@ -89,6 +89,8 @@ public class ParticleSystem extends GameSystem {
                             double angleDx = Math.cos(circleAngle) * magnitude;
                             double angleDy = Math.sin(circleAngle) * magnitude;
 
+                            particle.getComponent(DragComponent.class).setDrag(random.nextDouble(0.01, 1));
+
                             dx = baseDx + angleDx;
                             yield  baseDy + angleDy;
                         }
