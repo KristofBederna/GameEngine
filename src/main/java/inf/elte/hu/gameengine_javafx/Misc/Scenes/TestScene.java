@@ -113,7 +113,7 @@ public class TestScene extends GameScene {
 
     private void entitySetup() {
         new PlayerEntity(420, 120, "idle", "/assets/images/PlayerIdle.png", 0.8 * Config.tileSize, 0.8 * Config.tileSize);
-        new DummyEntity(120, 120, "idle", "/assets/images/PlayerIdle.png", 0.8 * Config.tileSize, 0.8 * Config.tileSize);
+        new DummyEntity(220, 220, "idle", "/assets/images/PlayerIdle.png", 0.8 * Config.tileSize, 0.8 * Config.tileSize);
    //     new ParticleEmitterEntity(400, 400, new ParticleEntity(0, 0, 2, 2, new Rectangle(new Point(0, 0), 2, 2), Color.ORANGE, 300), Direction.RIGHT, 50, 100);
         //new ParticleEmitterEntity(5*Config.tileSize, 500, new ParticleEntity(0, 0, 20, 20, "/assets/images/snowflake.png", 2000), Direction.ALL, 20, 1000);
         //new LightingEntity(250, 250, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
@@ -157,7 +157,7 @@ public class TestScene extends GameScene {
             Random random = new Random();
             Point target = null;
             while (target == null) {
-                target = WorldEntity.getInstance().getComponent(MapMeshComponent.class).getMapCoordinates().get(random.nextInt(16)).get(random.nextInt(16));
+                target = WorldEntity.getInstance().getComponent(MapMeshComponent.class).getMapCoordinates().get(random.nextInt(32)).get(random.nextInt(32));
             }
             PathfindingComponent pathfinding = entity2.getComponent(PathfindingComponent.class);
             if (pathfinding != null && pathfinding.getEnd() != null) {

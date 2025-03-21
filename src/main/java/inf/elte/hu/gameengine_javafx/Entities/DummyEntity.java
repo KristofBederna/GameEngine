@@ -30,12 +30,12 @@ public class DummyEntity extends Entity {
 
     public DummyEntity(int x, int y, String state, String path, double width, double height) {
         this.getComponent(PositionComponent.class).setLocalPosition(x, y, this);
-        this.addComponent(new VelocityComponent(2));
+        this.addComponent(new VelocityComponent(0.5));
         this.addComponent(new StateComponent(state));
         this.addComponent(new ImageComponent(path, width, height));
         this.addComponent(new DimensionComponent(width, height));
         this.addComponent(new AccelerationComponent());
-        this.addComponent(new DragComponent(0.98));
+        this.addComponent(new DragComponent(0.9999));
         this.addComponent(new MassComponent(0.5));
         this.addComponent(new HitBoxComponent(new Rectangle(new Point(x, y), width, height).getPoints()));
         this.addComponent(new ZIndexComponent(2));

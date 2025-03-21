@@ -20,7 +20,7 @@ public class Walker {
     private WorldEntity world;
     private static final int MAX_X = 30;
     private static final int MAX_Y = 30;
-    private static final int STOP_PERCENTAGE = 30;
+    private static final int STOP_PERCENTAGE = 10;
 
     public Walker(int x, int y, WorldEntity world, ArrayList<Walker> walkers) {
         this.x = x;
@@ -47,15 +47,12 @@ public class Walker {
             }
             changeDirection();
         }
-
-        System.out.println("Walker algorithm completed!");
     }
 
     private void teleport() {
         Random r = new Random();
         this.x = r.nextInt(1, MAX_X);  // Random number between 1 and MAX_X
         this.y = r.nextInt(1, MAX_Y);  // Random number between 1 and MAX_Y
-        System.out.println("teleport");
     }
 
     public int getFilledPercentage() {
@@ -79,20 +76,17 @@ public class Walker {
         Random random = new Random();
         int direction = random.nextInt(4);
 
-        // Change direction based on the filled percentage
         switch (direction) {
             case 0 -> { if (y < MAX_Y) y++; } // Move Up
             case 1 -> { if (y > 0) y--; } // Move Down
             case 2 -> { if (x > 0) x--; } // Move Left
             case 3 -> { if (x < MAX_X) x++; } // Move Right
         }
-
-        System.out.println("I'm currently at " + x + "," + y);
     }
 
     private void placeTile() {
         // Mark the tile as non-walkable (0)
-        this.world.getComponent(WorldDataComponent.class).getMapData().setElementAt(new Point(x, y), new TileEntity(0, x, y, "/assets/images/default.png", 50, 50, false));
+        this.world.getComponent(WorldDataComponent.class).getMapData().setElementAt(new Point(x, y), new TileEntity(0, x, y, "/assets/images/default.png", Config.tileSize, Config.tileSize, true));
         this.world.getComponent(WorldDataComponent.class).getMapData().getSavedChunks().get(new Tuple<>(Math.floorDiv(x, Config.chunkWidth), Math.floorDiv(y, Config.chunkHeight))).setElement(x % Config.chunkWidth, y % Config.chunkHeight, 0);
     }
 
@@ -102,7 +96,6 @@ public class Walker {
         }
         Walker walker = new Walker(this.x, this.y, this.world, this.walkers);
         walkers.add(walker);
-        System.out.println("multiply");
     }
 
     private void die() {
@@ -111,12 +104,6 @@ public class Walker {
         }
         if (!walkers.isEmpty()) {
             walkers.remove(walkers.size() - 1); // Safely remove the last walker
-            System.out.println("die");
         }
-    }
-
-
-    public Collection<Walker> getWalkers() {
-        return walkers;
     }
 }

@@ -6,6 +6,7 @@ import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComp
 import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
+import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
@@ -13,6 +14,7 @@ import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Misc.Config;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.Chunk;
+import inf.elte.hu.gameengine_javafx.Misc.MapClasses.World;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.WorldGenerator;
 import inf.elte.hu.gameengine_javafx.Misc.Tuple;
 import inf.elte.hu.gameengine_javafx.Misc.Walker;
@@ -36,6 +38,9 @@ public class DynamicWorldLoaderSystem extends GameSystem {
     public DynamicWorldLoaderSystem(int width, int height) {
         this.width = width;
         this.height = height;
+
+        WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).setWorldWidth(width*Config.chunkWidth);
+        WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).setWorldHeight(height*Config.chunkHeight);
     }
 
     /**
@@ -47,7 +52,9 @@ public class DynamicWorldLoaderSystem extends GameSystem {
         WorldEntity map = WorldEntity.getInstance();
         if (map == null) return;
         loadFullWorld();
-        runWalkerAlgorithm(map);
+
+        runWalkerAlgorithm(WorldEntity.getInstance());
+        addWorldMesh();
     }
 
     public void runWalkerAlgorithm(WorldEntity world) {
@@ -59,8 +66,6 @@ public class DynamicWorldLoaderSystem extends GameSystem {
         Walker walker = new Walker(startX, startY, world, new ArrayList<>());
 
         walker.walk();
-
-        System.out.println("Walker algorithm completed!");
     }
 
 
@@ -154,7 +159,6 @@ public class DynamicWorldLoaderSystem extends GameSystem {
             WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().addChunk(chunkX, chunkY, newChunk);
         }
         addBoundaryWalls(WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getWorld().get(chunkKey), chunkX, chunkY);
-        addWorldMesh();
     }
 
     /**
@@ -164,19 +168,46 @@ public class DynamicWorldLoaderSystem extends GameSystem {
         WorldEntity map = WorldEntity.getInstance();
         if (map == null) return;
         MapMeshComponent mapMesh = map.getComponent(MapMeshComponent.class);
-        List<Point> meshRow = new ArrayList<>();
-        map.getComponent(WorldDataComponent.class).getMapData().getWorld().values().forEach(chunk -> {
-            for (List<TileEntity> tileEntities : chunk.getChunk()) {
-                for (TileEntity tileEntity : tileEntities) {
-                    if (tileEntity.getComponent(HitBoxComponent.class) != null) {
-                        continue;
-                    }
-                    meshRow.add(new Point(tileEntity.getComponent(CentralMassComponent.class).getCentralX(), tileEntity.getComponent(CentralMassComponent.class).getCentralY()));
+
+        int worldWidth = width * Config.chunkWidth;  // Total world width in tiles
+        int worldHeight = height * Config.chunkHeight;  // Total world height in tiles
+
+        // Iterate over each row of the world
+        for (int row = 0; row < worldHeight; row++) {
+            List<Point> meshRow = new ArrayList<>();
+
+            // Determine which chunk-row we're in
+            int chunkRow = row / Config.chunkHeight;
+            int tileRowInChunk = row % Config.chunkHeight;
+
+            // Iterate over every column in the world
+            for (int col = 0; col < worldWidth; col++) {
+                int chunkCol = col / Config.chunkWidth;
+                int tileColInChunk = col % Config.chunkWidth;
+
+                // Fetch the correct chunk and tile
+                TileEntity entity = map.getComponent(WorldDataComponent.class)
+                        .getMapData()
+                        .getWorld()
+                        .get(new Tuple<>(chunkRow, chunkCol))
+                        .getChunk()
+                        .get(tileRowInChunk)
+                        .get(tileColInChunk);
+
+                // If the tile has no hitbox, add its center point, otherwise add null
+                if (entity.getComponent(HitBoxComponent.class) == null) {
+                    meshRow.add(entity.getComponent(CentralMassComponent.class).getCentral());
+                } else {
+                    meshRow.add(null);
                 }
-                mapMesh.addRow(meshRow);
             }
-        });
+
+            // Add the full row to the map mesh
+            mapMesh.addRow(meshRow);
+        }
     }
+
+
 
     /**
      * Adds boundary walls to a chunk, determining wall types based on chunk and tile positions.

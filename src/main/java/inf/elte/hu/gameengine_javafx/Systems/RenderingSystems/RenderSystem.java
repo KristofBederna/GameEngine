@@ -82,12 +82,22 @@ public class RenderSystem extends GameSystem {
                 renderCurrentlyOccupiedTile();
                 renderMapMesh(gc);
                 renderPathFindingRoute(gc);
+                renderPathFindingNeighbours(gc);
                 renderParticles(gc);
             }
             //handleLighting(gc);
 
             setFocused();
         });
+    }
+
+    private static void renderPathFindingNeighbours(GraphicsContext gc) {
+        for (Entity entity : EntityHub.getInstance().getEntitiesWithComponent(PathfindingComponent.class)) {
+            PathfindingComponent pathfindingComponent = entity.getComponent(PathfindingComponent.class);
+            for (Point neighbour : pathfindingComponent.getNeighbours(entity.getComponent(CentralMassComponent.class).getCentral())) {
+                neighbour.render(gc, 5, Color.RED);
+            }
+        }
     }
 
     /**

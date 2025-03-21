@@ -87,15 +87,17 @@ public class PathfindingComponent extends Component {
         int worldWidth = (int) WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldWidth();
         int worldHeight = (int) WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldHeight();
 
+
         // Define directions
         int[][] directions = {
                 {-1, 0}, {1, 0}, {0, -1}, {0, 1}, // Cardinal (Up, Down, Left, Right)
-               // {-1, -1}, {-1, 1}, {1, -1}, {1, 1} // Diagonal
+                //{-1, -1}, {-1, 1}, {1, -1}, {1, 1} // Diagonal
         };
 
         for (int[] dir : directions) {
             int neighbourX = currentX + dir[0];
             int neighbourY = currentY + dir[1];
+
 
             // Out of bounds check
             if (neighbourX < 0 || neighbourX >= worldWidth || neighbourY < 0 || neighbourY >= worldHeight) {
@@ -104,6 +106,7 @@ public class PathfindingComponent extends Component {
 
             // Get the neighbour point
             Point neighbour = mapMeshComponent.getMapCoordinate(neighbourX, neighbourY);
+
             if (neighbour == null) {
                 continue; // Skip invalid points
             }
