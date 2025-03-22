@@ -66,6 +66,6 @@ public class CameraSystem extends GameSystem {
         double newX = playerCenterX - cameraEntity.getComponent(DimensionComponent.class).getWidth() / 2;
         double newY = playerCenterY - cameraEntity.getComponent(DimensionComponent.class).getHeight() / 2;
 
-        cameraEntity.setPosition(newX, newY);
+        cameraEntity.setClampedPosition(newX, newY);
     }
 }

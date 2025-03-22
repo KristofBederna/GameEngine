@@ -16,8 +16,12 @@ import inf.elte.hu.gameengine_javafx.Entities.*;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Rectangle;
 import inf.elte.hu.gameengine_javafx.Misc.*;
+import inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventListeners.FullScreenToggleEventListener;
+import inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventListeners.ResolutionChangeEventListener;
 import inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventListeners.TestEventListener;
 import inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventManager;
+import inf.elte.hu.gameengine_javafx.Misc.EventHandling.Events.FullScreenToggleEvent;
+import inf.elte.hu.gameengine_javafx.Misc.EventHandling.Events.ResolutionChangeEvent;
 import inf.elte.hu.gameengine_javafx.Misc.EventHandling.Events.TestEvent;
 import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.MouseInputHandler;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot;
@@ -35,6 +39,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 import java.util.Objects;
 import java.util.Random;
@@ -150,8 +155,15 @@ public class TestScene extends GameScene {
 
         EventManager eventManager = new EventManager();
         eventManager.registerListener(TestEvent.class, new TestEventListener());
+        eventManager.registerListener(FullScreenToggleEvent.class, new FullScreenToggleEventListener());
+        eventManager.registerListener(ResolutionChangeEvent.class, new ResolutionChangeEventListener());
 
         playerInteractiveComponent.mapInput(KeyCode.E, 100, () -> eventManager.fireEvent(new TestEvent()));
+
+        playerInteractiveComponent.mapInput(KeyCode.F11, 100, () -> eventManager.fireEvent(new FullScreenToggleEvent((Stage) getWindow())));
+
+        playerInteractiveComponent.mapInput(KeyCode.F10, 100, () -> eventManager.fireEvent(new ResolutionChangeEvent(1280, 720)));
+        playerInteractiveComponent.mapInput(KeyCode.F12, 100, () -> eventManager.fireEvent(new ResolutionChangeEvent(1920, 1080)));
 
         playerInteractiveComponent.mapInput(KeyCode.F4, 1000, () -> {
             Random random = new Random();
