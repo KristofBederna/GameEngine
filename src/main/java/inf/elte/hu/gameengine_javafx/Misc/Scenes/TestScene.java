@@ -7,6 +7,7 @@ import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PlayerCompone
 import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.StateComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
+import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
@@ -55,7 +56,7 @@ public class TestScene extends GameScene {
     public void setup() {
         getStylesheets().add(Objects.requireNonNull(getClass().getResource("/assets/styles/styles.css")).toExternalForm());
         new ResourceStartUp();
-        WorldEntity.getInstance(32, 16, "/assets/maps/hardForAIMap.txt", "/assets/tileSets/testTiles.txt");
+        WorldEntity.getInstance(32, 32, "/assets/maps/hardForAIMap.txt", "/assets/tileSets/testTiles.txt");
         entitySetup();
         cameraSetup();
         interactionSetup();
@@ -112,7 +113,7 @@ public class TestScene extends GameScene {
     }
 
     private void cameraSetup() {
-        CameraEntity.getInstance(Config.gameCanvasWidth, Config.gameCanvasHeight, 30 * Config.tileSize, 15 * Config.tileSize);
+        CameraEntity.getInstance(Config.gameCanvasWidth, Config.gameCanvasHeight, WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldWidth() * Config.tileSize, WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldHeight() * Config.tileSize);
         CameraEntity.getInstance().attachTo(EntityHub.getInstance().getEntitiesWithComponent(PlayerComponent.class).getFirst());
     }
 
