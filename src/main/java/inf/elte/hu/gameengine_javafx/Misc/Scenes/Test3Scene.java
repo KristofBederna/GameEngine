@@ -84,16 +84,6 @@ public class Test3Scene extends GameScene {
     private Entity entitySetup() {
         new PlayerEntity(420, 120, "idle", "/assets/images/PlayerIdle.png", 0.8 * Config.tileSize, 0.8 * Config.tileSize);
         DummyEntity entity2 = new DummyEntity(100, 100, "idle", "/assets/images/PlayerIdle.png", 80, 80);
-        ButtonEntity be = new ButtonEntity("String", 100, 100, 100, 100, () -> {
-            System.out.println("Clicked");
-        });
-        be.addStyleClass("my-custom-button-green");
-        new SliderEntity();
-        new CheckBoxEntity();
-        new LabelEntity("label", 400, 400, 0, 0);
-        new TextFieldEntity();
-        new ProgressBarEntity();
-
         return entity2;
     }
 

@@ -78,12 +78,12 @@ public class RenderSystem extends GameSystem {
             List<Entity> sortedEntities = sortByZIndex(visibleEntities);
 
             processEntities(sortedEntities, cameraEntity, gc);
+            renderParticles(gc);
             if (Config.renderDebugMode) {
                 renderCurrentlyOccupiedTile();
                 renderMapMesh(gc);
                 renderPathFindingRoute(gc);
                 renderPathFindingNeighbours(gc);
-                renderParticles(gc);
             }
             //handleLighting(gc);
 

@@ -62,7 +62,13 @@ public class LightingEntity extends Entity {
             double minDistance = Double.MAX_VALUE;
 
             for (Entity entity : entities) {
+                if (entity == null) {
+                    continue;
+                }
                 if (entity instanceof PlayerEntity) {
+                    continue;
+                }
+                if (EntityHub.getInstance().getEntitiesWithComponent(HitBoxComponent.class).contains(entity)) {
                     continue;
                 }
                 HitBoxComponent hitboxComponent = entity.getComponent(HitBoxComponent.class);

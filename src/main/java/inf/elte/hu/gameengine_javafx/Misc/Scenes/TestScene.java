@@ -14,6 +14,7 @@ import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Entities.*;
+import inf.elte.hu.gameengine_javafx.Entities.UIEntities.*;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Rectangle;
 import inf.elte.hu.gameengine_javafx.Misc.*;
@@ -56,7 +57,7 @@ public class TestScene extends GameScene {
     public void setup() {
         getStylesheets().add(Objects.requireNonNull(getClass().getResource("/assets/styles/styles.css")).toExternalForm());
         new ResourceStartUp();
-        WorldEntity.getInstance(32, 32, "/assets/maps/hardForAIMap.txt", "/assets/tileSets/testTiles.txt");
+        WorldEntity.getInstance("/assets/maps/hardForAIMap.txt", "/assets/tileSets/testTiles.txt");
         entitySetup();
         cameraSetup();
         interactionSetup();
@@ -120,19 +121,12 @@ public class TestScene extends GameScene {
     private void entitySetup() {
         new PlayerEntity(420, 120, "idle", "/assets/images/PlayerIdle.png", 0.8 * Config.tileSize, 0.8 * Config.tileSize);
         new DummyEntity(220, 220, "idle", "/assets/images/PlayerIdle.png", 0.8 * Config.tileSize, 0.8 * Config.tileSize);
-   //     new ParticleEmitterEntity(400, 400, new ParticleEntity(0, 0, 2, 2, new Rectangle(new Point(0, 0), 2, 2), Color.ORANGE, 300), Direction.RIGHT, 50, 100);
-        //new ParticleEmitterEntity(5*Config.tileSize, 500, new ParticleEntity(0, 0, 20, 20, "/assets/images/snowflake.png", 2000), Direction.ALL, 20, 1000);
-        //new LightingEntity(250, 250, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
-        //new LightingEntity(1050, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
-        //new LightingEntity(750, 650, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
-        //new LightingEntity(250, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
-        //        ButtonEntity be = new ButtonEntity();
-//        be.addStyleClass("my-custom-button");
-//        new SliderEntity();
-//        new CheckBoxEntity();
-//        new LabelEntity();
-//        new TextFieldEntity();
-//        new ProgressBarEntity();
+        new ParticleEmitterEntity(400, 400, new ParticleEntity(0, 0, 2, 2, new Rectangle(new Point(0, 0), 2, 2), Color.ORANGE, 300), Direction.RIGHT, 50, 100);
+        new ParticleEmitterEntity(5*Config.tileSize, 500, new ParticleEntity(0, 0, 20, 20, "/assets/images/snowflake.png", 2000), Direction.ALL, 20, 1000);
+        new LightingEntity(250, 250, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
+        new LightingEntity(1050, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
+        new LightingEntity(750, 650, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
+        new LightingEntity(250, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
     }
 
     private void interactionSetup() {

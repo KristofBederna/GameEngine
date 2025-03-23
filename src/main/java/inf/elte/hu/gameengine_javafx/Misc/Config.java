@@ -1,5 +1,8 @@
 package inf.elte.hu.gameengine_javafx.Misc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Config {
     public static int tileSize = 100;
     public static double gameCanvasWidth = 1000;
@@ -13,4 +16,5 @@ public class Config {
     public static double friction = 0.001;
     public static boolean renderDebugMode = false;
     public static boolean fullScreenMode = false;
+    public static List<Integer> wallTiles = new ArrayList<>(List.of(1,2,3,4,5,6,7,8,0));
 }

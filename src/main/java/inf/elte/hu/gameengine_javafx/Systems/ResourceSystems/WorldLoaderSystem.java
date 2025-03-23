@@ -10,6 +10,7 @@ import inf.elte.hu.gameengine_javafx.Components.TileValueComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.TileSetComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
+import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
@@ -60,6 +61,8 @@ public class WorldLoaderSystem extends GameSystem {
             String[] dimensions = reader.readLine().split(" ");
             width = Integer.parseInt(dimensions[0]);
             height = Integer.parseInt(dimensions[1]);
+            WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).setWorldHeight(height);
+            WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).setWorldWidth(width);
             while ((line = reader.readLine()) != null) {
                 String[] values = line.split(" ");
                 ArrayList<Integer> row = new ArrayList<>();
@@ -89,7 +92,7 @@ public class WorldLoaderSystem extends GameSystem {
                         if (name == null) {
                             name = String.valueOf(value);
                         }
-                        if (value == 9) {
+                        if (!Config.wallTiles.contains(value)) {
                             // Special tile handling
                             tile = new TileEntity(value, x * Config.tileSize, y * Config.tileSize, "/assets/tiles/" + name + ".png", Config.tileSize, Config.tileSize);
                             meshRow.add(new Point(tile.getComponent(CentralMassComponent.class).getCentralX(), tile.getComponent(CentralMassComponent.class).getCentralY()));

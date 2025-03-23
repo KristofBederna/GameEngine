@@ -99,7 +99,23 @@ public class MovementSystem extends GameSystem {
         TileEntity tile = getCurrentTile(entity);
 
         if (!(entity instanceof ParticleEntity)) {
-            if (tile.getComponent(FrictionComponent.class) != null) {
+            if (tile == null) {
+                double friction = Config.friction;
+                double frictionForce = friction * Time.getInstance().getDeltaTime();
+
+                if (Math.abs(newDx) > frictionForce) {
+                    newDx -= Math.signum(newDx) * frictionForce;
+                } else {
+                    newDx = 0;
+                }
+
+                if (Math.abs(newDy) > frictionForce) {
+                    newDy -= Math.signum(newDy) * frictionForce;
+                } else {
+                    newDy = 0;
+                }
+            }
+             else if (tile.getComponent(FrictionComponent.class) != null) {
                 FrictionComponent frictionComponent = tile.getComponent(FrictionComponent.class);
                 double friction = (frictionComponent != null) ? frictionComponent.getFriction() : Config.friction;
                 double frictionForce = friction * Time.getInstance().getDeltaTime();

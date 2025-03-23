@@ -15,7 +15,10 @@ import inf.elte.hu.gameengine_javafx.Maths.Geometry.Shape;
 import inf.elte.hu.gameengine_javafx.Misc.Config;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * The {@code CollisionSystem} class is responsible for detecting and resolving collisions
@@ -91,10 +94,15 @@ public class CollisionSystem extends GameSystem {
      * @return a list of filtered entities that include hitboxes, velocity, and position components
      */
     private static List<Entity> getEntities() {
-        List<Entity> filteredEntities = EntityHub.getInstance().getEntitiesWithComponent(HitBoxComponent.class);
-        filteredEntities.retainAll(EntityHub.getInstance().getEntitiesWithComponent(VelocityComponent.class));
-        return filteredEntities;
+        Set<Entity> hitboxEntities = new HashSet<>(EntityHub.getInstance().getEntitiesWithComponent(HitBoxComponent.class));
+
+        return EntityHub.getInstance()
+                .getEntitiesWithComponent(VelocityComponent.class)
+                .stream()
+                .filter(hitboxEntities::contains)
+                .collect(Collectors.toList());
     }
+
 
     /**
      * Moves the entity diagonally and checks for collisions in both horizontal and vertical directions.
