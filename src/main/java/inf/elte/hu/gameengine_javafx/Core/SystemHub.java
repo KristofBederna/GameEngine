@@ -3,7 +3,10 @@ package inf.elte.hu.gameengine_javafx.Core;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SceneManagementSystem;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The {@code SystemHub} class is responsible for managing and organizing all the systems in the game engine.
@@ -13,15 +16,15 @@ import java.util.*;
 public class SystemHub {
     private static SystemHub instance;
     private final Map<Class<? extends GameSystem>, Integer> systemPriorities;
-    private final TreeMap<Integer, GameSystem> systems;
+    private final Map<Integer, GameSystem> systems;
     private boolean isShuttingDown = false;
 
     /**
      * Private constructor to ensure that the SystemHub is a singleton.
      */
     private SystemHub() {
-        systemPriorities = new HashMap<>();
-        systems = new TreeMap<>();
+        systemPriorities = new ConcurrentHashMap<>();
+        systems = new ConcurrentHashMap<>();
     }
 
     /**
@@ -107,7 +110,9 @@ public class SystemHub {
 
             // Clear all systems except for SceneManagementSystem
             systems.clear();
-            systems.put(systemPriorities.get(SceneManagementSystem.class), sceneManagementSystem);
+            systems.put(999, sceneManagementSystem);
+            systemPriorities.clear();
+            systemPriorities.put(SceneManagementSystem.class, 999);
         } finally {
             isShuttingDown = false;
         }

@@ -1,16 +1,17 @@
 package inf.elte.hu.gameengine_javafx.Entities;
 
+import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.FrictionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
-import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ZIndexComponent;
 import inf.elte.hu.gameengine_javafx.Components.TileValueComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Rectangle;
+import inf.elte.hu.gameengine_javafx.Misc.Config;
 
 public class TileEntity extends Entity {
     public TileEntity(int value, double x, double y, String path, double width, double height) {

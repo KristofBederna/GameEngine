@@ -1,10 +1,10 @@
 package inf.elte.hu.gameengine_javafx.Systems.ResourceSystems;
 
+import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.FilePathComponent;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
-import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.TileValueComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
@@ -93,7 +93,6 @@ public class WorldLoaderSystem extends GameSystem {
                             name = String.valueOf(value);
                         }
                         if (!Config.wallTiles.contains(value)) {
-                            // Special tile handling
                             tile = new TileEntity(value, x * Config.tileSize, y * Config.tileSize, "/assets/tiles/" + name + ".png", Config.tileSize, Config.tileSize);
                             meshRow.add(new Point(tile.getComponent(CentralMassComponent.class).getCentralX(), tile.getComponent(CentralMassComponent.class).getCentralY()));
                         } else {

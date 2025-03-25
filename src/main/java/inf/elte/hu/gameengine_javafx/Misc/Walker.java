@@ -1,16 +1,12 @@
 package inf.elte.hu.gameengine_javafx.Misc;
 
 import inf.elte.hu.gameengine_javafx.Components.TileValueComponent;
-import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Misc.MapClasses.World;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Random;
 
 public class Walker {
@@ -32,7 +28,7 @@ public class Walker {
     public void walk() {
         Random r = new Random();
         while (getFilledPercentage() < STOP_PERCENTAGE) {
-            if (world.getComponent(WorldDataComponent.class).getElement(x, y).getComponent(TileValueComponent.class).getTileValue() == 1) {
+            if (!Config.wallTiles.contains(world.getComponent(WorldDataComponent.class).getElement(x, y).getComponent(TileValueComponent.class).getTileValue())) {
                 changeDirection();
                 continue;
             }
