@@ -79,7 +79,7 @@ public class MovementSystem extends GameSystem {
         double mass = (massComponent != null) ? massComponent.getMass() : 1.0;
         double drag = (dragComponent != null) ? dragComponent.getDrag() : Config.drag;
         double dragFactor = Math.pow(1 - drag, Time.getInstance().getDeltaTime());
-        double maxSpeed = velocity.getMaxVelocity();
+        double maxSpeed = velocity.getMaxVelocity()*Config.getTileScale();
 
         double newDx = velocity.getVelocity().getDx();
         double newDy = velocity.getVelocity().getDy();
@@ -137,12 +137,24 @@ public class MovementSystem extends GameSystem {
             newDy *= dragFactor;
         }
 
+        double deadZone = 0.01;
+        if (Math.abs(newDx) < deadZone) newDx = 0;
+        if (Math.abs(newDy) < deadZone) newDy = 0;
+
+        double magnitude = Math.sqrt(newDx * newDx + newDy * newDy);
+        if (magnitude > maxSpeed) {
+            double scale = maxSpeed / magnitude;
+            newDx *= scale;
+            newDy *= scale;
+        }
+
         velocity.setVelocity(newDx, newDy);
         position.setLocalPosition(
-                position.getLocalX() + velocity.getVelocity().getDx(),
-                position.getLocalY() + velocity.getVelocity().getDy(),
+                position.getLocalX() + newDx,
+                position.getLocalY() + newDy,
                 entity
         );
+
         var dimension = entity.getComponent(DimensionComponent.class);
         var centralMass = entity.getComponent(CentralMassComponent.class);
         if (dimension != null && centralMass != null) {

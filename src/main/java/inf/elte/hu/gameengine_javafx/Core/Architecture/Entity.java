@@ -6,6 +6,7 @@ import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -36,7 +37,9 @@ public abstract class Entity {
      */
     public <T extends Component> void addComponent(T component) {
         components.put(component.getClass(), component);
+        EntityHub.getInstance().getComponentCache().computeIfAbsent(component.getClass(), k -> new HashSet<>()).add(this.getId());
     }
+
 
     /**
      * @param componentType
@@ -56,7 +59,11 @@ public abstract class Entity {
      * @param <T>
      */
     public <T extends Component> void removeComponentsByType(Class<T> componentType) {
-        components.entrySet().removeIf(entry -> componentType.isAssignableFrom(entry.getKey()));
+       if(components.entrySet().removeIf(entry -> componentType.isAssignableFrom(entry.getKey()))) {
+           if (EntityHub.getInstance().getComponentCache().get(componentType) != null) {
+               EntityHub.getInstance().getComponentCache().get(componentType).removeIf(integer -> integer == this.id);
+           }
+       }
     }
 
     /**
@@ -88,7 +95,7 @@ public abstract class Entity {
      * @param <T>
      */
     @SuppressWarnings("unchecked")
-    protected <T extends Entity> void addToManager() {
+    public <T extends Entity> void addToManager() {
         Class<T> entityClass = (Class<T>) this.getClass();
         EntityManager<T> manager = EntityHub.getInstance().getEntityManager(entityClass);
 

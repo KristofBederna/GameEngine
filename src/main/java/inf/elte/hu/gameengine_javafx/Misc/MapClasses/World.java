@@ -1,6 +1,5 @@
 package inf.elte.hu.gameengine_javafx.Misc.MapClasses;
 
-import inf.elte.hu.gameengine_javafx.Components.TileValueComponent;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Misc.Config;
@@ -89,35 +88,14 @@ public class World {
     }
 
     /**
-     * Retrieves the tile element at the specified world tile coordinates (tileX, tileY).
-     *
-     * @param tileX the x-coordinate of the tile within the world
-     * @param tileY the y-coordinate of the tile within the world
-     * @return the {@code TileEntity} at the specified coordinates, or {@code null} if not found
-     */
-    public TileEntity getElementAt(int tileX, int tileY) {
-        int chunkX = Math.floorDiv(tileX, Config.chunkHeight);
-        int chunkY = Math.floorDiv(tileY, Config.chunkWidth);
-
-        int localX = Math.floorMod(tileX, Config.chunkHeight);
-        int localY = Math.floorMod(tileY, Config.chunkWidth);
-
-        Chunk chunk = chunks.get(new Tuple<>(chunkX, chunkY));
-        if (chunk != null) {
-            return chunk.getElement(localX, localY);
-        }
-        return null;
-    }
-
-    /**
      * Retrieves the tile element at the specified world coordinates as a {@code Point} object.
      *
      * @param point the {@code Point} object representing the world coordinates
      * @return the {@code TileEntity} at the specified point, or {@code null} if not found
      */
     public TileEntity getElementAt(Point point) {
-        int tileX = Math.floorDiv((int) point.getX(), Config.tileSize);
-        int tileY = Math.floorDiv((int) point.getY(), Config.tileSize);
+        int tileX = Math.floorDiv((int) point.getX(), (int) Config.scaledTileSize);
+        int tileY = Math.floorDiv((int) point.getY(), (int) Config.scaledTileSize);
 
         int chunkX = Math.floorDiv(tileX, Config.chunkWidth);
         int chunkY = Math.floorDiv(tileY, Config.chunkHeight);
@@ -132,9 +110,9 @@ public class World {
         return null;
     }
 
-    public void setElementAt(Point point, TileEntity tile) {
-        int tileX = Math.floorDiv((int) point.getX(), Config.tileSize);
-        int tileY = Math.floorDiv((int) point.getY(), Config.tileSize);
+    public void setElementAt(Point point, int value) {
+        int tileX = Math.floorDiv((int) point.getX(), (int) Config.scaledTileSize);
+        int tileY = Math.floorDiv((int) point.getY(), (int) Config.scaledTileSize);
 
         int chunkX = Math.floorDiv(tileX, Config.chunkWidth);
         int chunkY = Math.floorDiv(tileY, Config.chunkHeight);
@@ -144,7 +122,11 @@ public class World {
 
         Chunk chunk = chunks.get(new Tuple<>(chunkX, chunkY));
         if (chunk != null) {
-            chunk.setElement(localX, localY, tile.getComponent(TileValueComponent.class).getTileValue());
+            chunk.setElement(localX, localY, value);
+        }
+        Chunk savedChunk = savedChunks.get(new Tuple<>(chunkX, chunkY));
+        if (savedChunk != null) {
+            savedChunk.setElement(localX, localY, value);
         }
     }
 }

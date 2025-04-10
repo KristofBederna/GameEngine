@@ -17,6 +17,7 @@ import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Rectangle;
 import inf.elte.hu.gameengine_javafx.Misc.AnimationFrame;
 import inf.elte.hu.gameengine_javafx.Misc.AnimationStateMachine;
+import inf.elte.hu.gameengine_javafx.Misc.Direction;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
 
 import java.util.List;
@@ -30,11 +31,12 @@ public class PlayerEntity extends Entity {
         this.addComponent(new DragComponent(0.98));
         this.addComponent(new MassComponent(0.5));
         this.addComponent(new StateComponent(state));
+        this.addComponent(new DirectionComponent(Direction.ALL));
         this.addComponent(new ImageComponent(path, width, height));
         this.addComponent(new InteractiveComponent());
         this.addComponent(new DimensionComponent(width, height));
         this.addComponent(new HitBoxComponent(new Rectangle(new Point(x, y), width, height).getPoints()));
-        this.addComponent(new ZIndexComponent(2));
+        this.addComponent(new ZIndexComponent(3));
         this.addComponent(PlayerComponent.getInstance());
         this.addComponent(new CentralMassComponent(x + width / 2, y + height / 2));
         this.addComponent(new AnimationStateMachineComponent(new AnimationStateMachine(this) {

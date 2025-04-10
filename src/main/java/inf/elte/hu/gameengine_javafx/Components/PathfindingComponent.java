@@ -17,7 +17,7 @@ public class PathfindingComponent extends Component {
     private Point end;
     private Point current;
     private List<Point> neighbours;
-    private List<Point> path;
+    private ArrayList<Point> path;
 
     public PathfindingComponent(Point start, Point end) {
         this.start = start;
@@ -32,7 +32,7 @@ public class PathfindingComponent extends Component {
         return end;
     }
 
-    public List<Point> getPath() {
+    public ArrayList<Point> getPath() {
         return path;
     }
 
@@ -52,7 +52,7 @@ public class PathfindingComponent extends Component {
         this.current = current;
     }
 
-    public void setPath(List<Point> path) {
+    public void setPath(ArrayList<Point> path) {
         this.path = path;
     }
 
@@ -74,15 +74,15 @@ public class PathfindingComponent extends Component {
     public void resetPathing(Entity entity) {
         path = null;
         neighbours = null;
-        start = new Point(entity.getComponent(CentralMassComponent.class).getCentralX(), entity.getComponent(CentralMassComponent.class).getCentralY());
+        start = WorldEntity.getInstance().getComponent(MapMeshComponent.class).getMapCoordinate(Math.floorDiv((int) entity.getComponent(CentralMassComponent.class).getCentralX(), (int) Config.scaledTileSize), Math.floorDiv((int) entity.getComponent(CentralMassComponent.class).getCentralY(), (int) Config.scaledTileSize));
     }
 
     public List<Point> getNeighbours(Point current) {
         List<Point> neighbours = new ArrayList<>();
         MapMeshComponent mapMeshComponent = WorldEntity.getInstance().getComponent(MapMeshComponent.class);
 
-        int currentX = (int) Math.floor(current.getX() / Config.tileSize);
-        int currentY = (int) Math.floor(current.getY() / Config.tileSize);
+        int currentX = (int) Math.floor(current.getX() / Config.scaledTileSize);
+        int currentY = (int) Math.floor(current.getY() / Config.scaledTileSize);
 
         int worldWidth = (int) WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldWidth();
         int worldHeight = (int) WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldHeight();
@@ -91,7 +91,7 @@ public class PathfindingComponent extends Component {
         // Define directions
         int[][] directions = {
                 {-1, 0}, {1, 0}, {0, -1}, {0, 1}, // Cardinal (Up, Down, Left, Right)
-                //{-1, -1}, {-1, 1}, {1, -1}, {1, 1} // Diagonal
+                {-1, -1}, {-1, 1}, {1, -1}, {1, 1} // Diagonal
         };
 
         for (int[] dir : directions) {
@@ -115,7 +115,7 @@ public class PathfindingComponent extends Component {
             if (isDiagonal) {
                 // Check if at least one adjacent tile is passable
                 boolean canMoveDiagonally =
-                        (mapMeshComponent.getMapCoordinate(currentX + dir[0], currentY) != null) ||
+                        (mapMeshComponent.getMapCoordinate(currentX + dir[0], currentY) != null) &&
                                 (mapMeshComponent.getMapCoordinate(currentX, currentY + dir[1]) != null);
 
                 if (!canMoveDiagonally) {
@@ -130,4 +130,7 @@ public class PathfindingComponent extends Component {
         return neighbours;
     }
 
+    public void setStart(Point start) {
+        this.start = start;
+    }
 }

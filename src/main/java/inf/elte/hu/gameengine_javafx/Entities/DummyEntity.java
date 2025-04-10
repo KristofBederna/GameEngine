@@ -9,6 +9,7 @@ import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.MassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.VelocityComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
+import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DirectionComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.StateComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.AnimationComponent;
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.AnimationStateMachineComponent;
@@ -17,10 +18,7 @@ import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ZIndexCompon
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Rectangle;
-import inf.elte.hu.gameengine_javafx.Misc.AnimationFrame;
-import inf.elte.hu.gameengine_javafx.Misc.AnimationStateMachine;
-import inf.elte.hu.gameengine_javafx.Misc.Config;
-import inf.elte.hu.gameengine_javafx.Misc.Time;
+import inf.elte.hu.gameengine_javafx.Misc.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +31,7 @@ public class DummyEntity extends Entity {
         this.getComponent(PositionComponent.class).setLocalPosition(x, y, this);
         this.addComponent(new VelocityComponent(0.5));
         this.addComponent(new StateComponent(state));
+        this.addComponent(new DirectionComponent(Direction.ALL));
         this.addComponent(new ImageComponent(path, width, height));
         this.addComponent(new DimensionComponent(width, height));
         this.addComponent(new AccelerationComponent());
@@ -41,7 +40,7 @@ public class DummyEntity extends Entity {
         this.addComponent(new HitBoxComponent(new Rectangle(new Point(x, y), width, height).getPoints()));
         this.addComponent(new ZIndexComponent(2));
         this.addComponent(new CentralMassComponent((double) x + width / 2, (double) y + height / 2));
-        this.addComponent(new PathfindingComponent(new Point(this.getComponent(CentralMassComponent.class).getCentralX(), this.getComponent(CentralMassComponent.class).getCentralY()), new Point(x + (Config.tileSize * 21) + 50, y + (Config.tileSize * 7) + 50)));
+        this.addComponent(new PathfindingComponent(new Point(this.getComponent(CentralMassComponent.class).getCentralX(), this.getComponent(CentralMassComponent.class).getCentralY()), new Point(x + (Config.scaledTileSize * 21) + 50, y + (Config.scaledTileSize * 7) + 50)));
         this.addComponent(new AnimationStateMachineComponent(new AnimationStateMachine(this) {
             @Override
             public void setAnimationState() {

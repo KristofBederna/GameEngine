@@ -1,6 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Core;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
+import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.BackgroundMusicSystem;
 import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SceneManagementSystem;
 
 import java.util.ArrayList;
@@ -100,18 +101,25 @@ public class SystemHub {
         isShuttingDown = true;
         try {
             SceneManagementSystem sceneManagementSystem = getSystem(SceneManagementSystem.class);
+            BackgroundMusicSystem backgroundMusicSystem = getSystem(BackgroundMusicSystem.class);
 
             // Shut down systems in reverse priority order, but leave the SceneManagementSystem running
             for (GameSystem system : getAllSystemsInPriorityOrder().reversed()) {
-                if (system != sceneManagementSystem) {
-                    system.abort();
+                if (system == sceneManagementSystem) {
+                    continue;
                 }
+                if (system == backgroundMusicSystem) {
+                    continue;
+                }
+                system.abort();
             }
 
             // Clear all systems except for SceneManagementSystem
             systems.clear();
+            systems.put(998, backgroundMusicSystem);
             systems.put(999, sceneManagementSystem);
             systemPriorities.clear();
+            systemPriorities.put(BackgroundMusicSystem.class, 998);
             systemPriorities.put(SceneManagementSystem.class, 999);
         } finally {
             isShuttingDown = false;

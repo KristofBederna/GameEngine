@@ -8,10 +8,14 @@ import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassCo
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+import inf.elte.hu.gameengine_javafx.Entities.DummyEntity;
+import inf.elte.hu.gameengine_javafx.Entities.PlayerEntity;
+import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.ComplexShape;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Shape;
 import inf.elte.hu.gameengine_javafx.Misc.Config;
+import inf.elte.hu.gameengine_javafx.Misc.IgnoreCollisions;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,6 +36,14 @@ public class CollisionSystem extends GameSystem {
     @Override
     public void start() {
         this.active = true;
+        IgnoreCollisions ignore = IgnoreCollisions.getInstance();
+        ignore.getCollisionRules().computeIfAbsent(PlayerEntity.class, k -> new ArrayList<>()).add(DummyEntity.class);
+        ignore.getCollisionRules().computeIfAbsent(DummyEntity.class, k -> new ArrayList<>()).add(PlayerEntity.class);
+
+
+        ignore.getCollisionRules().computeIfAbsent(TileEntity.class, k -> new ArrayList<>()).add(DummyEntity.class);
+        ignore.getCollisionRules().computeIfAbsent(DummyEntity.class, k -> new ArrayList<>()).add(TileEntity.class);
+
     }
 
     /**
@@ -71,6 +83,9 @@ public class CollisionSystem extends GameSystem {
      * @param entity the entity to be processed
      */
     private static void processEntity(List<Entity> hitBoxes, Entity entity) {
+        if (entity == null) {
+            return;
+        }
         HitBoxComponent hitBox = entity.getComponent(HitBoxComponent.class);
         VelocityComponent velocity = entity.getComponent(VelocityComponent.class);
         PositionComponent position = entity.getComponent(PositionComponent.class);
@@ -82,7 +97,7 @@ public class CollisionSystem extends GameSystem {
         }
 
         List<Entity> hitBoxesToProcess = new ArrayList<>(hitBoxes);
-        hitBoxesToProcess.removeIf(hitbox -> hitbox == null || hitbox.getComponent(CentralMassComponent.class).getCentral().distanceTo(entity.getComponent(CentralMassComponent.class).getCentral()) > Config.tileSize + Config.tileSize * 2 || hitbox == entity);
+        hitBoxesToProcess.removeIf(hitbox -> hitbox == null || hitbox.getComponent(CentralMassComponent.class).getCentral().distanceTo(entity.getComponent(CentralMassComponent.class).getCentral()) > Config.scaledTileSize + Config.scaledTileSize * 2 || hitbox == entity);
 
         moveDiagonally(hitBoxesToProcess, entity, futureHitBox, velocity);
     }
@@ -149,7 +164,9 @@ public class CollisionSystem extends GameSystem {
                 if (otherEntity == entity) continue;
 
                 Shape otherHitBox = otherEntity.getComponent(HitBoxComponent.class).getHitBox();
-                if (otherHitBox != null && Shape.intersect(futureHitBox, otherHitBox)) {
+                if (otherHitBox != null
+                        && Shape.intersect(futureHitBox, otherHitBox)
+                        && !IgnoreCollisions.shouldIgnoreCollision(entity, otherEntity)) {
                     velocity.setVelocity(0, velocity.getVelocity().getDy());
                     if (entity.getComponent(AccelerationComponent.class) != null) {
                         entity.getComponent(AccelerationComponent.class).getAcceleration().setDx(0);
@@ -176,7 +193,9 @@ public class CollisionSystem extends GameSystem {
                 if (otherEntity == entity) continue;
 
                 Shape otherHitBox = otherEntity.getComponent(HitBoxComponent.class).getHitBox();
-                if (otherHitBox != null && Shape.intersect(futureHitBox, otherHitBox)) {
+                if (otherHitBox != null
+                        && Shape.intersect(futureHitBox, otherHitBox)
+                        && !IgnoreCollisions.shouldIgnoreCollision(entity, otherEntity)) {
                     velocity.setVelocity(velocity.getVelocity().getDx(), 0);
                     if (entity.getComponent(AccelerationComponent.class) != null) {
                         entity.getComponent(AccelerationComponent.class).getAcceleration().setDy(0);

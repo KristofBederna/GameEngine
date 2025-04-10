@@ -28,7 +28,10 @@ public class ParticleSystem extends GameSystem {
 
     @Override
     protected void update() {
-        for (Entity entity : EntityHub.getInstance().getEntitiesWithType(ParticleEmitterEntity.class)) {
+        var emitters = EntityHub.getInstance().getEntitiesWithType(ParticleEmitterEntity.class);
+        var emittersToRemove = new HashSet<ParticleEmitterEntity>();
+
+        for (Entity entity : emitters) {
             ParentComponent parent = entity.getComponent(ParentComponent.class);
             DirectionComponent directionComponent = entity.getComponent(DirectionComponent.class);
             Direction direction = directionComponent.getDirection();
@@ -38,7 +41,7 @@ public class ParticleSystem extends GameSystem {
             }
 
             if (System.currentTimeMillis() >= entity.getComponent(TimeComponent.class).getLastOccurrence() + entity.getComponent(TimeComponent.class).getTimeBetweenOccurrences()) {
-                ((ParticleEmitterEntity) entity).createParticles((ParticleEntity) parent.getChildren().iterator().next(), 10, entity.getComponent(ParentComponent.class));
+                ((ParticleEmitterEntity) entity).createParticles(((ParticleEmitterEntity) entity).getMockParticle(), ((ParticleEmitterEntity) entity).getAmount(), entity.getComponent(ParentComponent.class));
                 entity.getComponent(TimeComponent.class).setLastOccurrence();
             }
 
@@ -71,6 +74,7 @@ public class ParticleSystem extends GameSystem {
                             yield maxSpeed * Time.getInstance().getDeltaTime();
                         }
                         case LEFT -> {
+                            angle = random.nextDouble(3 * Math.PI / 4, 5 * Math.PI / 4);
                             dx = minSpeed * Time.getInstance().getDeltaTime();
                             yield random.nextDouble(minSpeed, maxSpeed) * Time.getInstance().getDeltaTime();
                         }
@@ -98,12 +102,19 @@ public class ParticleSystem extends GameSystem {
                     dx += Math.cos(angle) * random.nextDouble(0, 20) * Time.getInstance().getDeltaTime();
                     dy += Math.sin(angle) * random.nextDouble(0, 20) * Time.getInstance().getDeltaTime();
 
-                    double drag = particle.getComponent(DragComponent.class).getDrag();
-                    accelerationComponent.setAcceleration(new Vector(dx * drag, dy * drag));
+                    accelerationComponent.setAcceleration(new Vector(dx, dy));
                 }
 
                 if (particleEntity.getComponent(MaxDistanceFromOriginComponent.class).isOverMaxDistance(particleEntity)) {
                     toBeRemoved.add(particleEntity);
+                } else if (particleEntity.getComponent(AccelerationComponent.class).getAcceleration().getDx() == 0 && particleEntity.getComponent(AccelerationComponent.class).getAcceleration().getDy() == 0) {
+                    toBeRemoved.add(particleEntity);
+                }
+
+                if (entity.getComponent(TimeComponent.class).getTimeBetweenOccurrences() == Integer.MAX_VALUE) {
+                    if (entity.getComponent(TimeComponent.class).getLastOccurrence() <= System.currentTimeMillis() - 1000) {
+                        emittersToRemove.add((ParticleEmitterEntity) entity);
+                    }
                 }
             }
 
@@ -112,6 +123,9 @@ public class ParticleSystem extends GameSystem {
                 particle.getComponent(ParentComponent.class).setParent(null);
                 EntityHub.getInstance().getEntityManager(ParticleEntity.class).unload(particle.getId());
             }
+        }
+        for (Entity entity : emittersToRemove) {
+            EntityHub.getInstance().getEntityManager(ParticleEntity.class).unload(entity.getId());
         }
     }
 }

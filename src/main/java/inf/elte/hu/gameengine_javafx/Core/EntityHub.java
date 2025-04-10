@@ -7,10 +7,7 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -26,13 +23,13 @@ public class EntityHub {
     private static EntityHub instance;
     private final Map<Class<?>, EntityManager<?>> entityManagers;
     final Map<Integer, Entity> entities = new HashMap<>();
-    private final Map<Class<? extends Component>, List<Integer>> componentCache = new ConcurrentHashMap<>();
+    private final Map<Class<? extends Component>, Set<Integer>> componentCache = new ConcurrentHashMap<>();
 
     public static void resetInstance() {
         instance = null;
     }
 
-    public Map<Class<? extends Component>, List<Integer>> getComponentCache() {
+    public Map<Class<? extends Component>, Set<Integer>> getComponentCache() {
         return componentCache;
     }
 
@@ -173,13 +170,12 @@ public class EntityHub {
      * @return a list of entities that have the specified component
      */
     public List<Entity> getEntitiesWithComponent(Class<? extends Component> type) {
-        List<Integer> entityIds = componentCache.get(type);
+        Set<Integer> entityIds = componentCache.get(type);
 
         if (entityIds == null || entityIds.isEmpty()) {
-            return new ArrayList<>(); // Modifiable empty list
+            return new ArrayList<>();
         }
 
-        // Reuse existing list and map IDs to entities efficiently
         List<Entity> entitiesWithComponent = new ArrayList<>(entityIds.size());
         for (Integer id : entityIds) {
             entitiesWithComponent.add(entities.get(id));
@@ -206,5 +202,15 @@ public class EntityHub {
             }
         }
         return entitiesWithType;
+    }
+
+    public void removeEntity(Entity entity) {
+        entities.remove(entity.getId());
+        for(Set<Integer> componentIds : componentCache.values()) {
+            if (componentIds.contains(entity.getId())) {
+                componentIds.removeIf(entityId -> entityId == entity.getId());
+            }
+        }
+        getEntityManager(entity.getClass()).unload(entity.getId());
     }
 }

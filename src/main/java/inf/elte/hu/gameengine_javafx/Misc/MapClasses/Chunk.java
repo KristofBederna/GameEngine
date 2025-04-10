@@ -1,9 +1,6 @@
 package inf.elte.hu.gameengine_javafx.Misc.MapClasses;
 
-import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
-import inf.elte.hu.gameengine_javafx.Misc.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,16 +109,6 @@ public class Chunk {
      * @param value the new value to set for the tile
      */
     public void setElement(int x, int y, int value) {
-        TileEntity tileEntity = chunk.get(x).get(y);
-        TileEntity newTileEntity = new TileEntity(
-                value,
-                tileEntity.getComponent(PositionComponent.class).getGlobalX(),
-                tileEntity.getComponent(PositionComponent.class).getGlobalY(),
-                "/assets/tiles/" + TileLoader.getTilePath(value) + ".png",
-                tileEntity.getComponent(DimensionComponent.class).getWidth(),
-                tileEntity.getComponent(DimensionComponent.class).getHeight(),
-                Config.wallTiles.contains(value)
-        );
-        chunk.get(x).set(y, newTileEntity);
+        chunk.get(x).get(y).changeValues(value);
     }
 }

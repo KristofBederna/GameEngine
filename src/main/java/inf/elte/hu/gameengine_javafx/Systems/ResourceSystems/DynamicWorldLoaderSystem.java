@@ -31,15 +31,15 @@ public class DynamicWorldLoaderSystem extends GameSystem {
     /**
      * Constructor to initialize the system with the specified world dimensions.
      *
-     * @param width The width of the world in chunks.
+     * @param width  The width of the world in chunks.
      * @param height The height of the world in chunks.
      */
     public DynamicWorldLoaderSystem(int width, int height) {
         this.width = width;
         this.height = height;
 
-        WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).setWorldWidth(width*Config.chunkWidth);
-        WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).setWorldHeight(height*Config.chunkHeight);
+        WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).setWorldWidth(width * Config.chunkWidth);
+        WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).setWorldHeight(height * Config.chunkHeight);
     }
 
     /**
@@ -51,18 +51,17 @@ public class DynamicWorldLoaderSystem extends GameSystem {
         WorldEntity map = WorldEntity.getInstance();
         if (map == null) return;
         loadFullWorld();
-
-        runWalkerAlgorithm(WorldEntity.getInstance());
+        runWalkerAlgorithm();
         addWorldMesh();
     }
 
-    public void runWalkerAlgorithm(WorldEntity world) {
+    public void runWalkerAlgorithm() {
         Random random = new Random();
 
         // Start with one walker at a random position
-        int startX = random.nextInt(Config.chunkWidth);
-        int startY = random.nextInt(Config.chunkHeight);
-        Walker walker = new Walker(startX, startY, world, new ArrayList<>());
+        int startX = random.nextInt(Config.chunkWidth*width);
+        int startY = random.nextInt(Config.chunkHeight*height);
+        Walker walker = new Walker(startX, startY, WorldEntity.getInstance(), new ArrayList<>());
 
         walker.walk();
     }
@@ -82,8 +81,8 @@ public class DynamicWorldLoaderSystem extends GameSystem {
         double camWidth = camera.getComponent(DimensionComponent.class).getWidth();
         double camHeight = camera.getComponent(DimensionComponent.class).getHeight();
 
-        int playerChunkX = Math.floorDiv((int) (camX + camWidth / 2), Config.chunkWidth * Config.tileSize);
-        int playerChunkY = Math.floorDiv((int) (camY + camHeight / 2), Config.chunkHeight * Config.tileSize);
+        int playerChunkX = Math.floorDiv((int) (camX + camWidth / 2), (int) (Config.chunkWidth * Config.scaledTileSize));
+        int playerChunkY = Math.floorDiv((int) (camY + camHeight / 2), (int) (Config.chunkHeight * Config.scaledTileSize));
 
         loadSurroundingChunks(playerChunkX, playerChunkY);
         unloadFarChunks(playerChunkX, playerChunkY);
@@ -93,8 +92,8 @@ public class DynamicWorldLoaderSystem extends GameSystem {
      * Loads the entire world initially, chunk by chunk.
      */
     private void loadFullWorld() {
-        for (int cx = 0; cx < width; cx++) {
-            for (int cy = 0; cy < height; cy++) {
+        for (int cy = 0; cy < width; cy++) {
+            for (int cx = 0; cx < height; cx++) {
                 loadOrGenerateChunk(cx, cy);
             }
         }
@@ -155,7 +154,7 @@ public class DynamicWorldLoaderSystem extends GameSystem {
         } else {
             Chunk newChunk = WorldGenerator.generateChunk(chunkX, chunkY, Config.chunkWidth, Config.chunkHeight);
             WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getSavedChunks().put(chunkKey, newChunk);
-            WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().addChunk(chunkX, chunkY, newChunk);
+            WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getWorld().put(chunkKey, newChunk);
         }
         addBoundaryWalls(WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getWorld().get(chunkKey), chunkX, chunkY);
     }
@@ -166,7 +165,11 @@ public class DynamicWorldLoaderSystem extends GameSystem {
     private void addWorldMesh() {
         WorldEntity map = WorldEntity.getInstance();
         if (map == null) return;
+
         MapMeshComponent mapMesh = map.getComponent(MapMeshComponent.class);
+        if (!mapMesh.getMapCoordinates().isEmpty()) {
+            mapMesh.getMapCoordinates().clear();
+        }
 
         int worldWidth = width * Config.chunkWidth;  // Total world width in tiles
         int worldHeight = height * Config.chunkHeight;  // Total world height in tiles
@@ -174,26 +177,8 @@ public class DynamicWorldLoaderSystem extends GameSystem {
         // Iterate over each row of the world
         for (int row = 0; row < worldHeight; row++) {
             List<Point> meshRow = new ArrayList<>();
-
-            // Determine which chunk-row we're in
-            int chunkRow = row / Config.chunkHeight;
-            int tileRowInChunk = row % Config.chunkHeight;
-
-            // Iterate over every column in the world
             for (int col = 0; col < worldWidth; col++) {
-                int chunkCol = col / Config.chunkWidth;
-                int tileColInChunk = col % Config.chunkWidth;
-
-                // Fetch the correct chunk and tile
-                TileEntity entity = map.getComponent(WorldDataComponent.class)
-                        .getMapData()
-                        .getWorld()
-                        .get(new Tuple<>(chunkRow, chunkCol))
-                        .getChunk()
-                        .get(tileRowInChunk)
-                        .get(tileColInChunk);
-
-                // If the tile has no hitbox, add its center point, otherwise add null
+                TileEntity entity = map.getComponent(WorldDataComponent.class).getMapData().getElementAt(new Point(col * Config.scaledTileSize + (double)Config.scaledTileSize / 2, row * Config.scaledTileSize + (double)Config.scaledTileSize / 2));
                 if (entity.getComponent(HitBoxComponent.class) == null) {
                     meshRow.add(entity.getComponent(CentralMassComponent.class).getCentral());
                 } else {
@@ -207,11 +192,10 @@ public class DynamicWorldLoaderSystem extends GameSystem {
     }
 
 
-
     /**
      * Adds boundary walls to a chunk, determining wall types based on chunk and tile positions.
      *
-     * @param chunk The chunk to which boundary walls should be added.
+     * @param chunk  The chunk to which boundary walls should be added.
      * @param chunkX The X coordinate of the chunk.
      * @param chunkY The Y coordinate of the chunk.
      */
@@ -235,7 +219,7 @@ public class DynamicWorldLoaderSystem extends GameSystem {
                 } else if (y == Config.chunkHeight - 1 && chunkX == width - 1) {
                     chunk.setElement(x, y, 6); // rightWall
                 } else {
-                    chunk.setElement(x, y, 9); // windowWall
+                    chunk.setElement(x, y, 9); // walkable tile
                 }
             }
         }

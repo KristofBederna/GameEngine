@@ -14,6 +14,7 @@ import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Entities.*;
+import inf.elte.hu.gameengine_javafx.Maths.Geometry.NSidedShape;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Rectangle;
 import inf.elte.hu.gameengine_javafx.Misc.*;
@@ -32,12 +33,10 @@ import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.SystemStartUp;
 import inf.elte.hu.gameengine_javafx.Systems.InputHandlingSystem;
 import inf.elte.hu.gameengine_javafx.Systems.PathfindingSystem;
 import inf.elte.hu.gameengine_javafx.Systems.PhysicsSystems.CollisionSystem;
+import inf.elte.hu.gameengine_javafx.Systems.PhysicsSystems.MovementDeterminerSystem;
 import inf.elte.hu.gameengine_javafx.Systems.PhysicsSystems.MovementSystem;
 import inf.elte.hu.gameengine_javafx.Systems.RenderingSystems.*;
-import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.DynamicWorldLoaderSystem;
-import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.ResourceSystem;
-import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SceneManagementSystem;
-import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SoundSystem;
+import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.*;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -61,7 +60,7 @@ public class TestScene extends GameScene {
         new ResourceStartUp();
         WorldEntity.getInstance("/assets/maps/hardForAIMap.txt", "/assets/tileSets/testTiles.txt");
         entitySetup();
-        cameraSetup();
+        UtilityFunctions.setUpCamera(1920, 1080, 32, 32);
         interactionSetup();
         new SystemStartUp(this::SystemStartUp);
 
@@ -74,41 +73,16 @@ public class TestScene extends GameScene {
 
     @Override
     public void breakdown() {
-        EntityHub entityHub = EntityHub.getInstance();
-        entityHub.removeEntityManager(TileEntity.class);
-        entityHub.removeEntityManager(DummyEntity.class);
-        EntityManager<TileEntity> tileEntityManager = entityHub.getEntityManager(TileEntity.class);
-        if (tileEntityManager != null) {
-            tileEntityManager.unloadAll();
-        }
-        EntityManager<DummyEntity> dummyEntityManager = entityHub.getEntityManager(DummyEntity.class);
-        if (dummyEntityManager != null) {
-            dummyEntityManager.unloadAll();
-        }
-        EntityManager<PlayerEntity> playerEntityManager = entityHub.getEntityManager(PlayerEntity.class);
-        if (playerEntityManager != null) {
-            playerEntityManager.unloadAll();
-        }
-        WorldEntity.resetInstance();
-        if (EntityHub.getInstance().getEntitiesWithComponent(PlayerComponent.class).getFirst() != null) {
-            InteractiveComponent interactiveComponent = EntityHub.getInstance().getEntitiesWithComponent(PlayerComponent.class).getFirst().getComponent(InteractiveComponent.class);
-            if (interactiveComponent != null) {
-                interactiveComponent.clearMappings();
-            }
-        }
-        CameraEntity.resetInstance();
-        SystemHub.getInstance().shutDownSystems();
-        GameLoopStartUp.stopGameLoop();
-        ResourceHub.getInstance().clearResources();
-        uiRoot.getInstance().unloadAll();
+      UtilityFunctions.defaultBreakdownMethod();
     }
 
     private void SystemStartUp() {
         //Define systems to be started up here
         SystemHub systemHub = SystemHub.getInstance();
+        systemHub.addSystem(MovementDeterminerSystem.class, new MovementDeterminerSystem(), 0);
         systemHub.addSystem(AnimationSystem.class, new AnimationSystem(), 1);
         systemHub.addSystem(RenderSystem.class, new RenderSystem(), 2);
-        systemHub.addSystem(LightingSystem.class, new LightingSystem(), 3);
+        systemHub.addSystem(BackgroundMusicSystem.class, new BackgroundMusicSystem(), 3);
         systemHub.addSystem(PathfindingSystem.class, new PathfindingSystem(), 4);
         systemHub.addSystem(MovementSystem.class, new MovementSystem(), 5);
         systemHub.addSystem(ParticleSystem.class, new ParticleSystem(), 6);
@@ -117,23 +91,15 @@ public class TestScene extends GameScene {
         systemHub.addSystem(ResourceSystem.class, new ResourceSystem(), 9);
         systemHub.addSystem(CameraSystem.class, new CameraSystem(), 10);
         systemHub.addSystem(SoundSystem.class, new SoundSystem(), 11);
-        systemHub.addSystem(DynamicWorldLoaderSystem.class, new DynamicWorldLoaderSystem(2, 2), 12);
-    }
-
-    private void cameraSetup() {
-        CameraEntity.getInstance(Config.gameCanvasWidth, Config.gameCanvasHeight, WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldWidth() * Config.tileSize, WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldHeight() * Config.tileSize);
-        CameraEntity.getInstance().attachTo(EntityHub.getInstance().getEntitiesWithComponent(PlayerComponent.class).getFirst());
+        systemHub.addSystem(DynamicWorldLoaderSystem.class, new DynamicWorldLoaderSystem(2,2), 12);
     }
 
     private void entitySetup() {
-        new PlayerEntity(420, 120, "idle", "/assets/images/PlayerIdle.png", 0.8 * Config.tileSize, 0.8 * Config.tileSize);
-        new DummyEntity(220, 220, "idle", "/assets/images/PlayerIdle.png", 0.8 * Config.tileSize, 0.8 * Config.tileSize);
-        new ParticleEmitterEntity(400, 400, new ParticleEntity(0, 0, 2, 2, new Rectangle(new Point(0, 0), 2, 2), Color.ORANGE, 300), Direction.RIGHT, 50, 100);
-        new ParticleEmitterEntity(5*Config.tileSize, 500, new ParticleEntity(0, 0, 20, 20, "/assets/images/snowflake.png", 2000), Direction.ALL, 20, 1000);
-        new LightingEntity(250, 250, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
-        new LightingEntity(1050, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
-        new LightingEntity(750, 650, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
-        new LightingEntity(250, 550, LightType.POINT, 0.01, Color.YELLOW, 100, 100);
+        new PlayerEntity(420, 120, "idle", "/assets/images/PlayerIdle.png", 0.8 * Config.scaledTileSize, 0.8 * Config.scaledTileSize);
+        new DummyEntity(220, 220, "idle", "/assets/images/PlayerIdle.png", 0.8 * Config.scaledTileSize, 0.8 * Config.scaledTileSize);
+        new ParticleEmitterEntity(400, 400, new ParticleEntity(400, 400, 25, 25,
+                new NSidedShape(new Point(400, 400), 25, 32), Color.ORANGE, Color.TRANSPARENT, 300), Direction.RIGHT, 50, 1000);
+        new ParticleEmitterEntity(5*Config.scaledTileSize, 500, new ParticleEntity(0, 0, 20, 20, "/assets/images/snowflake.png", 2000), Direction.ALL, 20, 1000);
     }
 
     private void interactionSetup() {
@@ -142,10 +108,8 @@ public class TestScene extends GameScene {
         DummyEntity entity2 = (DummyEntity) EntityHub.getInstance().getEntitiesWithType(DummyEntity.class).getFirst();
 
         InteractiveComponent playerInteractiveComponent = player.getComponent(InteractiveComponent.class);
-        playerInteractiveComponent.mapInput(KeyCode.UP, 10, () -> moveUp(player), () -> counterUp(player));
-        playerInteractiveComponent.mapInput(KeyCode.DOWN, 10, () -> moveDown(player), () -> counterDown(player));
-        playerInteractiveComponent.mapInput(KeyCode.LEFT, 10, () -> moveLeft(player), () -> counterLeft(player));
-        playerInteractiveComponent.mapInput(KeyCode.RIGHT, 10, () -> moveRight(player), () -> counterRight(player));
+        UtilityFunctions.setUpMovement(playerInteractiveComponent, player);
+
         playerInteractiveComponent.mapInput(MouseButton.PRIMARY, 100, () -> {
             player.getComponent(PositionComponent.class).setLocalX(MouseInputHandler.getInstance().getMouseX(), player);
             player.getComponent(PositionComponent.class).setLocalY(MouseInputHandler.getInstance().getMouseY(), player);
@@ -179,50 +143,5 @@ public class TestScene extends GameScene {
                 pathfinding.resetPathing(entity2);
             }
         });
-    }
-
-
-    private void moveUp(Entity e) {
-        double dy = -4 * Time.getInstance().getDeltaTime();
-        e.getComponent(AccelerationComponent.class).getAcceleration().setDy(dy);
-        e.getComponent(StateComponent.class).setCurrentState("up");
-    }
-
-    private void moveDown(Entity e) {
-        double dy = 4 * Time.getInstance().getDeltaTime();
-        e.getComponent(AccelerationComponent.class).getAcceleration().setDy(dy);
-        e.getComponent(StateComponent.class).setCurrentState("down");
-    }
-
-    private void moveLeft(Entity e) {
-        double dx = -4 * Time.getInstance().getDeltaTime();
-        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(dx);
-        e.getComponent(StateComponent.class).setCurrentState("left");
-    }
-
-    private void moveRight(Entity e) {
-        double dx = 4 * Time.getInstance().getDeltaTime();
-        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(dx);
-        e.getComponent(StateComponent.class).setCurrentState("right");
-    }
-
-    private void counterUp(Entity e) {
-        e.getComponent(AccelerationComponent.class).getAcceleration().setDy(0);
-        e.getComponent(StateComponent.class).setCurrentState("idle");
-    }
-
-    private void counterDown(Entity e) {
-        e.getComponent(AccelerationComponent.class).getAcceleration().setDy(0);
-        e.getComponent(StateComponent.class).setCurrentState("idle");
-    }
-
-    private void counterRight(Entity e) {
-        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(0);
-        e.getComponent(StateComponent.class).setCurrentState("idle");
-    }
-
-    private void counterLeft(Entity e) {
-        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(0);
-        e.getComponent(StateComponent.class).setCurrentState("idle");
     }
 }

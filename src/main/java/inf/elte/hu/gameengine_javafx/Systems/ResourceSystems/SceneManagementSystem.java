@@ -1,9 +1,9 @@
 package inf.elte.hu.gameengine_javafx.Systems.ResourceSystems;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
+import inf.elte.hu.gameengine_javafx.Misc.Config;
 import inf.elte.hu.gameengine_javafx.Misc.Scenes.GameScene;
 import inf.elte.hu.gameengine_javafx.Misc.Scenes.TestScene;
-import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -14,7 +14,7 @@ public class SceneManagementSystem extends GameSystem {
 
     public SceneManagementSystem() {
         // Initialize with a default scene
-        currentScene = new TestScene(new BorderPane(), 1920, 1080);
+        currentScene = new TestScene(new BorderPane(), Config.resolution.first(), Config.resolution.second());
     }
 
     @Override
@@ -61,7 +61,7 @@ public class SceneManagementSystem extends GameSystem {
         this.stage = stage;
     }
 
-    public Scene getCurrentScene() {
+    public GameScene getCurrentScene() {
         return currentScene;
     }
 

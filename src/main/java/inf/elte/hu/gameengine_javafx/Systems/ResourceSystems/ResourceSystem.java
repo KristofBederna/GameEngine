@@ -4,9 +4,9 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The ResourceSystem is responsible for managing and updating resources within the game engine.
@@ -32,13 +32,13 @@ public class ResourceSystem extends GameSystem {
     public void update() {
         Map<Class<?>, ResourceManager<?>> resourceManagers = ResourceHub.getInstance().getAllResourceManagers();
 
-        long threshold = System.currentTimeMillis() - 1000; // Define threshold time of 1000ms
+        long threshold = System.currentTimeMillis() - 10000; // Define threshold time of 10000ms
 
         // Iterate over all resource managers and clean up old resources
         for (ResourceManager<?> resourceManager : resourceManagers.values()) {
             synchronized (resourceManager) {
                 // Take a snapshot of the current resources
-                Map<String, ?> resourcesSnapshot = new HashMap<>(resourceManager.getResources());
+                Map<String, ?> resourcesSnapshot = new ConcurrentHashMap<>(resourceManager.getResources());
                 Iterator<? extends Map.Entry<String, ?>> iterator = resourcesSnapshot.entrySet().iterator();
 
                 // Remove resources that have not been accessed for over the threshold time

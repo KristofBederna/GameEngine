@@ -22,8 +22,18 @@ public class ClipResourceManager extends ResourceManager<Clip> {
                 audioStream = AudioSystem.getAudioInputStream(resource);
 
                 Clip clip = AudioSystem.getClip();
-                clip.open(audioStream);
-                return clip;
+                try {
+                    clip.open(audioStream);
+                    clip.setFramePosition(0); // Initialize at start position
+                    return clip;
+                } catch (LineUnavailableException | IOException e) {
+                    try {
+                        audioStream.close();
+                    } catch (IOException ex) {
+                        System.err.println("Error closing stream: " + ex.getMessage());
+                    }
+                    throw new RuntimeException("Error opening clip: " + key, e);
+                }
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                 System.err.println("Error loading sound: " + key);
                 return null;

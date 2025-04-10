@@ -5,7 +5,6 @@ import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComp
 import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
-import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
@@ -53,15 +52,12 @@ public class CameraSystem extends GameSystem {
         if (playerPos == null || playerImg == null) return;
 
         updateCameraPosition(playerPos, playerImg, cameraEntity);
-
-        // Updates the entity manager to mark the camera entity as the last used entity
-        EntityHub.getInstance().getEntityManager(CameraEntity.getInstance().getOwner().getClass()).updateLastUsed(CameraEntity.getInstance().getOwner().getId());
     }
 
     private static void updateWorldBoundary() {
         if (CameraEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldHeight() == 0 || CameraEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldWidth() == 0) {
-            CameraEntity.getInstance().getComponent(WorldDimensionComponent.class).setWorldHeight(WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldHeight()* Config.tileSize);
-            CameraEntity.getInstance().getComponent(WorldDimensionComponent.class).setWorldWidth(WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldWidth()* Config.tileSize);
+            CameraEntity.getInstance().getComponent(WorldDimensionComponent.class).setWorldHeight(WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldHeight()* Config.scaledTileSize);
+            CameraEntity.getInstance().getComponent(WorldDimensionComponent.class).setWorldWidth(WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldWidth()* Config.scaledTileSize);
         }
     }
 

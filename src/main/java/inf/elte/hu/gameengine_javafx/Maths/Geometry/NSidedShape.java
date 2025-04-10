@@ -3,6 +3,7 @@ package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
 import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
+import inf.elte.hu.gameengine_javafx.Misc.Config;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -101,6 +102,12 @@ public class NSidedShape extends Shape {
             double x2 = p.getX() - cameraEntity.getComponent(PositionComponent.class).getGlobalX();
             double y2 = p.getY() - cameraEntity.getComponent(PositionComponent.class).getGlobalY();
 
+            // Apply scaling to the points
+            x1 *= Config.relativeWidthRatio;
+            y1 *= Config.relativeHeightRatio;
+            x2 *= Config.relativeWidthRatio;
+            y2 *= Config.relativeHeightRatio;
+
             gc.strokeLine(x1, y1, x2, y2);
             prev = p;
         }
@@ -123,25 +130,44 @@ public class NSidedShape extends Shape {
         for (int i = 0; i < points.size(); i++) {
             xPoints[i] = points.get(i).getX() - cameraX;
             yPoints[i] = points.get(i).getY() - cameraY;
+
+            // Apply scaling to the points
+            xPoints[i] *= Config.relativeWidthRatio;
+            yPoints[i] *= Config.relativeHeightRatio;
         }
 
         gc.setFill(color);
         gc.fillPolygon(xPoints, yPoints, points.size());
-
-        gc.setStroke(color);
-        gc.setLineWidth(2);
-
-        Point prev = points.getLast();
-        for (Point p : points) {
-            double x1 = prev.getX() - cameraX;
-            double y1 = prev.getY() - cameraY;
-            double x2 = p.getX() - cameraX;
-            double y2 = p.getY() - cameraY;
-
-            gc.strokeLine(x1, y1, x2, y2);
-            prev = p;
-        }
     }
+
+    public void renderFillWithStroke(GraphicsContext gc, Color fillColor, Color strokeColor, double outerStrokeWidth) {
+        CameraEntity cameraEntity = CameraEntity.getInstance();
+
+        if (points.isEmpty()) {
+            generateApproximation();
+            updateEdges();
+        }
+
+        double[] xPoints = new double[points.size()];
+        double[] yPoints = new double[points.size()];
+
+        double cameraX = cameraEntity.getComponent(PositionComponent.class).getGlobalX();
+        double cameraY = cameraEntity.getComponent(PositionComponent.class).getGlobalY();
+
+        for (int i = 0; i < points.size(); i++) {
+            xPoints[i] = (points.get(i).getX() - cameraX) * Config.relativeWidthRatio;
+            yPoints[i] = (points.get(i).getY() - cameraY) * Config.relativeHeightRatio;
+        }
+
+        gc.setFill(fillColor);
+        gc.fillPolygon(xPoints, yPoints, points.size());
+
+        gc.setStroke(strokeColor);
+        gc.setLineWidth(outerStrokeWidth);
+        gc.strokePolygon(xPoints, yPoints, points.size());
+    }
+
+
 
 
     public void moveTo(Point newPoint) {
@@ -154,6 +180,10 @@ public class NSidedShape extends Shape {
         center.translate(x, y);
         generateApproximation();
         updateEdges();
+    }
+
+    public Point getCenter() {
+        return center;
     }
 }
 

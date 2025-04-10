@@ -8,6 +8,7 @@ import inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.SystemStartUp;
 import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SceneManagementSystem;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
@@ -35,7 +36,7 @@ public class Main extends Application {
 
         BorderPane root = (BorderPane) sceneManagementSystem.getCurrentScene().getRoot();
 
-        GameCanvas gameCanvas = GameCanvas.createInstance(Config.gameCanvasWidth, Config.gameCanvasHeight);
+        GameCanvas gameCanvas = GameCanvas.createInstance(Config.resolution.first(), Config.resolution.second());
         uiRoot uiRoot = inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot.getInstance();
         GameLayer gameLayer = GameLayer.getInstance();
         gameLayer.getChildren().addAll(gameCanvas, uiRoot);
@@ -62,6 +63,6 @@ public class Main extends Application {
         });
 
         // Makes the window visible
-        stage.show();
+        Platform.runLater(stage::show);
     }
 }

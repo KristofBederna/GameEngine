@@ -2,7 +2,6 @@ package inf.elte.hu.gameengine_javafx.Misc;
 
 import inf.elte.hu.gameengine_javafx.Components.TileValueComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
-import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 
@@ -16,7 +15,7 @@ public class Walker {
     private WorldEntity world;
     private static final int MAX_X = 30;
     private static final int MAX_Y = 30;
-    private static final int STOP_PERCENTAGE = 10;
+    private static final int STOP_PERCENTAGE = 30;
 
     public Walker(int x, int y, WorldEntity world, ArrayList<Walker> walkers) {
         this.x = x;
@@ -28,7 +27,7 @@ public class Walker {
     public void walk() {
         Random r = new Random();
         while (getFilledPercentage() < STOP_PERCENTAGE) {
-            if (!Config.wallTiles.contains(world.getComponent(WorldDataComponent.class).getElement(x, y).getComponent(TileValueComponent.class).getTileValue())) {
+            if (Config.wallTiles.contains(world.getComponent(WorldDataComponent.class).getMapData().getElementAt(new Point(y*Config.scaledTileSize +Config.scaledTileSize /2, x*Config.scaledTileSize +Config.scaledTileSize /2)).getComponent(TileValueComponent.class).getTileValue())) {
                 changeDirection();
                 continue;
             }
@@ -58,7 +57,7 @@ public class Walker {
         // Count the filled tiles (0s)
         for (int i = 0; i < MAX_X; i++) {
             for (int j = 0; j < MAX_Y; j++) {
-                if (world.getComponent(WorldDataComponent.class).getElement(i, j).getComponent(TileValueComponent.class).getTileValue() == 0) {
+                if (Config.wallTiles.contains(world.getComponent(WorldDataComponent.class).getMapData().getElementAt(new Point(j*Config.scaledTileSize +Config.scaledTileSize /2, i*Config.scaledTileSize +Config.scaledTileSize /2)).getComponent(TileValueComponent.class).getTileValue())) {
                     filledTiles++;
                 }
             }
@@ -81,8 +80,8 @@ public class Walker {
     }
 
     private void placeTile() {
-        // Mark the tile as non-walkable (0)
-        this.world.getComponent(WorldDataComponent.class).getMapData().setElementAt(new Point(x, y), new TileEntity(0, x, y, "/assets/images/default.png", Config.tileSize, Config.tileSize, true));
+        // Mark the tile as non-walkable (1)
+        this.world.getComponent(WorldDataComponent.class).getMapData().setElementAt(new Point(x*Config.scaledTileSize, y*Config.scaledTileSize), 0);
         this.world.getComponent(WorldDataComponent.class).getMapData().getSavedChunks().get(new Tuple<>(Math.floorDiv(x, Config.chunkWidth), Math.floorDiv(y, Config.chunkHeight))).setElement(x % Config.chunkWidth, y % Config.chunkHeight, 0);
     }
 

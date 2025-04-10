@@ -93,10 +93,11 @@ public class WorldLoaderSystem extends GameSystem {
                             name = String.valueOf(value);
                         }
                         if (!Config.wallTiles.contains(value)) {
-                            tile = new TileEntity(value, x * Config.tileSize, y * Config.tileSize, "/assets/tiles/" + name + ".png", Config.tileSize, Config.tileSize);
+                            // Special tile handling
+                            tile = new TileEntity(value, x * Config.scaledTileSize, y * Config.scaledTileSize, "/assets/tiles/" + name + ".png", Config.scaledTileSize, Config.scaledTileSize);
                             meshRow.add(new Point(tile.getComponent(CentralMassComponent.class).getCentralX(), tile.getComponent(CentralMassComponent.class).getCentralY()));
                         } else {
-                            tile = new TileEntity(value, x * Config.tileSize, y * Config.tileSize, "/assets/tiles/" + name + ".png", Config.tileSize, Config.tileSize, true);
+                            tile = new TileEntity(value, x * Config.scaledTileSize, y * Config.scaledTileSize, "/assets/tiles/" + name + ".png", Config.scaledTileSize, Config.scaledTileSize, true);
                             meshRow.add(null);
                         }
                         chunkRow.add(tile);
@@ -133,7 +134,7 @@ public class WorldLoaderSystem extends GameSystem {
             double tileX = tile.getComponent(PositionComponent.class).getGlobalX();
             double tileY = tile.getComponent(PositionComponent.class).getGlobalY();
 
-            if (tileX + Config.tileSize < camX || tileX > camX + camWidth || tileY + Config.tileSize < camY || tileY > camY + camHeight) {
+            if (tileX + Config.scaledTileSize < camX || tileX > camX + camWidth || tileY + Config.scaledTileSize < camY || tileY > camY + camHeight) {
                 toRemove.add(tile);
             }
         }
@@ -156,12 +157,12 @@ public class WorldLoaderSystem extends GameSystem {
                     double tileX = tileEntity.getComponent(PositionComponent.class).getGlobalX();
                     double tileY = tileEntity.getComponent(PositionComponent.class).getGlobalY();
 
-                    if (tileX + Config.tileSize >= camX && tileX <= camX + camWidth && tileY + Config.tileSize >= camY && tileY <= camY + camHeight) {
+                    if (tileX + Config.scaledTileSize >= camX && tileX <= camX + camWidth && tileY + Config.scaledTileSize >= camY && tileY <= camY + camHeight) {
 
                         String key = tileX + "," + tileY;
                         if (!existingTiles.contains(key)) {
                             boolean hasHitBox = tileEntity.getComponent(HitBoxComponent.class) != null;
-                            TileEntity newTile = new TileEntity(tileEntity.getComponent(TileValueComponent.class).getTileValue(), tileX, tileY, tileEntity.getComponent(ImageComponent.class).getImagePath(), Config.tileSize, Config.tileSize, hasHitBox);
+                            TileEntity newTile = new TileEntity(tileEntity.getComponent(TileValueComponent.class).getTileValue(), tileX, tileY, tileEntity.getComponent(ImageComponent.class).getImagePath(), Config.scaledTileSize, Config.scaledTileSize, hasHitBox);
                             tileManager.register(newTile);
                         }
                     }
