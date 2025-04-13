@@ -97,6 +97,13 @@ public class Point {
         return Math.abs(this.getX() - other.getX()) < 10 && Math.abs(this.getY() - other.getY()) < 10;
     }
 
+    public boolean compareCoordinates(Point other, double delta) {
+        if (other == null) {
+            return false;
+        }
+        return Math.abs(this.getX() - other.getX()) < delta && Math.abs(this.getY() - other.getY()) < delta;
+    }
+
     public void setCoordinates(int x, int y) {
         this.x = x;
         this.y = y;

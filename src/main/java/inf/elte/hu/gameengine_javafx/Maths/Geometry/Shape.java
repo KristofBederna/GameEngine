@@ -96,6 +96,9 @@ public class Shape {
     public void render(GraphicsContext gc, Color color) {
     }
 
+    public void render(GraphicsContext gc, Color color, double strokeWidth) {
+    }
+
     public void renderFill(GraphicsContext gc, Color color) {
     }
 

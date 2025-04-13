@@ -80,7 +80,7 @@ public class BackgroundMusicSystem extends GameSystem {
             if (playQueue.isEmpty()) {
                 playQueue.addAll(availableMusic);
             }
-            return playQueue.remove(0);
+            return playQueue.removeFirst();
         }
     }
 

@@ -15,6 +15,7 @@ import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Misc.Config;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.Chunk;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.WorldGenerator;
+import inf.elte.hu.gameengine_javafx.Misc.MapConfig;
 import inf.elte.hu.gameengine_javafx.Misc.Tuple;
 import inf.elte.hu.gameengine_javafx.Misc.Walker;
 
@@ -178,7 +179,7 @@ public class DynamicWorldLoaderSystem extends GameSystem {
         for (int row = 0; row < worldHeight; row++) {
             List<Point> meshRow = new ArrayList<>();
             for (int col = 0; col < worldWidth; col++) {
-                TileEntity entity = map.getComponent(WorldDataComponent.class).getMapData().getElementAt(new Point(col * Config.scaledTileSize + (double)Config.scaledTileSize / 2, row * Config.scaledTileSize + (double)Config.scaledTileSize / 2));
+                TileEntity entity = map.getComponent(WorldDataComponent.class).getMapData().getElementAt(new Point(col * Config.scaledTileSize + Config.scaledTileSize / 2, row * Config.scaledTileSize + Config.scaledTileSize / 2));
                 if (entity.getComponent(HitBoxComponent.class) == null) {
                     meshRow.add(entity.getComponent(CentralMassComponent.class).getCentral());
                 } else {
@@ -203,23 +204,23 @@ public class DynamicWorldLoaderSystem extends GameSystem {
         for (int x = 0; x < Config.chunkWidth; x++) {
             for (int y = 0; y < Config.chunkHeight; y++) {
                 if (x == 0 && y == 0 && chunkX == 0 && chunkY == 0) {
-                    chunk.setElement(x, y, 3); // topLeftWall
+                    chunk.setElement(x, y, MapConfig.topLeftWallCode);
                 } else if (x == Config.chunkWidth - 1 && y == 0 && chunkX == 0 && chunkY == height - 1) {
-                    chunk.setElement(x, y, 1); // BottomLeftWall
+                    chunk.setElement(x, y, MapConfig.bottomLeftWallCode);
                 } else if (x == 0 && y == Config.chunkHeight - 1 && chunkX == width - 1 && chunkY == 0) {
-                    chunk.setElement(x, y, 4); // topRightWall
+                    chunk.setElement(x, y, MapConfig.topRightWallCode);
                 } else if (x == Config.chunkWidth - 1 && y == Config.chunkHeight - 1 && chunkX == width - 1 && chunkY == height - 1) {
-                    chunk.setElement(x, y, 2); // bottomRightWall
+                    chunk.setElement(x, y, MapConfig.bottomRightWallCode);
                 } else if (x == 0 && chunkY == 0) {
-                    chunk.setElement(x, y, 7); // topWall
+                    chunk.setElement(x, y, MapConfig.topWallCode);
                 } else if (x == Config.chunkWidth - 1 && chunkY == height - 1) {
-                    chunk.setElement(x, y, 8); // bottomWall
+                    chunk.setElement(x, y, MapConfig.bottomWallCode);
                 } else if (y == 0 && chunkX == 0) {
-                    chunk.setElement(x, y, 5); // leftWall
+                    chunk.setElement(x, y, MapConfig.leftWallCode);
                 } else if (y == Config.chunkHeight - 1 && chunkX == width - 1) {
-                    chunk.setElement(x, y, 6); // rightWall
+                    chunk.setElement(x, y, MapConfig.rightWallCode);
                 } else {
-                    chunk.setElement(x, y, 9); // walkable tile
+                    chunk.setElement(x, y, MapConfig.walkableTileCode);
                 }
             }
         }

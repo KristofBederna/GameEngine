@@ -3,30 +3,20 @@ package inf.elte.hu.gameengine_javafx.Misc.Scenes;
 import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.InteractiveComponent;
 import inf.elte.hu.gameengine_javafx.Components.PathfindingComponent;
-import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.AccelerationComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PlayerComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.StateComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
-import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionComponent;
-import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
-import inf.elte.hu.gameengine_javafx.Core.EntityManager;
-import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Entities.*;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.NSidedShape;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Maths.Geometry.Rectangle;
 import inf.elte.hu.gameengine_javafx.Misc.*;
 import inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventListeners.FullScreenToggleEventListener;
 import inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventListeners.ResolutionChangeEventListener;
-import inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventListeners.TestEventListener;
 import inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventManager;
 import inf.elte.hu.gameengine_javafx.Misc.EventHandling.Events.FullScreenToggleEvent;
 import inf.elte.hu.gameengine_javafx.Misc.EventHandling.Events.ResolutionChangeEvent;
-import inf.elte.hu.gameengine_javafx.Misc.EventHandling.Events.TestEvent;
 import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.MouseInputHandler;
-import inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.GameLoopStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.ResourceStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.SystemStartUp;
@@ -120,11 +110,8 @@ public class TestScene extends GameScene {
         playerInteractiveComponent.mapInput(KeyCode.F3, 100, () -> SystemHub.getInstance().getSystem(SceneManagementSystem.class).requestSceneChange(new Test2Scene(new BorderPane(), 1920, 1080)));
 
         EventManager eventManager = new EventManager();
-        eventManager.registerListener(TestEvent.class, new TestEventListener());
         eventManager.registerListener(FullScreenToggleEvent.class, new FullScreenToggleEventListener());
         eventManager.registerListener(ResolutionChangeEvent.class, new ResolutionChangeEventListener());
-
-        playerInteractiveComponent.mapInput(KeyCode.E, 100, () -> eventManager.fireEvent(new TestEvent()));
 
         playerInteractiveComponent.mapInput(KeyCode.F11, 100, () -> eventManager.fireEvent(new FullScreenToggleEvent((Stage) getWindow())));
 

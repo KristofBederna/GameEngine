@@ -36,12 +36,33 @@ public class ComplexShape extends Shape {
         }
     }
 
-
     public void render(GraphicsContext gc, Color color) {
         CameraEntity cameraEntity = CameraEntity.getInstance();
 
         gc.setStroke(color);
         gc.setLineWidth(2);
+
+        if (points.isEmpty()) {
+            updateEdges();
+        }
+
+        Point prev = points.getLast();
+        for (Point p : points) {
+            double x1 = prev.getX() - cameraEntity.getComponent(PositionComponent.class).getGlobalX();
+            double y1 = prev.getY() - cameraEntity.getComponent(PositionComponent.class).getGlobalY();
+            double x2 = p.getX() - cameraEntity.getComponent(PositionComponent.class).getGlobalX();
+            double y2 = p.getY() - cameraEntity.getComponent(PositionComponent.class).getGlobalY();
+
+            gc.strokeLine(x1* Config.relativeWidthRatio, y1*Config.relativeHeightRatio, x2*Config.relativeWidthRatio, y2*Config.relativeHeightRatio);
+            prev = p;
+        }
+    }
+
+    public void render(GraphicsContext gc, Color color, double strokeWidth) {
+        CameraEntity cameraEntity = CameraEntity.getInstance();
+
+        gc.setStroke(color);
+        gc.setLineWidth(strokeWidth);
 
         if (points.isEmpty()) {
             updateEdges();
@@ -127,11 +148,6 @@ public class ComplexShape extends Shape {
         for (Point p : points) {
             p.translate(x, y);
         }
-        updateEdges();
-    }
-
-    public void addShape(Shape shape) {
-        points.addAll(shape.getPoints());
         updateEdges();
     }
 

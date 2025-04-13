@@ -13,9 +13,6 @@ public class Walker {
     private int y;
     private ArrayList<Walker> walkers;
     private WorldEntity world;
-    private static final int MAX_X = 30;
-    private static final int MAX_Y = 30;
-    private static final int STOP_PERCENTAGE = 30;
 
     public Walker(int x, int y, WorldEntity world, ArrayList<Walker> walkers) {
         this.x = x;
@@ -26,18 +23,18 @@ public class Walker {
 
     public void walk() {
         Random r = new Random();
-        while (getFilledPercentage() < STOP_PERCENTAGE) {
+        while (getFilledPercentage() < WalkerConfig.stopPercentage) {
             if (Config.wallTiles.contains(world.getComponent(WorldDataComponent.class).getMapData().getElementAt(new Point(y*Config.scaledTileSize +Config.scaledTileSize /2, x*Config.scaledTileSize +Config.scaledTileSize /2)).getComponent(TileValueComponent.class).getTileValue())) {
                 changeDirection();
                 continue;
             }
 
             placeTile();
-            if (r.nextInt(10) % 3 == 0) {
+            if (r.nextInt(10) % WalkerConfig.moduloToMultiply == 0) {
                 multiply();
-            } else if (r.nextInt(10) % 4 == 0) {
+            } else if (r.nextInt(10) % WalkerConfig.moduloToDie == 0) {
                 die();
-            } else if (r.nextInt(10) % 9 == 0) {
+            } else if (r.nextInt(10) % WalkerConfig.moduloToTeleport == 0) {
                 teleport();
             }
             changeDirection();
@@ -46,24 +43,22 @@ public class Walker {
 
     private void teleport() {
         Random r = new Random();
-        this.x = r.nextInt(1, MAX_X);  // Random number between 1 and MAX_X
-        this.y = r.nextInt(1, MAX_Y);  // Random number between 1 and MAX_Y
+        this.x = r.nextInt(WalkerConfig.minX, WalkerConfig.maxX);
+        this.y = r.nextInt(WalkerConfig.minY, WalkerConfig.maxY);
     }
 
     public int getFilledPercentage() {
         int filledTiles = 0;
-        int totalTiles = MAX_X * MAX_Y; // Total number of tiles
+        int totalTiles = WalkerConfig.maxX * WalkerConfig.maxY;
 
-        // Count the filled tiles (0s)
-        for (int i = 0; i < MAX_X; i++) {
-            for (int j = 0; j < MAX_Y; j++) {
+        for (int i = 0; i < WalkerConfig.maxX; i++) {
+            for (int j = 0; j < WalkerConfig.maxY; j++) {
                 if (Config.wallTiles.contains(world.getComponent(WorldDataComponent.class).getMapData().getElementAt(new Point(j*Config.scaledTileSize +Config.scaledTileSize /2, i*Config.scaledTileSize +Config.scaledTileSize /2)).getComponent(TileValueComponent.class).getTileValue())) {
                     filledTiles++;
                 }
             }
         }
 
-        // Calculate the percentage of filled tiles
         return (filledTiles * 100) / totalTiles;
     }
 
@@ -72,22 +67,21 @@ public class Walker {
         int direction = random.nextInt(4);
 
         switch (direction) {
-            case 0 -> { if (y < MAX_Y) y++; } // Move Up
+            case 0 -> { if (y < WalkerConfig.maxY) y++; } // Move Up
             case 1 -> { if (y > 0) y--; } // Move Down
             case 2 -> { if (x > 0) x--; } // Move Left
-            case 3 -> { if (x < MAX_X) x++; } // Move Right
+            case 3 -> { if (x < WalkerConfig.maxX) x++; } // Move Right
         }
     }
 
     private void placeTile() {
-        // Mark the tile as non-walkable (1)
-        this.world.getComponent(WorldDataComponent.class).getMapData().setElementAt(new Point(x*Config.scaledTileSize, y*Config.scaledTileSize), 0);
-        this.world.getComponent(WorldDataComponent.class).getMapData().getSavedChunks().get(new Tuple<>(Math.floorDiv(x, Config.chunkWidth), Math.floorDiv(y, Config.chunkHeight))).setElement(x % Config.chunkWidth, y % Config.chunkHeight, 0);
+        this.world.getComponent(WorldDataComponent.class).getMapData().setElementAt(new Point(x*Config.scaledTileSize, y*Config.scaledTileSize), WalkerConfig.placeTileNumber);
+        this.world.getComponent(WorldDataComponent.class).getMapData().getSavedChunks().get(new Tuple<>(Math.floorDiv(x, Config.chunkWidth), Math.floorDiv(y, Config.chunkHeight))).setElement(x % Config.chunkWidth, y % Config.chunkHeight, WalkerConfig.placeTileNumber);
     }
 
     private void multiply() {
-        if (walkers.size() >= 3) {
-            return;  // Limit the number of walkers to avoid too many
+        if (walkers.size() >= WalkerConfig.maxWalkers) {
+            return;
         }
         Walker walker = new Walker(this.x, this.y, this.world, this.walkers);
         walkers.add(walker);
@@ -95,10 +89,8 @@ public class Walker {
 
     private void die() {
         if (walkers.size() <= 1) {
-            return; // No walkers to remove
+            return;
         }
-        if (!walkers.isEmpty()) {
-            walkers.remove(walkers.size() - 1); // Safely remove the last walker
-        }
+        walkers.removeLast();
     }
 }

@@ -6,6 +6,7 @@ import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameLayer;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.SystemStartUp;
+import inf.elte.hu.gameengine_javafx.Misc.UtilityFunctions;
 import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SceneManagementSystem;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -59,7 +60,7 @@ public class Main extends Application {
 
         // Define on close behaviour here
         stage.setOnCloseRequest(event -> {
-            System.exit(0);
+            UtilityFunctions.shutDownMethod();
         });
 
         // Makes the window visible

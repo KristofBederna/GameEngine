@@ -29,7 +29,29 @@ public class Line extends Shape {
         }
     }
 
-    public void render(GraphicsContext gc, Color color, int thickness) {
+    public void render(GraphicsContext gc, Color color) {
+        CameraEntity cameraEntity = CameraEntity.getInstance();
+
+        gc.setStroke(color);
+        gc.setLineWidth(1);
+
+        if (points.size() >= 2) {
+            Point start = points.get(0);
+            Point end = points.get(1);
+
+            double cameraX = cameraEntity.getComponent(PositionComponent.class).getGlobalX();
+            double cameraY = cameraEntity.getComponent(PositionComponent.class).getGlobalY();
+
+            double x1 = (start.getX() - cameraX) * Config.relativeWidthRatio;
+            double y1 = (start.getY() - cameraY) * Config.relativeHeightRatio;
+            double x2 = (end.getX() - cameraX) * Config.relativeWidthRatio;
+            double y2 = (end.getY() - cameraY) * Config.relativeHeightRatio;
+
+            gc.strokeLine(x1, y1, x2, y2);
+        }
+    }
+
+    public void render(GraphicsContext gc, Color color, double thickness) {
         CameraEntity cameraEntity = CameraEntity.getInstance();
 
         gc.setStroke(color);
@@ -39,17 +61,14 @@ public class Line extends Shape {
             Point start = points.get(0);
             Point end = points.get(1);
 
-            // Get camera position to apply the offset
             double cameraX = cameraEntity.getComponent(PositionComponent.class).getGlobalX();
             double cameraY = cameraEntity.getComponent(PositionComponent.class).getGlobalY();
 
-            // Scale the start and end points based on the camera position
             double x1 = (start.getX() - cameraX) * Config.relativeWidthRatio;
             double y1 = (start.getY() - cameraY) * Config.relativeHeightRatio;
             double x2 = (end.getX() - cameraX) * Config.relativeWidthRatio;
             double y2 = (end.getY() - cameraY) * Config.relativeHeightRatio;
 
-            // Draw the line with scaled coordinates
             gc.strokeLine(x1, y1, x2, y2);
         }
     }

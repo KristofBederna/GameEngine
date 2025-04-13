@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * This class is responsible for updating the movement of entities in the game world. It calculates the entity's
- * new position based on velocity, acceleration, mass, drag, and friction components.
+ * new position based on velocity, acceleration, mass, drag, and defaultFriction components.
  * The system also updates the entity's hitbox according to its movement.
  *
  * The movement system works with various physics components such as:
@@ -29,7 +29,7 @@ import java.util.List;
  * - Drag
  * - Friction
  *
- * The system ensures entities respect a maximum velocity, apply friction forces, and simulate drag over time.
+ * The system ensures entities respect a maximum velocity, apply defaultFriction forces, and simulate drag over time.
  * Additionally, it updates the central mass for entities that have a {@link CentralMassComponent}.
  */
 public class MovementSystem extends GameSystem {
@@ -62,7 +62,7 @@ public class MovementSystem extends GameSystem {
 
     /**
      * Processes each entity to update its position and velocity based on its components.
-     * This method applies acceleration, mass, friction, drag, and velocity limits to compute the new velocity
+     * This method applies acceleration, mass, defaultFriction, drag, and velocity limits to compute the new velocity
      * and position of the entity.
      *
      * @param entity The entity to process.
@@ -76,8 +76,8 @@ public class MovementSystem extends GameSystem {
         var massComponent = entity.getComponent(MassComponent.class);
         var dragComponent = entity.getComponent(DragComponent.class);
 
-        double mass = (massComponent != null) ? massComponent.getMass() : 1.0;
-        double drag = (dragComponent != null) ? dragComponent.getDrag() : Config.drag;
+        double mass = (massComponent != null) ? massComponent.getMass() : Config.defaultMass;
+        double drag = (dragComponent != null) ? dragComponent.getDrag() : Config.defaultDrag;
         double dragFactor = Math.pow(1 - drag, Time.getInstance().getDeltaTime());
         double maxSpeed = velocity.getMaxVelocity()*Config.getTileScale();
 
@@ -93,7 +93,7 @@ public class MovementSystem extends GameSystem {
 
         if (!(entity instanceof ParticleEntity)) {
             if (tile == null) {
-                double friction = Config.friction;
+                double friction = Config.defaultFriction;
                 double frictionForce = friction * Time.getInstance().getDeltaTime();
 
                 if (Math.abs(newDx) > frictionForce) {
@@ -110,7 +110,7 @@ public class MovementSystem extends GameSystem {
             }
              else if (tile.getComponent(FrictionComponent.class) != null) {
                 FrictionComponent frictionComponent = tile.getComponent(FrictionComponent.class);
-                double friction = (frictionComponent != null) ? frictionComponent.getFriction() : Config.friction;
+                double friction = (frictionComponent != null) ? frictionComponent.getFriction() : Config.defaultFriction;
                 double frictionForce = friction * Time.getInstance().getDeltaTime();
 
                 if (Math.abs(newDx) > frictionForce) {

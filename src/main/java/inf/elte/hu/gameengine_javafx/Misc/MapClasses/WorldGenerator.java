@@ -2,6 +2,7 @@ package inf.elte.hu.gameengine_javafx.Misc.MapClasses;
 
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Misc.Config;
+import inf.elte.hu.gameengine_javafx.Misc.MapConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class WorldGenerator {
         // Generate tile values for each tile in the chunk
         for (int y = 0; y < chunkHeight; y++) {
             for (int x = 0; x < chunkWidth; x++) {
-                tileValues[y][x] = 4;
+                tileValues[y][x] = MapConfig.defaultTileCode;
             }
         }
 

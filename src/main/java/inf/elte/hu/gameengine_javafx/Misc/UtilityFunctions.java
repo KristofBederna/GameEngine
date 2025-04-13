@@ -102,4 +102,8 @@ public class UtilityFunctions {
         GameCanvas.getInstance().getGraphicsContext2D().clearRect(0, 0, GameCanvas.getInstance().getWidth(), GameCanvas.getInstance().getHeight());
         System.gc();
     }
+
+    public static void shutDownMethod() {
+        System.exit(0);
+    }
 }

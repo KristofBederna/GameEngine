@@ -89,6 +89,22 @@ public class Triangle extends Shape {
         gc.strokePolygon(x, y, 3);
     }
 
+    public void render(GraphicsContext gc, Color color, double strokeWidth) {
+        double[] x = new double[3];
+        double[] y = new double[3];
+
+        applyCameraOffset(x, y);
+
+        for (int i = 0; i < 3; i++) {
+            x[i] *= Config.relativeWidthRatio;
+            y[i] *= Config.relativeHeightRatio;
+        }
+
+        gc.setStroke(color);
+        gc.setLineWidth(strokeWidth);
+        gc.strokePolygon(x, y, 3);
+    }
+
     public void renderFill(GraphicsContext gc, Color color) {
         double[] x = new double[3];
         double[] y = new double[3];

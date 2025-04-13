@@ -103,6 +103,22 @@ public class Rectangle extends Shape {
         gc.strokeRect(x* Config.relativeWidthRatio, y*Config.relativeHeightRatio, width* Config.relativeWidthRatio, height*Config.relativeHeightRatio);
     }
 
+    public void render(GraphicsContext gc, Color color, double strokeWidth) {
+        gc.setStroke(color);
+        gc.setLineWidth(strokeWidth);
+
+        CameraEntity cameraEntity = CameraEntity.getInstance();
+        double cameraX = cameraEntity.getComponent(PositionComponent.class).getGlobalX();
+        double cameraY = cameraEntity.getComponent(PositionComponent.class).getGlobalY();
+
+        double x = points.get(0).getX() - cameraX;
+        double y = points.get(0).getY() - cameraY;
+        double width = points.get(1).getX() - points.get(0).getX();
+        double height = points.get(3).getY() - points.get(0).getY();
+
+        gc.strokeRect(x* Config.relativeWidthRatio, y*Config.relativeHeightRatio, width* Config.relativeWidthRatio, height*Config.relativeHeightRatio);
+    }
+
     public void renderFill(GraphicsContext gc, Color color) {
         CameraEntity cameraEntity = CameraEntity.getInstance();
         if (cameraEntity == null) {

@@ -61,7 +61,7 @@ public class Pathfinding {
     private static ArrayList<Point> reconstructPath(Map<Point, Point> cameFrom, Point current) {
         ArrayList<Point> path = new ArrayList<>();
         while (cameFrom.containsKey(current)) {
-            path.add(0, current);
+            path.addFirst(current);
             current = cameFrom.get(current);
         }
         return path;

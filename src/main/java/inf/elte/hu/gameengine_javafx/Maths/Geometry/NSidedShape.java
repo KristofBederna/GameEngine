@@ -102,7 +102,34 @@ public class NSidedShape extends Shape {
             double x2 = p.getX() - cameraEntity.getComponent(PositionComponent.class).getGlobalX();
             double y2 = p.getY() - cameraEntity.getComponent(PositionComponent.class).getGlobalY();
 
-            // Apply scaling to the points
+            x1 *= Config.relativeWidthRatio;
+            y1 *= Config.relativeHeightRatio;
+            x2 *= Config.relativeWidthRatio;
+            y2 *= Config.relativeHeightRatio;
+
+            gc.strokeLine(x1, y1, x2, y2);
+            prev = p;
+        }
+    }
+
+    public void render(GraphicsContext gc, Color color, double strokeWidth) {
+        CameraEntity cameraEntity = CameraEntity.getInstance();
+
+        gc.setStroke(color);
+        gc.setLineWidth(strokeWidth);
+
+        if (points.isEmpty()) {
+            generateApproximation();
+            updateEdges();
+        }
+
+        Point prev = points.getLast();
+        for (Point p : points) {
+            double x1 = prev.getX() - cameraEntity.getComponent(PositionComponent.class).getGlobalX();
+            double y1 = prev.getY() - cameraEntity.getComponent(PositionComponent.class).getGlobalY();
+            double x2 = p.getX() - cameraEntity.getComponent(PositionComponent.class).getGlobalX();
+            double y2 = p.getY() - cameraEntity.getComponent(PositionComponent.class).getGlobalY();
+
             x1 *= Config.relativeWidthRatio;
             y1 *= Config.relativeHeightRatio;
             x2 *= Config.relativeWidthRatio;
