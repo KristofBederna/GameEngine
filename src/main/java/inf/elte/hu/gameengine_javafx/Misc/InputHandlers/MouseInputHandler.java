@@ -24,7 +24,7 @@ public class MouseInputHandler {
     private final Set<MouseButton> releasedButtons = new HashSet<>();
     private final Map<MouseButton, Long> lastPressedTime = new HashMap<>();
 
-    private int mouseX, mouseY;
+    private double mouseX, mouseY;
     private double scrollDeltaY;
 
     /**
@@ -85,11 +85,10 @@ public class MouseInputHandler {
      * @param event The {@code MouseEvent} triggered by a mouse movement or drag.
      */
     private void mouseMoved(MouseEvent event) {
-        CameraEntity cameraEntity = CameraEntity.getInstance();
-        if (cameraEntity == null) return;
+        CameraEntity camera = CameraEntity.getInstance();
 
-        mouseX = (int) (event.getX() + cameraEntity.getComponent(PositionComponent.class).getGlobalX());
-        mouseY = (int) (event.getY() + cameraEntity.getComponent(PositionComponent.class).getGlobalY());
+        mouseX = event.getX() + camera.getComponent(PositionComponent.class).getGlobalX();
+        mouseY = event.getY() + camera.getComponent(PositionComponent.class).getGlobalY();
     }
 
     /**
@@ -132,7 +131,7 @@ public class MouseInputHandler {
      *
      * @return The x-coordinate of the mouse.
      */
-    public int getMouseX() {
+    public double getMouseX() {
         return mouseX;
     }
 
@@ -141,7 +140,7 @@ public class MouseInputHandler {
      *
      * @return The y-coordinate of the mouse.
      */
-    public int getMouseY() {
+    public double getMouseY() {
         return mouseY;
     }
 

@@ -12,10 +12,10 @@ import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Misc.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.Chunk;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.WorldGenerator;
-import inf.elte.hu.gameengine_javafx.Misc.MapConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
 import inf.elte.hu.gameengine_javafx.Misc.Tuple;
 import inf.elte.hu.gameengine_javafx.Misc.Walker;
 

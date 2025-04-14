@@ -35,15 +35,19 @@ public class ParticleEmitterEntity extends Entity {
 
     public void createParticles(ParticleEntity particleEntity, int amount, ParentComponent parent) {
         for (int i = 0; i < amount; i++) {
-            ParticleEntity copy = ParticleEntity.hardCopySelf(particleEntity);
-            if (copy == null) {
-                continue;
-            }
-            copy.getComponent(ParentComponent.class).setParent(this);
-            parent.addChild(copy);
-            copy.getComponent(PositionComponent.class).setLocalPosition(0, 0, copy);
-            copy.addToManager();
+            createCopy(particleEntity, parent);
         }
+    }
+
+    private void createCopy(ParticleEntity particleEntity, ParentComponent parent) {
+        ParticleEntity copy = ParticleEntity.hardCopySelf(particleEntity);
+        if (copy == null) {
+            return;
+        }
+        copy.getComponent(ParentComponent.class).setParent(this);
+        parent.addChild(copy);
+        copy.getComponent(PositionComponent.class).setLocalPosition(0, 0, copy);
+        copy.addToManager();
     }
 
     public int getAmount() {

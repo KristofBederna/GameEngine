@@ -1,8 +1,8 @@
 package inf.elte.hu.gameengine_javafx.Misc.MapClasses;
 
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
-import inf.elte.hu.gameengine_javafx.Misc.Config;
-import inf.elte.hu.gameengine_javafx.Misc.MapConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,30 +29,42 @@ public class WorldGenerator {
         int[][] tileValues = new int[chunkWidth][chunkHeight];
 
         // Generate tile values for each tile in the chunk
+        generateBlankMap(chunkWidth, chunkHeight, tileValues);
+
+        // Create TileEntities based on generated tile values and world coordinates
+        for (int y = 0; y < chunkHeight; y++) {
+            generateRow(chunkX, chunkY, chunkWidth, chunkHeight, y, tileValues, tiles);
+        }
+
+        return new Chunk(tiles);
+    }
+
+    private static void generateRow(int chunkX, int chunkY, int chunkWidth, int chunkHeight, int y, int[][] tileValues, List<List<TileEntity>> tiles) {
+        List<TileEntity> row = new ArrayList<>();
+        for (int x = 0; x < chunkWidth; x++) {
+            generateTile(chunkX, chunkY, chunkWidth, chunkHeight, x, y, tileValues, row);
+        }
+        tiles.add(row);
+    }
+
+    private static void generateTile(int chunkX, int chunkY, int chunkWidth, int chunkHeight, int x, int y, int[][] tileValues, List<TileEntity> row) {
+        int worldX = (int) (chunkX * chunkWidth * Config.scaledTileSize + x * Config.scaledTileSize);
+        int worldY = (int) (chunkY * chunkHeight * Config.scaledTileSize + y * Config.scaledTileSize);
+
+        int tileValue = tileValues[y][x];
+        String tilePath = TileLoader.getTilePath(tileValue);
+        if (tilePath == null) {
+            tilePath = "default.png";
+        }
+        TileEntity tile = new TileEntity(tileValue, worldX, worldY, "/assets/tiles/" + tilePath + ".png", Config.scaledTileSize, Config.scaledTileSize, Config.wallTiles.contains(tileValue));
+        row.add(tile);
+    }
+
+    private static void generateBlankMap(int chunkWidth, int chunkHeight, int[][] tileValues) {
         for (int y = 0; y < chunkHeight; y++) {
             for (int x = 0; x < chunkWidth; x++) {
                 tileValues[y][x] = MapConfig.defaultTileCode;
             }
         }
-
-        // Create TileEntities based on generated tile values and world coordinates
-        for (int y = 0; y < chunkHeight; y++) {
-            List<TileEntity> row = new ArrayList<>();
-            for (int x = 0; x < chunkWidth; x++) {
-                int worldX = (int) (chunkX * chunkWidth * Config.scaledTileSize + x * Config.scaledTileSize);
-                int worldY = (int) (chunkY * chunkHeight * Config.scaledTileSize + y * Config.scaledTileSize);
-
-                int tileValue = tileValues[y][x];
-                String tilePath = TileLoader.getTilePath(tileValue);
-                if (tilePath == null) {
-                    tilePath = "default.png";
-                }
-                TileEntity tile = new TileEntity(tileValue, worldX, worldY, "/assets/tiles/" + tilePath + ".png", Config.scaledTileSize, Config.scaledTileSize, Config.wallTiles.contains(tileValue));
-                row.add(tile);
-            }
-            tiles.add(row);
-        }
-
-        return new Chunk(tiles);
     }
 }

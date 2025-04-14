@@ -1,4 +1,4 @@
-package inf.elte.hu.gameengine_javafx.Misc;
+package inf.elte.hu.gameengine_javafx.Misc.Configs;
 
 public class MapConfig {
     public static int defaultTileCode = 0;

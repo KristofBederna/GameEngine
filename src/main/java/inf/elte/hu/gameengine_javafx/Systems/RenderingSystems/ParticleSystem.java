@@ -101,13 +101,13 @@ public class ParticleSystem extends GameSystem {
 
                     dx += Math.cos(angle) * random.nextDouble(0, 20) * Time.getInstance().getDeltaTime();
                     dy += Math.sin(angle) * random.nextDouble(0, 20) * Time.getInstance().getDeltaTime();
-
+                    if (dx == 0 && dy == 0) {
+                        toBeRemoved.add(particle);
+                    }
                     accelerationComponent.setAcceleration(new Vector(dx, dy));
                 }
 
                 if (particleEntity.getComponent(MaxDistanceFromOriginComponent.class).isOverMaxDistance(particleEntity)) {
-                    toBeRemoved.add(particleEntity);
-                } else if (particleEntity.getComponent(AccelerationComponent.class).getAcceleration().getDx() == 0 && particleEntity.getComponent(AccelerationComponent.class).getAcceleration().getDy() == 0) {
                     toBeRemoved.add(particleEntity);
                 }
 
@@ -121,11 +121,11 @@ public class ParticleSystem extends GameSystem {
             entity.getComponent(ParentComponent.class).removeChildren(toBeRemoved);
             for (Entity particle : toBeRemoved) {
                 particle.getComponent(ParentComponent.class).setParent(null);
-                EntityHub.getInstance().getEntityManager(ParticleEntity.class).unload(particle.getId());
+                EntityHub.getInstance().removeEntity(particle);
             }
         }
         for (Entity entity : emittersToRemove) {
-            EntityHub.getInstance().getEntityManager(ParticleEntity.class).unload(entity.getId());
+            EntityHub.getInstance().removeEntity(entity);
         }
     }
 }

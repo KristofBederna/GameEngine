@@ -4,7 +4,7 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Misc.BackgroundMusic;
 import inf.elte.hu.gameengine_javafx.Misc.BackgroundMusicStore;
-import inf.elte.hu.gameengine_javafx.Misc.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;

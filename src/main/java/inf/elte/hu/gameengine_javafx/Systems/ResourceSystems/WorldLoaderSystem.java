@@ -12,7 +12,7 @@ import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
-import inf.elte.hu.gameengine_javafx.Misc.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.Chunk;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.MapLoader;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.World;
@@ -69,7 +69,7 @@ public class WorldLoaderSystem extends GameSystem {
 
         // Remove the tiles that are outside of the camera's viewport
         for (TileEntity tile : toRemove) {
-            tileManager.unload(tile.getId());
+            EntityHub.getInstance().removeEntity(tile);
         }
 
         // Get the world data from the map

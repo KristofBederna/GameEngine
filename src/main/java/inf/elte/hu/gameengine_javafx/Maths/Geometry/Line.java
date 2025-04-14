@@ -2,7 +2,7 @@ package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
 import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
-import inf.elte.hu.gameengine_javafx.Misc.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -30,44 +30,29 @@ public class Line extends Shape {
     }
 
     public void render(GraphicsContext gc, Color color) {
-        CameraEntity cameraEntity = CameraEntity.getInstance();
-
         gc.setStroke(color);
         gc.setLineWidth(1);
 
-        if (points.size() >= 2) {
-            Point start = points.get(0);
-            Point end = points.get(1);
-
-            double cameraX = cameraEntity.getComponent(PositionComponent.class).getGlobalX();
-            double cameraY = cameraEntity.getComponent(PositionComponent.class).getGlobalY();
-
-            double x1 = (start.getX() - cameraX) * Config.relativeWidthRatio;
-            double y1 = (start.getY() - cameraY) * Config.relativeHeightRatio;
-            double x2 = (end.getX() - cameraX) * Config.relativeWidthRatio;
-            double y2 = (end.getY() - cameraY) * Config.relativeHeightRatio;
-
-            gc.strokeLine(x1, y1, x2, y2);
-        }
+        renderShape(gc);
     }
 
     public void render(GraphicsContext gc, Color color, double thickness) {
-        CameraEntity cameraEntity = CameraEntity.getInstance();
-
         gc.setStroke(color);
         gc.setLineWidth(thickness);
 
+        renderShape(gc);
+    }
+
+    private void renderShape(GraphicsContext gc) {
         if (points.size() >= 2) {
             Point start = points.get(0);
             Point end = points.get(1);
 
-            double cameraX = cameraEntity.getComponent(PositionComponent.class).getGlobalX();
-            double cameraY = cameraEntity.getComponent(PositionComponent.class).getGlobalY();
+            double x1 = CameraEntity.getRenderX(start.getX()) * Config.relativeWidthRatio;
+            double y1 = CameraEntity.getRenderY(start.getY()) * Config.relativeHeightRatio;
+            double x2 = CameraEntity.getRenderX(end.getX()) * Config.relativeWidthRatio;
+            double y2 = CameraEntity.getRenderY(end.getY()) * Config.relativeHeightRatio;
 
-            double x1 = (start.getX() - cameraX) * Config.relativeWidthRatio;
-            double y1 = (start.getY() - cameraY) * Config.relativeHeightRatio;
-            double x2 = (end.getX() - cameraX) * Config.relativeWidthRatio;
-            double y2 = (end.getY() - cameraY) * Config.relativeHeightRatio;
 
             gc.strokeLine(x1, y1, x2, y2);
         }

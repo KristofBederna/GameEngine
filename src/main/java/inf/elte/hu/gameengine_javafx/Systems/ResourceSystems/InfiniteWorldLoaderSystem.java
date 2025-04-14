@@ -11,7 +11,7 @@ import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Misc.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.Chunk;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.World;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.WorldGenerator;
@@ -143,7 +143,7 @@ public class InfiniteWorldLoaderSystem extends GameSystem {
             int chunkX = entry.getKey().first();
             int chunkY = entry.getKey().second();
 
-            // If the chunk is too far from the player, save it and remove it from the active world
+            // If the chunk is too far from the player, save it and unload it from the active world
             if (Math.abs(chunkX - playerChunkX) > Config.loadDistance || Math.abs(chunkY - playerChunkY) > Config.loadDistance) {
                 worldData.getSavedChunks().put(entry.getKey(), entry.getValue());
                 iterator.remove();

@@ -3,7 +3,7 @@ package inf.elte.hu.gameengine_javafx.Systems.ResourceSystems;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
-import inf.elte.hu.gameengine_javafx.Misc.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
 
 import java.util.Iterator;
 import java.util.Map;

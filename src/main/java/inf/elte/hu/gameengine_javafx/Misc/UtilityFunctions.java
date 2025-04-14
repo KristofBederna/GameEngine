@@ -3,34 +3,18 @@ package inf.elte.hu.gameengine_javafx.Misc;
 import inf.elte.hu.gameengine_javafx.Components.InteractiveComponent;
 import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.AccelerationComponent;
 import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.PlayerComponent;
-import inf.elte.hu.gameengine_javafx.Components.UIComponents.CheckBoxComponent;
-import inf.elte.hu.gameengine_javafx.Components.UIComponents.ComboBoxComponent;
-import inf.elte.hu.gameengine_javafx.Components.UIComponents.SliderComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Entities.PlayerEntity;
-import inf.elte.hu.gameengine_javafx.Entities.UIEntities.*;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
-import inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventListeners.FullScreenToggleEventListener;
-import inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventListeners.ResolutionChangeEventListener;
-import inf.elte.hu.gameengine_javafx.Misc.EventHandling.Events.FullScreenToggleEvent;
-import inf.elte.hu.gameengine_javafx.Misc.EventHandling.Events.ResolutionChangeEvent;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.GameLoopStartUp;
-import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SceneManagementSystem;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.Slider;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 
 public class UtilityFunctions {
     public static void setUpMovement(InteractiveComponent playerInteractiveComponent, PlayerEntity player) {

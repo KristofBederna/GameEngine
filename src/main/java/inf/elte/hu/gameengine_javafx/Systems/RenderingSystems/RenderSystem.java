@@ -17,7 +17,7 @@ import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
 import inf.elte.hu.gameengine_javafx.Entities.*;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.*;
-import inf.elte.hu.gameengine_javafx.Misc.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
@@ -56,7 +56,6 @@ public class RenderSystem extends GameSystem {
             return;
         }
         GraphicsContext gc = GameCanvas.getInstance().getGraphicsContext2D();
-        CameraEntity cameraEntity = CameraEntity.getInstance();
 
         if (gc == null || gc.getCanvas() == null) {
             System.err.println("RenderSystem: GraphicsContext or Canvas is null!");
@@ -72,7 +71,7 @@ public class RenderSystem extends GameSystem {
             }
             List<Entity> sortedEntities = sortByZIndex(visibleEntities);
 
-            processEntities(sortedEntities, cameraEntity, gc);
+            processEntities(sortedEntities, gc);
             renderParticles(gc);
             if (Config.renderDebugMode) {
                 renderCurrentlyOccupiedTile();
@@ -111,10 +110,9 @@ public class RenderSystem extends GameSystem {
      * Processes and renders the entities inside the camera's viewport, sorted by their Z-index.
      *
      * @param sortedEntities List of entities that need to be rendered, sorted by Z-index.
-     * @param cameraEntity   The camera entity used to adjust the rendering coordinates.
      * @param gc             The graphics context used to render the entities.
      */
-    private static void processEntities(List<Entity> sortedEntities, CameraEntity cameraEntity, GraphicsContext gc) {
+    private static void processEntities(List<Entity> sortedEntities, GraphicsContext gc) {
         for (Entity entity : sortedEntities) {
             PositionComponent position = entity.getComponent(PositionComponent.class);
             ImageComponent imgComponent = entity.getComponent(ImageComponent.class);
@@ -124,8 +122,8 @@ public class RenderSystem extends GameSystem {
             double width = imgComponent.getWidth();
             double height = imgComponent.getHeight();
 
-            double renderX = position.getGlobalX() - cameraEntity.getComponent(PositionComponent.class).getGlobalX();
-            double renderY = position.getGlobalY() - cameraEntity.getComponent(PositionComponent.class).getGlobalY();
+            double renderX = CameraEntity.getRenderX(position.getGlobalX());
+            double renderY = CameraEntity.getRenderY(position.getGlobalY());
 
             renderEntity(entity, renderX, renderY, width, height, imgComponent, gc);
         }

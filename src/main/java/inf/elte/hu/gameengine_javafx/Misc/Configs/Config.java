@@ -1,4 +1,6 @@
-package inf.elte.hu.gameengine_javafx.Misc;
+package inf.elte.hu.gameengine_javafx.Misc.Configs;
+
+import inf.elte.hu.gameengine_javafx.Misc.Tuple;
 
 import java.util.ArrayList;
 import java.util.List;

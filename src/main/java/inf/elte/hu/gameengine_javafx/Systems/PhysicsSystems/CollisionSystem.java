@@ -14,7 +14,7 @@ import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.ComplexShape;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Shape;
-import inf.elte.hu.gameengine_javafx.Misc.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
 import inf.elte.hu.gameengine_javafx.Misc.IgnoreCollisions;
 
 import java.util.ArrayList;
@@ -32,6 +32,7 @@ public class CollisionSystem extends GameSystem {
 
     /**
      * Initializes the system, setting it as active.
+     * Set up which entities should ignore collisions with others
      */
     @Override
     public void start() {
@@ -40,10 +41,8 @@ public class CollisionSystem extends GameSystem {
         ignore.getCollisionRules().computeIfAbsent(PlayerEntity.class, k -> new ArrayList<>()).add(DummyEntity.class);
         ignore.getCollisionRules().computeIfAbsent(DummyEntity.class, k -> new ArrayList<>()).add(PlayerEntity.class);
 
-
         ignore.getCollisionRules().computeIfAbsent(TileEntity.class, k -> new ArrayList<>()).add(DummyEntity.class);
         ignore.getCollisionRules().computeIfAbsent(DummyEntity.class, k -> new ArrayList<>()).add(TileEntity.class);
-
     }
 
     /**
@@ -68,7 +67,7 @@ public class CollisionSystem extends GameSystem {
      * @param filteredEntities list of entities to be processed
      * @param hitBoxes list of entities with hitboxes
      */
-    private static void processEntities(List<Entity> filteredEntities, List<Entity> hitBoxes) {
+    private void processEntities(List<Entity> filteredEntities, List<Entity> hitBoxes) {
         synchronized (filteredEntities) {
             for (Entity entity : filteredEntities) {
                 processEntity(hitBoxes, entity);
@@ -82,7 +81,7 @@ public class CollisionSystem extends GameSystem {
      * @param hitBoxes list of entities with hitboxes
      * @param entity the entity to be processed
      */
-    private static void processEntity(List<Entity> hitBoxes, Entity entity) {
+    private void processEntity(List<Entity> hitBoxes, Entity entity) {
         if (entity == null) {
             return;
         }
@@ -126,7 +125,7 @@ public class CollisionSystem extends GameSystem {
      * @param futureHitBox the future position of the entity's hitbox
      * @param velocity the velocity component of the entity
      */
-    private static void moveDiagonally(List<Entity> hitBoxes, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
+    private void moveDiagonally(List<Entity> hitBoxes, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
         checkCollisionAndMove(hitBoxes, entity, futureHitBox, velocity);
         if (velocity.getVelocity().getDy() != 0) {
             verticalCollisionCheck(hitBoxes, entity, futureHitBox, velocity);
@@ -144,7 +143,7 @@ public class CollisionSystem extends GameSystem {
      * @param futureHitBox the future position of the entity's hitbox
      * @param velocity the velocity component of the entity
      */
-    private static void checkCollisionAndMove(List<Entity> hitBoxes, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
+    private void checkCollisionAndMove(List<Entity> hitBoxes, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
         horizontalCollisionCheck(hitBoxes, entity, futureHitBox, velocity);
         verticalCollisionCheck(hitBoxes, entity, futureHitBox, velocity);
     }
@@ -157,7 +156,7 @@ public class CollisionSystem extends GameSystem {
      * @param futureHitBox the future position of the entity's hitbox
      * @param velocity the velocity component of the entity
      */
-    private static void horizontalCollisionCheck(List<Entity> hitBoxes, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
+    private void horizontalCollisionCheck(List<Entity> hitBoxes, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
         translateHitBoxHorizontally(entity, futureHitBox, velocity);
         synchronized (hitBoxes) {
             for (Entity otherEntity : hitBoxes) {
@@ -185,7 +184,7 @@ public class CollisionSystem extends GameSystem {
      * @param futureHitBox the future position of the entity's hitbox
      * @param velocity the velocity component of the entity
      */
-    private static void verticalCollisionCheck(List<Entity> hitBoxes, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
+    private void verticalCollisionCheck(List<Entity> hitBoxes, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
         translateHitBoxVertically(entity, futureHitBox, velocity);
 
         synchronized (hitBoxes) {
@@ -213,7 +212,7 @@ public class CollisionSystem extends GameSystem {
      * @param futureHitBox the future position of the entity's hitbox
      * @param velocity the velocity component of the entity
      */
-    private static void translateHitBoxHorizontally(Entity entity, Shape futureHitBox, VelocityComponent velocity) {
+    private void translateHitBoxHorizontally(Entity entity, Shape futureHitBox, VelocityComponent velocity) {
         double dx = velocity.getVelocity().getDx();
 
         AccelerationComponent accelerationComponent = entity.getComponent(AccelerationComponent.class);
@@ -230,7 +229,7 @@ public class CollisionSystem extends GameSystem {
      * @param futureHitBox the future position of the entity's hitbox
      * @param velocity the velocity component of the entity
      */
-    private static void translateHitBoxVertically(Entity entity, Shape futureHitBox, VelocityComponent velocity) {
+    private void translateHitBoxVertically(Entity entity, Shape futureHitBox, VelocityComponent velocity) {
         double dy = velocity.getVelocity().getDy();
 
         AccelerationComponent accelerationComponent = entity.getComponent(AccelerationComponent.class);

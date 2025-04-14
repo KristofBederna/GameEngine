@@ -2,7 +2,7 @@ package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
 import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
-import inf.elte.hu.gameengine_javafx.Misc.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -63,8 +63,8 @@ public class Triangle extends Shape {
     }
 
     public void moveTo(Point newPoint) {
-        double deltaX = newPoint.getX() - points.get(0).getX();
-        double deltaY = newPoint.getY() - points.get(0).getY();
+        double deltaX = newPoint.getX() - points.getFirst().getX();
+        double deltaY = newPoint.getY() - points.getFirst().getY();
 
         for (Point p : points) {
             p.setX(p.getX() + deltaX);
@@ -77,7 +77,13 @@ public class Triangle extends Shape {
         double[] x = new double[3];
         double[] y = new double[3];
 
-        applyCameraOffset(x, y);
+        CameraEntity camera = CameraEntity.getInstance();
+        PositionComponent camPos = camera.getComponent(PositionComponent.class);
+
+        for (int i = 0; i < 3; i++) {
+            x[i] = points.get(i).getX() - camPos.getGlobalX();
+            y[i] = points.get(i).getY() - camPos.getGlobalY();
+        }
 
         for (int i = 0; i < 3; i++) {
             x[i] *= Config.relativeWidthRatio;
@@ -93,11 +99,9 @@ public class Triangle extends Shape {
         double[] x = new double[3];
         double[] y = new double[3];
 
-        applyCameraOffset(x, y);
-
         for (int i = 0; i < 3; i++) {
-            x[i] *= Config.relativeWidthRatio;
-            y[i] *= Config.relativeHeightRatio;
+            x[i] = CameraEntity.getRenderX(points.get(i).getX()) * Config.relativeWidthRatio;
+            y[i] = CameraEntity.getRenderY(points.get(i).getY())  * Config.relativeHeightRatio;
         }
 
         gc.setStroke(color);
@@ -109,11 +113,9 @@ public class Triangle extends Shape {
         double[] x = new double[3];
         double[] y = new double[3];
 
-        applyCameraOffset(x, y);
-
         for (int i = 0; i < 3; i++) {
-            x[i] *= Config.relativeWidthRatio;
-            y[i] *= Config.relativeHeightRatio;
+            x[i] = CameraEntity.getRenderX(points.get(i).getX()) * Config.relativeWidthRatio;
+            y[i] = CameraEntity.getRenderY(points.get(i).getY())  * Config.relativeHeightRatio;
         }
 
         gc.setFill(color);
@@ -125,11 +127,9 @@ public class Triangle extends Shape {
         double[] x = new double[3];
         double[] y = new double[3];
 
-        applyCameraOffset(x, y);
-
         for (int i = 0; i < 3; i++) {
-            x[i] *= Config.relativeWidthRatio;
-            y[i] *= Config.relativeHeightRatio;
+            x[i] = CameraEntity.getRenderX(points.get(i).getX()) * Config.relativeWidthRatio;
+            y[i] = CameraEntity.getRenderY(points.get(i).getY())  * Config.relativeHeightRatio;
         }
 
         gc.setFill(color);
@@ -138,15 +138,5 @@ public class Triangle extends Shape {
         gc.setStroke(stroke);
         gc.setLineWidth(outerStrokeWidth);
         gc.strokePolygon(x, y, 3);
-    }
-
-    private void applyCameraOffset(double[] x, double[] y) {
-        CameraEntity camera = CameraEntity.getInstance();
-        PositionComponent camPos = camera.getComponent(PositionComponent.class);
-
-        for (int i = 0; i < 3; i++) {
-            x[i] = points.get(i).getX() - camPos.getGlobalX();
-            y[i] = points.get(i).getY() - camPos.getGlobalY();
-        }
     }
 }

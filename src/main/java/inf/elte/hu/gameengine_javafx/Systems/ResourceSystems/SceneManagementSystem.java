@@ -1,7 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Systems.ResourceSystems;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
-import inf.elte.hu.gameengine_javafx.Misc.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
 import inf.elte.hu.gameengine_javafx.Misc.Scenes.GameScene;
 import inf.elte.hu.gameengine_javafx.Misc.Scenes.TestScene;
 import javafx.scene.layout.BorderPane;

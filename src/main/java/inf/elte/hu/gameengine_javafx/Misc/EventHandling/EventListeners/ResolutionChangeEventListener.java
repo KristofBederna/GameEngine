@@ -1,11 +1,9 @@
 package inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventListeners;
 
-import inf.elte.hu.gameengine_javafx.Core.SystemHub;
-import inf.elte.hu.gameengine_javafx.Misc.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
 import inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventListener;
 import inf.elte.hu.gameengine_javafx.Misc.EventHandling.Events.ResolutionChangeEvent;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
-import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SceneManagementSystem;
 
 public class ResolutionChangeEventListener implements EventListener<ResolutionChangeEvent> {
     @Override

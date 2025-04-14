@@ -20,21 +20,39 @@ public class AnimationComponent extends Component {
     }
 
     public String getNextFrame() {
-        int fps = Time.getInstance().getFPS();
+        updateElapsedTime();
+        advanceFrameIfNeeded();
+        return getCurrentFrameImage();
+    }
+
+    private void updateElapsedTime() {
         elapsedTime += Time.getInstance().getDeltaTime();
+    }
 
-        double frameDurationInSeconds = (double) frames.get(currentFrame).getFrame().second() / fps;
-
-        if (elapsedTime >= frameDurationInSeconds) {
-            currentFrame++;
-            if (currentFrame >= frames.size()) {
-                currentFrame = 0;
-            }
+    private void advanceFrameIfNeeded() {
+        double frameDuration = getCurrentFrameDuration();
+        if (elapsedTime >= frameDuration) {
+            advanceFrame();
             elapsedTime = 0;
         }
+    }
 
+    private double getCurrentFrameDuration() {
+        int fps = Time.getInstance().getFPS();
+        return (double) frames.get(currentFrame).getFrame().second() / fps;
+    }
+
+    private void advanceFrame() {
+        currentFrame++;
+        if (currentFrame >= frames.size()) {
+            currentFrame = 0;
+        }
+    }
+
+    private String getCurrentFrameImage() {
         return frames.get(currentFrame).getImage();
     }
+
 
     @Override
     public String getStatus() {

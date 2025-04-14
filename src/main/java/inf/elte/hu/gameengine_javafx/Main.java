@@ -1,7 +1,7 @@
 package inf.elte.hu.gameengine_javafx;
 
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
-import inf.elte.hu.gameengine_javafx.Misc.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameLayer;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot;

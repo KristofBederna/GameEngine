@@ -3,7 +3,7 @@ package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
 import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
-import inf.elte.hu.gameengine_javafx.Misc.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -47,30 +47,38 @@ public class NSidedShape extends Shape {
         points.clear();
 
         for (int i = 0; i < this.segments; i++) {
-            double angle = 2 * Math.PI * i / this.segments;
-            double x = center.getX() + radius * Math.cos(angle);
-            double y = center.getY() + radius * Math.sin(angle);
-            points.add(new Point(x, y));
+            createPoint(i);
         }
         updateEdges();
         rotate(rotation);
+    }
+
+    private void createPoint(int i) {
+        double angle = 2 * Math.PI * i / this.segments;
+        double x = center.getX() + radius * Math.cos(angle);
+        double y = center.getY() + radius * Math.sin(angle);
+        points.add(new Point(x, y));
     }
 
     public void rotate(double degrees) {
         double angle = Math.toRadians(degrees);
 
         for (int i = 0; i < points.size(); i++) {
-            Point p = points.get(i);
-
-            double x = p.getX() - center.getX();
-            double y = p.getY() - center.getY();
-
-            double rotatedX = x * Math.cos(angle) - y * Math.sin(angle);
-            double rotatedY = x * Math.sin(angle) + y * Math.cos(angle);
-
-            points.set(i, new Point(rotatedX + center.getX(), rotatedY + center.getY()));
+            rotatePoint(i, angle);
         }
         updateEdges();
+    }
+
+    private void rotatePoint(int i, double angle) {
+        Point p = points.get(i);
+
+        double x = p.getX() - center.getX();
+        double y = p.getY() - center.getY();
+
+        double rotatedX = x * Math.cos(angle) - y * Math.sin(angle);
+        double rotatedY = x * Math.sin(angle) + y * Math.cos(angle);
+
+        points.set(i, new Point(rotatedX + center.getX(), rotatedY + center.getY()));
     }
 
 
@@ -85,50 +93,28 @@ public class NSidedShape extends Shape {
 
 
     public void render(GraphicsContext gc, Color color) {
-        CameraEntity cameraEntity = CameraEntity.getInstance();
-
         gc.setStroke(color);
         gc.setLineWidth(2);
 
-        if (points.isEmpty()) {
-            generateApproximation();
-            updateEdges();
-        }
-
-        Point prev = points.getLast();
-        for (Point p : points) {
-            double x1 = prev.getX() - cameraEntity.getComponent(PositionComponent.class).getGlobalX();
-            double y1 = prev.getY() - cameraEntity.getComponent(PositionComponent.class).getGlobalY();
-            double x2 = p.getX() - cameraEntity.getComponent(PositionComponent.class).getGlobalX();
-            double y2 = p.getY() - cameraEntity.getComponent(PositionComponent.class).getGlobalY();
-
-            x1 *= Config.relativeWidthRatio;
-            y1 *= Config.relativeHeightRatio;
-            x2 *= Config.relativeWidthRatio;
-            y2 *= Config.relativeHeightRatio;
-
-            gc.strokeLine(x1, y1, x2, y2);
-            prev = p;
-        }
+        renderShape(gc);
     }
 
     public void render(GraphicsContext gc, Color color, double strokeWidth) {
-        CameraEntity cameraEntity = CameraEntity.getInstance();
-
         gc.setStroke(color);
         gc.setLineWidth(strokeWidth);
 
-        if (points.isEmpty()) {
-            generateApproximation();
-            updateEdges();
-        }
+        renderShape(gc);
+    }
+
+    private void renderShape(GraphicsContext gc) {
+        updateEdgesForShape();
 
         Point prev = points.getLast();
         for (Point p : points) {
-            double x1 = prev.getX() - cameraEntity.getComponent(PositionComponent.class).getGlobalX();
-            double y1 = prev.getY() - cameraEntity.getComponent(PositionComponent.class).getGlobalY();
-            double x2 = p.getX() - cameraEntity.getComponent(PositionComponent.class).getGlobalX();
-            double y2 = p.getY() - cameraEntity.getComponent(PositionComponent.class).getGlobalY();
+            double x1 = CameraEntity.getRenderX(prev.getX());
+            double y1 = CameraEntity.getRenderY(prev.getY());
+            double x2 = CameraEntity.getRenderX(p.getX());
+            double y2 = CameraEntity.getRenderY(p.getY());
 
             x1 *= Config.relativeWidthRatio;
             y1 *= Config.relativeHeightRatio;
@@ -140,50 +126,38 @@ public class NSidedShape extends Shape {
         }
     }
 
-    public void renderFill(GraphicsContext gc, Color color) {
-        CameraEntity cameraEntity = CameraEntity.getInstance();
 
-        if (points.isEmpty()) {
-            generateApproximation();
-            updateEdges();
-        }
+    public void renderFill(GraphicsContext gc, Color color) {
+        updateEdgesForShape();
 
         double[] xPoints = new double[points.size()];
         double[] yPoints = new double[points.size()];
 
-        double cameraX = cameraEntity.getComponent(PositionComponent.class).getGlobalX();
-        double cameraY = cameraEntity.getComponent(PositionComponent.class).getGlobalY();
-
         for (int i = 0; i < points.size(); i++) {
-            xPoints[i] = points.get(i).getX() - cameraX;
-            yPoints[i] = points.get(i).getY() - cameraY;
-
-            // Apply scaling to the points
-            xPoints[i] *= Config.relativeWidthRatio;
-            yPoints[i] *= Config.relativeHeightRatio;
+            xPoints[i] = CameraEntity.getRenderX(points.get(i).getX())*Config.relativeWidthRatio;
+            yPoints[i] = CameraEntity.getRenderY(points.get(i).getY())*Config.relativeHeightRatio;
         }
 
         gc.setFill(color);
         gc.fillPolygon(xPoints, yPoints, points.size());
     }
 
-    public void renderFillWithStroke(GraphicsContext gc, Color fillColor, Color strokeColor, double outerStrokeWidth) {
-        CameraEntity cameraEntity = CameraEntity.getInstance();
-
+    private void updateEdgesForShape() {
         if (points.isEmpty()) {
             generateApproximation();
             updateEdges();
         }
+    }
+
+    public void renderFillWithStroke(GraphicsContext gc, Color fillColor, Color strokeColor, double outerStrokeWidth) {
+        updateEdgesForShape();
 
         double[] xPoints = new double[points.size()];
         double[] yPoints = new double[points.size()];
 
-        double cameraX = cameraEntity.getComponent(PositionComponent.class).getGlobalX();
-        double cameraY = cameraEntity.getComponent(PositionComponent.class).getGlobalY();
-
         for (int i = 0; i < points.size(); i++) {
-            xPoints[i] = (points.get(i).getX() - cameraX) * Config.relativeWidthRatio;
-            yPoints[i] = (points.get(i).getY() - cameraY) * Config.relativeHeightRatio;
+            xPoints[i] = CameraEntity.getRenderX(points.get(i).getX())*Config.relativeWidthRatio;
+            yPoints[i] = CameraEntity.getRenderY(points.get(i).getY())*Config.relativeHeightRatio;
         }
 
         gc.setFill(fillColor);
