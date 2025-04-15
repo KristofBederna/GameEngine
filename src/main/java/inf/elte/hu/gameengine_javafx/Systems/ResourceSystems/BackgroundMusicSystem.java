@@ -159,8 +159,15 @@ public class BackgroundMusicSystem extends GameSystem {
 
         try {
             FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            float dB = (float) (Math.log10(Math.max(volume, 0.0001f)) * 20);
-            gainControl.setValue(dB);
+            if (ResourceConfig.linearVolumeControl) {
+                float minGain = gainControl.getMinimum();
+                float maxGain = gainControl.getMaximum();
+                float gain = minGain + (maxGain - minGain) * volume;
+                gainControl.setValue(gain);
+            } else {
+                float dB = (float) (Math.log10(Math.max(volume, 0.0001f)) * 20);
+                gainControl.setValue(dB);
+            }
         } catch (Exception e) {
             System.err.println("Failed to set volume: " + e.getMessage());
         }

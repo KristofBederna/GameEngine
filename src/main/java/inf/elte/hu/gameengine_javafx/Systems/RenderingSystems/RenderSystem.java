@@ -86,7 +86,7 @@ public class RenderSystem extends GameSystem {
         });
     }
 
-    private static void renderShapes(GraphicsContext gc) {
+    private void renderShapes(GraphicsContext gc) {
         for (Entity entity : EntityHub.getInstance().getEntitiesWithComponent(ShapeComponent.class)) {
             if (entity == null) {
                 continue;
@@ -95,7 +95,7 @@ public class RenderSystem extends GameSystem {
         }
     }
 
-    private static void renderPathFindingNeighbours(GraphicsContext gc) {
+    private void renderPathFindingNeighbours(GraphicsContext gc) {
         for (Entity entity : EntityHub.getInstance().getEntitiesWithComponent(PathfindingComponent.class)) {
             if (entity == null) {
                 continue;
@@ -113,7 +113,7 @@ public class RenderSystem extends GameSystem {
      * @param sortedEntities List of entities that need to be rendered, sorted by Z-index.
      * @param gc             The graphics context used to render the entities.
      */
-    private static void processEntities(List<Entity> sortedEntities, GraphicsContext gc) {
+    private void processEntities(List<Entity> sortedEntities, GraphicsContext gc) {
         for (Entity entity : sortedEntities) {
             PositionComponent position = entity.getComponent(PositionComponent.class);
             ImageComponent imgComponent = entity.getComponent(ImageComponent.class);
@@ -135,7 +135,7 @@ public class RenderSystem extends GameSystem {
      *
      * @param gc The graphics context used to render the particles.
      */
-    private static void renderParticles(GraphicsContext gc) {
+    private void renderParticles(GraphicsContext gc) {
         for (Entity entity : EntityHub.getInstance().getEntitiesWithType(ParticleEntity.class)) {
             ((ParticleEntity) entity).alignShapeWithEntity(entity);
             ((ParticleEntity) entity).render(gc);
@@ -153,7 +153,7 @@ public class RenderSystem extends GameSystem {
      * @param imgComponent The image component containing the entity's image data.
      * @param gc           The graphics context used to render the entity.
      */
-    private static void renderEntity(Entity entity, double renderX, double renderY, double width, double height, ImageComponent imgComponent, GraphicsContext gc) {
+    private void renderEntity(Entity entity, double renderX, double renderY, double width, double height, ImageComponent imgComponent, GraphicsContext gc) {
         ResourceManager<Image> imageManager = ResourceHub.getInstance().getResourceManager(Image.class);
         if (imageManager == null) return;
         Image img = imageManager.get(imgComponent.getImagePath());
@@ -176,7 +176,7 @@ public class RenderSystem extends GameSystem {
      * @param entity The entity whose hitbox is to be rendered.
      * @param gc     The graphics context used to render the hitbox.
      */
-    private static void renderHitBox(Entity entity, GraphicsContext gc) {
+    private void renderHitBox(Entity entity, GraphicsContext gc) {
         HitBoxComponent hitBox = entity.getComponent(HitBoxComponent.class);
         if (hitBox != null) {
             hitBox.getHitBox().render(gc, Color.RED);
@@ -189,7 +189,7 @@ public class RenderSystem extends GameSystem {
      * @param visibleEntities List of entities to be sorted.
      * @return A sorted list of entities based on their Z-index.
      */
-    private static List<Entity> sortByZIndex(List<Entity> visibleEntities) {
+    private List<Entity> sortByZIndex(List<Entity> visibleEntities) {
         return visibleEntities.stream()
                 .filter(entity -> entity.getComponent(ZIndexComponent.class) != null)
                 .sorted((e1, e2) -> {
@@ -203,7 +203,7 @@ public class RenderSystem extends GameSystem {
     /**
      * Renders the tile currently occupied by the player.
      */
-    private static void renderCurrentlyOccupiedTile() {
+    private void renderCurrentlyOccupiedTile() {
         if (EntityHub.getInstance().getEntitiesWithType(PlayerEntity.class).isEmpty()) {
             return;
         }
@@ -215,7 +215,7 @@ public class RenderSystem extends GameSystem {
     /**
      * Requests focus for the game canvas if it is not already focused.
      */
-    private static void setFocused() {
+    private void setFocused() {
         if (!GameCanvas.getInstance().isFocused()) {
             GameCanvas.getInstance().requestFocus();
         }
@@ -226,7 +226,7 @@ public class RenderSystem extends GameSystem {
      *
      * @param gc The graphics context used to render the pathfinding route.
      */
-    private static void renderPathFindingRoute(GraphicsContext gc) {
+    private void renderPathFindingRoute(GraphicsContext gc) {
         for (Entity entity : EntityHub.getInstance().getEntitiesWithComponent(PathfindingComponent.class)) {
             if (entity == null) continue;
             PathfindingComponent pathfindingComponent = entity.getComponent(PathfindingComponent.class);
@@ -257,7 +257,7 @@ public class RenderSystem extends GameSystem {
      *
      * @param gc The graphics context used to render the map mesh.
      */
-    private static void renderMapMesh(GraphicsContext gc) {
+    private void renderMapMesh(GraphicsContext gc) {
         MapMeshComponent meshComponent = WorldEntity.getInstance().getComponent(MapMeshComponent.class);
         if (meshComponent != null) {
             for (List<Point> row : meshComponent.getMapCoordinates()) {

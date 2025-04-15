@@ -42,26 +42,8 @@ public class PlatformerPathfindingSystem extends GameSystem {
                     Point position = new Point(entity.getComponent(CentralMassComponent.class).getCentralX(),
                             entity.getComponent(CentralMassComponent.class).getCentralY());
 
-                    double deltaX = node.getX() - position.getX();
-
-                    StateComponent state = entity.getComponent(StateComponent.class);
-                    String previousState = state.getCurrentState();
-
-                    if (deltaX > 0) { // Moving right
-                        state.setCurrentState("right");
-                        moveRight(entity);
-                        if ("left".equals(previousState)) counterLeft(entity);
-                    } else if (deltaX < 0) { // Moving left
-                        state.setCurrentState("left");
-                        moveLeft(entity);
-                        if ("right".equals(previousState)) counterRight(entity);
-                    }
-
                     if (position.compareCoordinates(node)) {
                         pathfindingComponent.getPath().removeFirst();
-                        if (pathfindingComponent.getPath().isEmpty()) {
-                            entity.getComponent(StateComponent.class).setCurrentState("idle");
-                        }
                     }
                 }
 
@@ -71,23 +53,5 @@ public class PlatformerPathfindingSystem extends GameSystem {
                 }
             }
         }
-    }
-
-    private void moveLeft(Entity e) {
-        double dx = -4 * Time.getInstance().getDeltaTime() * MapConfig.getTileScale();
-        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(dx);
-    }
-
-    private void moveRight(Entity e) {
-        double dx = 4 * Time.getInstance().getDeltaTime() * MapConfig.getTileScale();
-        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(dx);
-    }
-
-    private void counterRight(Entity e) {
-        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(0);
-    }
-
-    private void counterLeft(Entity e) {
-        e.getComponent(AccelerationComponent.class).getAcceleration().setDx(0);
     }
 }

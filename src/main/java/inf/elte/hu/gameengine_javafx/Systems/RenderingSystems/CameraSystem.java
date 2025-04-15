@@ -10,6 +10,7 @@ import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
 import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
+import inf.elte.hu.gameengine_javafx.Misc.MapClasses.World;
 import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.InfiniteWorldLoaderSystem;
 
 /**
@@ -55,10 +56,12 @@ public class CameraSystem extends GameSystem {
         updateCameraPosition(playerPos, playerImg, cameraEntity);
     }
 
-    private static void updateWorldBoundary() {
-        if (CameraEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldHeight() == 0 || CameraEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldWidth() == 0) {
-            CameraEntity.getInstance().getComponent(WorldDimensionComponent.class).setWorldHeight(WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldHeight()* MapConfig.scaledTileSize);
-            CameraEntity.getInstance().getComponent(WorldDimensionComponent.class).setWorldWidth(WorldEntity.getInstance().getComponent(WorldDimensionComponent.class).getWorldWidth()* MapConfig.scaledTileSize);
+    private void updateWorldBoundary() {
+        CameraEntity camera = CameraEntity.getInstance();
+        WorldEntity world = WorldEntity.getInstance();
+        if (camera.getComponent(WorldDimensionComponent.class).getWorldHeight() == 0 || camera.getComponent(WorldDimensionComponent.class).getWorldWidth() == 0) {
+            camera.getComponent(WorldDimensionComponent.class).setWorldHeight(world.getComponent(WorldDimensionComponent.class).getWorldHeight() * MapConfig.scaledTileSize);
+            camera.getComponent(WorldDimensionComponent.class).setWorldWidth(world.getComponent(WorldDimensionComponent.class).getWorldWidth() * MapConfig.scaledTileSize);
         }
     }
 

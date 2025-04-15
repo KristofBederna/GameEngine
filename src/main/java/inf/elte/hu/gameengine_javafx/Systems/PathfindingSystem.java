@@ -53,20 +53,10 @@ public class PathfindingSystem extends GameSystem {
                     AccelerationComponent accel = entity.getComponent(AccelerationComponent.class);
                     accel.getAcceleration().setDx(normDx * speed);
                     accel.getAcceleration().setDy(normDy * speed);
-
-                    StateComponent state = entity.getComponent(StateComponent.class);
-                    if (Math.abs(normDx) > Math.abs(normDy)) {
-                        state.setCurrentState(normDx > 0 ? "right" : "left");
-                    } else {
-                        state.setCurrentState(normDy > 0 ? "down" : "up");
-                    }
                 }
 
                 if (position.compareCoordinates(node)) {
                     pathfindingComponent.getPath().removeFirst();
-                    if (pathfindingComponent.getPath().isEmpty()) {
-                        entity.getComponent(StateComponent.class).setCurrentState("idle");
-                    }
                 }
             }
 

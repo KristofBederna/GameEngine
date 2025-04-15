@@ -172,10 +172,9 @@ public class DynamicWorldLoaderSystem extends GameSystem {
             mapMesh.getMapCoordinates().clear();
         }
 
-        int worldWidth = width * MapConfig.chunkWidth;  // Total world width in tiles
-        int worldHeight = height * MapConfig.chunkHeight;  // Total world height in tiles
+        int worldWidth = width * MapConfig.chunkWidth;
+        int worldHeight = height * MapConfig.chunkHeight;
 
-        // Iterate over each row of the world
         for (int row = 0; row < worldHeight; row++) {
             List<Point> meshRow = new ArrayList<>();
             for (int col = 0; col < worldWidth; col++) {
@@ -187,7 +186,6 @@ public class DynamicWorldLoaderSystem extends GameSystem {
                 }
             }
 
-            // Add the full row to the map mesh
             mapMesh.addRow(meshRow);
         }
     }

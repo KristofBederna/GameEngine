@@ -37,20 +37,18 @@ public class ResourceSystem extends GameSystem {
 
         // Iterate over all resource managers and clean up old resources
         for (ResourceManager<?> resourceManager : resourceManagers.values()) {
-            synchronized (resourceManager) {
-                // Take a snapshot of the current resources
-                Map<String, ?> resourcesSnapshot = new ConcurrentHashMap<>(resourceManager.getResources());
-                Iterator<? extends Map.Entry<String, ?>> iterator = resourcesSnapshot.entrySet().iterator();
+            // Take a snapshot of the current resources
+            Map<String, ?> resourcesSnapshot = new ConcurrentHashMap<>(resourceManager.getResources());
+            Iterator<? extends Map.Entry<String, ?>> iterator = resourcesSnapshot.entrySet().iterator();
 
-                // Remove resources that have not been accessed for over the threshold time
-                while (iterator.hasNext()) {
-                    Map.Entry<String, ?> resourceEntry = iterator.next();
-                    String resourceKey = resourceEntry.getKey();
-                    Long lastAccessed = resourceManager.getLastAccessed(resourceKey);
+            // Remove resources that have not been accessed for over the threshold time
+            while (iterator.hasNext()) {
+                Map.Entry<String, ?> resourceEntry = iterator.next();
+                String resourceKey = resourceEntry.getKey();
+                Long lastAccessed = resourceManager.getLastAccessed(resourceKey);
 
-                    if (lastAccessed != null && lastAccessed < threshold) {
-                        iterator.remove(); // Remove the resource if it hasn't been accessed in time
-                    }
+                if (lastAccessed != null && lastAccessed < threshold) {
+                    iterator.remove(); // Remove the resource if it hasn't been accessed in time
                 }
             }
         }

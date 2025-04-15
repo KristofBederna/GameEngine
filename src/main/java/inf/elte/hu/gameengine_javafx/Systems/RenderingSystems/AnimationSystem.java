@@ -26,15 +26,19 @@ public class AnimationSystem extends GameSystem {
             return;
         }
         for (Entity entity : entitiesSnapshot) {
-            if (entity == null) continue;
-            PositionComponent position = entity.getComponent(PositionComponent.class);
-            ImageComponent img = entity.getComponent(ImageComponent.class);
-            entity.getComponent(AnimationStateMachineComponent.class).getAnimationStateMachine().setAnimationState();
-            AnimationComponent animation = entity.getComponent(AnimationComponent.class);
+            processEntity(entity);
+        }
+    }
 
-            if (position != null && img != null && animation != null) {
-                img.setNextFrame(animation.getNextFrame());
-            }
+    private void processEntity(Entity entity) {
+        if (entity == null) return;
+        PositionComponent position = entity.getComponent(PositionComponent.class);
+        ImageComponent img = entity.getComponent(ImageComponent.class);
+        entity.getComponent(AnimationStateMachineComponent.class).getAnimationStateMachine().setAnimationState();
+        AnimationComponent animation = entity.getComponent(AnimationComponent.class);
+
+        if (position != null && img != null && animation != null) {
+            img.setNextFrame(animation.getNextFrame());
         }
     }
 }
