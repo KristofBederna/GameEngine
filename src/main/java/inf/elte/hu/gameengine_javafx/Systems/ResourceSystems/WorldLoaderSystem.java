@@ -90,8 +90,7 @@ public class WorldLoaderSystem extends GameSystem {
 
                         String key = tileX + "," + tileY;
                         if (!existingTiles.contains(key)) {
-                            boolean hasHitBox = tileEntity.getComponent(HitBoxComponent.class) != null;
-                            TileEntity newTile = new TileEntity(tileEntity.getComponent(TileValueComponent.class).getTileValue(), tileX, tileY, tileEntity.getComponent(ImageComponent.class).getImagePath(), MapConfig.scaledTileSize, MapConfig.scaledTileSize, hasHitBox);
+                            TileEntity newTile = new TileEntity(tileEntity.getComponent(TileValueComponent.class).getTileValue(), tileX, tileY, tileEntity.getComponent(ImageComponent.class).getImagePath(), MapConfig.scaledTileSize, MapConfig.scaledTileSize);
                             tileManager.register(newTile);
                         }
                     }

@@ -24,19 +24,7 @@ public class TileEntity extends Entity {
         this.addComponent(new ZIndexComponent(0));
         this.addComponent(new DimensionComponent(width, height));
         this.addComponent(new CentralMassComponent(x + width / 2, y + height / 2));
-        this.addComponent(new FrictionComponent(4));
-
-        addToManager();
-    }
-
-    public TileEntity(int value, double x, double y, String path, double width, double height, boolean hasHitBox) {
-        this.addComponent(new TileValueComponent(value));
-        this.addComponent(new ImageComponent(path, width, height));
-        this.getComponent(PositionComponent.class).setLocalPosition(x, y, this);
-        this.addComponent(new ZIndexComponent(0));
-        this.addComponent(new DimensionComponent(width, height));
-        this.addComponent(new CentralMassComponent(x + width / 2, y + height / 2));
-        if (hasHitBox) {
+        if (MapConfig.wallTiles.contains(value)) {
             this.addComponent(new HitBoxComponent(new Rectangle(new Point(x, y), width, height).getPoints()));
         }
         this.addComponent(new FrictionComponent(4));

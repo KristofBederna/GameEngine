@@ -56,7 +56,7 @@ public class WorldGenerator {
         if (tilePath == null) {
             tilePath = "default.png";
         }
-        TileEntity tile = new TileEntity(tileValue, worldX, worldY, "/assets/tiles/" + tilePath + ".png", MapConfig.scaledTileSize, MapConfig.scaledTileSize, MapConfig.wallTiles.contains(tileValue));
+        TileEntity tile = new TileEntity(tileValue, worldX, worldY, "/assets/tiles/" + tilePath + ".png", MapConfig.scaledTileSize, MapConfig.scaledTileSize);
         row.add(tile);
     }
 

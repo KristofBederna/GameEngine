@@ -102,7 +102,7 @@ public class Triangle extends Shape {
 
         for (int i = 0; i < 3; i++) {
             x[i] = CameraEntity.getRenderX(points.get(i).getX()) * DisplayConfig.relativeWidthRatio;
-            y[i] = CameraEntity.getRenderY(points.get(i).getY())  * DisplayConfig.relativeHeightRatio;
+            y[i] = CameraEntity.getRenderY(points.get(i).getY()) * DisplayConfig.relativeHeightRatio;
         }
 
         gc.setStroke(color);
@@ -116,7 +116,7 @@ public class Triangle extends Shape {
 
         for (int i = 0; i < 3; i++) {
             x[i] = CameraEntity.getRenderX(points.get(i).getX()) * DisplayConfig.relativeWidthRatio;
-            y[i] = CameraEntity.getRenderY(points.get(i).getY())  * DisplayConfig.relativeHeightRatio;
+            y[i] = CameraEntity.getRenderY(points.get(i).getY()) * DisplayConfig.relativeHeightRatio;
         }
 
         gc.setFill(color);
@@ -130,7 +130,7 @@ public class Triangle extends Shape {
 
         for (int i = 0; i < 3; i++) {
             x[i] = CameraEntity.getRenderX(points.get(i).getX()) * DisplayConfig.relativeWidthRatio;
-            y[i] = CameraEntity.getRenderY(points.get(i).getY())  * DisplayConfig.relativeHeightRatio;
+            y[i] = CameraEntity.getRenderY(points.get(i).getY()) * DisplayConfig.relativeHeightRatio;
         }
 
         gc.setFill(color);

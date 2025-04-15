@@ -8,14 +8,12 @@ import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassCo
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
-import inf.elte.hu.gameengine_javafx.Entities.DummyEntity;
 import inf.elte.hu.gameengine_javafx.Entities.PlayerEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.ComplexShape;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Shape;
 import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import inf.elte.hu.gameengine_javafx.Misc.IgnoreCollisions;
 
 import java.util.ArrayList;
@@ -39,11 +37,6 @@ public class CollisionSystem extends GameSystem {
     public void start() {
         this.active = true;
         IgnoreCollisions ignore = IgnoreCollisions.getInstance();
-        ignore.getCollisionRules().computeIfAbsent(PlayerEntity.class, k -> new ArrayList<>()).add(DummyEntity.class);
-        ignore.getCollisionRules().computeIfAbsent(DummyEntity.class, k -> new ArrayList<>()).add(PlayerEntity.class);
-
-        ignore.getCollisionRules().computeIfAbsent(TileEntity.class, k -> new ArrayList<>()).add(DummyEntity.class);
-        ignore.getCollisionRules().computeIfAbsent(DummyEntity.class, k -> new ArrayList<>()).add(TileEntity.class);
     }
 
     /**

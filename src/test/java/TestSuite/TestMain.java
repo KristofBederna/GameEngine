@@ -1,8 +1,8 @@
-package inf.elte.hu.gameengine_javafx;
+package TestSuite;
 
+import TestSuite.scenes.SandboxScene;
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Misc.Configs.DisplayConfig;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameLayer;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot;
@@ -16,7 +16,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class TestMain extends Application {
     @Override
     public void start(Stage stage) {
         startUpGame(stage);
@@ -30,6 +30,7 @@ public class Main extends Application {
         SystemStartUp systemStartUp = new SystemStartUp(() -> {});
         systemStartUp.startUpSceneManagementSystem();
         SceneManagementSystem sceneManagementSystem = SystemHub.getInstance().getSystem(SceneManagementSystem.class);
+        sceneManagementSystem.requestSceneChange(new SandboxScene(new BorderPane(), DisplayConfig.resolution.first(), DisplayConfig.resolution.second()));
         sceneManagementSystem.setStage(stage);
         stage.setFullScreen(DisplayConfig.fullScreenMode);
         stage.setFullScreenExitHint("");
@@ -67,3 +68,4 @@ public class Main extends Application {
         Platform.runLater(stage::show);
     }
 }
+

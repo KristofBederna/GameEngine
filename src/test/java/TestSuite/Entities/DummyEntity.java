@@ -1,4 +1,4 @@
-package inf.elte.hu.gameengine_javafx.Entities;
+package TestSuite.Entities;
 
 import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Components.HitBoxComponents.HitBoxComponent;
@@ -20,7 +20,6 @@ import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Rectangle;
 import inf.elte.hu.gameengine_javafx.Misc.*;
 import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 
 import java.util.List;
 import java.util.Objects;

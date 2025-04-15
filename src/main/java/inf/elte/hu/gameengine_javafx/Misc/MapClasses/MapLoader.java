@@ -114,7 +114,7 @@ public class MapLoader {
         double tileY = y * MapConfig.scaledTileSize;
 
         if (MapConfig.wallTiles.contains(value)) {
-            return new TileEntity(value, tileX, tileY, path, MapConfig.scaledTileSize, MapConfig.scaledTileSize, true);
+            return new TileEntity(value, tileX, tileY, path, MapConfig.scaledTileSize, MapConfig.scaledTileSize);
         } else {
             return new TileEntity(value, tileX, tileY, path, MapConfig.scaledTileSize, MapConfig.scaledTileSize);
         }
