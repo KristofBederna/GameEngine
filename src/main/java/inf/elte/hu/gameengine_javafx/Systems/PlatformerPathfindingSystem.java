@@ -9,7 +9,8 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import inf.elte.hu.gameengine_javafx.Misc.Pathfinding;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
 
@@ -73,12 +74,12 @@ public class PlatformerPathfindingSystem extends GameSystem {
     }
 
     private void moveLeft(Entity e) {
-        double dx = -4 * Time.getInstance().getDeltaTime() * Config.getTileScale();
+        double dx = -4 * Time.getInstance().getDeltaTime() * MapConfig.getTileScale();
         e.getComponent(AccelerationComponent.class).getAcceleration().setDx(dx);
     }
 
     private void moveRight(Entity e) {
-        double dx = 4 * Time.getInstance().getDeltaTime() * Config.getTileScale();
+        double dx = 4 * Time.getInstance().getDeltaTime() * MapConfig.getTileScale();
         e.getComponent(AccelerationComponent.class).getAcceleration().setDx(dx);
     }
 

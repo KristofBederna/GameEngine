@@ -9,7 +9,8 @@ import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionCo
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import inf.elte.hu.gameengine_javafx.Misc.Tuple;
 
 import java.io.BufferedReader;
@@ -65,8 +66,8 @@ public class MapLoader {
     private static void createChunks(List<List<Integer>> data, Tuple<Integer, Integer> dimensions, WorldEntity map) {
         int width = dimensions.first();
         int height = dimensions.second();
-        int chunkWidth = Math.floorDiv(width, Config.chunkWidth);
-        int chunkHeight = Math.floorDiv(height, Config.chunkHeight);
+        int chunkWidth = Math.floorDiv(width, MapConfig.chunkWidth);
+        int chunkHeight = Math.floorDiv(height, MapConfig.chunkHeight);
 
         for (int i = 0; i < chunkWidth; i++) {
             for (int j = 0; j < chunkHeight; j++) {
@@ -79,15 +80,15 @@ public class MapLoader {
         Tuple<Integer, Integer> coordinates = new Tuple<>(chunkX, chunkY);
         Chunk chunkTiles = new Chunk();
 
-        for (int y = chunkY * Config.chunkHeight; y < height; y++) {
+        for (int y = chunkY * MapConfig.chunkHeight; y < height; y++) {
             List<TileEntity> chunkRow = new ArrayList<>();
             List<Point> meshRow = new ArrayList<>();
 
-            for (int x = chunkX * Config.chunkWidth; x < width; x++) {
+            for (int x = chunkX * MapConfig.chunkWidth; x < width; x++) {
                 TileEntity tile = createTileEntity(data.get(y).get(x), x, y);
                 chunkRow.add(tile);
 
-                if (!Config.wallTiles.contains(tile.getComponent(TileValueComponent.class).getTileValue())) {
+                if (!MapConfig.wallTiles.contains(tile.getComponent(TileValueComponent.class).getTileValue())) {
                     CentralMassComponent cm = tile.getComponent(CentralMassComponent.class);
                     meshRow.add(new Point(cm.getCentralX(), cm.getCentralY()));
                 } else {
@@ -109,13 +110,13 @@ public class MapLoader {
         }
 
         String path = "/assets/tiles/" + name + ".png";
-        double tileX = x * Config.scaledTileSize;
-        double tileY = y * Config.scaledTileSize;
+        double tileX = x * MapConfig.scaledTileSize;
+        double tileY = y * MapConfig.scaledTileSize;
 
-        if (Config.wallTiles.contains(value)) {
-            return new TileEntity(value, tileX, tileY, path, Config.scaledTileSize, Config.scaledTileSize, true);
+        if (MapConfig.wallTiles.contains(value)) {
+            return new TileEntity(value, tileX, tileY, path, MapConfig.scaledTileSize, MapConfig.scaledTileSize, true);
         } else {
-            return new TileEntity(value, tileX, tileY, path, Config.scaledTileSize, Config.scaledTileSize);
+            return new TileEntity(value, tileX, tileY, path, MapConfig.scaledTileSize, MapConfig.scaledTileSize);
         }
     }
 }

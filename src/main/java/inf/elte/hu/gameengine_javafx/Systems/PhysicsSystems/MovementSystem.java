@@ -12,7 +12,9 @@ import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Entities.ParticleEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.PhysicsConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
 
 import java.util.List;
@@ -76,10 +78,10 @@ public class MovementSystem extends GameSystem {
         var massComponent = entity.getComponent(MassComponent.class);
         var dragComponent = entity.getComponent(DragComponent.class);
 
-        double mass = (massComponent != null) ? massComponent.getMass() : Config.defaultMass;
-        double drag = (dragComponent != null) ? dragComponent.getDrag() : Config.defaultDrag;
+        double mass = (massComponent != null) ? massComponent.getMass() : PhysicsConfig.defaultMass;
+        double drag = (dragComponent != null) ? dragComponent.getDrag() : PhysicsConfig.defaultDrag;
         double dragFactor = Math.pow(1 - drag, Time.getInstance().getDeltaTime());
-        double maxSpeed = velocity.getMaxVelocity()*Config.getTileScale();
+        double maxSpeed = velocity.getMaxVelocity()* MapConfig.getTileScale();
 
         double newDx = velocity.getVelocity().getDx();
         double newDy = velocity.getVelocity().getDy();
@@ -93,7 +95,7 @@ public class MovementSystem extends GameSystem {
 
         if (!(entity instanceof ParticleEntity)) {
             if (tile == null) {
-                double friction = Config.defaultFriction;
+                double friction = PhysicsConfig.defaultFriction;
                 double frictionForce = friction * Time.getInstance().getDeltaTime();
 
                 if (Math.abs(newDx) > frictionForce) {
@@ -110,7 +112,7 @@ public class MovementSystem extends GameSystem {
             }
              else if (tile.getComponent(FrictionComponent.class) != null) {
                 FrictionComponent frictionComponent = tile.getComponent(FrictionComponent.class);
-                double friction = (frictionComponent != null) ? frictionComponent.getFriction() : Config.defaultFriction;
+                double friction = (frictionComponent != null) ? frictionComponent.getFriction() : PhysicsConfig.defaultFriction;
                 double frictionForce = friction * Time.getInstance().getDeltaTime();
 
                 if (Math.abs(newDx) > frictionForce) {

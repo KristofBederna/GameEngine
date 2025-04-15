@@ -12,7 +12,8 @@ import inf.elte.hu.gameengine_javafx.Core.EntityManager;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.Chunk;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.MapLoader;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.World;
@@ -62,7 +63,7 @@ public class WorldLoaderSystem extends GameSystem {
             double tileX = tile.getComponent(PositionComponent.class).getGlobalX();
             double tileY = tile.getComponent(PositionComponent.class).getGlobalY();
 
-            if (tileX + Config.scaledTileSize < camX || tileX > camX + camWidth || tileY + Config.scaledTileSize < camY || tileY > camY + camHeight) {
+            if (tileX + MapConfig.scaledTileSize < camX || tileX > camX + camWidth || tileY + MapConfig.scaledTileSize < camY || tileY > camY + camHeight) {
                 toRemove.add(tile);
             }
         }
@@ -85,12 +86,12 @@ public class WorldLoaderSystem extends GameSystem {
                     double tileX = tileEntity.getComponent(PositionComponent.class).getGlobalX();
                     double tileY = tileEntity.getComponent(PositionComponent.class).getGlobalY();
 
-                    if (tileX + Config.scaledTileSize >= camX && tileX <= camX + camWidth && tileY + Config.scaledTileSize >= camY && tileY <= camY + camHeight) {
+                    if (tileX + MapConfig.scaledTileSize >= camX && tileX <= camX + camWidth && tileY + MapConfig.scaledTileSize >= camY && tileY <= camY + camHeight) {
 
                         String key = tileX + "," + tileY;
                         if (!existingTiles.contains(key)) {
                             boolean hasHitBox = tileEntity.getComponent(HitBoxComponent.class) != null;
-                            TileEntity newTile = new TileEntity(tileEntity.getComponent(TileValueComponent.class).getTileValue(), tileX, tileY, tileEntity.getComponent(ImageComponent.class).getImagePath(), Config.scaledTileSize, Config.scaledTileSize, hasHitBox);
+                            TileEntity newTile = new TileEntity(tileEntity.getComponent(TileValueComponent.class).getTileValue(), tileX, tileY, tileEntity.getComponent(ImageComponent.class).getImagePath(), MapConfig.scaledTileSize, MapConfig.scaledTileSize, hasHitBox);
                             tileManager.register(newTile);
                         }
                     }

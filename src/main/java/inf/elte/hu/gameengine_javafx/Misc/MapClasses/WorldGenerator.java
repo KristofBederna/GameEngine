@@ -1,7 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Misc.MapClasses;
 
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
 
 import java.util.ArrayList;
@@ -48,15 +48,15 @@ public class WorldGenerator {
     }
 
     private static void generateTile(int chunkX, int chunkY, int chunkWidth, int chunkHeight, int x, int y, int[][] tileValues, List<TileEntity> row) {
-        int worldX = (int) (chunkX * chunkWidth * Config.scaledTileSize + x * Config.scaledTileSize);
-        int worldY = (int) (chunkY * chunkHeight * Config.scaledTileSize + y * Config.scaledTileSize);
+        int worldX = (int) (chunkX * chunkWidth * MapConfig.scaledTileSize + x * MapConfig.scaledTileSize);
+        int worldY = (int) (chunkY * chunkHeight * MapConfig.scaledTileSize + y * MapConfig.scaledTileSize);
 
         int tileValue = tileValues[y][x];
         String tilePath = TileLoader.getTilePath(tileValue);
         if (tilePath == null) {
             tilePath = "default.png";
         }
-        TileEntity tile = new TileEntity(tileValue, worldX, worldY, "/assets/tiles/" + tilePath + ".png", Config.scaledTileSize, Config.scaledTileSize, Config.wallTiles.contains(tileValue));
+        TileEntity tile = new TileEntity(tileValue, worldX, worldY, "/assets/tiles/" + tilePath + ".png", MapConfig.scaledTileSize, MapConfig.scaledTileSize, MapConfig.wallTiles.contains(tileValue));
         row.add(tile);
     }
 

@@ -11,11 +11,8 @@ import inf.elte.hu.gameengine_javafx.Entities.*;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.NSidedShape;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Misc.*;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
-import inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventListeners.FullScreenToggleEventListener;
-import inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventListeners.ResolutionChangeEventListener;
-import inf.elte.hu.gameengine_javafx.Misc.EventHandling.Events.FullScreenToggleEvent;
-import inf.elte.hu.gameengine_javafx.Misc.EventHandling.Events.ResolutionChangeEvent;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.MouseInputHandler;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.GameLoopStartUp;
 import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.ResourceStartUp;
@@ -32,7 +29,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 import java.util.Objects;
 import java.util.Random;
@@ -85,11 +81,11 @@ public class TestScene extends GameScene {
     }
 
     private void entitySetup() {
-        new PlayerEntity(420, 120, "idle", "/assets/images/PlayerIdle.png", 0.8 * Config.scaledTileSize, 0.8 * Config.scaledTileSize);
-        new DummyEntity(220, 220, "idle", "/assets/images/PlayerIdle.png", 0.8 * Config.scaledTileSize, 0.8 * Config.scaledTileSize);
+        new PlayerEntity(420, 120, "idle", "/assets/images/PlayerIdle.png", 0.8 * MapConfig.scaledTileSize, 0.8 * MapConfig.scaledTileSize);
+        new DummyEntity(220, 220, "idle", "/assets/images/PlayerIdle.png", 0.8 * MapConfig.scaledTileSize, 0.8 * MapConfig.scaledTileSize);
         new ParticleEmitterEntity(400, 400, new ParticleEntity(400, 400, 25, 25,
                 new NSidedShape(new Point(400, 400), 25, 32), Color.ORANGE, Color.TRANSPARENT, 300), Direction.RIGHT, 50, 1000);
-        new ParticleEmitterEntity(5*Config.scaledTileSize, 500, new ParticleEntity(0, 0, 20, 20, "/assets/images/snowflake.png", 2000), Direction.ALL, 20, 1000);
+        new ParticleEmitterEntity(5* MapConfig.scaledTileSize, 500, new ParticleEntity(0, 0, 20, 20, "/assets/images/snowflake.png", 2000), Direction.ALL, 20, 1000);
     }
 
     private void interactionSetup() {

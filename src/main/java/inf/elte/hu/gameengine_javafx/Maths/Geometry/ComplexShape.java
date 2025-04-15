@@ -1,9 +1,9 @@
 package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
 
-import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.DisplayConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -60,7 +60,7 @@ public class ComplexShape extends Shape {
             double x2 = CameraEntity.getRenderX(p.getX());
             double y2 = CameraEntity.getRenderY(p.getY());
 
-            gc.strokeLine(x1* Config.relativeWidthRatio, y1*Config.relativeHeightRatio, x2*Config.relativeWidthRatio, y2*Config.relativeHeightRatio);
+            gc.strokeLine(x1* DisplayConfig.relativeWidthRatio, y1* DisplayConfig.relativeHeightRatio, x2* DisplayConfig.relativeWidthRatio, y2* DisplayConfig.relativeHeightRatio);
             prev = p;
         }
     }
@@ -72,8 +72,8 @@ public class ComplexShape extends Shape {
         double[] yPoints = new double[points.size()];
 
         for (int i = 0; i < points.size(); i++) {
-            xPoints[i] = CameraEntity.getRenderX(points.get(i).getX())*Config.relativeWidthRatio;
-            yPoints[i] = CameraEntity.getRenderY(points.get(i).getY())*Config.relativeHeightRatio;
+            xPoints[i] = CameraEntity.getRenderX(points.get(i).getX())* DisplayConfig.relativeWidthRatio;
+            yPoints[i] = CameraEntity.getRenderY(points.get(i).getY())* DisplayConfig.relativeHeightRatio;
         }
 
         gc.setFill(color);
@@ -93,8 +93,8 @@ public class ComplexShape extends Shape {
         double[] yPoints = new double[points.size()];
 
         for (int i = 0; i < points.size(); i++) {
-            xPoints[i] = CameraEntity.getRenderX(points.get(i).getX())*Config.relativeWidthRatio;
-            yPoints[i] = CameraEntity.getRenderY(points.get(i).getY())*Config.relativeHeightRatio;
+            xPoints[i] = CameraEntity.getRenderX(points.get(i).getX())* DisplayConfig.relativeWidthRatio;
+            yPoints[i] = CameraEntity.getRenderY(points.get(i).getY())* DisplayConfig.relativeHeightRatio;
         }
 
         gc.setStroke(stroke);

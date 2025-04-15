@@ -12,7 +12,8 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Rectangle;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.TileLoader;
 
 public class TileEntity extends Entity {
@@ -60,7 +61,7 @@ public class TileEntity extends Entity {
     public void changeValues(int value) {
         this.getComponent(TileValueComponent.class).setTileValue(value);
         this.getComponent(ImageComponent.class).setImagePath("/assets/tiles/"+ TileLoader.getTilePath(value)+".png");
-        if (Config.wallTiles.contains(value)) {
+        if (MapConfig.wallTiles.contains(value)) {
             this.addHitBox(getComponent(PositionComponent.class).getGlobalX(), getComponent(PositionComponent.class).getGlobalY(), getComponent(DimensionComponent.class).getWidth(), getComponent(DimensionComponent.class).getHeight());
         } else {
             this.removeComponentsByType(HitBoxComponent.class);

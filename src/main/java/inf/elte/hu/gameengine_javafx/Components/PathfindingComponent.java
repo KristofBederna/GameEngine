@@ -7,7 +7,9 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.DisplayConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +76,7 @@ public class PathfindingComponent extends Component {
     public void resetPathing(Entity entity) {
         path = null;
         neighbours = null;
-        start = WorldEntity.getInstance().getComponent(MapMeshComponent.class).getMapCoordinate(Math.floorDiv((int) entity.getComponent(CentralMassComponent.class).getCentralX(), (int) Config.scaledTileSize), Math.floorDiv((int) entity.getComponent(CentralMassComponent.class).getCentralY(), (int) Config.scaledTileSize));
+        start = WorldEntity.getInstance().getComponent(MapMeshComponent.class).getMapCoordinate(Math.floorDiv((int) entity.getComponent(CentralMassComponent.class).getCentralX(), (int) MapConfig.scaledTileSize), Math.floorDiv((int) entity.getComponent(CentralMassComponent.class).getCentralY(), (int) MapConfig.scaledTileSize));
     }
 
     public List<Point> getNeighbours(Point current) {
@@ -108,7 +110,7 @@ public class PathfindingComponent extends Component {
     }
 
     private int toTileCoordinate(double value) {
-        return (int) Math.floor(value / Config.scaledTileSize);
+        return (int) Math.floor(value / MapConfig.scaledTileSize);
     }
 
     private int[][] getAllDirections() {

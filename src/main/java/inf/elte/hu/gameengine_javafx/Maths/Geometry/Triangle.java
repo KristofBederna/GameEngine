@@ -2,7 +2,8 @@ package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
 import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.DisplayConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -86,8 +87,8 @@ public class Triangle extends Shape {
         }
 
         for (int i = 0; i < 3; i++) {
-            x[i] *= Config.relativeWidthRatio;
-            y[i] *= Config.relativeHeightRatio;
+            x[i] *= DisplayConfig.relativeWidthRatio;
+            y[i] *= DisplayConfig.relativeHeightRatio;
         }
 
         gc.setStroke(color);
@@ -100,8 +101,8 @@ public class Triangle extends Shape {
         double[] y = new double[3];
 
         for (int i = 0; i < 3; i++) {
-            x[i] = CameraEntity.getRenderX(points.get(i).getX()) * Config.relativeWidthRatio;
-            y[i] = CameraEntity.getRenderY(points.get(i).getY())  * Config.relativeHeightRatio;
+            x[i] = CameraEntity.getRenderX(points.get(i).getX()) * DisplayConfig.relativeWidthRatio;
+            y[i] = CameraEntity.getRenderY(points.get(i).getY())  * DisplayConfig.relativeHeightRatio;
         }
 
         gc.setStroke(color);
@@ -114,8 +115,8 @@ public class Triangle extends Shape {
         double[] y = new double[3];
 
         for (int i = 0; i < 3; i++) {
-            x[i] = CameraEntity.getRenderX(points.get(i).getX()) * Config.relativeWidthRatio;
-            y[i] = CameraEntity.getRenderY(points.get(i).getY())  * Config.relativeHeightRatio;
+            x[i] = CameraEntity.getRenderX(points.get(i).getX()) * DisplayConfig.relativeWidthRatio;
+            y[i] = CameraEntity.getRenderY(points.get(i).getY())  * DisplayConfig.relativeHeightRatio;
         }
 
         gc.setFill(color);
@@ -128,8 +129,8 @@ public class Triangle extends Shape {
         double[] y = new double[3];
 
         for (int i = 0; i < 3; i++) {
-            x[i] = CameraEntity.getRenderX(points.get(i).getX()) * Config.relativeWidthRatio;
-            y[i] = CameraEntity.getRenderY(points.get(i).getY())  * Config.relativeHeightRatio;
+            x[i] = CameraEntity.getRenderX(points.get(i).getX()) * DisplayConfig.relativeWidthRatio;
+            y[i] = CameraEntity.getRenderY(points.get(i).getY())  * DisplayConfig.relativeHeightRatio;
         }
 
         gc.setFill(color);

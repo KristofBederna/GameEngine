@@ -3,7 +3,7 @@ package inf.elte.hu.gameengine_javafx.Systems.ResourceSystems;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class ResourceSystem extends GameSystem {
     public void update() {
         Map<Class<?>, ResourceManager<?>> resourceManagers = ResourceHub.getInstance().getAllResourceManagers();
 
-        long threshold = System.currentTimeMillis() - Config.resourceUnloadThresholdTime;
+        long threshold = System.currentTimeMillis() - ResourceConfig.resourceUnloadThresholdTime;
 
         // Iterate over all resource managers and clean up old resources
         for (ResourceManager<?> resourceManager : resourceManagers.values()) {

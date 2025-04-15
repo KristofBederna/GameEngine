@@ -1,6 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Misc;
 
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.DisplayConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 
 /**
  * Abstract base class for the game loop.
@@ -21,7 +22,7 @@ public abstract class GameLoop extends Thread {
     public GameLoop() {
         this.running = false;
         this.time = Time.getInstance();
-        time.setFPSCap(Config.fpsCap);
+        time.setFPSCap(DisplayConfig.fpsCap);
     }
 
     /**

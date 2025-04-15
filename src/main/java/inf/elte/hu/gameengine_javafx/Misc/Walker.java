@@ -4,7 +4,8 @@ import inf.elte.hu.gameengine_javafx.Components.TileValueComponent;
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import inf.elte.hu.gameengine_javafx.Misc.Configs.WalkerConfig;
 
 import java.util.ArrayList;
@@ -39,11 +40,11 @@ public class Walker {
 
     // Check if the current position is a wall tile
     private boolean isWallTile() {
-        return Config.wallTiles.contains(
+        return MapConfig.wallTiles.contains(
                 world.getComponent(WorldDataComponent.class)
                         .getMapData()
-                        .getElementAt(new Point(y * Config.scaledTileSize + Config.scaledTileSize / 2,
-                                x * Config.scaledTileSize + Config.scaledTileSize / 2))
+                        .getElementAt(new Point(y * MapConfig.scaledTileSize + MapConfig.scaledTileSize / 2,
+                                x * MapConfig.scaledTileSize + MapConfig.scaledTileSize / 2))
                         .getComponent(TileValueComponent.class)
                         .getTileValue()
         );
@@ -79,11 +80,11 @@ public class Walker {
 
     // Check if a specific tile is a wall tile
     private boolean isWallTileAt(int i, int j) {
-        return Config.wallTiles.contains(
+        return MapConfig.wallTiles.contains(
                 world.getComponent(WorldDataComponent.class)
                         .getMapData()
-                        .getElementAt(new Point(j * Config.scaledTileSize + Config.scaledTileSize / 2,
-                                i * Config.scaledTileSize + Config.scaledTileSize / 2))
+                        .getElementAt(new Point(j * MapConfig.scaledTileSize + MapConfig.scaledTileSize / 2,
+                                i * MapConfig.scaledTileSize + MapConfig.scaledTileSize / 2))
                         .getComponent(TileValueComponent.class)
                         .getTileValue()
         );
@@ -123,7 +124,7 @@ public class Walker {
 
     // Place the tile on the map and the saved chunk
     private void placeTile() {
-        Point currentPoint = new Point(x * Config.scaledTileSize, y * Config.scaledTileSize);
+        Point currentPoint = new Point(x * MapConfig.scaledTileSize, y * MapConfig.scaledTileSize);
         world.getComponent(WorldDataComponent.class).getMapData().setElementAt(currentPoint, WalkerConfig.placeTileNumber);
         saveTileInChunk();
     }
@@ -133,8 +134,8 @@ public class Walker {
         world.getComponent(WorldDataComponent.class)
                 .getMapData()
                 .getSavedChunks()
-                .get(new Tuple<>(Math.floorDiv(x, Config.chunkWidth), Math.floorDiv(y, Config.chunkHeight)))
-                .setElement(x % Config.chunkWidth, y % Config.chunkHeight, WalkerConfig.placeTileNumber);
+                .get(new Tuple<>(Math.floorDiv(x, MapConfig.chunkWidth), Math.floorDiv(y, MapConfig.chunkHeight)))
+                .setElement(x % MapConfig.chunkWidth, y % MapConfig.chunkHeight, WalkerConfig.placeTileNumber);
     }
 
     // Create a new walker to multiply the current one

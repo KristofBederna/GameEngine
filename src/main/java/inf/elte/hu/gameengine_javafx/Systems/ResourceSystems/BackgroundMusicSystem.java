@@ -4,7 +4,7 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Misc.BackgroundMusic;
 import inf.elte.hu.gameengine_javafx.Misc.BackgroundMusicStore;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
@@ -34,7 +34,7 @@ public class BackgroundMusicSystem extends GameSystem {
     protected void update() {
         synchronized (playbackLock) {
             if (currentClip != null && currentClip.isOpen()) {
-                setVolume(currentClip, Config.backgroundMusicVolume * Config.masterVolume);
+                setVolume(currentClip, ResourceConfig.backgroundMusicVolume * ResourceConfig.masterVolume);
             }
 
             if (shouldPlayNewTrack()) {
@@ -102,7 +102,7 @@ public class BackgroundMusicSystem extends GameSystem {
             try {
                 currentClip = clip;
                 lastPlayed = music;
-                setVolume(currentClip, Config.backgroundMusicVolume * Config.masterVolume);
+                setVolume(currentClip, ResourceConfig.backgroundMusicVolume * ResourceConfig.masterVolume);
                 currentClip.setFramePosition(0);
 
                 currentListener = event -> {

@@ -1,8 +1,8 @@
 package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
-import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.DisplayConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -47,9 +47,9 @@ public class Point {
         double x = CameraEntity.getRenderX(this.getX());
         double y = CameraEntity.getRenderY(this.getY());
 
-        x *= Config.relativeWidthRatio;
-        y *= Config.relativeHeightRatio;
-        radius *= Math.min(Config.relativeWidthRatio, Config.relativeHeightRatio);
+        x *= DisplayConfig.relativeWidthRatio;
+        y *= DisplayConfig.relativeHeightRatio;
+        radius *= Math.min(DisplayConfig.relativeWidthRatio, DisplayConfig.relativeHeightRatio);
 
         gc.strokeOval(x - radius, y - radius, radius * 2, radius * 2);
     }
@@ -59,9 +59,9 @@ public class Point {
         double x = CameraEntity.getRenderX(this.getX());
         double y = CameraEntity.getRenderY(this.getY());
 
-        x *= Config.relativeWidthRatio;
-        y *= Config.relativeHeightRatio;
-        radius *= Math.min(Config.relativeWidthRatio, Config.relativeHeightRatio);
+        x *= DisplayConfig.relativeWidthRatio;
+        y *= DisplayConfig.relativeHeightRatio;
+        radius *= Math.min(DisplayConfig.relativeWidthRatio, DisplayConfig.relativeHeightRatio);
 
         gc.fillOval(x - radius, y - radius, radius * 2, radius * 2);
     }
@@ -71,9 +71,9 @@ public class Point {
         double x = CameraEntity.getRenderX(this.getX());
         double y = CameraEntity.getRenderY(this.getY());
 
-        x *= Config.relativeWidthRatio;
-        y *= Config.relativeHeightRatio;
-        radius *= Math.min(Config.relativeWidthRatio, Config.relativeHeightRatio);
+        x *= DisplayConfig.relativeWidthRatio;
+        y *= DisplayConfig.relativeHeightRatio;
+        radius *= Math.min(DisplayConfig.relativeWidthRatio, DisplayConfig.relativeHeightRatio);
 
         gc.fillOval(x - radius, y - radius, radius * 2, radius * 2);
 

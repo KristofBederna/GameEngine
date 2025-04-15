@@ -1,6 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.PhysicsConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -80,7 +81,7 @@ public class Shape {
         double val = (q.getY() - p.getY()) * (r.getX() - q.getX())
                 - (q.getX() - p.getX()) * (r.getY() - q.getY());
 
-        if (Math.abs(val) < Config.EPSILON) return 0; // collinear
+        if (Math.abs(val) < PhysicsConfig.EPSILON) return 0; // collinear
         return (val > 0) ? 1 : 2; // 1 = clockwise, 2 = counterclockwise
     }
 
@@ -112,7 +113,7 @@ public class Shape {
         double denominator = x1 * y2 - y1 * x2;
 
         // Parallel lines (no intersection or infinite)
-        if (Math.abs(denominator) < Config.EPSILON) return null;
+        if (Math.abs(denominator) < PhysicsConfig.EPSILON) return null;
 
         // Solve for t and u (parametric line equations)
         double t = ((q1.getX() - p1.getX()) * y2 - (q1.getY() - p1.getY()) * x2) / denominator;

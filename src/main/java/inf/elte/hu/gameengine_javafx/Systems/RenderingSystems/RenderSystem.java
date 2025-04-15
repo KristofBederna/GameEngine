@@ -17,7 +17,8 @@ import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
 import inf.elte.hu.gameengine_javafx.Entities.*;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.*;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.DisplayConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
@@ -73,7 +74,7 @@ public class RenderSystem extends GameSystem {
 
             processEntities(sortedEntities, gc);
             renderParticles(gc);
-            if (Config.renderDebugMode) {
+            if (DisplayConfig.renderDebugMode) {
                 renderCurrentlyOccupiedTile();
                 renderMapMesh(gc);
                 renderPathFindingRoute(gc);
@@ -162,9 +163,9 @@ public class RenderSystem extends GameSystem {
             return;
         }
 
-        gc.drawImage(img, renderX*Config.relativeWidthRatio, renderY*Config.relativeHeightRatio, width*Config.relativeWidthRatio, height*Config.relativeHeightRatio);
+        gc.drawImage(img, renderX* DisplayConfig.relativeWidthRatio, renderY* DisplayConfig.relativeHeightRatio, width* DisplayConfig.relativeWidthRatio, height* DisplayConfig.relativeHeightRatio);
 
-        if (Config.renderDebugMode) {
+        if (DisplayConfig.renderDebugMode) {
             renderHitBox(entity, gc);
         }
     }

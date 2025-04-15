@@ -1,7 +1,8 @@
 package inf.elte.hu.gameengine_javafx;
 
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.DisplayConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameLayer;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot;
@@ -31,13 +32,13 @@ public class Main extends Application {
         systemStartUp.startUpSceneManagementSystem();
         SceneManagementSystem sceneManagementSystem = SystemHub.getInstance().getSystem(SceneManagementSystem.class);
         sceneManagementSystem.setStage(stage);
-        stage.setFullScreen(Config.fullScreenMode);
+        stage.setFullScreen(DisplayConfig.fullScreenMode);
         stage.setFullScreenExitHint("");
         stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 
         BorderPane root = (BorderPane) sceneManagementSystem.getCurrentScene().getRoot();
 
-        GameCanvas gameCanvas = GameCanvas.createInstance(Config.resolution.first(), Config.resolution.second());
+        GameCanvas gameCanvas = GameCanvas.createInstance(DisplayConfig.resolution.first(), DisplayConfig.resolution.second());
         uiRoot uiRoot = inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot.getInstance();
         GameLayer gameLayer = GameLayer.getInstance();
         gameLayer.getChildren().addAll(gameCanvas, uiRoot);
@@ -53,7 +54,7 @@ public class Main extends Application {
         Scene scene = SystemHub.getInstance().getSystem(SceneManagementSystem.class).getCurrentScene();
 
         // Set window title here
-        stage.setTitle(Config.windowTitle);
+        stage.setTitle(DisplayConfig.windowTitle);
 
         // Assigns the stage as the parent container of the scene
         stage.setScene(scene);

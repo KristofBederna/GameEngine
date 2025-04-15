@@ -1,8 +1,8 @@
 package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
-import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.DisplayConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -96,7 +96,7 @@ public class Rectangle extends Shape {
         double width = points.get(1).getX() - points.get(0).getX();
         double height = points.get(3).getY() - points.get(0).getY();
 
-        gc.strokeRect(x* Config.relativeWidthRatio, y*Config.relativeHeightRatio, width* Config.relativeWidthRatio, height*Config.relativeHeightRatio);
+        gc.strokeRect(x* DisplayConfig.relativeWidthRatio, y* DisplayConfig.relativeHeightRatio, width* DisplayConfig.relativeWidthRatio, height* DisplayConfig.relativeHeightRatio);
     }
 
     public void render(GraphicsContext gc, Color color, double strokeWidth) {
@@ -108,7 +108,7 @@ public class Rectangle extends Shape {
         double width = points.get(1).getX() - points.get(0).getX();
         double height = points.get(3).getY() - points.get(0).getY();
 
-        gc.strokeRect(x* Config.relativeWidthRatio, y*Config.relativeHeightRatio, width* Config.relativeWidthRatio, height*Config.relativeHeightRatio);
+        gc.strokeRect(x* DisplayConfig.relativeWidthRatio, y* DisplayConfig.relativeHeightRatio, width* DisplayConfig.relativeWidthRatio, height* DisplayConfig.relativeHeightRatio);
     }
 
     public void renderFill(GraphicsContext gc, Color color) {
@@ -118,7 +118,7 @@ public class Rectangle extends Shape {
         double height = points.get(3).getY() - points.get(0).getY();
 
         gc.setFill(color);
-        gc.fillRect(x* Config.relativeWidthRatio, y*Config.relativeHeightRatio, width* Config.relativeWidthRatio, height*Config.relativeHeightRatio);
+        gc.fillRect(x* DisplayConfig.relativeWidthRatio, y* DisplayConfig.relativeHeightRatio, width* DisplayConfig.relativeWidthRatio, height* DisplayConfig.relativeHeightRatio);
     }
 
     public void renderFillWithStroke(GraphicsContext gc, double radius, Color color, Color strokeColor, double outerStrokeWidth) {
@@ -128,10 +128,10 @@ public class Rectangle extends Shape {
         double height = points.get(3).getY() - points.get(0).getY();
 
         gc.setFill(color);
-        gc.fillRect(x* Config.relativeWidthRatio, y*Config.relativeHeightRatio, width* Config.relativeWidthRatio, height*Config.relativeHeightRatio);
+        gc.fillRect(x* DisplayConfig.relativeWidthRatio, y* DisplayConfig.relativeHeightRatio, width* DisplayConfig.relativeWidthRatio, height* DisplayConfig.relativeHeightRatio);
 
         gc.setStroke(strokeColor);
         gc.setLineWidth(outerStrokeWidth);
-        gc.strokeRect(x* Config.relativeWidthRatio, y*Config.relativeHeightRatio, width* Config.relativeWidthRatio, height*Config.relativeHeightRatio);
+        gc.strokeRect(x* DisplayConfig.relativeWidthRatio, y* DisplayConfig.relativeHeightRatio, width* DisplayConfig.relativeWidthRatio, height* DisplayConfig.relativeHeightRatio);
     }
 }

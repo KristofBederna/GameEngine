@@ -1,6 +1,7 @@
 package inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventListeners;
 
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.DisplayConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventListener;
 import inf.elte.hu.gameengine_javafx.Misc.EventHandling.Events.FullScreenToggleEvent;
 import javafx.application.Platform;
@@ -13,8 +14,8 @@ public class FullScreenToggleEventListener implements EventListener<FullScreenTo
         Platform.runLater(() -> {
             stage.setFullScreen(!stage.isFullScreen());
             if (!stage.isFullScreen()) {
-                stage.setWidth(Config.resolution.first());
-                stage.setHeight(Config.resolution.second());
+                stage.setWidth(DisplayConfig.resolution.first());
+                stage.setHeight(DisplayConfig.resolution.second());
             }
         });
     }

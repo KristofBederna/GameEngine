@@ -1,8 +1,8 @@
 package inf.elte.hu.gameengine_javafx.Maths.Geometry;
 
-import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.DisplayConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -48,10 +48,10 @@ public class Line extends Shape {
             Point start = points.get(0);
             Point end = points.get(1);
 
-            double x1 = CameraEntity.getRenderX(start.getX()) * Config.relativeWidthRatio;
-            double y1 = CameraEntity.getRenderY(start.getY()) * Config.relativeHeightRatio;
-            double x2 = CameraEntity.getRenderX(end.getX()) * Config.relativeWidthRatio;
-            double y2 = CameraEntity.getRenderY(end.getY()) * Config.relativeHeightRatio;
+            double x1 = CameraEntity.getRenderX(start.getX()) * DisplayConfig.relativeWidthRatio;
+            double y1 = CameraEntity.getRenderY(start.getY()) * DisplayConfig.relativeHeightRatio;
+            double x2 = CameraEntity.getRenderX(end.getX()) * DisplayConfig.relativeWidthRatio;
+            double y2 = CameraEntity.getRenderY(end.getY()) * DisplayConfig.relativeHeightRatio;
 
 
             gc.strokeLine(x1, y1, x2, y2);

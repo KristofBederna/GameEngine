@@ -14,7 +14,8 @@ import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.ComplexShape;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Shape;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import inf.elte.hu.gameengine_javafx.Misc.IgnoreCollisions;
 
 import java.util.ArrayList;
@@ -96,7 +97,7 @@ public class CollisionSystem extends GameSystem {
         }
 
         List<Entity> hitBoxesToProcess = new ArrayList<>(hitBoxes);
-        hitBoxesToProcess.removeIf(hitbox -> hitbox == null || hitbox.getComponent(CentralMassComponent.class).getCentral().distanceTo(entity.getComponent(CentralMassComponent.class).getCentral()) > Config.scaledTileSize + Config.scaledTileSize * 2 || hitbox == entity);
+        hitBoxesToProcess.removeIf(hitbox -> hitbox == null || hitbox.getComponent(CentralMassComponent.class).getCentral().distanceTo(entity.getComponent(CentralMassComponent.class).getCentral()) > MapConfig.scaledTileSize + MapConfig.scaledTileSize * 2 || hitbox == entity);
 
         moveDiagonally(hitBoxesToProcess, entity, futureHitBox, velocity);
     }

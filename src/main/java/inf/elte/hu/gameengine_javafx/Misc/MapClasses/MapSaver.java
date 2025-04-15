@@ -5,7 +5,8 @@ import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataCompone
 import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionComponent;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -52,8 +53,8 @@ public class MapSaver {
 
     private static int getTileValueAt(WorldEntity map, int x, int y) {
         Point point = new Point(
-                y * Config.scaledTileSize + Config.scaledTileSize / 2,
-                x * Config.scaledTileSize + Config.scaledTileSize / 2
+                y * MapConfig.scaledTileSize + MapConfig.scaledTileSize / 2,
+                x * MapConfig.scaledTileSize + MapConfig.scaledTileSize / 2
         );
 
         return map.getComponent(WorldDataComponent.class)

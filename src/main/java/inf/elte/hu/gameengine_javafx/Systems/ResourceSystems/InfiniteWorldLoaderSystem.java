@@ -11,7 +11,8 @@ import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.Config;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.Chunk;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.World;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.WorldGenerator;
@@ -66,12 +67,12 @@ public class InfiniteWorldLoaderSystem extends GameSystem {
         Set<Tuple<Integer, Integer>> loadedChunks = worldData.getWorld().keySet();
 
         // Calculate the player's current chunk position
-        int playerChunkX = Math.floorDiv((int) (camX + camWidth / 2), (int) (Config.chunkWidth * Config.scaledTileSize));
-        int playerChunkY = Math.floorDiv((int) (camY + camHeight / 2), (int) (Config.chunkHeight * Config.scaledTileSize));
+        int playerChunkX = Math.floorDiv((int) (camX + camWidth / 2), (int) (MapConfig.chunkWidth * MapConfig.scaledTileSize));
+        int playerChunkY = Math.floorDiv((int) (camY + camHeight / 2), (int) (MapConfig.chunkHeight * MapConfig.scaledTileSize));
 
         // Load chunks within a specified distance from the player
-        for (int dx = -Config.loadDistance; dx <= Config.loadDistance; dx++) {
-            for (int dy = -Config.loadDistance; dy <= Config.loadDistance; dy++) {
+        for (int dx = -MapConfig.loadDistance; dx <= MapConfig.loadDistance; dx++) {
+            for (int dy = -MapConfig.loadDistance; dy <= MapConfig.loadDistance; dy++) {
                 int chunkX = playerChunkX + dx;
                 int chunkY = playerChunkY + dy;
                 Tuple<Integer, Integer> chunkKey = new Tuple<>(chunkX, chunkY);
@@ -144,7 +145,7 @@ public class InfiniteWorldLoaderSystem extends GameSystem {
             int chunkY = entry.getKey().second();
 
             // If the chunk is too far from the player, save it and unload it from the active world
-            if (Math.abs(chunkX - playerChunkX) > Config.loadDistance || Math.abs(chunkY - playerChunkY) > Config.loadDistance) {
+            if (Math.abs(chunkX - playerChunkX) > MapConfig.loadDistance || Math.abs(chunkY - playerChunkY) > MapConfig.loadDistance) {
                 worldData.getSavedChunks().put(entry.getKey(), entry.getValue());
                 iterator.remove();
             }
@@ -167,7 +168,7 @@ public class InfiniteWorldLoaderSystem extends GameSystem {
             worldData.addChunk(chunkX, chunkY, worldData.getSavedChunks().get(chunkKey));
         } else {
             // Otherwise, generate a new chunk and add it to the world
-            Chunk newChunk = WorldGenerator.generateChunk(chunkX, chunkY, Config.chunkWidth, Config.chunkHeight);
+            Chunk newChunk = WorldGenerator.generateChunk(chunkX, chunkY, MapConfig.chunkWidth, MapConfig.chunkHeight);
             worldData.getSavedChunks().put(chunkKey, newChunk);
             worldData.addChunk(chunkX, chunkY, newChunk);
         }
