@@ -1,6 +1,6 @@
 package TestSuite;
 
-import TestSuite.scenes.SandboxScene;
+import TestSuite.Scenes.SandboxScene;
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Misc.Configs.DisplayConfig;
 import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
@@ -30,6 +30,7 @@ public class TestMain extends Application {
         SystemStartUp systemStartUp = new SystemStartUp(() -> {});
         systemStartUp.startUpSceneManagementSystem();
         SceneManagementSystem sceneManagementSystem = SystemHub.getInstance().getSystem(SceneManagementSystem.class);
+        sceneManagementSystem.start();
         sceneManagementSystem.requestSceneChange(new SandboxScene(new BorderPane(), DisplayConfig.resolution.first(), DisplayConfig.resolution.second()));
         sceneManagementSystem.setStage(stage);
         stage.setFullScreen(DisplayConfig.fullScreenMode);

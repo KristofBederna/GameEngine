@@ -26,7 +26,7 @@ public class WorldGenerator {
     public static Chunk generateChunk(int chunkX, int chunkY, int chunkWidth, int chunkHeight) {
         List<List<TileEntity>> tiles = new ArrayList<>();
 
-        int[][] tileValues = new int[chunkWidth][chunkHeight];
+        int[][] tileValues = new int[chunkHeight][chunkWidth];
 
         // Generate tile values for each tile in the chunk
         generateBlankMap(chunkWidth, chunkHeight, tileValues);

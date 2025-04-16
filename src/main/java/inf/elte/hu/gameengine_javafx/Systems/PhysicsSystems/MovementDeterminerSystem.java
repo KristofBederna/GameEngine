@@ -16,7 +16,7 @@ public class MovementDeterminerSystem extends GameSystem {
     }
 
     @Override
-    protected void update() {
+    public void update() {
         var entities = EntityHub.getInstance().getEntitiesWithComponent(VelocityComponent.class);
         entities.retainAll(EntityHub.getInstance().getEntitiesWithComponent(StateComponent.class));
         for (var entity : entities) {

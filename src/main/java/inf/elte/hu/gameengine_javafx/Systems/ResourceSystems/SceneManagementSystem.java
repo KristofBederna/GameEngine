@@ -1,22 +1,35 @@
 package inf.elte.hu.gameengine_javafx.Systems.ResourceSystems;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
+import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Misc.Configs.DisplayConfig;
 import inf.elte.hu.gameengine_javafx.Misc.Scenes.GameScene;
+import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.GameLoopStartUp;
+import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.ResourceStartUp;
+import inf.elte.hu.gameengine_javafx.Misc.StartUpClasses.SystemStartUp;
+import inf.elte.hu.gameengine_javafx.Misc.UtilityFunctions;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+
+import java.util.Objects;
 
 public class SceneManagementSystem extends GameSystem {
     private GameScene currentScene;
     private GameScene nextScene;
     private Stage stage;
 
-    public SceneManagementSystem() {
+    @Override
+    public void start() {
+        active = true;
         // Initialize with a default scene
         currentScene = new GameScene(new BorderPane(), DisplayConfig.resolution.first(), DisplayConfig.resolution.second()) {
             @Override
             public void setup() {
-
+                if (GameLoopStartUp.getGameLoop() == null) {
+                    new GameLoopStartUp();
+                } else {
+                    GameLoopStartUp.getGameLoop().setRunning(true);
+                }
             }
 
             @Override
@@ -24,11 +37,7 @@ public class SceneManagementSystem extends GameSystem {
 
             }
         };
-    }
-
-    @Override
-    public void start() {
-        active = true;
+        currentScene.setup();
     }
 
     @Override

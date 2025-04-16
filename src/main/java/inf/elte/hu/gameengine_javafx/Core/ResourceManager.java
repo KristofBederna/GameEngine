@@ -36,8 +36,10 @@ public class ResourceManager<T> {
      * @return the resource if found, or {@code null} if loading the resource failed
      */
     public T get(String key) {
-        if (contains(key))
+        if (contains(key)) {
+            lastAccessed.put(key, System.currentTimeMillis());
             return resources.get(key);
+        }
 
         return loadThenGet(key);
     }

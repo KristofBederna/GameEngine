@@ -11,8 +11,8 @@ import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
  * Subclasses must implement the {@link #update()} method to define the logic that should be executed on every frame.
  */
 public abstract class GameLoop extends Thread {
-    private boolean running;
-    private final Time time;
+    protected boolean running;
+    protected final Time time;
 
     /**
      * Constructs a new {@code GameLoop} instance.

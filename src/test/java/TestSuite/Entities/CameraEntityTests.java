@@ -1,7 +1,6 @@
 package TestSuite.Entities;
 
 import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
-import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import org.junit.jupiter.api.BeforeEach;

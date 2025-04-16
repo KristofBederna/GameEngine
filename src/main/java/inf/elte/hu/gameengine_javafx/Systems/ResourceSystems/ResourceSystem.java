@@ -4,9 +4,9 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
 import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
+import inf.elte.hu.gameengine_javafx.Misc.Time;
 
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -35,21 +35,19 @@ public class ResourceSystem extends GameSystem {
 
         long threshold = System.currentTimeMillis() - ResourceConfig.resourceUnloadThresholdTime;
 
-        // Iterate over all resource managers and clean up old resources
+        List<String> resourcesToRemove = new ArrayList<>();
         for (ResourceManager<?> resourceManager : resourceManagers.values()) {
-            // Take a snapshot of the current resources
-            Map<String, ?> resourcesSnapshot = new ConcurrentHashMap<>(resourceManager.getResources());
-            Iterator<? extends Map.Entry<String, ?>> iterator = resourcesSnapshot.entrySet().iterator();
-
-            // Remove resources that have not been accessed for over the threshold time
-            while (iterator.hasNext()) {
-                Map.Entry<String, ?> resourceEntry = iterator.next();
-                String resourceKey = resourceEntry.getKey();
-                Long lastAccessed = resourceManager.getLastAccessed(resourceKey);
+            resourcesToRemove.clear();
+            for (Map.Entry<String, ?> entry : resourceManager.getResources().entrySet()) {
+                String key = entry.getKey();
+                Long lastAccessed = resourceManager.getLastAccessed(key);
 
                 if (lastAccessed != null && lastAccessed < threshold) {
-                    iterator.remove(); // Remove the resource if it hasn't been accessed in time
+                    resourcesToRemove.add(key);
                 }
+            }
+            for (String key : resourcesToRemove) {
+                resourceManager.unload(key);
             }
         }
     }

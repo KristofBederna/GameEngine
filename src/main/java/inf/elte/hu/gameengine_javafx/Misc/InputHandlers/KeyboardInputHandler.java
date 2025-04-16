@@ -27,6 +27,10 @@ public class KeyboardInputHandler {
         scene.setOnKeyReleased(this::keyReleased);
     }
 
+    private KeyboardInputHandler(boolean test) {
+
+    }
+
     /**
      * Returns the singleton instance of the {@code KeyboardInputHandler}.
      * If no instance exists, a new one is created.
@@ -36,6 +40,13 @@ public class KeyboardInputHandler {
     public static KeyboardInputHandler getInstance() {
         if (instance == null) {
             instance = new KeyboardInputHandler();
+        }
+        return instance;
+    }
+
+    public static KeyboardInputHandler getInstance(boolean test) {
+        if (instance == null) {
+            instance = new KeyboardInputHandler(test);
         }
         return instance;
     }
