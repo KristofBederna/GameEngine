@@ -56,11 +56,9 @@ public class InputHandlingSystem extends GameSystem {
      */
     private void processEntity(Entity entity) {
         if (entity == null) return;
-        PositionComponent position = entity.getComponent(PositionComponent.class);
-        VelocityComponent velocity = entity.getComponent(VelocityComponent.class);
         InteractiveComponent interactive = entity.getComponent(InteractiveComponent.class);
 
-        if (position != null && velocity != null && interactive != null) {
+        if (interactive != null) {
             handleKeyboardInput(interactive);
             handleMouseInput(interactive);
         }
