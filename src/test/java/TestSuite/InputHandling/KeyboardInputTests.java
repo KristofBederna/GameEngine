@@ -1,8 +1,11 @@
 package TestSuite.InputHandling;
 
+import TestSuite.scenes.SandboxScene;
 import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.KeyboardInputHandler;
+import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
