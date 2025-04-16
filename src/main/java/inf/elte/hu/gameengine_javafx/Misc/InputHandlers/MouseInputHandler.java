@@ -39,6 +39,10 @@ public class MouseInputHandler {
         scene.setOnScroll(this::mouseScrolled);
     }
 
+    private MouseInputHandler(boolean test) {
+
+    }
+
     /**
      * Returns the singleton instance of {@code MouseInputHandler}.
      * If no instance exists, a new one is created.
@@ -48,6 +52,13 @@ public class MouseInputHandler {
     public static MouseInputHandler getInstance() {
         if (instance == null) {
             instance = new MouseInputHandler();
+        }
+        return instance;
+    }
+
+    public static MouseInputHandler getInstance(boolean test) {
+        if (instance == null) {
+            instance = new MouseInputHandler(test);
         }
         return instance;
     }
@@ -151,5 +162,12 @@ public class MouseInputHandler {
      */
     public double getScrollDeltaY() {
         return scrollDeltaY;
+    }
+
+    public void reset() {
+        pressedButtons.clear();
+        releasedButtons.clear();
+        lastPressedTime.clear();
+        mouseX = mouseY = scrollDeltaY = 0;
     }
 }

@@ -21,7 +21,7 @@ public class ResolutionChangeEventListener implements EventListener<ResolutionCh
     }
 
     @Override
-    public void onExit() {
+    public void onExit(ResolutionChangeEvent event) {
 
     }
 

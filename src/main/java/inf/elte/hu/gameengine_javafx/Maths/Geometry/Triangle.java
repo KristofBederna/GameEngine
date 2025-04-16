@@ -7,12 +7,13 @@ import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Triangle extends Shape {
 
     public Triangle(Point a, Point b, Point c) {
-        this.points = List.of(a, b, c);
+        this.points = new ArrayList<>(List.of(a, b, c));
         updateEdges();
     }
 

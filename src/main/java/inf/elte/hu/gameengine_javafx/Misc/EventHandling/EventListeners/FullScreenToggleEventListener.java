@@ -21,7 +21,7 @@ public class FullScreenToggleEventListener implements EventListener<FullScreenTo
     }
 
     @Override
-    public void onExit() {
+    public void onExit(FullScreenToggleEvent event) {
 
     }
 }
