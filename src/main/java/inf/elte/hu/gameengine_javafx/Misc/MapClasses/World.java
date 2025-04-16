@@ -85,7 +85,8 @@ public class World {
      * @param chunk the chunk to add
      */
     public void addChunk(int x, int y, Chunk chunk) {
-        chunks.putIfAbsent(new Tuple<>(x, y), chunk);
+        chunks.put(new Tuple<>(x, y), chunk);
+        savedChunks.put(new Tuple<>(x, y), chunk);
     }
 
     /**
@@ -111,6 +112,23 @@ public class World {
         return null;
     }
 
+    public TileEntity getElementAtSaved(Point point) {
+        int tileX = Math.floorDiv((int) point.getX(), (int) MapConfig.scaledTileSize);
+        int tileY = Math.floorDiv((int) point.getY(), (int) MapConfig.scaledTileSize);
+
+        int chunkX = Math.floorDiv(tileX, MapConfig.chunkWidth);
+        int chunkY = Math.floorDiv(tileY, MapConfig.chunkHeight);
+
+        int localX = Math.floorMod(tileY, MapConfig.chunkWidth);
+        int localY = Math.floorMod(tileX, MapConfig.chunkHeight);
+
+        Chunk chunk = savedChunks.get(new Tuple<>(chunkX, chunkY));
+        if (chunk != null) {
+            return chunk.getElement(localX, localY);
+        }
+        return null;
+    }
+
     public void setElementAt(Point point, int value) {
         int tileX = Math.floorDiv((int) point.getX(), (int) MapConfig.scaledTileSize);
         int tileY = Math.floorDiv((int) point.getY(), (int) MapConfig.scaledTileSize);
@@ -125,6 +143,18 @@ public class World {
         if (chunk != null) {
             chunk.setElement(localX, localY, value);
         }
+    }
+
+    public void setElementAtSaved(Point point, int value) {
+        int tileX = Math.floorDiv((int) point.getX(), (int) MapConfig.scaledTileSize);
+        int tileY = Math.floorDiv((int) point.getY(), (int) MapConfig.scaledTileSize);
+
+        int chunkX = Math.floorDiv(tileX, MapConfig.chunkWidth);
+        int chunkY = Math.floorDiv(tileY, MapConfig.chunkHeight);
+
+        int localX = Math.floorMod(tileY, MapConfig.chunkWidth);
+        int localY = Math.floorMod(tileX, MapConfig.chunkHeight);
+
         Chunk savedChunk = savedChunks.get(new Tuple<>(chunkX, chunkY));
         if (savedChunk != null) {
             savedChunk.setElement(localX, localY, value);

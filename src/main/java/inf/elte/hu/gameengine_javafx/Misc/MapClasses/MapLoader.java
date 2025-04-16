@@ -101,6 +101,7 @@ public class MapLoader {
         }
 
         map.getComponent(WorldDataComponent.class).getMapData().getWorld().putIfAbsent(coordinates, chunkTiles);
+        map.getComponent(WorldDataComponent.class).getMapData().getSavedChunks().putIfAbsent(coordinates, chunkTiles);
     }
 
     private static TileEntity createTileEntity(int value, int x, int y) {

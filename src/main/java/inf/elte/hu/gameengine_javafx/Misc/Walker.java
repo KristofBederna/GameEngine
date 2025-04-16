@@ -126,16 +126,7 @@ public class Walker {
     private void placeTile() {
         Point currentPoint = new Point(x * MapConfig.scaledTileSize, y * MapConfig.scaledTileSize);
         world.getComponent(WorldDataComponent.class).getMapData().setElementAt(currentPoint, WalkerConfig.placeTileNumber);
-        saveTileInChunk();
-    }
-
-    // Save the tile placement in the chunk data
-    private void saveTileInChunk() {
-        world.getComponent(WorldDataComponent.class)
-                .getMapData()
-                .getSavedChunks()
-                .get(new Tuple<>(Math.floorDiv(x, MapConfig.chunkWidth), Math.floorDiv(y, MapConfig.chunkHeight)))
-                .setElement(x % MapConfig.chunkWidth, y % MapConfig.chunkHeight, WalkerConfig.placeTileNumber);
+        world.getComponent(WorldDataComponent.class).getMapData().setElementAtSaved(currentPoint, WalkerConfig.placeTileNumber);
     }
 
     // Create a new walker to multiply the current one
