@@ -40,6 +40,10 @@ public class SystemHub {
         return instance;
     }
 
+    public static void resetInstance() {
+        instance = new SystemHub();
+    }
+
     /**
      * Adds a system to the SystemHub with a specified priority.
      * The system will be stored in a TreeMap, where it is ordered by priority.

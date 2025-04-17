@@ -30,6 +30,7 @@ public class Main extends Application {
         SystemStartUp systemStartUp = new SystemStartUp(() -> {});
         systemStartUp.startUpSceneManagementSystem();
         SceneManagementSystem sceneManagementSystem = SystemHub.getInstance().getSystem(SceneManagementSystem.class);
+        sceneManagementSystem.start();
         sceneManagementSystem.setStage(stage);
         stage.setFullScreen(DisplayConfig.fullScreenMode);
         stage.setFullScreenExitHint("");
@@ -38,10 +39,10 @@ public class Main extends Application {
         BorderPane root = (BorderPane) sceneManagementSystem.getCurrentScene().getRoot();
 
         GameCanvas gameCanvas = GameCanvas.createInstance(DisplayConfig.resolution.first(), DisplayConfig.resolution.second());
-        uiRoot Root = uiRoot.getInstance();
+        uiRoot UIRoot = uiRoot.getInstance();
         GameLayer gameLayer = GameLayer.getInstance();
-        gameLayer.getChildren().addAll(gameCanvas, Root);
-        Root.setFocusTraversable(true);
+        gameLayer.getChildren().addAll(gameCanvas, UIRoot);
+        UIRoot.setFocusTraversable(true);
 
         root.setCenter(gameLayer);
 
