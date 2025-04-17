@@ -14,7 +14,6 @@ import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
 import inf.elte.hu.gameengine_javafx.Misc.Configs.PhysicsConfig;
-import inf.elte.hu.gameengine_javafx.Misc.Time;
 
 import java.util.List;
 
@@ -51,7 +50,7 @@ public class MovementSystem extends GameSystem {
         TileEntity tile = getCurrentTile(entity);
 
         if (!(entity instanceof ParticleEntity)) {
-            double[] frictionAdjusted = applyFriction(tile, newDx, newDy);
+            double[] frictionAdjusted = applyFriction(tile, newDx, newDy, getMass(entity));
             newDx = frictionAdjusted[0];
             newDy = frictionAdjusted[1];
         }
@@ -68,36 +67,46 @@ public class MovementSystem extends GameSystem {
     }
 
     private double applyAccelerationX(AccelerationComponent acceleration, double currentDx, Entity entity) {
-        double mass = getMass(entity);
-        return (acceleration != null) ? currentDx + acceleration.getAcceleration().getDx() / mass : currentDx;
+        return (acceleration != null) ? currentDx + acceleration.getAcceleration().getDx()/getMass(entity) : currentDx;
     }
 
     private double applyAccelerationY(AccelerationComponent acceleration, double currentDy, Entity entity) {
-        double mass = getMass(entity);
-        return (acceleration != null) ? currentDy + acceleration.getAcceleration().getDy() / mass : currentDy;
+        return (acceleration != null) ? currentDy + acceleration.getAcceleration().getDy()/getMass(entity): currentDy;
     }
+
 
     private double getMass(Entity entity) {
         var massComponent = entity.getComponent(MassComponent.class);
         return (massComponent != null) ? massComponent.getMass() : PhysicsConfig.defaultMass;
     }
 
-    private double[] applyFriction(TileEntity tile, double dx, double dy) {
-        double friction = PhysicsConfig.defaultFriction;
+    private double[] applyFriction(TileEntity tile, double dx, double dy, double mass) {
+        double frictionCoefficient = PhysicsConfig.defaultFriction;
         if (tile != null && tile.getComponent(FrictionComponent.class) != null) {
-            friction = tile.getComponent(FrictionComponent.class).getFriction();
+            frictionCoefficient = tile.getComponent(FrictionComponent.class).getFriction();
         }
-        double frictionForce = friction * Time.getInstance().getDeltaTime();
-        dx = Math.abs(dx) > frictionForce ? dx - Math.signum(dx) * frictionForce : 0;
-        dy = Math.abs(dy) > frictionForce ? dy - Math.signum(dy) * frictionForce : 0;
+
+        // Calculate normal force (simplified: assume gravity = 1 unit down, so normal = mass)
+        double normalForce = mass;
+
+        // Friction force = μ * normalForce
+        double frictionForce = frictionCoefficient * normalForce;
+
+        // Friction acceleration = frictionForce / mass = μ (in 2D)
+        double frictionAccel = frictionForce / mass * PhysicsConfig.fixedDeltaTime;  // == frictionCoefficient
+
+        if (Math.abs(dx) > 0) dx -= Math.signum(dx) * Math.min(frictionAccel, Math.abs(dx));
+        if (Math.abs(dy) > 0) dy -= Math.signum(dy) * Math.min(frictionAccel, Math.abs(dy));
+
         return new double[]{dx, dy};
     }
+
 
     private double[] applyVelocityLimitsAndDrag(Entity entity, double dx, double dy, AccelerationComponent acceleration) {
         var velocity = entity.getComponent(VelocityComponent.class);
         double maxSpeed = velocity.getMaxVelocity() * MapConfig.getTileScale();
         double drag = getDrag(entity);
-        double dragFactor = Math.pow(1 - drag, Time.getInstance().getDeltaTime());
+        double dragFactor = Math.pow(1 - drag, PhysicsConfig.fixedDeltaTime);
 
         if (acceleration == null || acceleration.getAcceleration().getDx() == 0) dx *= dragFactor;
         if (acceleration == null || acceleration.getAcceleration().getDy() == 0) dy *= dragFactor;

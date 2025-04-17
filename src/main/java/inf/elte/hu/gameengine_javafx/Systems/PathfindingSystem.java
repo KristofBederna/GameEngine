@@ -19,7 +19,7 @@ public class PathfindingSystem extends GameSystem {
     }
 
     @Override
-    protected void update() {
+    public void update() {
         var pathfinderEntities = EntityHub.getInstance().getEntitiesWithComponent(PathfindingComponent.class);
 
         for (var entity : pathfinderEntities) {

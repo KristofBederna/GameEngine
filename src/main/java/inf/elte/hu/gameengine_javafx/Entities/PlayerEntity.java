@@ -29,7 +29,7 @@ public class PlayerEntity extends Entity {
         this.addComponent(new VelocityComponent(2));
         this.addComponent(new AccelerationComponent());
         this.addComponent(new DragComponent(0.98));
-        this.addComponent(new MassComponent(0.5));
+        this.addComponent(new MassComponent(1));
         this.addComponent(new StateComponent(state));
         this.addComponent(new DirectionComponent(Direction.ALL));
         this.addComponent(new ImageComponent(path, width, height));

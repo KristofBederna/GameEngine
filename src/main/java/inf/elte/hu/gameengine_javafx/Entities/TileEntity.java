@@ -27,7 +27,7 @@ public class TileEntity extends Entity {
         if (MapConfig.wallTiles.contains(value)) {
             this.addComponent(new HitBoxComponent(new Rectangle(new Point(x, y), width, height).getPoints()));
         }
-        this.addComponent(new FrictionComponent(4));
+        this.addComponent(new FrictionComponent(0.4));
 
         addToManager();
     }
