@@ -12,7 +12,6 @@ public class ParticleEmitterEntity extends Entity {
     ParticleEntity mock;
 
     public ParticleEmitterEntity(double x, double y, ParticleEntity particleEntity, Direction direction, int amount, long timeBetweenSpawns) {
-        createParticles(particleEntity, amount, this.getComponent(ParentComponent.class));
         addComponent(new DirectionComponent(direction));
         this.getComponent(PositionComponent.class).setLocalPosition(x, y, this);
         addComponent(new TimeComponent(timeBetweenSpawns));
@@ -23,7 +22,6 @@ public class ParticleEmitterEntity extends Entity {
     }
 
     public ParticleEmitterEntity(double x, double y, ParticleEntity particleEntity, Direction direction, int amount) {
-        createParticles(particleEntity, amount, this.getComponent(ParentComponent.class));
         addComponent(new DirectionComponent(direction));
         this.getComponent(PositionComponent.class).setLocalPosition(x, y, this);
         addComponent(new TimeComponent(Integer.MAX_VALUE));

@@ -27,7 +27,7 @@ public class ParticleSystem extends GameSystem {
     }
 
     @Override
-    protected void update() {
+    public void update() {
         var emitters = EntityHub.getInstance().getEntitiesWithType(ParticleEmitterEntity.class);
         var emittersToRemove = new HashSet<ParticleEmitterEntity>();
 
@@ -74,7 +74,7 @@ public class ParticleSystem extends GameSystem {
         if (acceleration == null || position == null) return;
 
         if (acceleration.getAcceleration().isZero()) {
-            Vector initial = initializeParticleAcceleration(particleEntity, direction);
+            Vector initial = initializeParticleAcceleration(direction);
             Vector boosted = applyVelocityBoost(initial, direction);
 
             if (boosted.isZero()) {
@@ -88,7 +88,7 @@ public class ParticleSystem extends GameSystem {
         handleLifecycleChecks(entity, particleEntity, emittersToRemove, toBeRemoved);
     }
 
-    private Vector initializeParticleAcceleration(Entity particle, Direction direction) {
+    private Vector initializeParticleAcceleration(Direction direction) {
         Random random = new Random();
         double deltaTime = Time.getInstance().getDeltaTime();
         double minSpeed = -1;
@@ -171,8 +171,14 @@ public class ParticleSystem extends GameSystem {
 
     private void spawnNewParticles(Entity entity) {
         if (System.currentTimeMillis() >= entity.getComponent(TimeComponent.class).getLastOccurrence() + entity.getComponent(TimeComponent.class).getTimeBetweenOccurrences()) {
-            ((ParticleEmitterEntity) entity).createParticles(((ParticleEmitterEntity) entity).getMockParticle(), ((ParticleEmitterEntity) entity).getAmount(), entity.getComponent(ParentComponent.class));
+            ((ParticleEmitterEntity) entity).createParticles(
+                    ((ParticleEmitterEntity) entity).getMockParticle(),
+                    ((ParticleEmitterEntity) entity).getAmount(),
+                    entity.getComponent(ParentComponent.class)
+            );
+
             entity.getComponent(TimeComponent.class).setLastOccurrence();
         }
+
     }
 }

@@ -140,6 +140,7 @@ public class MovementSystem extends GameSystem {
     }
 
     private TileEntity getCurrentTile(Entity entity) {
+        if (WorldEntity.getInstance() == null) return null;
         var worldData = WorldEntity.getInstance().getComponent(WorldDataComponent.class);
         var position = entity.getComponent(PositionComponent.class);
         var central = entity.getComponent(CentralMassComponent.class);
