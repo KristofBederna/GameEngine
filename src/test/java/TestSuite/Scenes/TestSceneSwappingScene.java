@@ -101,7 +101,7 @@ public class TestSceneSwappingScene extends GameScene {
             Random random = new Random();
             Point target = null;
             while (target == null) {
-                target = WorldEntity.getInstance().getComponent(MapMeshComponent.class).getMapCoordinates().get(random.nextInt(32)).get(random.nextInt(16));
+                target = WorldEntity.getInstance().getComponent(MapMeshComponent.class).getMapCoordinates().get(random.nextInt(16)).get(random.nextInt(32));
             }
             PathfindingComponent pathfinding = entity2.getComponent(PathfindingComponent.class);
             if (pathfinding != null && pathfinding.getEnd() != null) {
