@@ -114,18 +114,6 @@ public class ParticleSystem extends GameSystem {
                 dx = maxSpeed;
                 dy = random.nextDouble(minSpeed, maxSpeed);
             }
-            case ALL -> {
-                double angle = random.nextDouble(0, 2 * Math.PI);
-                double magnitude = random.nextDouble(0, 20);
-
-                dx = Math.cos(angle) * magnitude;
-                dy = Math.sin(angle) * magnitude;
-
-                DragComponent drag = particle.getComponent(DragComponent.class);
-                if (drag != null) {
-                    drag.setDrag(random.nextDouble(0.01, 1));
-                }
-            }
         }
 
         return new Vector(dx * deltaTime, dy * deltaTime);
@@ -136,11 +124,29 @@ public class ParticleSystem extends GameSystem {
         double deltaTime = Time.getInstance().getDeltaTime();
 
         double angle;
-        if (direction == Direction.LEFT) {
-            angle = random.nextDouble(3 * Math.PI / 4, 5 * Math.PI / 4);
-        } else {
-            angle = random.nextDouble(-Math.PI / 4, Math.PI / 4);
+
+        switch (direction) {
+            case LEFT:
+                // 135° to 225° (3π/4 to 5π/4)
+                angle = random.nextDouble(3 * Math.PI / 4, 5 * Math.PI / 4);
+                break;
+            case RIGHT:
+                // -45° to 45° (-π/4 to π/4)
+                angle = random.nextDouble(-Math.PI / 4, Math.PI / 4);
+                break;
+            case UP:
+                // 225° to 315° (5π/4 to 7π/4)
+                angle = random.nextDouble(5 * Math.PI / 4, 7 * Math.PI / 4);
+                break;
+            case DOWN:
+                // 45° to 135° (π/4 to 3π/4)
+                angle = random.nextDouble(Math.PI / 4, 3 * Math.PI / 4);
+                break;
+            default:
+                angle = random.nextDouble(0, Math.PI*2);
+                break;
         }
+
 
         double boostMagnitude = random.nextDouble(0, 20);
         double boostDx = Math.cos(angle) * boostMagnitude * deltaTime;

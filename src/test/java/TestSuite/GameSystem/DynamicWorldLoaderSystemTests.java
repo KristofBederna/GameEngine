@@ -14,8 +14,6 @@ import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.DynamicWorldLoaderS
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DynamicWorldLoaderSystemTests {
@@ -128,7 +126,7 @@ public class DynamicWorldLoaderSystemTests {
 
     @Test
     public void testUnloadedChunksAreRemovedFromWorld() {
-        CameraEntity cameraEntity = CameraEntity.getInstance(100, 100, 3200, 3200);
+        CameraEntity.getInstance(100, 100, 3200, 3200);
 
         MapConfig.loadDistance = 0;
         DynamicWorldLoaderSystem system = new DynamicWorldLoaderSystem(2, 2);

@@ -84,7 +84,7 @@ public class SandboxScene extends GameScene {
         new PlayerEntity(420, 120, "idle", "/assets/images/PlayerIdle.png", 0.8 * MapConfig.scaledTileSize, 0.8 * MapConfig.scaledTileSize);
         new DummyEntity(220, 220, "idle", "/assets/images/PlayerIdle.png", 0.8 * MapConfig.scaledTileSize, 0.8 * MapConfig.scaledTileSize);
         new ParticleEmitterEntity(400, 400, new ParticleEntity(400, 400, 25, 25,
-                new NSidedShape(new Point(400, 400), 25, 32), Color.ORANGE, Color.TRANSPARENT, 300), Direction.RIGHT, 50, 1000);
+                new NSidedShape(new Point(400, 400), 25, 32), Color.ORANGE, Color.TRANSPARENT, 300), Direction.DOWN, 50, 1000);
         new ParticleEmitterEntity(5* MapConfig.scaledTileSize, 500, new ParticleEntity(0, 0, 20, 20, "/assets/images/snowflake.png", 2000), Direction.ALL, 20, 1000);
     }
 
