@@ -78,7 +78,7 @@ public class WorldLoaderSystem extends GameSystem {
             for (int dy = -MapConfig.loadDistance; dy <= MapConfig.loadDistance; dy++) {
                 int chunkX = playerChunkX + dx;
                 int chunkY = playerChunkY + dy;
-                if (chunkX >= 0 && chunkX < width && chunkY >= 0 && chunkY < height) {
+                if (chunkX >= 0 && chunkX < width/MapConfig.chunkWidth && chunkY >= 0 && chunkY < height/MapConfig.chunkHeight) {
                     Tuple<Integer, Integer> chunkKey = new Tuple<>(chunkX, chunkY);
                     if (!loadedChunks.contains(chunkKey)) {
                         loadChunk(chunkX, chunkY);
@@ -119,7 +119,7 @@ public class WorldLoaderSystem extends GameSystem {
         if (WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getSavedChunks().containsKey(chunkKey)) {
             WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().addChunk(chunkX, chunkY, WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getSavedChunks().get(chunkKey));
         } else {
-            System.err.println("Chunk not found, bad map loading");
+            System.err.println("Chunk not found, bad map loading or map not big enough");
         }
     }
 }

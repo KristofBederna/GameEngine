@@ -5,8 +5,8 @@ import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataCompone
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
-import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
 import inf.elte.hu.gameengine_javafx.Misc.Configs.WalkerConfig;
+import inf.elte.hu.gameengine_javafx.Misc.MapClasses.World;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -65,11 +65,12 @@ public class Walker {
     // Calculate the filled percentage of tiles in the world
     public int getFilledPercentage() {
         int filledTiles = 0;
-        int totalTiles = WalkerConfig.maxX * WalkerConfig.maxY;
+        World map = WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData();
+        int totalTiles = map.size() * MapConfig.chunkHeight*MapConfig.chunkWidth;
 
         for (int i = 0; i < WalkerConfig.maxX; i++) {
             for (int j = 0; j < WalkerConfig.maxY; j++) {
-                if (isWallTileAt(i, j)) {
+                if (isWalkerTileAt(i, j)) {
                     filledTiles++;
                 }
             }
@@ -79,8 +80,8 @@ public class Walker {
     }
 
     // Check if a specific tile is a wall tile
-    private boolean isWallTileAt(int i, int j) {
-        return MapConfig.wallTiles.contains(
+    private boolean isWalkerTileAt(int i, int j) {
+        return WalkerConfig.placeTileNumber == (
                 world.getComponent(WorldDataComponent.class)
                         .getMapData()
                         .getElementAt(new Point(j * MapConfig.scaledTileSize + MapConfig.scaledTileSize / 2,

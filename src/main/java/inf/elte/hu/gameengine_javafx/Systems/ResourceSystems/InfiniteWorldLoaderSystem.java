@@ -37,6 +37,7 @@ public class InfiniteWorldLoaderSystem extends GameSystem {
         WorldEntity map = WorldEntity.getInstance();
         if (map == null) return;
 
+
         World worldData = map.getComponent(WorldDataComponent.class).getMapData();
 
         for (int cx = -1; cx <= 1; cx++) {

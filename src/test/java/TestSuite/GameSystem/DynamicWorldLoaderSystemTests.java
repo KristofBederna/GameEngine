@@ -136,4 +136,23 @@ public class DynamicWorldLoaderSystemTests {
         assertEquals(1, WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getWorld().size());
         assertEquals(4, WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData().getSavedChunks().size());
     }
+
+    @Test
+    public void testMapIsFilledCorrectly() {
+        DynamicWorldLoaderSystem system = new DynamicWorldLoaderSystem(2, 2);
+        system.start();
+
+        var mapData = WorldEntity.getInstance().getComponent(WorldDataComponent.class).getMapData();
+        double placedTiles = 0;
+        for (Chunk chunk : mapData.getWorld().values()) {
+            for (int i = 0; i < MapConfig.chunkWidth; i++) {
+                for (int j = 0; j < MapConfig.chunkHeight; j++) {
+                    if (chunk.getElement(i, j).getComponent(TileValueComponent.class).getTileValue() == WalkerConfig.placeTileNumber) {
+                        placedTiles++;
+                    }
+                }
+            }
+        }
+        assertTrue(placedTiles/(MapConfig.chunkWidth*2*MapConfig.chunkHeight*2)*100 >= WalkerConfig.stopPercentage);
+    }
 }

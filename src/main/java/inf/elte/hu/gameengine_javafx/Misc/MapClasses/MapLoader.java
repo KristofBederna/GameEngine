@@ -80,11 +80,11 @@ public class MapLoader {
         Tuple<Integer, Integer> coordinates = new Tuple<>(chunkX, chunkY);
         Chunk chunkTiles = new Chunk();
 
-        for (int y = chunkY * MapConfig.chunkHeight; y < height; y++) {
+        for (int y = chunkY * MapConfig.chunkHeight; y < Math.min((chunkY+1)*MapConfig.chunkHeight, height); y++) {
             List<TileEntity> chunkRow = new ArrayList<>();
             List<Point> meshRow = new ArrayList<>();
 
-            for (int x = chunkX * MapConfig.chunkWidth; x < width; x++) {
+            for (int x = chunkX * MapConfig.chunkWidth; x < Math.min((chunkX+1)*MapConfig.chunkWidth, width); x++) {
                 TileEntity tile = createTileEntity(data.get(y).get(x), x, y);
                 chunkRow.add(tile);
 
@@ -97,7 +97,7 @@ public class MapLoader {
             }
 
             chunkTiles.getChunk().add(chunkRow);
-            map.getComponent(MapMeshComponent.class).addRow(meshRow);
+            map.getComponent(MapMeshComponent.class).addToRow(y, meshRow);
         }
 
         map.getComponent(WorldDataComponent.class).getMapData().getWorld().putIfAbsent(coordinates, chunkTiles);

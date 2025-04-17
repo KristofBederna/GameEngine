@@ -112,7 +112,7 @@ public class DynamicWorldLoaderSystem extends GameSystem {
             for (int dy = -MapConfig.loadDistance; dy <= MapConfig.loadDistance; dy++) {
                 int chunkX = playerChunkX + dx;
                 int chunkY = playerChunkY + dy;
-                if (chunkX >= 0 && chunkX < width && chunkY >= 0 && chunkY < height) {
+                if (chunkX >= 0 && chunkX < width/MapConfig.chunkWidth && chunkY >= 0 && chunkY < height/MapConfig.chunkHeight) {
                     Tuple<Integer, Integer> chunkKey = new Tuple<>(chunkX, chunkY);
                     if (!loadedChunks.contains(chunkKey)) {
                         loadOrGenerateChunk(chunkX, chunkY);
