@@ -15,10 +15,7 @@ import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ZIndexCompon
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Rectangle;
-import inf.elte.hu.gameengine_javafx.Misc.AnimationFrame;
-import inf.elte.hu.gameengine_javafx.Misc.AnimationStateMachine;
-import inf.elte.hu.gameengine_javafx.Misc.Direction;
-import inf.elte.hu.gameengine_javafx.Misc.Time;
+import inf.elte.hu.gameengine_javafx.Misc.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -94,9 +91,7 @@ public class PlayerEntity extends Entity {
                         }
                         break;
                     case "idle":
-
-                        entity.removeComponentsByType(AnimationComponent.class);
-                        entity.getComponent(ImageComponent.class).setNextFrame("/assets/images/PlayerIdle.png");
+                        entity.addComponent(new AnimationComponent(List.of(new AnimationFrame(new Tuple<>("/assets/images/PlayerIdle.png", 60)))));
                         break;
                 }
             }

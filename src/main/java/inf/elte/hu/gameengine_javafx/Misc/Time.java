@@ -191,4 +191,8 @@ public class Time {
         }
         return fps;
     }
+
+    public void setFPS(int i) {
+        fps = i;
+    }
 }

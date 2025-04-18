@@ -4,7 +4,7 @@ import inf.elte.hu.gameengine_javafx.Misc.Tuple;
 
 public class DisplayConfig {
     public static String windowTitle = "Game Engine";
-    public static boolean renderDebugMode = true;
+    public static boolean renderDebugMode = false;
     public static boolean fullScreenMode = false;
     public static Tuple<Double, Double> resolution = new Tuple<>(1920.0, 1080.0);
     public static double relativeWidthRatio = resolution.first() / 1920;

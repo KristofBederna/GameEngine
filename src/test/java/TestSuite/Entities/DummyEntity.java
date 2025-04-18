@@ -97,9 +97,7 @@ public class DummyEntity extends Entity {
                         }
                         break;
                     case "idle":
-
-                        entity.removeComponentsByType(AnimationComponent.class);
-                        entity.getComponent(ImageComponent.class).setNextFrame("/assets/images/PlayerIdle.png");
+                        entity.addComponent(new AnimationComponent(List.of(new AnimationFrame(new Tuple<>("/assets/images/PlayerIdle.png", 60)))));
                         break;
                 }
             }
