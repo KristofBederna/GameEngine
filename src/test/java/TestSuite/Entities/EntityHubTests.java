@@ -49,7 +49,7 @@ public class EntityHubTests {
     }
 
     @Test
-    void testIsNotInsideViewport1() {
+    void testIsNotInsideViewport() {
         Entity e = new TestEntity();
         e.getComponent(PositionComponent.class).setLocal(new Point(-11, -11), e);
         e.addComponent(new DimensionComponent(10, 10));
@@ -61,7 +61,7 @@ public class EntityHubTests {
     }
 
     @Test
-    void testIsNotInsideViewport2() {
+    void testIsInsideViewport2() {
         Entity e = new TestEntity();
         e.getComponent(PositionComponent.class).setLocal(new Point(-10, -10), e);
         e.addComponent(new DimensionComponent(10, 10));
@@ -73,7 +73,7 @@ public class EntityHubTests {
     }
 
     @Test
-    void testIsNotInsideViewport3() {
+    void testIsNotInsideViewport2() {
         Entity e = new TestEntity();
         e.getComponent(PositionComponent.class).setLocal(new Point(1921, 1081), e);
         e.addComponent(new DimensionComponent(10, 10));
@@ -99,7 +99,7 @@ public class EntityHubTests {
     }
 
     @Test
-    void testRemoveEntity() {
+        void testRemoveEntity() {
         Entity e = new TestEntity();
         e.addComponent(new TestComponent());
 

@@ -26,6 +26,7 @@ public class CameraEntityTests {
 
     @Test
     public void testSetPosition() {
+        cameraEntity.setPosition(20, 20);
         cameraEntity.setPosition(100, 150);
         double x = cameraEntity.getComponent(PositionComponent.class).getGlobalX();
         double y = cameraEntity.getComponent(PositionComponent.class).getGlobalY();

@@ -122,7 +122,7 @@ public class MathsTests {
     }
 
     @Test
-    void testDistanceTo_WhenPointsAreSame_ShouldReturnZero() {
+    void testDistanceToWhenPointsAreSameShouldReturnZero() {
         Point p1 = new Point(5, 5);
         Point p2 = new Point(5, 5);
 
@@ -130,7 +130,7 @@ public class MathsTests {
     }
 
     @Test
-    void testDistanceTo_WhenPointsAreDiagonal_ShouldReturnCorrectValue() {
+    void testDistanceToWhenPointsAreDiagonalShouldReturnCorrectValue() {
         Point p1 = new Point(0, 0);
         Point p2 = new Point(3, 4); // 3-4-5 háromszög
 
@@ -138,7 +138,7 @@ public class MathsTests {
     }
 
     @Test
-    void testDistanceTo_WithNegativeCoordinates_ShouldReturnCorrectValue() {
+    void testDistanceToWithNegativeCoordinatesShouldReturnCorrectValue() {
         Point p1 = new Point(-2, -3);
         Point p2 = new Point(1, 1);
 
@@ -147,7 +147,7 @@ public class MathsTests {
     }
 
     @Test
-    void testCompareCoordinates_WithoutDelta_TrueWithin10() {
+    void testCompareCoordinatesWithoutDeltaTrueWithin10() {
         Point p1 = new Point(50, 50);
         Point p2 = new Point(58, 55); // dx = 8, dy = 5
 
@@ -155,7 +155,7 @@ public class MathsTests {
     }
 
     @Test
-    void testCompareCoordinates_WithoutDelta_FalseOutside10() {
+    void testCompareCoordinatesWithoutDeltaFalseOutside10() {
         Point p1 = new Point(50, 50);
         Point p2 = new Point(61, 50); // dx = 11
 
@@ -163,7 +163,7 @@ public class MathsTests {
     }
 
     @Test
-    void testCompareCoordinates_WithDelta_TrueWithinCustomDelta() {
+    void testCompareCoordinatesWithDeltaTrueWithinCustomDelta() {
         Point p1 = new Point(0, 0);
         Point p2 = new Point(3, 4); // dx = 3, dy = 4
 
@@ -171,7 +171,7 @@ public class MathsTests {
     }
 
     @Test
-    void testCompareCoordinates_WithDelta_FalseOutsideCustomDelta() {
+    void testCompareCoordinatesWithDeltaFalseOutsideCustomDelta() {
         Point p1 = new Point(0, 0);
         Point p2 = new Point(6, 6); // dx = 6, dy = 6
 
@@ -179,7 +179,7 @@ public class MathsTests {
     }
 
     @Test
-    void testCompareCoordinates_WhenOtherIsNull_ShouldReturnFalse() {
+    void testCompareCoordinatesWhenOtherIsNullShouldReturnFalse() {
         Point p = new Point(0, 0);
 
         assertFalse(p.compareCoordinates(null));
@@ -187,7 +187,7 @@ public class MathsTests {
     }
 
     @Test
-    void testEdgesIntersect_WhenEdgesCross_ShouldReturnTrue() {
+    void testEdgesIntersectWhenEdgesCrossShouldReturnTrue() {
         Edge e1 = new Edge(new Point(0, 0), new Point(2, 2));
         Edge e2 = new Edge(new Point(0, 2), new Point(2, 0));
 
@@ -195,7 +195,7 @@ public class MathsTests {
     }
 
     @Test
-    void testEdgesIntersect_WhenEdgesDoNotCross_ShouldReturnFalse() {
+    void testEdgesIntersectWhenEdgesDoNotCrossShouldReturnFalse() {
         Edge e1 = new Edge(new Point(0, 0), new Point(1, 0));
         Edge e2 = new Edge(new Point(0, 1), new Point(1, 1));
 
@@ -203,7 +203,7 @@ public class MathsTests {
     }
 
     @Test
-    void testEdgesIntersect_WhenCollinearAndOverlapping_ShouldReturnTrue() {
+    void testEdgesIntersectWhenCollinearAndOverlappingShouldReturnTrue() {
         Edge e1 = new Edge(new Point(0, 0), new Point(2, 0));
         Edge e2 = new Edge(new Point(1, 0), new Point(3, 0));
 
@@ -211,7 +211,7 @@ public class MathsTests {
     }
 
     @Test
-    void testEdgesIntersect_WhenCollinearButSeparate_ShouldReturnFalse() {
+    void testEdgesIntersectWhenCollinearButSeparateShouldReturnFalse() {
         Edge e1 = new Edge(new Point(0, 0), new Point(1, 0));
         Edge e2 = new Edge(new Point(2, 0), new Point(3, 0));
 
@@ -219,7 +219,7 @@ public class MathsTests {
     }
 
     @Test
-    void testIntersect_WhenShapesShareIntersectingEdges_ShouldReturnTrue() {
+    void testIntersectWhenShapesShareIntersectingEdgesShouldReturnTrue() {
         Shape s1 = createShape(new Point(0, 0), new Point(2, 2));
         Shape s2 = createShape(new Point(0, 2), new Point(2, 0));
 
@@ -227,7 +227,7 @@ public class MathsTests {
     }
 
     @Test
-    void testIntersect_WhenShapesAreDisjoint_ShouldReturnFalse() {
+    void testIntersectWhenShapesAreDisjointShouldReturnFalse() {
         Shape s1 = createShape(new Point(0, 0), new Point(1, 1));
         Shape s2 = createShape(new Point(2, 2), new Point(3, 3));
 
@@ -235,7 +235,7 @@ public class MathsTests {
     }
 
     @Test
-    void testGetIntersection_WhenEdgesIntersectInsideSegments_ShouldReturnIntersectionPoint() {
+    void testGetIntersectionWhenEdgesIntersectInsideSegmentsShouldReturnIntersectionPoint() {
         Edge e1 = new Edge(new Point(0, 0), new Point(2, 2));
         Edge e2 = new Edge(new Point(0, 2), new Point(2, 0));
 
@@ -246,7 +246,7 @@ public class MathsTests {
     }
 
     @Test
-    void testGetIntersection_WhenEdgesDoNotIntersect_ShouldReturnNull() {
+    void testGetIntersectionWhenEdgesDoNotIntersectShouldReturnNull() {
         Edge e1 = new Edge(new Point(0, 0), new Point(1, 0));
         Edge e2 = new Edge(new Point(0, 1), new Point(1, 1));
 
@@ -255,7 +255,7 @@ public class MathsTests {
     }
 
     @Test
-    void testGetIntersection_WhenEdgesAreParallel_ShouldReturnNull() {
+    void testGetIntersectionWhenEdgesAreParallelShouldReturnNull() {
         Edge e1 = new Edge(new Point(0, 0), new Point(2, 0));
         Edge e2 = new Edge(new Point(0, 1), new Point(2, 1));
 
@@ -264,7 +264,7 @@ public class MathsTests {
     }
 
     @Test
-    void testGetIntersection_WhenCollinearAndOverlapping_ShouldReturnNull() {
+    void testGetIntersectionWhenCollinearAndOverlappingShouldReturnNull() {
         Edge e1 = new Edge(new Point(0, 0), new Point(2, 0));
         Edge e2 = new Edge(new Point(1, 0), new Point(3, 0));
 

@@ -1,13 +1,9 @@
 package TestSuite.EventHandling;
-
-import inf.elte.hu.gameengine_javafx.Misc.EventHandling.Event;
-import inf.elte.hu.gameengine_javafx.Misc.EventHandling.EventListener;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EventTests {
     @Test
