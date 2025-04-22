@@ -166,12 +166,11 @@ public class PathfindingSystemTests {
         assertFalse(calculatedPath.isEmpty(), "Path should not be empty");
 
         // Expected path: [150,150] -> [250,250] -> [350,250] -> [350,350]
-        assertEquals(4, calculatedPath.size(), "Path should contain 4 points");
+        assertEquals(3, calculatedPath.size(), "Path should contain 3 points(3 steps from start)");
 
-        assertTrue(new Point(150, 150).distanceTo(calculatedPath.getFirst()) < 5,"Start tile mismatch");
-        assertTrue(new Point(250, 250).distanceTo(calculatedPath.get(1)) < 5, "First step mismatch");
-        assertTrue(new Point(350, 250).distanceTo(calculatedPath.get(2)) < 5, "Second step mismatch");
-        assertTrue(new Point(350, 350).distanceTo(calculatedPath.get(3)) < 5, "End point mismatch");
+        assertTrue(new Point(250, 250).distanceTo(calculatedPath.getFirst()) < 5, "First step mismatch");
+        assertTrue(new Point(350, 250).distanceTo(calculatedPath.get(1)) < 5, "Second step mismatch");
+        assertTrue(new Point(350, 350).distanceTo(calculatedPath.getLast()) < 5, "End point mismatch");
     }
 
     @Test

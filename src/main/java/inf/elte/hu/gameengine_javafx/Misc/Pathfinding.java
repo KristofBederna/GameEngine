@@ -46,7 +46,7 @@ public class Pathfinding {
             openSetContents.remove(current);
 
             if (current.compareCoordinates(end)) {
-                return reconstructPath(cameFrom, current);
+                return reconstructPath(cameFrom, current, start);
             }
 
             closedSet.add(current);
@@ -74,18 +74,21 @@ public class Pathfinding {
     }
 
     /**
-     * Reconstructs the path from the start to the end based on the `cameFrom` map.
+     * Reconstructs the path from the end to the start based on the `cameFrom` map,
+     * and excludes the starting point from the returned path.
      *
-     * @param cameFrom The map that tracks the best previous point for each point.
-     * @param current The current point from which the path is being reconstructed.
-     * @return A list of points representing the reconstructed path from start to end.
+     * @param cameFrom Map tracking the best previous point for each point
+     * @param current The endpoint (destination)
+     * @param start The starting point that should be excluded from the path
+     * @return A list of points representing the reconstructed path (excluding start)
      */
-    private static ArrayList<Point> reconstructPath(Map<Point, Point> cameFrom, Point current) {
+    private static ArrayList<Point> reconstructPath(Map<Point, Point> cameFrom, Point current, Point start) {
         ArrayList<Point> path = new ArrayList<>();
-        path.add(current);
         while (cameFrom.containsKey(current)) {
+            if (!current.compareCoordinates(start)) {
+                path.add(0, current);
+            }
             current = cameFrom.get(current);
-            path.add(0, current);
         }
         return path;
     }
