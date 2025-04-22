@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.SystemHub;
 import inf.elte.hu.gameengine_javafx.Systems.PhysicsSystems.MovementSystem;
-import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.BackgroundMusicSystem;
+import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SoundSystems.BackgroundMusicSystem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

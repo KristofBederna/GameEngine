@@ -1,4 +1,4 @@
-package inf.elte.hu.gameengine_javafx.Systems.ResourceSystems;
+package inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SoundSystems;
 
 import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;

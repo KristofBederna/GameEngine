@@ -6,7 +6,7 @@ import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
 import inf.elte.hu.gameengine_javafx.Misc.MapClasses.World;
-import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.WorldLoaderSystem;
+import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.MapLoaderSystems.WorldLoaderSystem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

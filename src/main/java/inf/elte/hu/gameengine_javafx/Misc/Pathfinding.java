@@ -19,78 +19,57 @@ public class Pathfinding {
         Point start = entity.getComponent(PathfindingComponent.class).getStart();
         Point end = entity.getComponent(PathfindingComponent.class).getEnd();
 
-        // If the start and end points are very close, return the start point as the path
         if (start.distanceTo(end) < 5) {
             return new ArrayList<>(List.of(start));
         }
 
-        // Initialize pathfinding structures
         Map<Point, Point> cameFrom = new HashMap<>();
-        PriorityQueue<Point> openSet = initializeOpenSet(start, end);
-        Set<Point> closedSet = new HashSet<>();
         Map<Point, Double> gScore = new HashMap<>();
-
         gScore.put(start, 0.0);
 
-        // Execute the A* search algorithm
-        return executePathfinding(entity, end, cameFrom, openSet, closedSet, gScore);
-    }
+        // fScore = gScore + heuristic (Euclidean distance)
+        Map<Point, Double> fScore = new HashMap<>();
+        fScore.put(start, start.distanceTo(end));
 
-    /**
-     * Initializes the open set (priority queue) for A* search.
-     *
-     * @param start The starting point for pathfinding.
-     * @param end The end point for pathfinding.
-     * @return The initialized open set.
-     */
-    private static PriorityQueue<Point> initializeOpenSet(Point start, Point end) {
-        PriorityQueue<Point> openSet = new PriorityQueue<>(Comparator.comparingDouble(p -> p.distanceTo(end)));
+        PriorityQueue<Point> openSet = new PriorityQueue<>(
+                Comparator.comparingDouble(p -> fScore.getOrDefault(p, Double.MAX_VALUE))
+        );
+        Set<Point> openSetContents = new HashSet<>();
+
         openSet.add(start);
-        return openSet;
-    }
+        openSetContents.add(start);
 
-    /**
-     * Executes the A* algorithm to find the path.
-     *
-     * @param entity The entity for which the pathfinding is being calculated.
-     * @param end The target point to reach.
-     * @param cameFrom The map to track the best path.
-     * @param openSet The priority queue to explore points.
-     * @param closedSet The set of points that have already been processed.
-     * @param gScore The map tracking the shortest path cost to each point.
-     * @return The list of points representing the path.
-     */
-    private static ArrayList<Point> executePathfinding(Entity entity, Point end, Map<Point, Point> cameFrom, PriorityQueue<Point> openSet, Set<Point> closedSet, Map<Point, Double> gScore) {
+        Set<Point> closedSet = new HashSet<>();
+
         while (!openSet.isEmpty()) {
             Point current = openSet.poll();
+            openSetContents.remove(current);
 
-            // If the destination is reached, reconstruct and return the path
             if (current.compareCoordinates(end)) {
                 return reconstructPath(cameFrom, current);
             }
 
             closedSet.add(current);
 
-            // Get the neighbors of the current point
             List<Point> neighbors = entity.getComponent(PathfindingComponent.class).getNeighbours(current);
-
-            // Process each neighbor
             for (Point neighbor : neighbors) {
                 if (closedSet.contains(neighbor)) continue;
 
-                double tentativeGScore = gScore.getOrDefault(current, Double.MAX_VALUE) + current.distanceTo(neighbor);
+                double tentativeG = gScore.getOrDefault(current, Double.MAX_VALUE) + current.distanceTo(neighbor);
 
-                if (!gScore.containsKey(neighbor) || tentativeGScore < gScore.get(neighbor)) {
+                if (tentativeG < gScore.getOrDefault(neighbor, Double.MAX_VALUE)) {
                     cameFrom.put(neighbor, current);
-                    gScore.put(neighbor, tentativeGScore);
+                    gScore.put(neighbor, tentativeG);
+                    fScore.put(neighbor, tentativeG + neighbor.distanceTo(end));
 
-                    // Add neighbor to open set if not already there
-                    if (!openSet.contains(neighbor)) {
+                    if (!openSetContents.contains(neighbor)) {
                         openSet.add(neighbor);
+                        openSetContents.add(neighbor);
                     }
                 }
             }
         }
+
         return new ArrayList<>();
     }
 
@@ -103,9 +82,10 @@ public class Pathfinding {
      */
     private static ArrayList<Point> reconstructPath(Map<Point, Point> cameFrom, Point current) {
         ArrayList<Point> path = new ArrayList<>();
+        path.add(current);
         while (cameFrom.containsKey(current)) {
-            path.addFirst(current);
             current = cameFrom.get(current);
+            path.add(0, current);
         }
         return path;
     }

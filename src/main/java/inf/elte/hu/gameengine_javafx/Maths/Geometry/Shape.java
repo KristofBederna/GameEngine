@@ -26,7 +26,7 @@ public class Shape {
     /**
      * Checks if any edge of shape a intersects with any edge of shape b.
      * Uses orientation and on-segment tests from computational geometry.
-     * Reference: "Computational Geometry: Algorithms and Applications", de Berg et al.
+     * Reference: "Computational Geometry: Algorithms and Applications".
      */
     public static boolean intersect(Shape a, Shape b) {
         for (Edge edge1 : a.getEdges()) {
@@ -53,6 +53,7 @@ public class Shape {
      *                         orientation(q1, q2, p1) != orientation(q1, q2, p2)
      * Special Case: check if any of the points lie on the other segment (collinear case).
      * Based on: Orientation Test & Segment Intersection Theorem.
+     * Based on code from: <a href="https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/">GeeksForGeeks</a>
      */
     private static boolean doIntersect(Point p1, Point p2, Point q1, Point q2) {
         int o1 = orientation(p1, p2, q1);

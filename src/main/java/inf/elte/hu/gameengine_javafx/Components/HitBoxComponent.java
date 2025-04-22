@@ -1,4 +1,4 @@
-package inf.elte.hu.gameengine_javafx.Components.HitBoxComponents;
+package inf.elte.hu.gameengine_javafx.Components;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.ComplexShape;

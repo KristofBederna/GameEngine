@@ -9,9 +9,9 @@ import inf.elte.hu.gameengine_javafx.Core.EntityHub;
 import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Misc.Time;
-import inf.elte.hu.gameengine_javafx.Systems.PathfindingSystem;
+import inf.elte.hu.gameengine_javafx.Systems.PathfindingSystems.PathfindingSystem;
 import inf.elte.hu.gameengine_javafx.Systems.PhysicsSystems.MovementSystem;
-import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.WorldLoaderSystem;
+import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.MapLoaderSystems.WorldLoaderSystem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -166,11 +166,12 @@ public class PathfindingSystemTests {
         assertFalse(calculatedPath.isEmpty(), "Path should not be empty");
 
         // Expected path: [150,150] -> [250,250] -> [350,250] -> [350,350]
-        assertEquals(3, calculatedPath.size(), "Path should contain 3 points (3 steps from start)");
+        assertEquals(4, calculatedPath.size(), "Path should contain 4 points");
 
-        assertTrue(new Point(250, 250).distanceTo(calculatedPath.get(0)) < 5, "First step mismatch");
-        assertTrue(new Point(350, 250).distanceTo(calculatedPath.get(1)) < 5, "Second step mismatch");
-        assertTrue(new Point(350, 350).distanceTo(calculatedPath.get(2)) < 5, "End point mismatch");
+        assertTrue(new Point(150, 150).distanceTo(calculatedPath.getFirst()) < 5,"Start tile mismatch");
+        assertTrue(new Point(250, 250).distanceTo(calculatedPath.get(1)) < 5, "First step mismatch");
+        assertTrue(new Point(350, 250).distanceTo(calculatedPath.get(2)) < 5, "Second step mismatch");
+        assertTrue(new Point(350, 350).distanceTo(calculatedPath.get(3)) < 5, "End point mismatch");
     }
 
     @Test
