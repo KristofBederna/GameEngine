@@ -129,7 +129,6 @@ public class SoundSystem extends GameSystem {
             } else {
                 float dB = (float) (Math.log10(Math.max(volume, 0.0001f)) * 20);
                 gainControl.setValue(dB);
-                System.out.println(volume + " " + dB);
             }
         } catch (Exception e) {
             System.err.println("Failed to set volume: " + e.getMessage());
