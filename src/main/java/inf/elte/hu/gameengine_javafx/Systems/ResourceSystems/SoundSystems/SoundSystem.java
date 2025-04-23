@@ -124,10 +124,10 @@ public class SoundSystem extends GameSystem {
             if (ResourceConfig.linearVolumeControl) {
                 float minGain = gainControl.getMinimum();
                 float maxGain = gainControl.getMaximum();
-                float gain = minGain + (maxGain - minGain) * volume;
+                float gain = minGain + (maxGain - minGain) * (volume * ResourceConfig.masterVolume);
                 gainControl.setValue(gain);
             } else {
-                float dB = (float) (Math.log10(Math.max(volume, 0.0001f)) * 20);
+                float dB = (float) (Math.log10(Math.max(volume * ResourceConfig.masterVolume, 0.0001f)) * 20);
                 gainControl.setValue(dB);
             }
         } catch (Exception e) {
