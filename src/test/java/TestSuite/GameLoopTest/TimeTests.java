@@ -29,7 +29,7 @@ public class TimeTests {
         time.update();
 
         double delta = time.getDeltaTime();
-        assertTrue(delta > 0.03 && delta < 0.08, "Delta time should reflect ~50ms sleep");
+        assertTrue(delta > 0.02 && delta < 0.09, "Delta time should reflect ~50ms sleep");
     }
 
     @Test

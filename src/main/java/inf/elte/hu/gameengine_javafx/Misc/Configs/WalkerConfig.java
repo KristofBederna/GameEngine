@@ -5,7 +5,7 @@ public class WalkerConfig {
     public static int maxY = 30;
     public static int minX = 1;
     public static int minY = 1;
-    public static int stopPercentage = 30;
+    public static int stopPercentage = 25;
     public static int maxWalkers = 3;
     public static int placeTileNumber = 0;
     public static int moduloToMultiply = 3;

@@ -65,6 +65,8 @@ public class DynamicWorldLoaderSystemTests {
 
     @Test
     public void testChunkGenerationAddsChunkToWorld() {
+        WalkerConfig.maxX = 3*MapConfig.chunkWidth-2;
+        WalkerConfig.maxY = 3*MapConfig.chunkHeight-2;
         DynamicWorldLoaderSystem system = new DynamicWorldLoaderSystem(3, 3);
         WorldDataComponent mapData = WorldEntity.getInstance().getComponent(WorldDataComponent.class);
         int prevSize = mapData.getMapData().getWorld().size();
