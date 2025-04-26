@@ -38,17 +38,22 @@ public class ResourceSystem extends GameSystem {
         List<String> resourcesToRemove = new ArrayList<>();
         for (ResourceManager<?> resourceManager : resourceManagers.values()) {
             resourcesToRemove.clear();
-            for (Map.Entry<String, ?> entry : resourceManager.getResources().entrySet()) {
-                String key = entry.getKey();
-                Long lastAccessed = resourceManager.getLastAccessed(key);
+            try {
+                for (Map.Entry<String, ?> entry : resourceManager.getResources().entrySet()) {
+                    String key = entry.getKey();
+                    Long lastAccessed = resourceManager.getLastAccessed(key);
 
-                if (lastAccessed != null && lastAccessed < threshold) {
-                    resourcesToRemove.add(key);
+                    if (lastAccessed != null && lastAccessed < threshold) {
+                        resourcesToRemove.add(key);
+                    }
                 }
-            }
-            for (String key : resourcesToRemove) {
-                resourceManager.unload(key);
+                for (String key : resourcesToRemove) {
+                    resourceManager.unload(key);
+                }
+            } catch (ConcurrentModificationException e) {
+                System.err.println("Concurrent modification detected in ResourceSystem. Skipping this update cycle.");
             }
         }
     }
+
 }
