@@ -44,6 +44,9 @@ public class InputHandlingSystem extends GameSystem {
         }
 
         for (Entity entity : entitiesSnapshot) {
+            if (entity == null) {
+                continue;
+            }
             processEntity(entity);
         }
     }

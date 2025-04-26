@@ -20,6 +20,9 @@ public class MovementDeterminerSystem extends GameSystem {
         var entities = EntityHub.getInstance().getEntitiesWithComponent(VelocityComponent.class);
         entities.retainAll(EntityHub.getInstance().getEntitiesWithComponent(StateComponent.class));
         for (var entity : entities) {
+            if (entity == null) {
+                continue;
+            }
             processEntity(entity);
         }
     }

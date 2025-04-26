@@ -28,9 +28,15 @@ public class AnimationSystem extends GameSystem {
             return;
         }
         for (Entity entity : entitiesSnapshot) {
+            if (entity == null) {
+                continue;
+            }
             processEntity(entity, toRemove);
         }
         for (Entity entity : toRemove) {
+            if (entity == null) {
+                continue;
+            }
             entity.removeComponentsByType(AnimationComponent.class);
         }
     }

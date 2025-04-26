@@ -5,8 +5,8 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
 import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
-import inf.elte.hu.gameengine_javafx.Misc.SoundEffect;
-import inf.elte.hu.gameengine_javafx.Misc.SoundEffectStore;
+import inf.elte.hu.gameengine_javafx.Misc.Sound.SoundEffect;
+import inf.elte.hu.gameengine_javafx.Misc.Sound.SoundEffectStore;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;

@@ -1,6 +1,7 @@
-package inf.elte.hu.gameengine_javafx.Misc;
+package inf.elte.hu.gameengine_javafx.Misc.Animation;
 
-import java.util.Collection;
+import inf.elte.hu.gameengine_javafx.Misc.Time;
+
 import java.util.List;
 
 public class AnimationController {

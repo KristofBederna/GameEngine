@@ -114,6 +114,9 @@ public class RenderSystem extends GameSystem {
      */
     private void processEntities(List<Entity> sortedEntities, GraphicsContext gc) {
         for (Entity entity : sortedEntities) {
+            if (entity == null) {
+                continue;
+            }
             PositionComponent position = entity.getComponent(PositionComponent.class);
             ImageComponent imgComponent = entity.getComponent(ImageComponent.class);
 
@@ -136,6 +139,9 @@ public class RenderSystem extends GameSystem {
      */
     private void renderParticles(GraphicsContext gc) {
         for (Entity entity : EntityHub.getInstance().getEntitiesWithType(ParticleEntity.class)) {
+            if (entity == null) {
+                continue;
+            }
             ((ParticleEntity) entity).alignShapeWithEntity(entity);
             ((ParticleEntity) entity).render(gc);
         }

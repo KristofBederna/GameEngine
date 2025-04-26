@@ -31,9 +31,15 @@ public class ParticleSystem extends GameSystem {
         var emittersToRemove = new HashSet<ParticleEmitterEntity>();
 
         for (Entity entity : emitters) {
+            if (entity == null) {
+                continue;
+            }
             processEmitter(entity, emittersToRemove);
         }
         for (Entity entity : emittersToRemove) {
+            if (entity == null) {
+                continue;
+            }
             EntityHub.getInstance().removeEntity(entity);
         }
     }

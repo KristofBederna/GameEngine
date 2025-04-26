@@ -30,6 +30,9 @@ public class MovementSystem extends GameSystem {
         if (entitiesSnapshot.isEmpty()) return;
 
         for (Entity entity : entitiesSnapshot) {
+            if (entity == null) {
+                continue;
+            }
             processEntity(entity);
         }
     }
@@ -85,15 +88,9 @@ public class MovementSystem extends GameSystem {
         if (tile != null && tile.getComponent(FrictionComponent.class) != null) {
             frictionCoefficient = tile.getComponent(FrictionComponent.class).getFriction();
         }
-
-        // Calculate normal force (simplified: assume gravity = 1 unit down, so normal = mass)
         double normalForce = mass;
-
-        // Friction force = μ * normalForce
         double frictionForce = frictionCoefficient * normalForce;
-
-        // Friction acceleration = frictionForce / mass = μ (in 2D)
-        double frictionAccel = frictionForce / mass * PhysicsConfig.fixedDeltaTime;  // == frictionCoefficient
+        double frictionAccel = frictionForce / mass * PhysicsConfig.fixedDeltaTime;
 
         if (Math.abs(dx) > 0) dx -= Math.signum(dx) * Math.min(frictionAccel, Math.abs(dx));
         if (Math.abs(dy) > 0) dy -= Math.signum(dy) * Math.min(frictionAccel, Math.abs(dy));

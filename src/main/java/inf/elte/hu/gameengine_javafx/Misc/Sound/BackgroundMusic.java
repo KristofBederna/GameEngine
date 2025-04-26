@@ -1,32 +1,24 @@
-package inf.elte.hu.gameengine_javafx.Misc;
+package inf.elte.hu.gameengine_javafx.Misc.Sound;
 
-import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
-
-public class SoundEffect {
-    private Entity owner;
+public class BackgroundMusic {
     private String path;
     private String identifier;
     private float maxVolume;
     private float minVolume;
-    private double maxDistance;
     private boolean allowLooping;
     private boolean alreadyPlayed;
-    private long started;
 
-    public SoundEffect(Entity owner, String path, String identifier, float maxVolume, float minVolume, double maxDistance, boolean allowLooping) {
-        this.owner = owner;
+    public BackgroundMusic(String path, String identifier, float maxVolume, float minVolume, boolean allowLooping) {
         this.path = path;
         this.identifier = identifier;
         this.maxVolume = maxVolume;
         this.minVolume = minVolume;
-        this.maxDistance = maxDistance;
         this.allowLooping = allowLooping;
         this.alreadyPlayed = false;
+
+        BackgroundMusicStore.getInstance().add(this);
     }
 
-    public Entity getOwner() {
-        return owner;
-    }
 
     public String getPath() {
         return path;
@@ -36,9 +28,6 @@ public class SoundEffect {
         return identifier;
     }
 
-    public double getMaxDistance() {
-        return maxDistance;
-    }
     public float getMinVolume() {
         return minVolume;
     }
@@ -53,13 +42,5 @@ public class SoundEffect {
     }
     public void setAlreadyPlayed(boolean alreadyPlayed) {
         this.alreadyPlayed = alreadyPlayed;
-    }
-
-    public long getStarted() {
-        return started;
-    }
-
-    public void setStarted() {
-        started = System.currentTimeMillis();
     }
 }

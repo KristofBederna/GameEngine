@@ -19,6 +19,8 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
 import inf.elte.hu.gameengine_javafx.Maths.Geometry.Rectangle;
 import inf.elte.hu.gameengine_javafx.Misc.*;
+import inf.elte.hu.gameengine_javafx.Misc.Animation.AnimationFrame;
+import inf.elte.hu.gameengine_javafx.Misc.Animation.AnimationStateMachine;
 import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
 
 import java.util.List;

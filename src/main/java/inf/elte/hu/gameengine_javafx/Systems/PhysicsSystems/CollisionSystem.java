@@ -61,6 +61,9 @@ public class CollisionSystem extends GameSystem {
      */
     private void processEntities(List<Entity> filteredEntities, List<Entity> hitBoxes) {
         for (Entity entity : filteredEntities) {
+            if (entity == null) {
+                continue;
+            }
             processEntity(hitBoxes, entity);
         }
     }

@@ -20,6 +20,9 @@ public class PlatformerPathfindingSystem extends GameSystem {
         var pathfinderEntities = EntityHub.getInstance().getEntitiesWithComponent(PathfindingComponent.class);
 
         for (var entity : pathfinderEntities) {
+            if (entity == null) {
+                continue;
+            }
             PathfindingComponent pathfindingComponent = entity.getComponent(PathfindingComponent.class);
             Point start = pathfindingComponent.getStart();
             Point end = pathfindingComponent.getEnd();

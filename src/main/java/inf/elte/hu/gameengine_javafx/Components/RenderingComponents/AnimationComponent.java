@@ -1,8 +1,8 @@
 package inf.elte.hu.gameengine_javafx.Components.RenderingComponents;
 
 import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
-import inf.elte.hu.gameengine_javafx.Misc.AnimationController;
-import inf.elte.hu.gameengine_javafx.Misc.AnimationFrame;
+import inf.elte.hu.gameengine_javafx.Misc.Animation.AnimationController;
+import inf.elte.hu.gameengine_javafx.Misc.Animation.AnimationFrame;
 
 import java.util.List;
 

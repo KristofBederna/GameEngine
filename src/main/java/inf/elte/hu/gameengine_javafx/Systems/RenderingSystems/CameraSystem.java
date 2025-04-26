@@ -57,6 +57,12 @@ public class CameraSystem extends GameSystem {
     private void updateWorldBoundary() {
         CameraEntity camera = CameraEntity.getInstance();
         WorldEntity world = WorldEntity.getInstance();
+        if (camera == null) {
+            return;
+        }
+        if (world == null) {
+            return;
+        }
         if (camera.getComponent(WorldDimensionComponent.class).getWorldHeight() == 0 || camera.getComponent(WorldDimensionComponent.class).getWorldWidth() == 0) {
             camera.getComponent(WorldDimensionComponent.class).setWorldHeight(world.getComponent(WorldDimensionComponent.class).getWorldHeight() * MapConfig.scaledTileSize);
             camera.getComponent(WorldDimensionComponent.class).setWorldWidth(world.getComponent(WorldDimensionComponent.class).getWorldWidth() * MapConfig.scaledTileSize);
