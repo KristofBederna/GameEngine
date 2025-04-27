@@ -196,4 +196,10 @@ public class SoundSystem extends GameSystem {
             return null;
         }
     }
+
+    public void stopAllTracks() {
+        for (Clip clip : playingClips.values()) {
+            clip.stop();
+        }
+    }
 }
