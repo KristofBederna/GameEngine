@@ -13,9 +13,4 @@ public class ButtonComponent extends UIComponent<Button> {
 
         uiElement.setOnAction(event -> onClick.run());
     }
-
-    @Override
-    public String getStatus() {
-        return "";
-    }
 }

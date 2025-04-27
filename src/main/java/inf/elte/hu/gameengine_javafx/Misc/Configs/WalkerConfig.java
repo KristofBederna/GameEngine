@@ -1,5 +1,8 @@
 package inf.elte.hu.gameengine_javafx.Misc.Configs;
 
+/**
+ * Config class holding global static variables needed for the Walker entities.
+ */
 public class WalkerConfig {
     public static int maxX = 30;
     public static int maxY = 30;

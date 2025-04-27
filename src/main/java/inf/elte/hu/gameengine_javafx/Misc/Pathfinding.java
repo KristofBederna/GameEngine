@@ -27,7 +27,6 @@ public class Pathfinding {
         Map<Point, Double> gScore = new HashMap<>();
         gScore.put(start, 0.0);
 
-        // fScore = gScore + heuristic (Euclidean distance)
         Map<Point, Double> fScore = new HashMap<>();
         fScore.put(start, start.distanceTo(end));
 

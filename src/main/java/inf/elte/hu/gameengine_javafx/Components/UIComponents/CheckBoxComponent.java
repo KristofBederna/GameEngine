@@ -18,9 +18,4 @@ public class CheckBoxComponent extends UIComponent<CheckBox> {
     public void setSelected(boolean selected) {
         uiElement.setSelected(selected);
     }
-
-    @Override
-    public String getStatus() {
-        return "";
-    }
 }

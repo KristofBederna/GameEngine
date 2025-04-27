@@ -15,9 +15,4 @@ public class ProgressBarComponent extends UIComponent<ProgressBar> {
     public void setProgress(double progress) {
         uiElement.setProgress(progress);
     }
-
-    @Override
-    public String getStatus() {
-        return "";
-    }
 }

@@ -31,12 +31,18 @@ public class ParticleEmitterEntity extends Entity {
         addToManager();
     }
 
+    /**
+     * Creates the particles of the emitter.
+     */
     public void createParticles(ParticleEntity particleEntity, int amount, ParentComponent parent) {
         for (int i = 0; i < amount; i++) {
             createCopy(particleEntity, parent);
         }
     }
 
+    /**
+     * Creates and adds the new copies of the mock entity into its own parent component.
+     */
     private void createCopy(ParticleEntity particleEntity, ParentComponent parent) {
         ParticleEntity copy = ParticleEntity.hardCopySelf(particleEntity);
         if (copy == null) {

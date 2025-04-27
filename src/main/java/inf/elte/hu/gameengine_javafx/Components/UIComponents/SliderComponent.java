@@ -19,9 +19,4 @@ public class SliderComponent extends UIComponent<Slider> {
     public void setValue(double value) {
         uiElement.setValue(value);
     }
-
-    @Override
-    public String getStatus() {
-        return "";
-    }
 }

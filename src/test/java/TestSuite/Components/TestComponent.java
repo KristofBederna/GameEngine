@@ -19,9 +19,4 @@ public class TestComponent extends Component {
     public void setTestField(String testField) {
         this.testField = testField;
     }
-
-    @Override
-    public String getStatus() {
-        return "";
-    }
 }

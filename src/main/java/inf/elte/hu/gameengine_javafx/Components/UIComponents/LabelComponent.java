@@ -14,9 +14,4 @@ public class LabelComponent extends UIComponent<Label> {
     public void setText(String text) {
         uiElement.setText(text);
     }
-
-    @Override
-    public String getStatus() {
-        return "";
-    }
 }

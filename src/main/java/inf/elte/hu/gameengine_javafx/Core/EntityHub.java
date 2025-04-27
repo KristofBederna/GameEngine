@@ -127,6 +127,9 @@ public class EntityHub {
             entities.clear();
             for (EntityManager<?> entityManager : entityManagers.values()) {
                 for(Entity entity : entityManager.getEntities().values()) {
+                    if (entity == null) {
+                        continue;
+                    }
                     entities.put(entity.getId(), entity);
                 }
             }
@@ -216,6 +219,7 @@ public class EntityHub {
     }
 
     public void removeEntity(Entity entity) {
+        if (entity == null) return;
         entities.remove(entity.getId());
         for(Set<Integer> componentIds : componentCache.values()) {
             if (componentIds.contains(entity.getId())) {

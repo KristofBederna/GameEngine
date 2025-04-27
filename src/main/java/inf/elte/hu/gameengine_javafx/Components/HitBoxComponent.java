@@ -24,9 +24,4 @@ public class HitBoxComponent extends Component {
     public void setHitBox(ComplexShape hitBox) {
         this.hitBox = hitBox;
     }
-
-    @Override
-    public String getStatus() {
-        return "HitBoxComponent with " + hitBox.getPoints().size() + " points";
-    }
 }

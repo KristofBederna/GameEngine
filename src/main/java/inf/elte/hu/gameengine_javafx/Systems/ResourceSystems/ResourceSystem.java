@@ -4,10 +4,8 @@ import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
 import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
 import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
 import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
-import inf.elte.hu.gameengine_javafx.Misc.Time;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The ResourceSystem is responsible for managing and updating resources within the game engine.
@@ -17,7 +15,6 @@ public class ResourceSystem extends GameSystem {
 
     /**
      * Starts the ResourceSystem by activating it.
-     * This method is called when the system is initialized.
      */
     @Override
     public void start() {
@@ -26,8 +23,7 @@ public class ResourceSystem extends GameSystem {
 
     /**
      * Updates the ResourceSystem by checking all resource managers and removing resources
-     * that have not been accessed in the last 1000 milliseconds.
-     * This method is called in every game loop iteration.
+     * that have not been accessed in the last ResourceConfig.resourceUnloadThresholdTime milliseconds.
      */
     @Override
     public void update() {

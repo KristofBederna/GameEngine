@@ -2,6 +2,9 @@ package inf.elte.hu.gameengine_javafx.Misc.Configs;
 
 import inf.elte.hu.gameengine_javafx.Misc.Tuple;
 
+/**
+ * Config class holding global static variables needed for the display and stage.
+ */
 public class DisplayConfig {
     public static String windowTitle = "Game Engine";
     public static boolean renderDebugMode = false;

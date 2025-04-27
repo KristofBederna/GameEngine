@@ -54,6 +54,9 @@ public class CameraSystem extends GameSystem {
         updateCameraPosition(playerPos, playerImg, cameraEntity);
     }
 
+    /**
+     * Updates the world boundary in case it is set to 0, 0 (after f.e a bad load).
+     */
     private void updateWorldBoundary() {
         CameraEntity camera = CameraEntity.getInstance();
         WorldEntity world = WorldEntity.getInstance();

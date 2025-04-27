@@ -20,9 +20,4 @@ public class AnimationComponent extends Component {
     public void setFrames(List<AnimationFrame> frames) {
         this.controller.setFrames(frames);
     }
-
-    @Override
-    public String getStatus() {
-        return "";
-    }
 }

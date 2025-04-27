@@ -11,9 +11,4 @@ public class ComboBoxComponent<T> extends UIComponent<ComboBox<T>> {
         uiElement.setLayoutX(x);
         uiElement.setLayoutY(y);
     }
-
-    @Override
-    public String getStatus() {
-        return "";
-    }
 }

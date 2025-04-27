@@ -17,9 +17,4 @@ public class AnimationStateMachineComponent extends Component {
     public void setAnimationStateMachine(AnimationStateMachine animationStateMachine) {
         this.animationStateMachine = animationStateMachine;
     }
-
-    @Override
-    public String getStatus() {
-        return "";
-    }
 }

@@ -20,9 +20,4 @@ public class TextFieldComponent extends UIComponent<TextField> {
     public void setText(String text) {
         uiElement.setText(text);
     }
-
-    @Override
-    public String getStatus() {
-        return "";
-    }
 }
