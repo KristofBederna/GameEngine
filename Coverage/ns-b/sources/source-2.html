@@ -1,0 +1,147 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ImageResourceManager</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Core.ResourceManagers</a>
+</div>
+
+<h1>Coverage Summary for Class: ImageResourceManager (inf.elte.hu.gameengine_javafx.Core.ResourceManagers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ImageResourceManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Core.ResourceManagers;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
+&nbsp;import javafx.scene.image.Image;
+&nbsp;
+&nbsp;import java.io.InputStream;
+&nbsp;
+&nbsp;/**
+&nbsp; * A resource manager for Image resources, the manager loads the image with the file path of the key.
+&nbsp; */
+&nbsp;public class ImageResourceManager extends ResourceManager&lt;Image&gt; {
+&nbsp;    public ImageResourceManager() {
+<b class="nc">&nbsp;        super(key -&gt; {</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                if (key.startsWith(&quot;file:&quot;)) {</b>
+<b class="nc">&nbsp;                    return new Image(key);</b>
+&nbsp;                }
+&nbsp;
+<b class="nc">&nbsp;                InputStream resource = ImageResourceManager.class.getResourceAsStream(key);</b>
+<b class="nc">&nbsp;                if (resource != null) {</b>
+<b class="nc">&nbsp;                    return new Image(resource);</b>
+&nbsp;                }
+&nbsp;
+<b class="nc">&nbsp;                return new Image(&quot;file:&quot; + key);</b>
+&nbsp;            } catch (Exception e) {
+<b class="nc">&nbsp;                System.err.println(&quot;Error loading image: &quot; + key);</b>
+<b class="nc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

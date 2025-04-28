@@ -1,0 +1,141 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > GameScene</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Misc.Scenes</a>
+</div>
+
+<h1>Coverage Summary for Class: GameScene (inf.elte.hu.gameengine_javafx.Misc.Scenes)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameScene</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Misc.Scenes;
+&nbsp;
+&nbsp;import javafx.scene.Parent;
+&nbsp;import javafx.scene.Scene;
+&nbsp;
+&nbsp;/**
+&nbsp; * Abstract base class for game scenes.
+&nbsp; * &lt;br&gt;
+&nbsp; * This class extends {@link Scene} and provides a framework for initializing and tearing down game-specific scenes.
+&nbsp; */
+&nbsp;public abstract class GameScene extends Scene {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a new {@code GameScene} with the specified parent node, width, and height.
+&nbsp;     *
+&nbsp;     * @param parent The root node of the scene.
+&nbsp;     * @param width  The width of the scene in pixels.
+&nbsp;     * @param height The height of the scene in pixels.
+&nbsp;     */
+&nbsp;    public GameScene(Parent parent, double width, double height) {
+<b class="fc">&nbsp;        super(parent, width, height);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Abstract method for setting up the scene.
+&nbsp;     * &lt;br&gt;
+&nbsp;     * This method should be implemented to initialize necessary components when the scene is loaded.
+&nbsp;     */
+&nbsp;    public abstract void setup();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Abstract method for cleaning up the scene.
+&nbsp;     * &lt;br&gt;
+&nbsp;     * This method should be implemented to release resources or perform any necessary teardown before the scene is unloaded.
+&nbsp;     */
+&nbsp;    public abstract void breakdown();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

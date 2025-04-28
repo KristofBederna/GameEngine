@@ -1,0 +1,140 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CentralMassComponent</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Components.PropertyComponents</a>
+</div>
+
+<h1>Coverage Summary for Class: CentralMassComponent (inf.elte.hu.gameengine_javafx.Components.PropertyComponents)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CentralMassComponent</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Components.PropertyComponents;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
+&nbsp;import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
+&nbsp;
+&nbsp;public class CentralMassComponent extends Component {
+&nbsp;    private Point central;
+&nbsp;
+<b class="fc">&nbsp;    public CentralMassComponent(double centralX, double centralY) {</b>
+<b class="fc">&nbsp;        this.central = new Point(centralX, centralY);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public double getCentralX() {
+<b class="fc">&nbsp;        return central.getX();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public double getCentralY() {
+<b class="fc">&nbsp;        return central.getY();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCentralX(double centralX) {
+<b class="fc">&nbsp;        this.central.setX(centralX);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCentralY(double centralY) {
+<b class="fc">&nbsp;        this.central.setY(centralY);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCentral(Point central) {
+<b class="fc">&nbsp;        this.central = central;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Point getCentral() {
+<b class="fc">&nbsp;        return central;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

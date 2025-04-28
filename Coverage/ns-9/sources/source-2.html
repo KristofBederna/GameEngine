@@ -1,0 +1,208 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > EntityManager</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Core</a>
+</div>
+
+<h1>Coverage Summary for Class: EntityManager (inf.elte.hu.gameengine_javafx.Core)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EntityManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85,7%
+  </span>
+  <span class="absValue">
+    (6/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (3/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    73,3%
+  </span>
+  <span class="absValue">
+    (11/15)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Core;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code EntityManager} class is responsible for managing a collection of entities of a specific type.
+&nbsp; * It allows for registering, retrieving, unloading, and tracking entities within the game engine.
+&nbsp; * It also manages the time of last access for each entity, helping with entity lifecycle management.
+&nbsp; *
+&nbsp; * @param &lt;T&gt; the type of entity managed by this {@code EntityManager}
+&nbsp; */
+&nbsp;public class EntityManager&lt;T extends Entity&gt; {
+&nbsp;    private final Map&lt;Integer, T&gt; entities;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new {@code EntityManager} to manage entities.
+&nbsp;     */
+<b class="fc">&nbsp;    public EntityManager() {</b>
+<b class="fc">&nbsp;        this.entities = new HashMap&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves an entity by its ID.
+&nbsp;     *
+&nbsp;     * @param id the ID of the entity to retrieve
+&nbsp;     * @return the entity associated with the specified ID, or {@code null} if the entity is not registered
+&nbsp;     */
+&nbsp;    public T get(Integer id) {
+<b class="pc">&nbsp;        if (entities.containsKey(id)) {</b>
+<b class="fc">&nbsp;            return entities.get(id);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            System.err.println(&quot;Entity not registered: &quot; + id);</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Registers a new entity with the {@code EntityManager}.
+&nbsp;     *
+&nbsp;     * @param entity the entity to register
+&nbsp;     */
+&nbsp;    public void register(T entity) {
+<b class="fc">&nbsp;        this.entities.put(entity.getId(), entity);</b>
+<b class="fc">&nbsp;        addIdToComponentCaches(entity);</b>
+<b class="fc">&nbsp;        EntityHub.getInstance().refreshEntitiesList();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adds the entity to the component caches of the {@code EntityHub}.
+&nbsp;     * @param entity The entity to be added to the caches.
+&nbsp;     * @param &lt;T&gt; Class of the entity.
+&nbsp;     */
+&nbsp;    private &lt;T extends Entity&gt; void addIdToComponentCaches(T entity) {
+<b class="fc">&nbsp;        for (Class&lt;? extends Component&gt; componentClass : entity.getAllComponents().keySet()) {</b>
+<b class="fc">&nbsp;            EntityHub.getInstance().getComponentCache().computeIfAbsent(componentClass, k -&gt; new HashSet&lt;&gt;()).add(entity.getId());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes the entity with the id from the manager.
+&nbsp;     * @param id The ID of the entity.
+&nbsp;     */
+&nbsp;    public void unload(int id) {
+<b class="fc">&nbsp;        entities.remove(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a map of all entities managed by the {@code EntityManager}, where the key is the entity&#39;s ID.
+&nbsp;     *
+&nbsp;     * @return a map of all entities, with entity IDs as keys
+&nbsp;     */
+&nbsp;    public Map&lt;Integer, T&gt; getEntities() {
+<b class="fc">&nbsp;        return entities;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Registers a list of entities with the {@code EntityManager}.
+&nbsp;     *
+&nbsp;     * @param list the list of entities to register
+&nbsp;     */
+&nbsp;    public void registerAll(List&lt;T&gt; list) {
+<b class="nc">&nbsp;        for (T entity : list) {</b>
+<b class="nc">&nbsp;            register(entity);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

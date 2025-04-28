@@ -1,0 +1,392 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > RenderSystem</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Systems.RenderingSystems</a>
+</div>
+
+<h1>Coverage Summary for Class: RenderSystem (inf.elte.hu.gameengine_javafx.Systems.RenderingSystems)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RenderSystem</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/70)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/87)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Systems.RenderingSystems;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.HitBoxComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PathfindingComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ZIndexComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.ShapeComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.ResourceHub;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.ResourceManager;
+&nbsp;import inf.elte.hu.gameengine_javafx.Entities.*;
+&nbsp;import inf.elte.hu.gameengine_javafx.Maths.Geometry.*;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.Configs.DisplayConfig;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
+&nbsp;import javafx.application.Platform;
+&nbsp;import javafx.scene.canvas.GraphicsContext;
+&nbsp;import javafx.scene.image.Image;
+&nbsp;import javafx.scene.paint.Color;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * The RenderSystem is responsible for rendering entities, pathfinding routes, map mesh, and other visual elements
+&nbsp; * in the game world. It manages the rendering process, sorting entities by their Z-index, and updating the visual representation
+&nbsp; * of the world, including entities, paths, and lighting.
+&nbsp; * It also ensures that only the entities within the camera&#39;s viewport are rendered.
+&nbsp; */
+<b class="nc">&nbsp;public class RenderSystem extends GameSystem {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Starts the RenderSystem by activating it.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void start() {
+<b class="nc">&nbsp;        this.active = true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the graphics context and processes the rendering of entities, map mesh, pathfinding routes,
+&nbsp;     * particles, and other visual elements in the game world.
+&nbsp;     * Ensures that entities within the camera&#39;s viewport are rendered in order based on their Z-index.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void update() {
+<b class="nc">&nbsp;        if (CameraEntity.getInstance() == null) {</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="nc">&nbsp;        if (CameraEntity.getInstance().getOwner() == null) {</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="nc">&nbsp;        GraphicsContext gc = GameCanvas.getInstance().getGraphicsContext2D();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (gc == null || gc.getCanvas() == null) {</b>
+<b class="nc">&nbsp;            System.err.println(&quot;RenderSystem: GraphicsContext or Canvas is null!&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc">&nbsp;            gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());</b>
+&nbsp;
+<b class="nc">&nbsp;            List&lt;Entity&gt; visibleEntities = EntityHub.getInstance().getEntitiesInsideViewport(CameraEntity.getInstance());</b>
+<b class="nc">&nbsp;            if (visibleEntities == null) {</b>
+&nbsp;                return;
+&nbsp;            }
+<b class="nc">&nbsp;            List&lt;Entity&gt; sortedEntities = sortByZIndex(visibleEntities);</b>
+&nbsp;
+<b class="nc">&nbsp;            processEntities(sortedEntities, gc);</b>
+<b class="nc">&nbsp;            renderParticles(gc);</b>
+<b class="nc">&nbsp;            if (DisplayConfig.renderDebugMode) {</b>
+<b class="nc">&nbsp;                renderCurrentlyOccupiedTile();</b>
+<b class="nc">&nbsp;                renderMapMesh(gc);</b>
+<b class="nc">&nbsp;                renderPathFindingRoute(gc);</b>
+<b class="nc">&nbsp;                renderPathFindingNeighbours(gc);</b>
+<b class="nc">&nbsp;                renderShapes(gc);</b>
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            setFocused();</b>
+&nbsp;        });
+&nbsp;    }
+&nbsp;
+&nbsp;    private void renderShapes(GraphicsContext gc) {
+<b class="nc">&nbsp;        for (Entity entity : EntityHub.getInstance().getEntitiesWithComponent(ShapeComponent.class)) {</b>
+<b class="nc">&nbsp;            if (entity == null) {</b>
+&nbsp;                continue;
+&nbsp;            }
+<b class="nc">&nbsp;            entity.getComponent(ShapeComponent.class).getShape().render(gc, Color.PINK);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private void renderPathFindingNeighbours(GraphicsContext gc) {
+<b class="nc">&nbsp;        for (Entity entity : EntityHub.getInstance().getEntitiesWithComponent(PathfindingComponent.class)) {</b>
+<b class="nc">&nbsp;            if (entity == null) {</b>
+&nbsp;                continue;
+&nbsp;            }
+<b class="nc">&nbsp;            PathfindingComponent pathfindingComponent = entity.getComponent(PathfindingComponent.class);</b>
+<b class="nc">&nbsp;            for (Point neighbour : pathfindingComponent.getNeighbours(entity.getComponent(CentralMassComponent.class).getCentral())) {</b>
+<b class="nc">&nbsp;                neighbour.render(gc, 5, Color.RED);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Processes and renders the entities inside the camera&#39;s viewport, sorted by their Z-index.
+&nbsp;     *
+&nbsp;     * @param sortedEntities List of entities that need to be rendered, sorted by Z-index.
+&nbsp;     * @param gc             The graphics context used to render the entities.
+&nbsp;     */
+&nbsp;    private void processEntities(List&lt;Entity&gt; sortedEntities, GraphicsContext gc) {
+<b class="nc">&nbsp;        for (Entity entity : sortedEntities) {</b>
+<b class="nc">&nbsp;            if (entity == null) {</b>
+&nbsp;                continue;
+&nbsp;            }
+<b class="nc">&nbsp;            PositionComponent position = entity.getComponent(PositionComponent.class);</b>
+<b class="nc">&nbsp;            ImageComponent imgComponent = entity.getComponent(ImageComponent.class);</b>
+&nbsp;
+<b class="nc">&nbsp;            if (position == null || imgComponent == null) continue;</b>
+&nbsp;
+<b class="nc">&nbsp;            double width = imgComponent.getWidth();</b>
+<b class="nc">&nbsp;            double height = imgComponent.getHeight();</b>
+&nbsp;
+<b class="nc">&nbsp;            double renderX = CameraEntity.getRenderX(position.getGlobalX());</b>
+<b class="nc">&nbsp;            double renderY = CameraEntity.getRenderY(position.getGlobalY());</b>
+&nbsp;
+<b class="nc">&nbsp;            renderEntity(entity, renderX, renderY, width, height, imgComponent, gc);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Renders particles that are associated with entities in the game world.
+&nbsp;     *
+&nbsp;     * @param gc The graphics context used to render the particles.
+&nbsp;     */
+&nbsp;    private void renderParticles(GraphicsContext gc) {
+<b class="nc">&nbsp;        for (Entity entity : EntityHub.getInstance().getEntitiesWithType(ParticleEntity.class)) {</b>
+<b class="nc">&nbsp;            if (entity == null) {</b>
+&nbsp;                continue;
+&nbsp;            }
+<b class="nc">&nbsp;            ((ParticleEntity) entity).alignShapeWithEntity(entity);</b>
+<b class="nc">&nbsp;            ((ParticleEntity) entity).render(gc);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Renders a single entity by drawing its image and hitbox on the screen.
+&nbsp;     *
+&nbsp;     * @param entity       The entity to render.
+&nbsp;     * @param renderX      The X position of the entity relative to the camera.
+&nbsp;     * @param renderY      The Y position of the entity relative to the camera.
+&nbsp;     * @param width        The width of the entity.
+&nbsp;     * @param height       The height of the entity.
+&nbsp;     * @param imgComponent The image component containing the entity&#39;s image data.
+&nbsp;     * @param gc           The graphics context used to render the entity.
+&nbsp;     */
+&nbsp;    private void renderEntity(Entity entity, double renderX, double renderY, double width, double height, ImageComponent imgComponent, GraphicsContext gc) {
+<b class="nc">&nbsp;        ResourceManager&lt;Image&gt; imageManager = ResourceHub.getInstance().getResourceManager(Image.class);</b>
+<b class="nc">&nbsp;        if (imageManager == null) return;</b>
+<b class="nc">&nbsp;        Image img = imageManager.get(imgComponent.getImagePath());</b>
+&nbsp;
+<b class="nc">&nbsp;        if (img == null) {</b>
+<b class="nc">&nbsp;            System.err.println(&quot;RenderSystem: Missing image for &quot; + imgComponent.getImagePath());</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        gc.drawImage(img, renderX* DisplayConfig.relativeWidthRatio, renderY* DisplayConfig.relativeHeightRatio, width* DisplayConfig.relativeWidthRatio, height* DisplayConfig.relativeHeightRatio);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (DisplayConfig.renderDebugMode) {</b>
+<b class="nc">&nbsp;            renderHitBox(entity, gc);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Renders the hitbox of an entity if it exists.
+&nbsp;     *
+&nbsp;     * @param entity The entity whose hitbox is to be rendered.
+&nbsp;     * @param gc     The graphics context used to render the hitbox.
+&nbsp;     */
+&nbsp;    private void renderHitBox(Entity entity, GraphicsContext gc) {
+<b class="nc">&nbsp;        HitBoxComponent hitBox = entity.getComponent(HitBoxComponent.class);</b>
+<b class="nc">&nbsp;        if (hitBox != null) {</b>
+<b class="nc">&nbsp;            hitBox.getHitBox().render(gc, Color.RED);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sorts a list of entities by their Z-index in ascending order.
+&nbsp;     *
+&nbsp;     * @param visibleEntities List of entities to be sorted.
+&nbsp;     * @return A sorted list of entities based on their Z-index.
+&nbsp;     */
+&nbsp;    private List&lt;Entity&gt; sortByZIndex(List&lt;Entity&gt; visibleEntities) {
+<b class="nc">&nbsp;        return visibleEntities.stream()</b>
+<b class="nc">&nbsp;                .filter(entity -&gt; entity.getComponent(ZIndexComponent.class) != null)</b>
+<b class="nc">&nbsp;                .sorted((e1, e2) -&gt; {</b>
+<b class="nc">&nbsp;                    ZIndexComponent zIndex1 = e1.getComponent(ZIndexComponent.class);</b>
+<b class="nc">&nbsp;                    ZIndexComponent zIndex2 = e2.getComponent(ZIndexComponent.class);</b>
+<b class="nc">&nbsp;                    return Integer.compare(zIndex1.getZ_index(), zIndex2.getZ_index());</b>
+&nbsp;                })
+<b class="nc">&nbsp;                .toList();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Renders the tile currently occupied by the player.
+&nbsp;     */
+&nbsp;    private void renderCurrentlyOccupiedTile() {
+<b class="nc">&nbsp;        if (EntityHub.getInstance().getEntitiesWithType(PlayerEntity.class).isEmpty()) {</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="nc">&nbsp;        TileEntity tile = WorldEntity.getInstance().getComponent(WorldDataComponent.class).getElement(EntityHub.getInstance().getEntitiesWithType(PlayerEntity.class).getFirst().getComponent(CentralMassComponent.class).getCentral());</b>
+<b class="nc">&nbsp;        Rectangle rectangle = new Rectangle(tile.getComponent(PositionComponent.class).getGlobal(), tile.getComponent(DimensionComponent.class).getWidth(), tile.getComponent(DimensionComponent.class).getHeight());</b>
+<b class="nc">&nbsp;        rectangle.renderFill(GameCanvas.getInstance().getGraphicsContext2D(), Color.ORANGE);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Requests focus for the game canvas if it is not already focused.
+&nbsp;     */
+&nbsp;    private void setFocused() {
+<b class="nc">&nbsp;        if (!GameCanvas.getInstance().isFocused()) {</b>
+<b class="nc">&nbsp;            GameCanvas.getInstance().requestFocus();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Renders the pathfinding route for entities that have a PathfindingComponent.
+&nbsp;     *
+&nbsp;     * @param gc The graphics context used to render the pathfinding route.
+&nbsp;     */
+&nbsp;    private void renderPathFindingRoute(GraphicsContext gc) {
+<b class="nc">&nbsp;        for (Entity entity : EntityHub.getInstance().getEntitiesWithComponent(PathfindingComponent.class)) {</b>
+<b class="nc">&nbsp;            if (entity == null) continue;</b>
+<b class="nc">&nbsp;            PathfindingComponent pathfindingComponent = entity.getComponent(PathfindingComponent.class);</b>
+<b class="nc">&nbsp;            if (pathfindingComponent.getPath() == null) {</b>
+&nbsp;                continue;
+&nbsp;            }
+<b class="nc">&nbsp;            if (pathfindingComponent.getPath().isEmpty()) {</b>
+&nbsp;                continue;
+&nbsp;            }
+<b class="nc">&nbsp;            for (Point neighbour : pathfindingComponent.getNeighbours(pathfindingComponent.getPath().getFirst())) {</b>
+<b class="nc">&nbsp;                Line line = new Line(pathfindingComponent.getPath().getFirst(), neighbour);</b>
+<b class="nc">&nbsp;                line.render(gc, Color.ORANGE, 5);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            Point last = pathfindingComponent.getPath().getFirst();</b>
+<b class="nc">&nbsp;            for (Point point : pathfindingComponent.getPath()) {</b>
+<b class="nc">&nbsp;                if (point.equals(last)) {</b>
+&nbsp;                    continue;
+&nbsp;                }
+<b class="nc">&nbsp;                Line line = new Line(last, point);</b>
+<b class="nc">&nbsp;                last = point;</b>
+<b class="nc">&nbsp;                line.render(gc, Color.PINK, 5);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Renders the map mesh, which is a grid of points representing the world map.
+&nbsp;     *
+&nbsp;     * @param gc The graphics context used to render the map mesh.
+&nbsp;     */
+&nbsp;    private void renderMapMesh(GraphicsContext gc) {
+<b class="nc">&nbsp;        MapMeshComponent meshComponent = WorldEntity.getInstance().getComponent(MapMeshComponent.class);</b>
+<b class="nc">&nbsp;        if (meshComponent != null) {</b>
+<b class="nc">&nbsp;            for (List&lt;Point&gt; row : meshComponent.getMapCoordinates()) {</b>
+<b class="nc">&nbsp;                for (Point point : row) {</b>
+<b class="nc">&nbsp;                    if (point == null) continue;</b>
+<b class="nc">&nbsp;                    point.renderFill(gc, 5, Color.YELLOW);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,207 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AnimationSystem</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Systems.RenderingSystems</a>
+</div>
+
+<h1>Coverage Summary for Class: AnimationSystem (inf.elte.hu.gameengine_javafx.Systems.RenderingSystems)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AnimationSystem</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    68,2%
+  </span>
+  <span class="absValue">
+    (15/22)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (24/24)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Systems.RenderingSystems;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.AnimationComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.AnimationStateMachineComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * The AnimationSystem is responsible for updating the animation state of entities within the game.
+&nbsp; * It checks if entities have the necessary components (such as animation state machine, image, and position)
+&nbsp; * and updates the animation frames accordingly. If an animation consists of a single frame, the entity is treated
+&nbsp; * as a static image, and the animation component is removed.
+&nbsp; */
+<b class="fc">&nbsp;public class AnimationSystem extends GameSystem {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the system by setting the active status to true.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void start() {
+<b class="fc">&nbsp;        this.active = true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the animation state of all entities that have both an AnimationStateMachineComponent and an ImageComponent.
+&nbsp;     * For entities with only one animation frame, the animation component is removed as it becomes a static image.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void update() {
+<b class="fc">&nbsp;        var entitiesSnapshot = new ArrayList&lt;&gt;(EntityHub.getInstance().getEntitiesWithComponent(AnimationStateMachineComponent.class));</b>
+<b class="fc">&nbsp;        entitiesSnapshot.retainAll(EntityHub.getInstance().getEntitiesWithComponent(ImageComponent.class));</b>
+<b class="fc">&nbsp;        List&lt;Entity&gt; toRemove = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="pc">&nbsp;        if (entitiesSnapshot.isEmpty()) {</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="fc">&nbsp;        for (Entity entity : entitiesSnapshot) {</b>
+<b class="pc">&nbsp;            if (entity == null) {</b>
+&nbsp;                continue;
+&nbsp;            }
+<b class="fc">&nbsp;            processEntity(entity, toRemove);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        for (Entity entity : toRemove) {</b>
+<b class="pc">&nbsp;            if (entity == null) {</b>
+&nbsp;                continue;
+&nbsp;            }
+<b class="fc">&nbsp;            entity.removeComponentsByType(AnimationComponent.class);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Processes the animation update for a specific entity.
+&nbsp;     * This includes updating the entity&#39;s animation state and changing its image frame if the animation has multiple frames.
+&nbsp;     * If the animation consists of only one frame, the entity is marked for removal of its AnimationComponent.
+&nbsp;     *
+&nbsp;     * @param entity The entity to process.
+&nbsp;     * @param toRemove A list to store entities that should have their AnimationComponent removed.
+&nbsp;     */
+&nbsp;    private void processEntity(Entity entity, List&lt;Entity&gt; toRemove) {
+<b class="pc">&nbsp;        if (entity == null) return;</b>
+&nbsp;
+&nbsp;        // Get the components related to animation
+<b class="fc">&nbsp;        PositionComponent position = entity.getComponent(PositionComponent.class);</b>
+<b class="fc">&nbsp;        ImageComponent img = entity.getComponent(ImageComponent.class);</b>
+<b class="fc">&nbsp;        AnimationStateMachineComponent stateMachineComp = entity.getComponent(AnimationStateMachineComponent.class);</b>
+&nbsp;
+&nbsp;        // Update the animation state if the state machine component exists
+<b class="pc">&nbsp;        if (stateMachineComp != null) {</b>
+<b class="fc">&nbsp;            stateMachineComp.getAnimationStateMachine().setAnimationState();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        AnimationComponent animation = entity.getComponent(AnimationComponent.class);</b>
+&nbsp;
+&nbsp;        // If position, image, and animation components exist, update the frame for the entity
+<b class="pc">&nbsp;        if (position != null &amp;&amp; img != null &amp;&amp; animation != null) {</b>
+<b class="fc">&nbsp;            String framePath = animation.getController().getNextFrame();</b>
+<b class="fc">&nbsp;            img.setNextFrame(framePath);</b>
+&nbsp;
+&nbsp;            // If the animation has only one frame, treat it as a static image and remove the animation component
+<b class="fc">&nbsp;            if (animation.getController().getFrames().size() == 1) {</b>
+<b class="fc">&nbsp;                toRemove.add(entity);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,260 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Triangle</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Maths.Geometry</a>
+</div>
+
+<h1>Coverage Summary for Class: Triangle (inf.elte.hu.gameengine_javafx.Maths.Geometry)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Triangle</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    33,3%
+  </span>
+  <span class="absValue">
+    (5/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14,3%
+  </span>
+  <span class="absValue">
+    (2/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    24,2%
+  </span>
+  <span class="absValue">
+    (16/66)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Maths.Geometry;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.Configs.DisplayConfig;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
+&nbsp;import javafx.scene.canvas.GraphicsContext;
+&nbsp;import javafx.scene.paint.Color;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public class Triangle extends Shape {
+&nbsp;
+<b class="fc">&nbsp;    public Triangle(Point a, Point b, Point c) {</b>
+<b class="fc">&nbsp;        this.points = new ArrayList&lt;&gt;(List.of(a, b, c));</b>
+<b class="fc">&nbsp;        updateEdges();</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    public Triangle(Triangle hitBox) {</b>
+<b class="nc">&nbsp;        this.points = List.of(hitBox.getA(), hitBox.getB(), hitBox.getC());</b>
+<b class="nc">&nbsp;        updateEdges();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void updateEdges() {
+<b class="fc">&nbsp;        edges = List.of(</b>
+<b class="fc">&nbsp;                new Edge(points.get(0), points.get(1)), // ab</b>
+<b class="fc">&nbsp;                new Edge(points.get(1), points.get(2)), // bc</b>
+<b class="fc">&nbsp;                new Edge(points.get(2), points.get(0))  // ca</b>
+&nbsp;        );
+&nbsp;    }
+&nbsp;
+&nbsp;    public Point getA() {
+<b class="fc">&nbsp;        return points.get(0);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setA(Point a) {
+<b class="fc">&nbsp;        points.set(0, a);</b>
+<b class="fc">&nbsp;        updateEdges();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Point getB() {
+<b class="nc">&nbsp;        return points.get(1);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setB(Point b) {
+<b class="nc">&nbsp;        points.set(1, b);</b>
+<b class="nc">&nbsp;        updateEdges();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Point getC() {
+<b class="nc">&nbsp;        return points.get(2);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setC(Point c) {
+<b class="nc">&nbsp;        points.set(2, c);</b>
+<b class="nc">&nbsp;        updateEdges();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void translate(double x, double y) {
+<b class="nc">&nbsp;        for (Point p : points) {</b>
+<b class="nc">&nbsp;            p.translate(x, y);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        updateEdges();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void moveTo(Point newPoint) {
+<b class="fc">&nbsp;        double deltaX = newPoint.getX() - points.getFirst().getX();</b>
+<b class="fc">&nbsp;        double deltaY = newPoint.getY() - points.getFirst().getY();</b>
+&nbsp;
+<b class="fc">&nbsp;        for (Point p : points) {</b>
+<b class="fc">&nbsp;            p.setX(p.getX() + deltaX);</b>
+<b class="fc">&nbsp;            p.setY(p.getY() + deltaY);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        updateEdges();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void render(GraphicsContext gc, Color color) {
+<b class="nc">&nbsp;        double[] x = new double[3];</b>
+<b class="nc">&nbsp;        double[] y = new double[3];</b>
+&nbsp;
+<b class="nc">&nbsp;        CameraEntity camera = CameraEntity.getInstance();</b>
+<b class="nc">&nbsp;        PositionComponent camPos = camera.getComponent(PositionComponent.class);</b>
+&nbsp;
+<b class="nc">&nbsp;        for (int i = 0; i &lt; 3; i++) {</b>
+<b class="nc">&nbsp;            x[i] = points.get(i).getX() - camPos.getGlobalX();</b>
+<b class="nc">&nbsp;            y[i] = points.get(i).getY() - camPos.getGlobalY();</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        for (int i = 0; i &lt; 3; i++) {</b>
+<b class="nc">&nbsp;            x[i] *= DisplayConfig.relativeWidthRatio;</b>
+<b class="nc">&nbsp;            y[i] *= DisplayConfig.relativeHeightRatio;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        gc.setStroke(color);</b>
+<b class="nc">&nbsp;        gc.setLineWidth(2);</b>
+<b class="nc">&nbsp;        gc.strokePolygon(x, y, 3);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void render(GraphicsContext gc, Color color, double strokeWidth) {
+<b class="nc">&nbsp;        double[] x = new double[3];</b>
+<b class="nc">&nbsp;        double[] y = new double[3];</b>
+&nbsp;
+<b class="nc">&nbsp;        for (int i = 0; i &lt; 3; i++) {</b>
+<b class="nc">&nbsp;            x[i] = CameraEntity.getRenderX(points.get(i).getX()) * DisplayConfig.relativeWidthRatio;</b>
+<b class="nc">&nbsp;            y[i] = CameraEntity.getRenderY(points.get(i).getY()) * DisplayConfig.relativeHeightRatio;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        gc.setStroke(color);</b>
+<b class="nc">&nbsp;        gc.setLineWidth(strokeWidth);</b>
+<b class="nc">&nbsp;        gc.strokePolygon(x, y, 3);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void renderFill(GraphicsContext gc, Color color) {
+<b class="nc">&nbsp;        double[] x = new double[3];</b>
+<b class="nc">&nbsp;        double[] y = new double[3];</b>
+&nbsp;
+<b class="nc">&nbsp;        for (int i = 0; i &lt; 3; i++) {</b>
+<b class="nc">&nbsp;            x[i] = CameraEntity.getRenderX(points.get(i).getX()) * DisplayConfig.relativeWidthRatio;</b>
+<b class="nc">&nbsp;            y[i] = CameraEntity.getRenderY(points.get(i).getY()) * DisplayConfig.relativeHeightRatio;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        gc.setFill(color);</b>
+<b class="nc">&nbsp;        gc.fillPolygon(x, y, 3);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void renderFillWithStroke(GraphicsContext gc, Color color, Color stroke, double outerStrokeWidth) {
+<b class="nc">&nbsp;        double[] x = new double[3];</b>
+<b class="nc">&nbsp;        double[] y = new double[3];</b>
+&nbsp;
+<b class="nc">&nbsp;        for (int i = 0; i &lt; 3; i++) {</b>
+<b class="nc">&nbsp;            x[i] = CameraEntity.getRenderX(points.get(i).getX()) * DisplayConfig.relativeWidthRatio;</b>
+<b class="nc">&nbsp;            y[i] = CameraEntity.getRenderY(points.get(i).getY()) * DisplayConfig.relativeHeightRatio;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        gc.setFill(color);</b>
+<b class="nc">&nbsp;        gc.fillPolygon(x, y, 3);</b>
+&nbsp;
+<b class="nc">&nbsp;        gc.setStroke(stroke);</b>
+<b class="nc">&nbsp;        gc.setLineWidth(outerStrokeWidth);</b>
+<b class="nc">&nbsp;        gc.strokePolygon(x, y, 3);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

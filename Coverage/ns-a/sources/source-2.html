@@ -1,0 +1,225 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Entity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Core.Architecture</a>
+</div>
+
+<h1>Coverage Summary for Class: Entity (inf.elte.hu.gameengine_javafx.Core.Architecture)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Entity</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88,9%
+  </span>
+  <span class="absValue">
+    (8/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (9/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91,3%
+  </span>
+  <span class="absValue">
+    (21/23)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Core.Architecture;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.Default.ParentComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.EntityManager;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;/**
+&nbsp; * Base class for every Entity.
+&nbsp; * &lt;br&gt;
+&nbsp; * Entities store Components and make the connection between the Components&#39; data and the Systems.
+&nbsp; */
+&nbsp;public abstract class Entity {
+&nbsp;    //Static variable holding the ID that&#39;ll be assigned to the next generated Entity.
+<b class="fc">&nbsp;    private static int nextId = 0;</b>
+&nbsp;    private final int id;
+<b class="fc">&nbsp;    private final Map&lt;Class&lt;? extends Component&gt;, Component&gt; components = new HashMap&lt;&gt;();</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Super constructor for every entity.
+&nbsp;     */
+<b class="fc">&nbsp;    public Entity() {</b>
+<b class="fc">&nbsp;        this.id = ++nextId;</b>
+<b class="fc">&nbsp;        this.addComponent(new ParentComponent());</b>
+<b class="fc">&nbsp;        this.addComponent(new PositionComponent(this));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Puts a Component into the Entity&#39;s Component HashMap.
+&nbsp;     *
+&nbsp;     * @param component
+&nbsp;     * @param &lt;T&gt;
+&nbsp;     */
+&nbsp;    public &lt;T extends Component&gt; void addComponent(T component) {
+<b class="fc">&nbsp;        components.put(component.getClass(), component);</b>
+<b class="fc">&nbsp;        EntityHub.getInstance().getComponentCache().computeIfAbsent(component.getClass(), k -&gt; new HashSet&lt;&gt;()).add(this.getId());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @param componentType
+&nbsp;     * @param &lt;T&gt;
+&nbsp;     * @return The Entity&#39;s Component associated with the Class in the parameter.
+&nbsp;     */
+&nbsp;    public &lt;T extends Component&gt; T getComponent(Class&lt;T&gt; componentType) {
+<b class="fc">&nbsp;        Component component = components.get(componentType);</b>
+<b class="fc">&nbsp;        return component != null ? componentType.cast(component) : null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes the Entity&#39;s Component associated with the Class in the parameter.
+&nbsp;     *
+&nbsp;     * @param componentType
+&nbsp;     * @param &lt;T&gt;
+&nbsp;     */
+&nbsp;    public &lt;T extends Component&gt; void removeComponentsByType(Class&lt;T&gt; componentType) {
+<b class="fc">&nbsp;       if(components.entrySet().removeIf(entry -&gt; componentType.isAssignableFrom(entry.getKey()))) {</b>
+<b class="pc">&nbsp;           if (EntityHub.getInstance().getComponentCache().get(componentType) != null) {</b>
+<b class="fc">&nbsp;               EntityHub.getInstance().getComponentCache().get(componentType).removeIf(integer -&gt; integer == this.id);</b>
+&nbsp;           }
+&nbsp;       }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return The ID of the Entity.
+&nbsp;     */
+&nbsp;    public int getId() {
+<b class="fc">&nbsp;        return id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prints every Component&#39;s simple name, held by this Entity, onto the Console.
+&nbsp;     */
+&nbsp;    public void printComponents() {
+<b class="nc">&nbsp;        for (Component component : components.values()) {</b>
+<b class="nc">&nbsp;            System.out.println(component.getClass().getSimpleName());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return A Map of this Entity&#39;s Components.
+&nbsp;     */
+&nbsp;    public Map&lt;Class&lt;? extends Component&gt;, Component&gt; getAllComponents() {
+<b class="fc">&nbsp;        return components;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adds this Entity to their respective Entity Manager.
+&nbsp;     *
+&nbsp;     * @param &lt;T&gt;
+&nbsp;     */
+&nbsp;    @SuppressWarnings(&quot;unchecked&quot;)
+&nbsp;    public &lt;T extends Entity&gt; void addToManager() {
+<b class="fc">&nbsp;        Class&lt;T&gt; entityClass = (Class&lt;T&gt;) this.getClass();</b>
+<b class="fc">&nbsp;        EntityManager&lt;T&gt; manager = EntityHub.getInstance().getEntityManager(entityClass);</b>
+&nbsp;
+<b class="fc">&nbsp;        if (manager == null) {</b>
+<b class="fc">&nbsp;            manager = new EntityManager&lt;&gt;();</b>
+<b class="fc">&nbsp;            EntityHub.getInstance().addEntityManager(entityClass, manager);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        manager.register((T) this);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

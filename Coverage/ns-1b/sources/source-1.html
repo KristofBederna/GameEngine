@@ -1,0 +1,242 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > InputHandlingSystem</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Systems</a>
+</div>
+
+<h1>Coverage Summary for Class: InputHandlingSystem (inf.elte.hu.gameengine_javafx.Systems)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">InputHandlingSystem</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/30)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/37)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Systems;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.InteractiveComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.VelocityComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.KeyboardInputHandler;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.InputHandlers.MouseInputHandler;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.Tuple;
+&nbsp;import javafx.scene.input.KeyCode;
+&nbsp;import javafx.scene.input.MouseButton;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;/**
+&nbsp; * The InputHandlingSystem processes keyboard and mouse input for interactive entities.
+&nbsp; * It maps keyboard and mouse button presses to actions and counteractions defined in
+&nbsp; * the entities&#39; InteractiveComponent.
+&nbsp; */
+<b class="nc">&nbsp;public class InputHandlingSystem extends GameSystem {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Starts the input handling system, setting it as active.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void start() {
+<b class="nc">&nbsp;        this.active = true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the input handling system. It processes all entities with an
+&nbsp;     * InteractiveComponent to check and handle user input.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void update() {
+<b class="nc">&nbsp;        var entitiesSnapshot = EntityHub.getInstance().getEntitiesWithComponent(InteractiveComponent.class);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (entitiesSnapshot.isEmpty()) {</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        for (Entity entity : entitiesSnapshot) {</b>
+<b class="nc">&nbsp;            if (entity == null) {</b>
+&nbsp;                continue;
+&nbsp;            }
+<b class="nc">&nbsp;            processEntity(entity);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Processes input for a given entity. This involves handling both keyboard and
+&nbsp;     * mouse inputs through their respective handlers.
+&nbsp;     *
+&nbsp;     * @param entity The entity whose input needs to be processed.
+&nbsp;     */
+&nbsp;    private void processEntity(Entity entity) {
+<b class="nc">&nbsp;        if (entity == null) return;</b>
+<b class="nc">&nbsp;        InteractiveComponent interactive = entity.getComponent(InteractiveComponent.class);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (interactive != null) {</b>
+<b class="nc">&nbsp;            handleKeyboardInput(interactive);</b>
+<b class="nc">&nbsp;            handleMouseInput(interactive);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles keyboard input for a given entity. It processes key press and release events
+&nbsp;     * and executes the corresponding actions or counteractions as defined in the entity&#39;s
+&nbsp;     * InteractiveComponent.
+&nbsp;     *
+&nbsp;     * @param interactive The InteractiveComponent containing the key mappings and actions.
+&nbsp;     */
+&nbsp;    private void handleKeyboardInput(InteractiveComponent interactive) {
+<b class="nc">&nbsp;        KeyboardInputHandler keyboardInputHandler = KeyboardInputHandler.getInstance();</b>
+<b class="nc">&nbsp;        List&lt;Map.Entry&lt;KeyCode, Tuple&lt;Runnable, Runnable&gt;&gt;&gt; snapshot = new ArrayList&lt;&gt;(interactive.getKeyInputMapping().entrySet());</b>
+<b class="nc">&nbsp;        Map&lt;Tuple&lt;KeyCode, MouseButton&gt;, Tuple&lt;Long, Long&gt;&gt; lastTimeCalled = interactive.getLastTimeCalled();</b>
+&nbsp;
+<b class="nc">&nbsp;        for (Map.Entry&lt;KeyCode, Tuple&lt;Runnable, Runnable&gt;&gt; entry : snapshot) {</b>
+<b class="nc">&nbsp;            KeyCode keyCode = entry.getKey();</b>
+<b class="nc">&nbsp;            Runnable action = entry.getValue().first();</b>
+<b class="nc">&nbsp;            Runnable counterAction = entry.getValue().second();</b>
+&nbsp;
+<b class="nc">&nbsp;            if (keyboardInputHandler.isKeyPressed(keyCode)) {</b>
+<b class="nc">&nbsp;                if (System.currentTimeMillis() &gt; lastTimeCalled.get(new Tuple&lt;&gt;(keyCode, null)).first() + lastTimeCalled.get(new Tuple&lt;&gt;(keyCode, null)).second()) {</b>
+<b class="nc">&nbsp;                    action.run();</b>
+<b class="nc">&nbsp;                    lastTimeCalled.put(new Tuple&lt;&gt;(keyCode, null), new Tuple&lt;&gt;(System.currentTimeMillis(), lastTimeCalled.get(new Tuple&lt;&gt;(keyCode, null)).second()));</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;            if (keyboardInputHandler.isKeyReleased(keyCode) &amp;&amp; counterAction != null) {</b>
+<b class="nc">&nbsp;                counterAction.run();</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles mouse input for a given entity. It processes mouse button press and release events
+&nbsp;     * and invokes the corresponding actions or counteractions defined in the entity&#39;s
+&nbsp;     * InteractiveComponent.
+&nbsp;     *
+&nbsp;     * @param interactive The InteractiveComponent containing the mouse button mappings and actions.
+&nbsp;     */
+&nbsp;    private void handleMouseInput(InteractiveComponent interactive) {
+<b class="nc">&nbsp;        MouseInputHandler mouseInputHandler = MouseInputHandler.getInstance();</b>
+<b class="nc">&nbsp;        Map&lt;Tuple&lt;KeyCode, MouseButton&gt;, Tuple&lt;Long, Long&gt;&gt; lastTimeCalled = interactive.getLastTimeCalled();</b>
+&nbsp;
+<b class="nc">&nbsp;        for (Map.Entry&lt;MouseButton, Tuple&lt;Runnable, Runnable&gt;&gt; entry : interactive.getMouseInputMapping().entrySet()) {</b>
+<b class="nc">&nbsp;            MouseButton mouseButton = entry.getKey();</b>
+<b class="nc">&nbsp;            Runnable action = entry.getValue().first();</b>
+<b class="nc">&nbsp;            Runnable counterAction = entry.getValue().second();</b>
+&nbsp;
+<b class="nc">&nbsp;            if (mouseInputHandler.isButtonPressed(mouseButton)) {</b>
+<b class="nc">&nbsp;                if (System.currentTimeMillis() &gt; lastTimeCalled.get(new Tuple&lt;&gt;(null, mouseButton)).first() + lastTimeCalled.get(new Tuple&lt;&gt;(null, mouseButton)).second()) {</b>
+<b class="nc">&nbsp;                    action.run();</b>
+<b class="nc">&nbsp;                    lastTimeCalled.put(new Tuple&lt;&gt;(null, mouseButton), new Tuple&lt;&gt;(System.currentTimeMillis(), lastTimeCalled.get(new Tuple&lt;&gt;(null, mouseButton)).second()));</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;            if (mouseInputHandler.isButtonReleased(mouseButton) &amp;&amp; counterAction != null) {</b>
+<b class="nc">&nbsp;                counterAction.run();</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

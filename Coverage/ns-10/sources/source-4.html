@@ -1,0 +1,210 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Pathfinding</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Misc</a>
+</div>
+
+<h1>Coverage Summary for Class: Pathfinding (inf.elte.hu.gameengine_javafx.Misc)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Pathfinding</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/40)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Misc;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PathfindingComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+&nbsp;import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+<b class="nc">&nbsp;public class Pathfinding {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Selects a path from the start point to the end point using the A* algorithm.
+&nbsp;     * The algorithm calculates the shortest path considering the neighbors of each point.
+&nbsp;     *
+&nbsp;     * @param entity The entity for which the pathfinding is being calculated.
+&nbsp;     * @return A list of points representing the path from start to end.
+&nbsp;     */
+&nbsp;    public static ArrayList&lt;Point&gt; selectPath(Entity entity) {
+<b class="nc">&nbsp;        Point start = entity.getComponent(PathfindingComponent.class).getStart();</b>
+<b class="nc">&nbsp;        Point end = entity.getComponent(PathfindingComponent.class).getEnd();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (start.distanceTo(end) &lt; 5) {</b>
+<b class="nc">&nbsp;            return new ArrayList&lt;&gt;(List.of(start));</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        Map&lt;Point, Point&gt; cameFrom = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        Map&lt;Point, Double&gt; gScore = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        gScore.put(start, 0.0);</b>
+&nbsp;
+<b class="nc">&nbsp;        Map&lt;Point, Double&gt; fScore = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        fScore.put(start, start.distanceTo(end));</b>
+&nbsp;
+<b class="nc">&nbsp;        PriorityQueue&lt;Point&gt; openSet = new PriorityQueue&lt;&gt;(</b>
+<b class="nc">&nbsp;                Comparator.comparingDouble(p -&gt; fScore.getOrDefault(p, Double.MAX_VALUE))</b>
+&nbsp;        );
+<b class="nc">&nbsp;        Set&lt;Point&gt; openSetContents = new HashSet&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;        openSet.add(start);</b>
+<b class="nc">&nbsp;        openSetContents.add(start);</b>
+&nbsp;
+<b class="nc">&nbsp;        Set&lt;Point&gt; closedSet = new HashSet&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;        while (!openSet.isEmpty()) {</b>
+<b class="nc">&nbsp;            Point current = openSet.poll();</b>
+<b class="nc">&nbsp;            openSetContents.remove(current);</b>
+&nbsp;
+<b class="nc">&nbsp;            if (current.compareCoordinates(end)) {</b>
+<b class="nc">&nbsp;                return reconstructPath(cameFrom, current, start);</b>
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            closedSet.add(current);</b>
+&nbsp;
+<b class="nc">&nbsp;            List&lt;Point&gt; neighbors = entity.getComponent(PathfindingComponent.class).getNeighbours(current);</b>
+<b class="nc">&nbsp;            for (Point neighbor : neighbors) {</b>
+<b class="nc">&nbsp;                if (closedSet.contains(neighbor)) continue;</b>
+&nbsp;
+<b class="nc">&nbsp;                double tentativeG = gScore.getOrDefault(current, Double.MAX_VALUE) + current.distanceTo(neighbor);</b>
+&nbsp;
+<b class="nc">&nbsp;                if (tentativeG &lt; gScore.getOrDefault(neighbor, Double.MAX_VALUE)) {</b>
+<b class="nc">&nbsp;                    cameFrom.put(neighbor, current);</b>
+<b class="nc">&nbsp;                    gScore.put(neighbor, tentativeG);</b>
+<b class="nc">&nbsp;                    fScore.put(neighbor, tentativeG + neighbor.distanceTo(end));</b>
+&nbsp;
+<b class="nc">&nbsp;                    if (!openSetContents.contains(neighbor)) {</b>
+<b class="nc">&nbsp;                        openSet.add(neighbor);</b>
+<b class="nc">&nbsp;                        openSetContents.add(neighbor);</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return new ArrayList&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Reconstructs the path from the end to the start based on the `cameFrom` map,
+&nbsp;     * and excludes the starting point from the returned path.
+&nbsp;     *
+&nbsp;     * @param cameFrom Map tracking the best previous point for each point
+&nbsp;     * @param current The endpoint (destination)
+&nbsp;     * @param start The starting point that should be excluded from the path
+&nbsp;     * @return A list of points representing the reconstructed path (excluding start)
+&nbsp;     */
+&nbsp;    private static ArrayList&lt;Point&gt; reconstructPath(Map&lt;Point, Point&gt; cameFrom, Point current, Point start) {
+<b class="nc">&nbsp;        ArrayList&lt;Point&gt; path = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        while (cameFrom.containsKey(current)) {</b>
+<b class="nc">&nbsp;            if (!current.compareCoordinates(start)) {</b>
+<b class="nc">&nbsp;                path.add(0, current);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            current = cameFrom.get(current);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return path;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

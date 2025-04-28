@@ -1,0 +1,351 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CollisionSystem</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Systems.PhysicsSystems</a>
+</div>
+
+<h1>Coverage Summary for Class: CollisionSystem (inf.elte.hu.gameengine_javafx.Systems.PhysicsSystems)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CollisionSystem</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (13/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    64%
+  </span>
+  <span class="absValue">
+    (32/50)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97%
+  </span>
+  <span class="absValue">
+    (64/66)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Systems.PhysicsSystems;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.HitBoxComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.AccelerationComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.VelocityComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+&nbsp;import inf.elte.hu.gameengine_javafx.Maths.Geometry.ComplexShape;
+&nbsp;import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
+&nbsp;import inf.elte.hu.gameengine_javafx.Maths.Geometry.Shape;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.IgnoreCollisions;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Set;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code CollisionSystem} class is responsible for detecting and resolving collisions
+&nbsp; * between entities in the game world. It uses hitboxes and velocity data to check if entities
+&nbsp; * collide with one another, and adjusts their positions and velocities accordingly.
+&nbsp; */
+<b class="fc">&nbsp;public class CollisionSystem extends GameSystem {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the system, setting it as active.
+&nbsp;     * Set up which entities should ignore collisions with others
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void start() {
+<b class="fc">&nbsp;        this.active = true;</b>
+<b class="fc">&nbsp;        IgnoreCollisions ignore = IgnoreCollisions.getInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the collision system, checking for collisions and moving entities
+&nbsp;     * based on their velocity and acceleration.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void update() {
+<b class="fc">&nbsp;        List&lt;Entity&gt; filteredEntities = getEntities();</b>
+<b class="fc">&nbsp;        List&lt;Entity&gt; hitBoxes = EntityHub.getInstance().getEntitiesWithComponent(HitBoxComponent.class);</b>
+&nbsp;
+<b class="pc">&nbsp;        if (filteredEntities == null || filteredEntities.isEmpty()) {</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        processEntities(filteredEntities, hitBoxes);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Processes each entity by checking for collisions and adjusting their movement.
+&nbsp;     *
+&nbsp;     * @param filteredEntities list of entities to be processed
+&nbsp;     * @param hitBoxes         list of entities with hitboxes
+&nbsp;     */
+&nbsp;    private void processEntities(List&lt;Entity&gt; filteredEntities, List&lt;Entity&gt; hitBoxes) {
+<b class="fc">&nbsp;        for (Entity entity : filteredEntities) {</b>
+<b class="pc">&nbsp;            if (entity == null) {</b>
+&nbsp;                continue;
+&nbsp;            }
+<b class="fc">&nbsp;            processEntity(hitBoxes, entity);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Processes a single entity to check for collisions and adjust its position and velocity.
+&nbsp;     *
+&nbsp;     * @param hitBoxes list of entities with hitboxes
+&nbsp;     * @param entity   the entity to be processed
+&nbsp;     */
+&nbsp;    private void processEntity(List&lt;Entity&gt; hitBoxes, Entity entity) {
+<b class="pc">&nbsp;        if (entity == null) {</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        HitBoxComponent hitBox = entity.getComponent(HitBoxComponent.class);</b>
+<b class="fc">&nbsp;        VelocityComponent velocity = entity.getComponent(VelocityComponent.class);</b>
+<b class="fc">&nbsp;        PositionComponent position = entity.getComponent(PositionComponent.class);</b>
+&nbsp;
+<b class="fc">&nbsp;        ComplexShape futureHitBox = createFutureHitBox(hitBox, position);</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;Entity&gt; hitBoxesToProcess = new ArrayList&lt;&gt;(hitBoxes);</b>
+<b class="pc">&nbsp;        hitBoxesToProcess.removeIf(hitbox -&gt; hitbox == null || hitbox.getComponent(CentralMassComponent.class).getCentral().distanceTo(entity.getComponent(CentralMassComponent.class).getCentral()) &gt; MapConfig.scaledTileSize + MapConfig.scaledTileSize * 2 || hitbox == entity);</b>
+&nbsp;
+<b class="fc">&nbsp;        moveDiagonally(hitBoxesToProcess, entity, futureHitBox, velocity);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private ComplexShape createFutureHitBox(HitBoxComponent hitBox, PositionComponent position) {
+<b class="fc">&nbsp;        ComplexShape futureHitBox = null;</b>
+<b class="pc">&nbsp;        if (hitBox != null) {</b>
+<b class="fc">&nbsp;            futureHitBox = new ComplexShape(hitBox.getHitBox());</b>
+<b class="fc">&nbsp;            futureHitBox.moveTo(new Point(position.getGlobalX(), position.getGlobalY()));</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return futureHitBox;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves a list of entities that are within the camera&#39;s viewport and have the necessary components.
+&nbsp;     *
+&nbsp;     * @return a list of filtered entities that include hitboxes, velocity, and position components
+&nbsp;     */
+&nbsp;    private static List&lt;Entity&gt; getEntities() {
+<b class="fc">&nbsp;        Set&lt;Entity&gt; hitboxEntities = new HashSet&lt;&gt;(EntityHub.getInstance().getEntitiesWithComponent(HitBoxComponent.class));</b>
+&nbsp;
+<b class="fc">&nbsp;        return EntityHub.getInstance()</b>
+<b class="fc">&nbsp;                .getEntitiesWithComponent(VelocityComponent.class)</b>
+<b class="fc">&nbsp;                .stream()</b>
+<b class="fc">&nbsp;                .filter(hitboxEntities::contains)</b>
+<b class="fc">&nbsp;                .collect(Collectors.toList());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Moves the entity diagonally and checks for collisions in both horizontal and vertical directions.
+&nbsp;     *
+&nbsp;     * @param hitBoxes     list of hit boxes to check for collisions
+&nbsp;     * @param entity       the entity to move and check for collisions
+&nbsp;     * @param futureHitBox the future position of the entity&#39;s hitbox
+&nbsp;     * @param velocity     the velocity component of the entity
+&nbsp;     */
+&nbsp;    private void moveDiagonally(List&lt;Entity&gt; hitBoxes, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
+<b class="fc">&nbsp;        checkCollisionAndMove(hitBoxes, entity, futureHitBox, velocity);</b>
+<b class="pc">&nbsp;        if (velocity.getVelocity().getDy() != 0) {</b>
+<b class="nc">&nbsp;            verticalCollisionCheck(hitBoxes, entity, futureHitBox, velocity);</b>
+&nbsp;        }
+<b class="pc">&nbsp;        if (velocity.getVelocity().getDx() != 0) {</b>
+<b class="nc">&nbsp;            horizontalCollisionCheck(hitBoxes, entity, futureHitBox, velocity);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks for collisions and moves the entity based on the result.
+&nbsp;     *
+&nbsp;     * @param hitBoxes     list of hit boxes to check for collisions
+&nbsp;     * @param entity       the entity to move and check for collisions
+&nbsp;     * @param futureHitBox the future position of the entity&#39;s hitbox
+&nbsp;     * @param velocity     the velocity component of the entity
+&nbsp;     */
+&nbsp;    private void checkCollisionAndMove(List&lt;Entity&gt; hitBoxes, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
+<b class="fc">&nbsp;        horizontalCollisionCheck(hitBoxes, entity, futureHitBox, velocity);</b>
+<b class="fc">&nbsp;        verticalCollisionCheck(hitBoxes, entity, futureHitBox, velocity);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks for horizontal collisions and updates the entity&#39;s velocity if necessary.
+&nbsp;     *
+&nbsp;     * @param hitBoxes     list of hit boxes to check for collisions
+&nbsp;     * @param entity       the entity to check for collisions
+&nbsp;     * @param futureHitBox the future position of the entity&#39;s hitbox
+&nbsp;     * @param velocity     the velocity component of the entity
+&nbsp;     */
+&nbsp;    private void horizontalCollisionCheck(List&lt;Entity&gt; hitBoxes, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
+<b class="fc">&nbsp;        translateHitBoxHorizontally(entity, futureHitBox, velocity);</b>
+<b class="fc">&nbsp;        for (Entity otherEntity : hitBoxes) {</b>
+<b class="pc">&nbsp;            if (otherEntity == entity) continue;</b>
+&nbsp;
+<b class="fc">&nbsp;            Shape otherHitBox = otherEntity.getComponent(HitBoxComponent.class).getHitBox();</b>
+<b class="pc">&nbsp;            if (otherHitBox != null</b>
+<b class="pc">&nbsp;                    &amp;&amp; Shape.intersect(futureHitBox, otherHitBox)</b>
+<b class="fc">&nbsp;                    &amp;&amp; !IgnoreCollisions.shouldIgnoreCollision(entity, otherEntity)) {</b>
+<b class="fc">&nbsp;                velocity.setVelocity(0, velocity.getVelocity().getDy());</b>
+<b class="pc">&nbsp;                if (entity.getComponent(AccelerationComponent.class) != null) {</b>
+<b class="fc">&nbsp;                    entity.getComponent(AccelerationComponent.class).getAcceleration().setDx(0);</b>
+&nbsp;                }
+&nbsp;                break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks for vertical collisions and updates the entity&#39;s velocity if necessary.
+&nbsp;     *
+&nbsp;     * @param hitBoxes     list of hit boxes to check for collisions
+&nbsp;     * @param entity       the entity to check for collisions
+&nbsp;     * @param futureHitBox the future position of the entity&#39;s hitbox
+&nbsp;     * @param velocity     the velocity component of the entity
+&nbsp;     */
+&nbsp;    private void verticalCollisionCheck(List&lt;Entity&gt; hitBoxes, Entity entity, Shape futureHitBox, VelocityComponent velocity) {
+<b class="fc">&nbsp;        translateHitBoxVertically(entity, futureHitBox, velocity);</b>
+<b class="fc">&nbsp;        for (Entity otherEntity : hitBoxes) {</b>
+<b class="pc">&nbsp;            if (otherEntity == entity) continue;</b>
+&nbsp;
+<b class="fc">&nbsp;            Shape otherHitBox = otherEntity.getComponent(HitBoxComponent.class).getHitBox();</b>
+<b class="pc">&nbsp;            if (otherHitBox != null</b>
+<b class="pc">&nbsp;                    &amp;&amp; Shape.intersect(futureHitBox, otherHitBox)</b>
+<b class="fc">&nbsp;                    &amp;&amp; !IgnoreCollisions.shouldIgnoreCollision(entity, otherEntity)) {</b>
+<b class="fc">&nbsp;                velocity.setVelocity(velocity.getVelocity().getDx(), 0);</b>
+<b class="pc">&nbsp;                if (entity.getComponent(AccelerationComponent.class) != null) {</b>
+<b class="fc">&nbsp;                    entity.getComponent(AccelerationComponent.class).getAcceleration().setDy(0);</b>
+&nbsp;                }
+&nbsp;                break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Translates the entity&#39;s hitbox horizontally based on its velocity and acceleration.
+&nbsp;     *
+&nbsp;     * @param entity       the entity whose hitbox is to be translated
+&nbsp;     * @param futureHitBox the future position of the entity&#39;s hitbox
+&nbsp;     * @param velocity     the velocity component of the entity
+&nbsp;     */
+&nbsp;    private void translateHitBoxHorizontally(Entity entity, Shape futureHitBox, VelocityComponent velocity) {
+<b class="fc">&nbsp;        double dx = velocity.getVelocity().getDx();</b>
+&nbsp;
+<b class="fc">&nbsp;        AccelerationComponent accelerationComponent = entity.getComponent(AccelerationComponent.class);</b>
+<b class="pc">&nbsp;        if (accelerationComponent != null) {</b>
+<b class="fc">&nbsp;            dx += accelerationComponent.getAcceleration().getDx();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        futureHitBox.translate(dx, 0);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Translates the entity&#39;s hitbox vertically based on its velocity and acceleration.
+&nbsp;     *
+&nbsp;     * @param entity       the entity whose hitbox is to be translated
+&nbsp;     * @param futureHitBox the future position of the entity&#39;s hitbox
+&nbsp;     * @param velocity     the velocity component of the entity
+&nbsp;     */
+&nbsp;    private void translateHitBoxVertically(Entity entity, Shape futureHitBox, VelocityComponent velocity) {
+<b class="fc">&nbsp;        double dy = velocity.getVelocity().getDy();</b>
+&nbsp;
+<b class="fc">&nbsp;        AccelerationComponent accelerationComponent = entity.getComponent(AccelerationComponent.class);</b>
+<b class="pc">&nbsp;        if (accelerationComponent != null) {</b>
+<b class="fc">&nbsp;            dy += accelerationComponent.getAcceleration().getDy();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        futureHitBox.translate(0, dy);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

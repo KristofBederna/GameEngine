@@ -1,0 +1,390 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ParticleSystem</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Systems.RenderingSystems</a>
+</div>
+
+<h1>Coverage Summary for Class: ParticleSystem (inf.elte.hu.gameengine_javafx.Systems.RenderingSystems)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ParticleSystem</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    69%
+  </span>
+  <span class="absValue">
+    (29/42)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93,2%
+  </span>
+  <span class="absValue">
+    (69/74)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ParticleSystem$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    69%
+  </span>
+  <span class="absValue">
+    (29/42)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93,3%
+  </span>
+  <span class="absValue">
+    (70/75)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Systems.RenderingSystems;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.Default.ParentComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.MaxDistanceFromOriginComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.AccelerationComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DirectionComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.TimeComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+&nbsp;import inf.elte.hu.gameengine_javafx.Entities.ParticleEmitterEntity;
+&nbsp;import inf.elte.hu.gameengine_javafx.Entities.ParticleEntity;
+&nbsp;import inf.elte.hu.gameengine_javafx.Maths.Vector;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.Direction;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.Time;
+&nbsp;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.Random;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;/**
+&nbsp; * The ParticleSystem is responsible for managing the lifecycle of particles in the game.
+&nbsp; * It handles the spawning, movement, and removal of particles emitted by ParticleEmitterEntities.
+&nbsp; * It also applies forces such as acceleration and boosts to particles, and checks their distance from the origin.
+&nbsp; */
+<b class="fc">&nbsp;public class ParticleSystem extends GameSystem {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the system by marking it as active.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void start() {
+<b class="fc">&nbsp;        this.active = true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates all particle emitters by processing each one and removing dead particles.
+&nbsp;     * Removes any emitters that are no longer active.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void update() {
+<b class="fc">&nbsp;        var emitters = EntityHub.getInstance().getEntitiesWithType(ParticleEmitterEntity.class);</b>
+<b class="fc">&nbsp;        var emittersToRemove = new HashSet&lt;ParticleEmitterEntity&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        for (Entity entity : emitters) {</b>
+<b class="pc">&nbsp;            if (entity == null) {</b>
+&nbsp;                continue;
+&nbsp;            }
+<b class="fc">&nbsp;            processEmitter(entity, emittersToRemove);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Remove emitters that are no longer active
+<b class="pc">&nbsp;        for (Entity entity : emittersToRemove) {</b>
+<b class="nc">&nbsp;            if (entity == null) {</b>
+&nbsp;                continue;
+&nbsp;            }
+<b class="nc">&nbsp;            EntityHub.getInstance().removeEntity(entity);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Processes a single emitter by spawning new particles and managing the lifecycle of its existing particles.
+&nbsp;     * If particles exceed the max distance or reach the end of their lifecycle, they are removed.
+&nbsp;     *
+&nbsp;     * @param entity The emitter entity.
+&nbsp;     * @param emittersToRemove A set of emitters to be removed if they are no longer active.
+&nbsp;     */
+&nbsp;    private void processEmitter(Entity entity, HashSet&lt;ParticleEmitterEntity&gt; emittersToRemove) {
+<b class="fc">&nbsp;        ParentComponent parent = entity.getComponent(ParentComponent.class);</b>
+<b class="fc">&nbsp;        DirectionComponent directionComponent = entity.getComponent(DirectionComponent.class);</b>
+<b class="fc">&nbsp;        Direction direction = directionComponent.getDirection();</b>
+&nbsp;
+<b class="pc">&nbsp;        if (parent == null) {</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        // Spawn new particles if necessary
+<b class="fc">&nbsp;        spawnNewParticles(entity);</b>
+&nbsp;
+&nbsp;        // Process existing particles
+<b class="fc">&nbsp;        Set&lt;Entity&gt; toBeRemoved = new HashSet&lt;&gt;();</b>
+<b class="fc">&nbsp;        for (Entity particle : parent.getChildren()) {</b>
+<b class="fc">&nbsp;            processParticle(entity, emittersToRemove, particle, direction, toBeRemoved);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Remove dead particles
+<b class="fc">&nbsp;        removeDeadParticles(entity, toBeRemoved);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes particles that are no longer active or have exceeded their lifetime or max distance.
+&nbsp;     *
+&nbsp;     * @param entity The emitter entity whose particles are being removed.
+&nbsp;     * @param toBeRemoved A set of particles to be removed.
+&nbsp;     */
+&nbsp;    private void removeDeadParticles(Entity entity, Set&lt;Entity&gt; toBeRemoved) {
+<b class="fc">&nbsp;        entity.getComponent(ParentComponent.class).removeChildren(toBeRemoved);</b>
+<b class="fc">&nbsp;        for (Entity particle : toBeRemoved) {</b>
+<b class="fc">&nbsp;            particle.getComponent(ParentComponent.class).setParent(null);</b>
+<b class="fc">&nbsp;            EntityHub.getInstance().removeEntity(particle);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Processes each individual particle, applying forces such as acceleration and velocity boost.
+&nbsp;     * If the particle is beyond its allowed maximum distance or has finished its lifecycle, it is removed.
+&nbsp;     *
+&nbsp;     * @param entity The emitter entity.
+&nbsp;     * @param emittersToRemove A set of emitters to be removed if they are no longer active.
+&nbsp;     * @param particle The particle entity being processed.
+&nbsp;     * @param direction The direction in which particles are emitted.
+&nbsp;     * @param toBeRemoved A set of particles to be removed.
+&nbsp;     */
+&nbsp;    private void processParticle(Entity entity, HashSet&lt;ParticleEmitterEntity&gt; emittersToRemove, Entity particle, Direction direction, Set&lt;Entity&gt; toBeRemoved) {
+<b class="fc">&nbsp;        ParticleEntity particleEntity = (ParticleEntity) particle;</b>
+<b class="fc">&nbsp;        AccelerationComponent acceleration = particleEntity.getComponent(AccelerationComponent.class);</b>
+<b class="fc">&nbsp;        PositionComponent position = particleEntity.getComponent(PositionComponent.class);</b>
+&nbsp;
+<b class="pc">&nbsp;        if (acceleration == null || position == null) return;</b>
+&nbsp;
+&nbsp;        // If the particle has no acceleration, initialize it and apply a velocity boost
+<b class="fc">&nbsp;        if (acceleration.getAcceleration().isZero()) {</b>
+<b class="fc">&nbsp;            Vector initial = initializeParticleAcceleration(direction);</b>
+<b class="fc">&nbsp;            Vector boosted = applyVelocityBoost(initial, direction);</b>
+&nbsp;
+<b class="pc">&nbsp;            if (boosted.isZero()) {</b>
+<b class="nc">&nbsp;                toBeRemoved.add(particleEntity);</b>
+&nbsp;                return;
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            acceleration.setAcceleration(boosted);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Check if the particle&#39;s lifecycle is complete and mark it for removal if necessary
+<b class="fc">&nbsp;        handleLifecycleChecks(entity, particleEntity, emittersToRemove, toBeRemoved);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the particle&#39;s acceleration based on its direction and applies random velocity.
+&nbsp;     *
+&nbsp;     * @param direction The direction in which the particle is moving.
+&nbsp;     * @return A Vector representing the particle&#39;s initial velocity.
+&nbsp;     */
+&nbsp;    private Vector initializeParticleAcceleration(Direction direction) {
+<b class="fc">&nbsp;        Random random = new Random();</b>
+<b class="fc">&nbsp;        double deltaTime = Time.getInstance().getDeltaTime();</b>
+<b class="fc">&nbsp;        double minSpeed = -1;</b>
+<b class="fc">&nbsp;        double maxSpeed = 1;</b>
+&nbsp;
+<b class="fc">&nbsp;        double dx = 0;</b>
+<b class="fc">&nbsp;        double dy = 0;</b>
+&nbsp;
+&nbsp;        // Adjust velocity based on the direction of emission
+<b class="fc">&nbsp;        switch (direction) {</b>
+&nbsp;            case UP -&gt; {
+<b class="fc">&nbsp;                dx = random.nextDouble(minSpeed, maxSpeed);</b>
+<b class="fc">&nbsp;                dy = minSpeed;</b>
+&nbsp;            }
+&nbsp;            case DOWN -&gt; {
+<b class="fc">&nbsp;                dx = random.nextDouble(minSpeed, maxSpeed);</b>
+<b class="fc">&nbsp;                dy = maxSpeed;</b>
+&nbsp;            }
+&nbsp;            case LEFT -&gt; {
+<b class="fc">&nbsp;                dx = minSpeed;</b>
+<b class="fc">&nbsp;                dy = random.nextDouble(minSpeed, maxSpeed);</b>
+&nbsp;            }
+&nbsp;            case RIGHT -&gt; {
+<b class="fc">&nbsp;                dx = maxSpeed;</b>
+<b class="fc">&nbsp;                dy = random.nextDouble(minSpeed, maxSpeed);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return new Vector(dx * deltaTime, dy * deltaTime);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Applies a random velocity boost to the particle&#39;s movement in a given direction.
+&nbsp;     *
+&nbsp;     * @param base The initial velocity vector of the particle.
+&nbsp;     * @param direction The direction in which the particle is emitted.
+&nbsp;     * @return A new Vector with the boosted velocity.
+&nbsp;     */
+&nbsp;    private Vector applyVelocityBoost(Vector base, Direction direction) {
+<b class="fc">&nbsp;        Random random = new Random();</b>
+<b class="fc">&nbsp;        double angle = switch (direction) {</b>
+<b class="fc">&nbsp;            case LEFT -&gt; random.nextDouble(3 * Math.PI / 4, 5 * Math.PI / 4);</b>
+<b class="fc">&nbsp;            case RIGHT -&gt; random.nextDouble(-Math.PI / 4, Math.PI / 4);</b>
+<b class="fc">&nbsp;            case UP -&gt; random.nextDouble(5 * Math.PI / 4, 7 * Math.PI / 4);</b>
+<b class="fc">&nbsp;            case DOWN -&gt; random.nextDouble(Math.PI / 4, 3 * Math.PI / 4);</b>
+<b class="fc">&nbsp;            default -&gt; random.nextDouble(0, Math.PI * 2);</b>
+&nbsp;        };
+&nbsp;
+<b class="fc">&nbsp;        double boostMagnitude = random.nextDouble(0, 20);</b>
+<b class="fc">&nbsp;        double boostDx = Math.cos(angle) * boostMagnitude;</b>
+<b class="fc">&nbsp;        double boostDy = Math.sin(angle) * boostMagnitude;</b>
+&nbsp;
+<b class="fc">&nbsp;        return new Vector(base.getDx() + boostDx, base.getDy() + boostDy);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks if the particle has exceeded its maximum allowed distance or if its lifecycle is over.
+&nbsp;     * If so, the particle is removed from the system.
+&nbsp;     *
+&nbsp;     * @param emitter The particle emitter entity.
+&nbsp;     * @param particle The particle entity.
+&nbsp;     * @param emittersToRemove A set of emitters to be removed if they are no longer active.
+&nbsp;     * @param toBeRemoved A set of particles to be removed.
+&nbsp;     */
+&nbsp;    private void handleLifecycleChecks(Entity emitter, ParticleEntity particle, Set&lt;ParticleEmitterEntity&gt; emittersToRemove, Set&lt;Entity&gt; toBeRemoved) {
+<b class="fc">&nbsp;        MaxDistanceFromOriginComponent distComp = particle.getComponent(MaxDistanceFromOriginComponent.class);</b>
+<b class="pc">&nbsp;        if (distComp != null &amp;&amp; distComp.isOverMaxDistance(particle)) {</b>
+<b class="fc">&nbsp;            toBeRemoved.add(particle);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        TimeComponent timeComp = emitter.getComponent(TimeComponent.class);</b>
+<b class="pc">&nbsp;        if (timeComp != null &amp;&amp; timeComp.getTimeBetweenOccurrences() == Integer.MAX_VALUE) {</b>
+<b class="nc">&nbsp;            if (timeComp.getLastOccurrence() &lt;= System.currentTimeMillis() - 1000) {</b>
+<b class="nc">&nbsp;                emittersToRemove.add((ParticleEmitterEntity) emitter);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Spawns new particles from the emitter if the time interval between occurrences has passed.
+&nbsp;     *
+&nbsp;     * @param entity The emitter entity that is spawning particles.
+&nbsp;     */
+&nbsp;    private void spawnNewParticles(Entity entity) {
+<b class="fc">&nbsp;        if (System.currentTimeMillis() &gt;= entity.getComponent(TimeComponent.class).getLastOccurrence() + entity.getComponent(TimeComponent.class).getTimeBetweenOccurrences()) {</b>
+<b class="fc">&nbsp;            ((ParticleEmitterEntity) entity).createParticles(</b>
+<b class="fc">&nbsp;                    ((ParticleEmitterEntity) entity).getMockParticle(),</b>
+<b class="fc">&nbsp;                    ((ParticleEmitterEntity) entity).getAmount(),</b>
+<b class="fc">&nbsp;                    entity.getComponent(ParentComponent.class)</b>
+&nbsp;            );
+&nbsp;
+<b class="fc">&nbsp;            entity.getComponent(TimeComponent.class).setLastOccurrence();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

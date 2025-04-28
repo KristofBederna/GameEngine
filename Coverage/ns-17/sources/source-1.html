@@ -1,0 +1,218 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Chunk</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Misc.MapClasses</a>
+</div>
+
+<h1>Coverage Summary for Class: Chunk (inf.elte.hu.gameengine_javafx.Misc.MapClasses)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Chunk</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    45,5%
+  </span>
+  <span class="absValue">
+    (5/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    53,8%
+  </span>
+  <span class="absValue">
+    (7/13)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Misc.MapClasses;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code Chunk} class represents a chunk of tiles within the game world.
+&nbsp; * It manages a 2D list of {@code TileEntity} objects, providing methods to access and modify elements within the chunk.
+&nbsp; */
+&nbsp;public class Chunk {
+&nbsp;    private List&lt;List&lt;TileEntity&gt;&gt; chunk;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a {@code Chunk} with the provided list of tile entities.
+&nbsp;     *
+&nbsp;     * @param chunk the 2D list of {@code TileEntity} objects representing the chunk
+&nbsp;     */
+<b class="fc">&nbsp;    public Chunk(List&lt;List&lt;TileEntity&gt;&gt; chunk) {</b>
+<b class="fc">&nbsp;        this.chunk = chunk;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs an empty {@code Chunk} with no tiles.
+&nbsp;     */
+<b class="fc">&nbsp;    public Chunk() {</b>
+<b class="fc">&nbsp;        this.chunk = new ArrayList&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the 2D list of tile entities that make up the chunk.
+&nbsp;     *
+&nbsp;     * @return the 2D list of {@code TileEntity} objects in the chunk
+&nbsp;     */
+&nbsp;    public List&lt;List&lt;TileEntity&gt;&gt; getChunk() {
+<b class="fc">&nbsp;        return chunk;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the 2D list of tile entities that make up the chunk.
+&nbsp;     *
+&nbsp;     * @param chunk the 2D list of {@code TileEntity} objects to set
+&nbsp;     */
+&nbsp;    public void setChunk(List&lt;List&lt;TileEntity&gt;&gt; chunk) {
+<b class="nc">&nbsp;        this.chunk = chunk;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adds the specified 2D list of tile entities to the chunk.
+&nbsp;     *
+&nbsp;     * @param chunk the 2D list of {@code TileEntity} objects to add
+&nbsp;     */
+&nbsp;    public void addChunk(List&lt;List&lt;TileEntity&gt;&gt; chunk) {
+<b class="nc">&nbsp;        this.chunk.addAll(chunk);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adds the tiles from another chunk to this chunk.
+&nbsp;     *
+&nbsp;     * @param chunk the {@code Chunk} whose tiles are to be added to this chunk
+&nbsp;     */
+&nbsp;    public void addChunk(Chunk chunk) {
+<b class="nc">&nbsp;        this.chunk.addAll(chunk.getChunk());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Clears all tiles in the chunk.
+&nbsp;     */
+&nbsp;    public void clear() {
+<b class="nc">&nbsp;        this.chunk.clear();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the list of {@code TileEntity} objects at the specified index in the chunk.
+&nbsp;     *
+&nbsp;     * @param number the index of the row to retrieve
+&nbsp;     * @return the list of {@code TileEntity} objects at the specified index
+&nbsp;     */
+&nbsp;    public List&lt;TileEntity&gt; get(int number) {
+<b class="nc">&nbsp;        return chunk.get(number);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the number of rows in the chunk.
+&nbsp;     *
+&nbsp;     * @return the number of rows in the chunk
+&nbsp;     */
+&nbsp;    public int size() {
+<b class="nc">&nbsp;        return chunk.size();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the {@code TileEntity} at the specified coordinates (x, y) in the chunk.
+&nbsp;     *
+&nbsp;     * @param x the row index of the tile entity
+&nbsp;     * @param y the column index of the tile entity
+&nbsp;     * @return the {@code TileEntity} at the specified coordinates, or {@code null} if out of bounds
+&nbsp;     */
+&nbsp;    public TileEntity getElement(int x, int y) {
+<b class="fc">&nbsp;        return chunk.get(x).get(y);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the tile at the specified coordinates (x, y) in the chunk to a new tile with the given value.
+&nbsp;     *
+&nbsp;     * @param x     the row index of the tile to set
+&nbsp;     * @param y     the column index of the tile to set
+&nbsp;     * @param value the new value to set for the tile
+&nbsp;     */
+&nbsp;    public void setElement(int x, int y, int value) {
+<b class="fc">&nbsp;        chunk.get(x).get(y).changeValues(value);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

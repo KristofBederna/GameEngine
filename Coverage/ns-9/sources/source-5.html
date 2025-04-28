@@ -1,0 +1,272 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > SystemHub</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Core</a>
+</div>
+
+<h1>Coverage Summary for Class: SystemHub (inf.elte.hu.gameengine_javafx.Core)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SystemHub</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    58,3%
+  </span>
+  <span class="absValue">
+    (7/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    28,6%
+  </span>
+  <span class="absValue">
+    (4/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    44,1%
+  </span>
+  <span class="absValue">
+    (15/34)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Core;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
+&nbsp;import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SoundSystems.BackgroundMusicSystem;
+&nbsp;import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SceneManagementSystem;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.concurrent.ConcurrentHashMap;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code SystemHub} class is responsible for managing and organizing all the systems in the game engine.
+&nbsp; * It allows adding, removing, retrieving, and ordering systems based on their priorities.
+&nbsp; * It also facilitates the orderly shutdown of systems when the game engine is shutting down.
+&nbsp; */
+&nbsp;public class SystemHub {
+&nbsp;    private static SystemHub instance;
+&nbsp;    private final Map&lt;Class&lt;? extends GameSystem&gt;, Integer&gt; systemPriorities;
+&nbsp;    private final Map&lt;Integer, GameSystem&gt; systems;
+<b class="fc">&nbsp;    private boolean isShuttingDown = false;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Private constructor to ensure that the SystemHub is a singleton.
+&nbsp;     */
+<b class="fc">&nbsp;    private SystemHub() {</b>
+<b class="fc">&nbsp;        systemPriorities = new ConcurrentHashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;        systems = new ConcurrentHashMap&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Gets the singleton instance of the {@code SystemHub}.
+&nbsp;     *
+&nbsp;     * @return the singleton instance of the SystemHub
+&nbsp;     */
+&nbsp;    public static SystemHub getInstance() {
+<b class="pc">&nbsp;        if (instance == null) {</b>
+<b class="nc">&nbsp;            instance = new SystemHub();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Resets the instance of the singleton.
+&nbsp;     */
+&nbsp;    public static void resetInstance() {
+<b class="fc">&nbsp;        instance = new SystemHub();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adds a system to the SystemHub with a specified priority.
+&nbsp;     * The system will be stored in a TreeMap, where it is ordered by priority.
+&nbsp;     *
+&nbsp;     * @param systemClass the class type of the system
+&nbsp;     * @param system      the system instance to add
+&nbsp;     * @param priority    the priority level of the system (lower values are higher priority)
+&nbsp;     * @param &lt;T&gt;         the type of the system
+&nbsp;     */
+&nbsp;    public &lt;T extends GameSystem&gt; void addSystem(Class&lt;T&gt; systemClass, T system, int priority) {
+<b class="fc">&nbsp;        systemPriorities.put(systemClass, priority);</b>
+<b class="fc">&nbsp;        systems.put(priority, system);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes a system from the {@code SystemHub}.
+&nbsp;     *
+&nbsp;     * @param systemClass the class type of the system to unload
+&nbsp;     * @param &lt;T&gt;         the type of the system
+&nbsp;     */
+&nbsp;    public &lt;T extends GameSystem&gt; void removeSystem(Class&lt;T&gt; systemClass) {
+<b class="fc">&nbsp;        Integer priority = systemPriorities.remove(systemClass);</b>
+<b class="pc">&nbsp;        if (priority != null) {</b>
+<b class="fc">&nbsp;            systems.remove(priority);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves a system by its class type.
+&nbsp;     *
+&nbsp;     * @param systemClass the class type of the system to retrieve
+&nbsp;     * @param &lt;T&gt;         the type of the system
+&nbsp;     * @return the system instance, or {@code null} if the system is not registered
+&nbsp;     */
+&nbsp;    public &lt;T extends GameSystem&gt; T getSystem(Class&lt;T&gt; systemClass) {
+<b class="fc">&nbsp;        Integer priority = systemPriorities.get(systemClass);</b>
+<b class="fc">&nbsp;        return (priority != null) ? systemClass.cast(systems.get(priority)) : null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves all systems in priority order, with the highest priority first.
+&nbsp;     *
+&nbsp;     * @return a list of all systems ordered by priority
+&nbsp;     */
+&nbsp;    public List&lt;GameSystem&gt; getAllSystemsInPriorityOrder() {
+<b class="fc">&nbsp;        return new ArrayList&lt;&gt;(systems.values());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Shuts down all systems in the SystemHub, aborting each one in the reverse priority order,
+&nbsp;     * The systems are cleared from the system hub after shutdown.
+&nbsp;     */
+&nbsp;    public void shutDownSystems() {
+<b class="nc">&nbsp;        if (isShuttingDown) {</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        isShuttingDown = true;</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            abortIfNotKept();</b>
+&nbsp;        } finally {
+<b class="nc">&nbsp;            isShuttingDown = false;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Aborts every system that is not kept between scenes.
+&nbsp;     */
+&nbsp;    private void abortIfNotKept() {
+<b class="nc">&nbsp;        SceneManagementSystem sceneManagementSystem = getSystem(SceneManagementSystem.class);</b>
+<b class="nc">&nbsp;        BackgroundMusicSystem backgroundMusicSystem = getSystem(BackgroundMusicSystem.class);</b>
+&nbsp;
+<b class="nc">&nbsp;        abortReversed(sceneManagementSystem, backgroundMusicSystem);</b>
+<b class="nc">&nbsp;        resetSystems(backgroundMusicSystem, sceneManagementSystem);</b>
+<b class="nc">&nbsp;        resetSystemPriorities();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Aborts systems in a reversed order, so that they are shut down in a logical order.
+&nbsp;     */
+&nbsp;    private void abortReversed(SceneManagementSystem sceneManagementSystem, BackgroundMusicSystem backgroundMusicSystem) {
+<b class="nc">&nbsp;        for (GameSystem system : getAllSystemsInPriorityOrder().reversed()) {</b>
+<b class="nc">&nbsp;            if (system == sceneManagementSystem || system == backgroundMusicSystem) {</b>
+&nbsp;                continue;
+&nbsp;            }
+<b class="nc">&nbsp;            system.abort();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Resets the {@code systems} map then adds the essential systems back to it.
+&nbsp;     */
+&nbsp;    private void resetSystems(BackgroundMusicSystem backgroundMusicSystem, SceneManagementSystem sceneManagementSystem) {
+<b class="nc">&nbsp;        systems.clear();</b>
+<b class="nc">&nbsp;        systems.put(998, backgroundMusicSystem);</b>
+<b class="nc">&nbsp;        systems.put(999, sceneManagementSystem);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Resets the {@code systemPriorities} map then adds the essential systems back to it.
+&nbsp;     */
+&nbsp;    private void resetSystemPriorities() {
+<b class="nc">&nbsp;        systemPriorities.clear();</b>
+<b class="nc">&nbsp;        systemPriorities.put(BackgroundMusicSystem.class, 998);</b>
+<b class="nc">&nbsp;        systemPriorities.put(SceneManagementSystem.class, 999);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

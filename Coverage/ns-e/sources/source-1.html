@@ -1,0 +1,235 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Vector</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Maths</a>
+</div>
+
+<h1>Coverage Summary for Class: Vector (inf.elte.hu.gameengine_javafx.Maths)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Vector</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    60%
+  </span>
+  <span class="absValue">
+    (6/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (2/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    40%
+  </span>
+  <span class="absValue">
+    (8/20)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Maths;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+&nbsp;import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
+&nbsp;
+&nbsp;/**
+&nbsp; * A class representing a 2D vector with horizontal (dx) and vertical (dy) components.
+&nbsp; * &lt;p&gt;
+&nbsp; * The {@code Vector} class provides functionality for manipulating vectors in 2D space.
+&nbsp; * It includes methods for setting and getting the vector&#39;s components, moving towards a
+&nbsp; * specific point, and copying a vector.
+&nbsp; * &lt;/p&gt;
+&nbsp; */
+&nbsp;public class Vector {
+&nbsp;    private double dx;
+&nbsp;    private double dy;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a {@code Vector} with the specified horizontal and vertical components.
+&nbsp;     *
+&nbsp;     * @param dx the horizontal component of the vector
+&nbsp;     * @param dy the vertical component of the vector
+&nbsp;     */
+<b class="fc">&nbsp;    public Vector(double dx, double dy) {</b>
+<b class="fc">&nbsp;        this.dx = dx;</b>
+<b class="fc">&nbsp;        this.dy = dy;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the horizontal component of the vector (dx).
+&nbsp;     *
+&nbsp;     * @return the horizontal component of the vector
+&nbsp;     */
+&nbsp;    public double getDx() {
+<b class="fc">&nbsp;        return dx;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the vertical component of the vector (dy).
+&nbsp;     *
+&nbsp;     * @return the vertical component of the vector
+&nbsp;     */
+&nbsp;    public double getDy() {
+<b class="fc">&nbsp;        return dy;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a new {@code Vector} object that is a copy of this vector.
+&nbsp;     *
+&nbsp;     * @return a new {@code Vector} with the same components as this vector
+&nbsp;     */
+&nbsp;    public Vector getVector() {
+<b class="nc">&nbsp;        return new Vector(dx, dy);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the horizontal component of the vector (dx).
+&nbsp;     *
+&nbsp;     * @param dx the new horizontal component of the vector
+&nbsp;     */
+&nbsp;    public void setDx(double dx) {
+<b class="fc">&nbsp;        this.dx = dx;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the vertical component of the vector (dy).
+&nbsp;     *
+&nbsp;     * @param dy the new vertical component of the vector
+&nbsp;     */
+&nbsp;    public void setDy(double dy) {
+<b class="fc">&nbsp;        this.dy = dy;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets both the horizontal and vertical components of the vector from another vector.
+&nbsp;     *
+&nbsp;     * @param vector the vector whose components will be used to set this vector&#39;s components
+&nbsp;     */
+&nbsp;    public void setVector(Vector vector) {
+<b class="nc">&nbsp;        this.dx = vector.getDx();</b>
+<b class="nc">&nbsp;        this.dy = vector.getDy();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Moves the entity towards the specified point. The vector is updated to represent the direction
+&nbsp;     * the entity should move in order to reach the point.
+&nbsp;     *
+&nbsp;     * @param node   the point the entity is moving towards
+&nbsp;     * @param entity the entity that is moving
+&nbsp;     */
+&nbsp;    public void moveTowards(Point node, Entity entity) {
+<b class="nc">&nbsp;        double currentX = entity.getComponent(CentralMassComponent.class).getCentralX();</b>
+<b class="nc">&nbsp;        double currentY = entity.getComponent(CentralMassComponent.class).getCentralY();</b>
+&nbsp;
+<b class="nc">&nbsp;        double deltaX = node.getX() - currentX;</b>
+<b class="nc">&nbsp;        double deltaY = node.getY() - currentY;</b>
+<b class="nc">&nbsp;        double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (distance &gt; 0) {</b>
+<b class="nc">&nbsp;            dx = deltaX / distance;</b>
+<b class="nc">&nbsp;            dy = deltaY / distance;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return {@code True} if both dx and dy are 0, {@code False} otherwise.
+&nbsp;     */
+&nbsp;    public boolean isZero() {
+<b class="fc">&nbsp;        return dx == 0 &amp;&amp; dy == 0;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return The magnitude of the vector.
+&nbsp;     */
+&nbsp;    public double magnitude() {
+<b class="nc">&nbsp;        return Math.sqrt(dx * dx + dy * dy);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

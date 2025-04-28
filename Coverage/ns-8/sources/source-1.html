@@ -1,0 +1,165 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > MapMeshComponent</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Components.WorldComponents</a>
+</div>
+
+<h1>Coverage Summary for Class: MapMeshComponent (inf.elte.hu.gameengine_javafx.Components.WorldComponents)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MapMeshComponent</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (4/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    64,3%
+  </span>
+  <span class="absValue">
+    (9/14)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Components.WorldComponents;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
+&nbsp;import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public class MapMeshComponent extends Component {
+&nbsp;    private List&lt;List&lt;Point&gt;&gt; mapCoordinates;
+&nbsp;
+<b class="nc">&nbsp;    public MapMeshComponent(List&lt;List&lt;Point&gt;&gt; mapCoordinates) {</b>
+<b class="nc">&nbsp;        this.mapCoordinates = mapCoordinates;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public MapMeshComponent() {</b>
+<b class="fc">&nbsp;        this.mapCoordinates = new ArrayList&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;List&lt;Point&gt;&gt; getMapCoordinates() {
+<b class="fc">&nbsp;        return mapCoordinates;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setMapCoordinates(List&lt;List&lt;Point&gt;&gt; mapCoordinates) {
+<b class="nc">&nbsp;        this.mapCoordinates = mapCoordinates;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Point getMapCoordinate(int x, int y) {
+<b class="nc">&nbsp;        return mapCoordinates.get(y).get(x);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setMapCoordinate(int x, int y, Point mapCoordinate) {
+<b class="nc">&nbsp;        mapCoordinates.get(x).set(y, mapCoordinate);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void addRow(List&lt;Point&gt; meshRow) {
+<b class="fc">&nbsp;        mapCoordinates.add(meshRow);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void addToRow(int rowNum, List&lt;Point&gt; meshRow) {
+<b class="fc">&nbsp;        if (mapCoordinates.size() &lt;= rowNum) {</b>
+<b class="fc">&nbsp;            addRow(meshRow);</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="fc">&nbsp;        List&lt;Point&gt; oldRow = mapCoordinates.get(rowNum);</b>
+<b class="fc">&nbsp;        oldRow.addAll(meshRow);</b>
+<b class="fc">&nbsp;        mapCoordinates.set(rowNum, oldRow);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,333 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ComplexShape</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Maths.Geometry</a>
+</div>
+
+<h1>Coverage Summary for Class: ComplexShape (inf.elte.hu.gameengine_javafx.Maths.Geometry)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ComplexShape</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    46,2%
+  </span>
+  <span class="absValue">
+    (6/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    61,5%
+  </span>
+  <span class="absValue">
+    (16/26)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    41,7%
+  </span>
+  <span class="absValue">
+    (30/72)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Maths.Geometry;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.Configs.DisplayConfig;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
+&nbsp;import javafx.scene.canvas.GraphicsContext;
+&nbsp;import javafx.scene.paint.Color;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * Represents a complex, polygonal shape composed of multiple points and edges.
+&nbsp; * Provides functionality for rendering, transforming, and detecting point collisions.
+&nbsp; */
+&nbsp;public class ComplexShape extends Shape {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs an empty ComplexShape.
+&nbsp;     */
+<b class="nc">&nbsp;    public ComplexShape() {</b>
+<b class="nc">&nbsp;        this.points = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        updateEdges();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a ComplexShape from a list of points.
+&nbsp;     *
+&nbsp;     * @param points List of points defining the shape.
+&nbsp;     */
+<b class="fc">&nbsp;    public ComplexShape(List&lt;Point&gt; points) {</b>
+<b class="fc">&nbsp;        this.points = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        this.points.addAll(points);</b>
+<b class="fc">&nbsp;        updateEdges();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a ComplexShape by copying another ComplexShape.
+&nbsp;     *
+&nbsp;     * @param hitBox The ComplexShape to copy.
+&nbsp;     */
+<b class="fc">&nbsp;    public ComplexShape(ComplexShape hitBox) {</b>
+<b class="fc">&nbsp;        this.points = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        this.points.addAll(hitBox.points);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the edges based on the current points of the shape.
+&nbsp;     */
+&nbsp;    public void updateEdges() {
+<b class="fc">&nbsp;        this.edges = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; points.size(); i++) {</b>
+<b class="fc">&nbsp;            Point p1 = points.get(i);</b>
+<b class="fc">&nbsp;            Point p2 = points.get((i + 1) % points.size());</b>
+<b class="fc">&nbsp;            edges.add(new Edge(p1, p2));</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Renders the shape&#39;s outline on the given GraphicsContext with the specified color.
+&nbsp;     *
+&nbsp;     * @param gc    The GraphicsContext to draw on.
+&nbsp;     * @param color The stroke color.
+&nbsp;     */
+&nbsp;    public void render(GraphicsContext gc, Color color) {
+<b class="nc">&nbsp;        gc.setStroke(color);</b>
+<b class="nc">&nbsp;        gc.setLineWidth(2);</b>
+<b class="nc">&nbsp;        renderShape(gc);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Renders the shape&#39;s outline on the given GraphicsContext with the specified color and stroke width.
+&nbsp;     *
+&nbsp;     * @param gc           The GraphicsContext to draw on.
+&nbsp;     * @param color        The stroke color.
+&nbsp;     * @param strokeWidth  The width of the stroke.
+&nbsp;     */
+&nbsp;    public void render(GraphicsContext gc, Color color, double strokeWidth) {
+<b class="nc">&nbsp;        gc.setStroke(color);</b>
+<b class="nc">&nbsp;        gc.setLineWidth(strokeWidth);</b>
+<b class="nc">&nbsp;        renderShape(gc);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Internal helper method to render the shape outline.
+&nbsp;     *
+&nbsp;     * @param gc The GraphicsContext to draw on.
+&nbsp;     */
+&nbsp;    private void renderShape(GraphicsContext gc) {
+<b class="nc">&nbsp;        updateEdgesForShape();</b>
+&nbsp;
+<b class="nc">&nbsp;        Point prev = points.getLast();</b>
+<b class="nc">&nbsp;        for (Point p : points) {</b>
+<b class="nc">&nbsp;            double x1 = CameraEntity.getRenderX(prev.getX());</b>
+<b class="nc">&nbsp;            double y1 = CameraEntity.getRenderY(prev.getY());</b>
+<b class="nc">&nbsp;            double x2 = CameraEntity.getRenderX(p.getX());</b>
+<b class="nc">&nbsp;            double y2 = CameraEntity.getRenderY(p.getY());</b>
+&nbsp;
+<b class="nc">&nbsp;            gc.strokeLine(x1 * DisplayConfig.relativeWidthRatio, y1 * DisplayConfig.relativeHeightRatio,</b>
+&nbsp;                    x2 * DisplayConfig.relativeWidthRatio, y2 * DisplayConfig.relativeHeightRatio);
+<b class="nc">&nbsp;            prev = p;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Renders the shape as a filled polygon with the specified color.
+&nbsp;     *
+&nbsp;     * @param gc    The GraphicsContext to draw on.
+&nbsp;     * @param color The fill color.
+&nbsp;     */
+&nbsp;    public void renderFill(GraphicsContext gc, Color color) {
+<b class="nc">&nbsp;        updateEdgesForShape();</b>
+&nbsp;
+<b class="nc">&nbsp;        double[] xPoints = new double[points.size()];</b>
+<b class="nc">&nbsp;        double[] yPoints = new double[points.size()];</b>
+&nbsp;
+<b class="nc">&nbsp;        for (int i = 0; i &lt; points.size(); i++) {</b>
+<b class="nc">&nbsp;            xPoints[i] = CameraEntity.getRenderX(points.get(i).getX()) * DisplayConfig.relativeWidthRatio;</b>
+<b class="nc">&nbsp;            yPoints[i] = CameraEntity.getRenderY(points.get(i).getY()) * DisplayConfig.relativeHeightRatio;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        gc.setFill(color);</b>
+<b class="nc">&nbsp;        gc.fillPolygon(xPoints, yPoints, points.size());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Ensures that edges are updated if the shape has points.
+&nbsp;     */
+&nbsp;    private void updateEdgesForShape() {
+<b class="nc">&nbsp;        if (points.isEmpty()) {</b>
+<b class="nc">&nbsp;            updateEdges();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Renders the shape as a filled polygon with an outer stroke.
+&nbsp;     *
+&nbsp;     * @param gc               The GraphicsContext to draw on.
+&nbsp;     * @param color            The fill color.
+&nbsp;     * @param stroke           The stroke color.
+&nbsp;     * @param outerStrokeWidth The width of the outer stroke.
+&nbsp;     */
+&nbsp;    public void renderFillWithStroke(GraphicsContext gc, Color color, Color stroke, double outerStrokeWidth) {
+<b class="nc">&nbsp;        updateEdgesForShape();</b>
+&nbsp;
+<b class="nc">&nbsp;        double[] xPoints = new double[points.size()];</b>
+<b class="nc">&nbsp;        double[] yPoints = new double[points.size()];</b>
+&nbsp;
+<b class="nc">&nbsp;        for (int i = 0; i &lt; points.size(); i++) {</b>
+<b class="nc">&nbsp;            xPoints[i] = CameraEntity.getRenderX(points.get(i).getX()) * DisplayConfig.relativeWidthRatio;</b>
+<b class="nc">&nbsp;            yPoints[i] = CameraEntity.getRenderY(points.get(i).getY()) * DisplayConfig.relativeHeightRatio;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        gc.setStroke(stroke);</b>
+<b class="nc">&nbsp;        gc.setLineWidth(outerStrokeWidth);</b>
+&nbsp;
+<b class="nc">&nbsp;        for (int i = 0; i &lt; points.size(); i++) {</b>
+<b class="nc">&nbsp;            xPoints[i] += outerStrokeWidth / 2;</b>
+<b class="nc">&nbsp;            yPoints[i] += outerStrokeWidth / 2;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        gc.strokePolygon(xPoints, yPoints, points.size());</b>
+&nbsp;
+<b class="nc">&nbsp;        gc.setFill(color);</b>
+<b class="nc">&nbsp;        gc.fillPolygon(xPoints, yPoints, points.size());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Moves the entire shape so that its first point matches the given new point.
+&nbsp;     *
+&nbsp;     * @param newPoint The new position for the first point.
+&nbsp;     */
+&nbsp;    public void moveTo(Point newPoint) {
+<b class="fc">&nbsp;        double dx = newPoint.getX() - points.getFirst().getX();</b>
+<b class="fc">&nbsp;        double dy = newPoint.getY() - points.getFirst().getY();</b>
+&nbsp;
+<b class="fc">&nbsp;        for (Point p : points) {</b>
+<b class="fc">&nbsp;            p.setX(p.getX() + dx);</b>
+<b class="fc">&nbsp;            p.setY(p.getY() + dy);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        updateEdges();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Translates the shape by the given x and y amounts.
+&nbsp;     *
+&nbsp;     * @param x The amount to translate along the x-axis.
+&nbsp;     * @param y The amount to translate along the y-axis.
+&nbsp;     */
+&nbsp;    public void translate(double x, double y) {
+<b class="fc">&nbsp;        for (Point p : points) {</b>
+<b class="fc">&nbsp;            p.translate(x, y);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        updateEdges();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks whether a given point is inside the shape using ray-casting algorithm.
+&nbsp;     *
+&nbsp;     * @param point The point to test.
+&nbsp;     * @return True if the point is inside the shape, false otherwise.
+&nbsp;     */
+&nbsp;    public boolean isPointInside(Point point) {
+<b class="fc">&nbsp;        int intersectionCount = 0;</b>
+<b class="fc">&nbsp;        for (Edge edge : edges) {</b>
+<b class="fc">&nbsp;            Point p1 = edge.getBeginning();</b>
+<b class="fc">&nbsp;            Point p2 = edge.getEnd();</b>
+&nbsp;
+<b class="fc">&nbsp;            if (point.getY() &gt; Math.min(p1.getY(), p2.getY()) &amp;&amp; point.getY() &lt;= Math.max(p1.getY(), p2.getY())) {</b>
+<b class="fc">&nbsp;                double intersectionX = p1.getX() + (point.getY() - p1.getY()) * (p2.getX() - p1.getX()) / (p2.getY() - p1.getY());</b>
+<b class="fc">&nbsp;                if (point.getX() &lt; intersectionX) {</b>
+<b class="fc">&nbsp;                    intersectionCount++;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        return intersectionCount % 2 == 1;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

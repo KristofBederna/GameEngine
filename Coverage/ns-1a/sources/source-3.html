@@ -1,0 +1,146 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > SystemStartUp</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Misc.StartUpClasses</a>
+</div>
+
+<h1>Coverage Summary for Class: SystemStartUp (inf.elte.hu.gameengine_javafx.Misc.StartUpClasses)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SystemStartUp</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Misc.StartUpClasses;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.SystemHub;
+&nbsp;import inf.elte.hu.gameengine_javafx.Systems.ResourceSystems.SceneManagementSystem;
+&nbsp;
+&nbsp;/**
+&nbsp; * Initializes and manages the startup process of game systems.
+&nbsp; * &lt;br&gt;
+&nbsp; * This class ensures that all necessary game systems are registered and started in the {@link SystemHub}.
+&nbsp; */
+&nbsp;public class SystemStartUp {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a new {@code SystemStartUp} instance.
+&nbsp;     * &lt;br&gt;
+&nbsp;     * This initializes the {@link SystemHub} and starts up the game systems using the provided startup method.
+&nbsp;     *
+&nbsp;     * @param startUpMethod A {@link Runnable} that defines the startup logic for the game systems.
+&nbsp;     */
+<b class="fc">&nbsp;    public SystemStartUp(Runnable startUpMethod) {</b>
+<b class="fc">&nbsp;        SystemHub.getInstance();</b>
+<b class="fc">&nbsp;        startUpSystems(startUpMethod);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Executes the provided startup method to initialize game systems.
+&nbsp;     *
+&nbsp;     * @param startUpMethod A {@link Runnable} that contains the startup logic for game systems.
+&nbsp;     */
+&nbsp;    public void startUpSystems(Runnable startUpMethod) {
+<b class="fc">&nbsp;        startUpMethod.run();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Starts up the {@link SceneManagementSystem} and registers it in the {@link SystemHub} with the highest priority.
+&nbsp;     * &lt;br&gt;
+&nbsp;     * The priority value of {@code 9999} ensures that this system is executed last.
+&nbsp;     */
+&nbsp;    public void startUpSceneManagementSystem() {
+<b class="fc">&nbsp;        SystemHub.getInstance().addSystem(SceneManagementSystem.class, new SceneManagementSystem(), 9999);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

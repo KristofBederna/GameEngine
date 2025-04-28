@@ -1,0 +1,246 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > MovementDeterminerSystem</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Systems.PhysicsSystems</a>
+</div>
+
+<h1>Coverage Summary for Class: MovementDeterminerSystem (inf.elte.hu.gameengine_javafx.Systems.PhysicsSystems)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MovementDeterminerSystem</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    81,2%
+  </span>
+  <span class="absValue">
+    (13/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (30/30)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Systems.PhysicsSystems;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.VelocityComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DirectionComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.StateComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.GameSystem;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.EntityHub;
+&nbsp;import inf.elte.hu.gameengine_javafx.Maths.Vector;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.Direction;
+&nbsp;
+&nbsp;/**
+&nbsp; * The MovementDeterminerSystem is responsible for determining and updating
+&nbsp; * the movement states of entities based on their velocity components.
+&nbsp; * It assigns the appropriate state (e.g., &quot;left&quot;, &quot;right&quot;, &quot;up&quot;, &quot;down&quot;, &quot;idle&quot;)
+&nbsp; * and direction (e.g., Direction.LEFT, Direction.RIGHT) to entities based on their movement.
+&nbsp; */
+<b class="fc">&nbsp;public class MovementDeterminerSystem extends GameSystem {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Starts the movement determination system by activating it.
+&nbsp;     * This method marks the system as active and ready for updates.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void start() {
+<b class="fc">&nbsp;        this.active = true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the movement states and directions of entities with both
+&nbsp;     * VelocityComponent and StateComponent.
+&nbsp;     * It processes each entity and determines if the movement is in the left-right or up-down direction.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void update() {
+&nbsp;        // Get all entities that have both a VelocityComponent and StateComponent
+<b class="fc">&nbsp;        var entities = EntityHub.getInstance().getEntitiesWithComponent(VelocityComponent.class);</b>
+<b class="fc">&nbsp;        entities.retainAll(EntityHub.getInstance().getEntitiesWithComponent(StateComponent.class));</b>
+&nbsp;
+&nbsp;        // Iterate through all eligible entities
+<b class="fc">&nbsp;        for (var entity : entities) {</b>
+&nbsp;            // Skip null entities
+<b class="pc">&nbsp;            if (entity == null) {</b>
+&nbsp;                continue;
+&nbsp;            }
+&nbsp;            // Process movement and states for the entity
+<b class="fc">&nbsp;            processEntity(entity);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Processes the movement state and direction for a single entity.
+&nbsp;     * Determines the left-right and up-down movement based on the entity&#39;s velocity.
+&nbsp;     *
+&nbsp;     * @param entity The entity to process.
+&nbsp;     */
+&nbsp;    private void processEntity(Entity entity) {
+&nbsp;        // Get the required components of the entity
+<b class="fc">&nbsp;        VelocityComponent velocityComponent = entity.getComponent(VelocityComponent.class);</b>
+<b class="fc">&nbsp;        Vector velocity = velocityComponent.getVelocity();</b>
+<b class="fc">&nbsp;        StateComponent stateComponent = entity.getComponent(StateComponent.class);</b>
+<b class="fc">&nbsp;        DirectionComponent directionComponent = entity.getComponent(DirectionComponent.class);</b>
+&nbsp;
+&nbsp;        // Determine movement in the left-right direction
+<b class="fc">&nbsp;        determineLeftRightMovement(velocity, stateComponent, directionComponent);</b>
+&nbsp;
+&nbsp;        // Determine movement in the up-down direction
+<b class="fc">&nbsp;        determineUpDownMovement(velocity, stateComponent, directionComponent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Determines and updates the up-down movement state and direction based on the velocity.
+&nbsp;     *
+&nbsp;     * @param velocity The velocity of the entity.
+&nbsp;     * @param stateComponent The state component of the entity.
+&nbsp;     * @param directionComponent The direction component of the entity.
+&nbsp;     */
+&nbsp;    private void determineUpDownMovement(Vector velocity, StateComponent stateComponent, DirectionComponent directionComponent) {
+<b class="pc">&nbsp;        switch ((int) Math.signum(velocity.getDy())) {</b>
+&nbsp;            case -1:
+&nbsp;                // Moving up
+<b class="pc">&nbsp;                if (Math.abs(velocity.getDx()) &lt; Math.abs(velocity.getDy())) {</b>
+<b class="fc">&nbsp;                    stateComponent.setCurrentState(&quot;up&quot;);</b>
+<b class="fc">&nbsp;                    directionComponent.setDirection(Direction.UP);</b>
+&nbsp;                }
+&nbsp;                break;
+&nbsp;            case 1:
+&nbsp;                // Moving down
+<b class="pc">&nbsp;                if (Math.abs(velocity.getDx()) &lt; Math.abs(velocity.getDy())) {</b>
+<b class="fc">&nbsp;                    stateComponent.setCurrentState(&quot;down&quot;);</b>
+<b class="fc">&nbsp;                    directionComponent.setDirection(Direction.DOWN);</b>
+&nbsp;                }
+&nbsp;                break;
+&nbsp;            case 0:
+&nbsp;                // Idle (no vertical movement)
+<b class="fc">&nbsp;                if (!stateComponent.getCurrentState().equals(&quot;idle&quot;)) {</b>
+&nbsp;                    return;
+&nbsp;                }
+<b class="fc">&nbsp;                stateComponent.setCurrentState(&quot;idle&quot;);</b>
+<b class="fc">&nbsp;                directionComponent.setDirection(Direction.ALL);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Determines and updates the left-right movement state and direction based on the velocity.
+&nbsp;     *
+&nbsp;     * @param velocity The velocity of the entity.
+&nbsp;     * @param stateComponent The state component of the entity.
+&nbsp;     * @param directionComponent The direction component of the entity.
+&nbsp;     */
+&nbsp;    private void determineLeftRightMovement(Vector velocity, StateComponent stateComponent, DirectionComponent directionComponent) {
+<b class="pc">&nbsp;        switch ((int) Math.signum(velocity.getDx())) {</b>
+&nbsp;            case -1:
+&nbsp;                // Moving left
+<b class="fc">&nbsp;                stateComponent.setCurrentState(&quot;left&quot;);</b>
+<b class="fc">&nbsp;                directionComponent.setDirection(Direction.LEFT);</b>
+&nbsp;                break;
+&nbsp;            case 1:
+&nbsp;                // Moving right
+<b class="fc">&nbsp;                stateComponent.setCurrentState(&quot;right&quot;);</b>
+<b class="fc">&nbsp;                directionComponent.setDirection(Direction.RIGHT);</b>
+&nbsp;                break;
+&nbsp;            case 0:
+&nbsp;                // Idle (no horizontal movement)
+<b class="fc">&nbsp;                stateComponent.setCurrentState(&quot;idle&quot;);</b>
+<b class="fc">&nbsp;                directionComponent.setDirection(Direction.ALL);</b>
+&nbsp;                break;
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

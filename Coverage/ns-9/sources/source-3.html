@@ -1,0 +1,212 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ResourceHub</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Core</a>
+</div>
+
+<h1>Coverage Summary for Class: ResourceHub (inf.elte.hu.gameengine_javafx.Core)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ResourceHub</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Core;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code ResourceHub} class manages different types of resources within the game engine.
+&nbsp; * It allows for adding, retrieving, and removing {@code ResourceManager} instances, which are responsible
+&nbsp; * for managing specific types of resources. The {@code ResourceHub} is a singleton that ensures centralized
+&nbsp; * access to all resources within the game engine.
+&nbsp; */
+&nbsp;public class ResourceHub {
+&nbsp;    private static ResourceHub instance;
+&nbsp;    private final Map&lt;Class&lt;?&gt;, ResourceManager&lt;?&gt;&gt; resourceManagers;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Private constructor for initializing the {@code ResourceHub}.
+&nbsp;     */
+<b class="fc">&nbsp;    private ResourceHub() {</b>
+<b class="fc">&nbsp;        resourceManagers = new HashMap&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the singleton instance of the {@code ResourceHub}.
+&nbsp;     *
+&nbsp;     * @return the {@code ResourceHub} instance
+&nbsp;     */
+&nbsp;    public static synchronized ResourceHub getInstance() {
+<b class="fc">&nbsp;        if (instance == null) {</b>
+<b class="fc">&nbsp;            instance = new ResourceHub();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Resets the instance of the singleton.
+&nbsp;     */
+&nbsp;    public static void resetInstance() {
+<b class="fc">&nbsp;        instance = null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adds a {@code ResourceManager} to the {@code ResourceHub}.
+&nbsp;     *
+&nbsp;     * @param classType       the class type of the resource managed by the {@code ResourceManager}
+&nbsp;     * @param resourceManager the {@code ResourceManager} instance to add
+&nbsp;     * @param &lt;T&gt;             the type of resource managed by the {@code ResourceManager}
+&nbsp;     */
+&nbsp;    public &lt;T&gt; void addResourceManager(Class&lt;T&gt; classType, ResourceManager&lt;T&gt; resourceManager) {
+<b class="fc">&nbsp;        resourceManagers.put(classType, resourceManager);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the {@code ResourceManager} for a given resource type.
+&nbsp;     *
+&nbsp;     * @param classType the class type of the resource managed by the {@code ResourceManager}
+&nbsp;     * @param &lt;T&gt;       the type of resource managed by the {@code ResourceManager}
+&nbsp;     * @return the {@code ResourceManager} for the specified resource type, or {@code null} if not found
+&nbsp;     */
+&nbsp;    @SuppressWarnings(&quot;unchecked&quot;)
+&nbsp;    public &lt;T&gt; ResourceManager&lt;T&gt; getResourceManager(Class&lt;T&gt; classType) {
+<b class="fc">&nbsp;        return (ResourceManager&lt;T&gt;) resourceManagers.get(classType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes the {@code ResourceManager} for a given resource type.
+&nbsp;     *
+&nbsp;     * @param type the class type of the resource managed by the {@code ResourceManager}
+&nbsp;     */
+&nbsp;    public void removeResourceManager(Class&lt;?&gt; type) {
+<b class="fc">&nbsp;        resourceManagers.remove(type);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Unloads all resources by calling {@code unloadAll} on all registered {@code ResourceManager} instances.
+&nbsp;     */
+&nbsp;    public void unloadAll() {
+<b class="fc">&nbsp;        resourceManagers.values().forEach(ResourceManager::unloadAll);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a map of all registered {@code ResourceManager} instances, with the class type as the key.
+&nbsp;     *
+&nbsp;     * @return a map of all {@code ResourceManager} instances
+&nbsp;     */
+&nbsp;    public Map&lt;Class&lt;?&gt;, ResourceManager&lt;?&gt;&gt; getAllResourceManagers() {
+<b class="fc">&nbsp;        return resourceManagers;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Clears all resources and removes all registered {@code ResourceManager} instances.
+&nbsp;     */
+&nbsp;    public void clearResources() {
+<b class="fc">&nbsp;        resourceManagers.clear();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

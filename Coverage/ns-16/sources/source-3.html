@@ -1,0 +1,170 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > uiRoot</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Misc.Layers</a>
+</div>
+
+<h1>Coverage Summary for Class: uiRoot (inf.elte.hu.gameengine_javafx.Misc.Layers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">uiRoot</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (2/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    66,7%
+  </span>
+  <span class="absValue">
+    (4/6)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Misc.Layers;
+&nbsp;
+&nbsp;import javafx.application.Platform;
+&nbsp;import javafx.scene.Node;
+&nbsp;import javafx.scene.layout.Pane;
+&nbsp;
+&nbsp;/**
+&nbsp; * A singleton class extending {@link Pane} that represents the root of the UI layer in the game.
+&nbsp; * &lt;p&gt;
+&nbsp; * The {@code uiRoot} class is responsible for managing the user interface elements
+&nbsp; * in the game. It provides functionality to clear all children from the UI layer
+&nbsp; * and is designed to be used as a singleton.
+&nbsp; * &lt;/p&gt;
+&nbsp; */
+&nbsp;public class uiRoot extends Pane {
+&nbsp;    private static uiRoot instance;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Private constructor to prevent external instantiation. Initializes the UI root.
+&nbsp;     */
+&nbsp;    private uiRoot() {
+<b class="fc">&nbsp;        super();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the singleton instance of {@code uiRoot}.
+&nbsp;     * If the instance has not been created yet, it will be created and returned.
+&nbsp;     *
+&nbsp;     * @return the singleton instance of {@code uiRoot}
+&nbsp;     */
+&nbsp;    public static uiRoot getInstance() {
+<b class="fc">&nbsp;        if (instance == null) {</b>
+<b class="fc">&nbsp;            instance = new uiRoot();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Clears all children from the UI root. This method is executed asynchronously
+&nbsp;     * on the JavaFX application thread using {@link Platform#runLater(Runnable)}.
+&nbsp;     */
+&nbsp;    public void unloadAll() {
+<b class="nc">&nbsp;        Platform.runLater(() -&gt; this.getChildren().clear());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Clears a Node from the UI root.This method is executed asynchronously
+&nbsp;     * on the JavaFX application thread using {@link Platform#runLater(Runnable)}.
+&nbsp;     * @param element the Node to be removed.
+&nbsp;     */
+&nbsp;    public void unload(Node element) {
+<b class="nc">&nbsp;        Platform.runLater(() -&gt; this.getChildren().remove(element));</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

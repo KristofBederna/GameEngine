@@ -1,0 +1,297 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > World</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Misc.MapClasses</a>
+</div>
+
+<h1>Coverage Summary for Class: World (inf.elte.hu.gameengine_javafx.Misc.MapClasses)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">World</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (9/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (4/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75,5%
+  </span>
+  <span class="absValue">
+    (37/49)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Misc.MapClasses;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
+&nbsp;import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.Tuple;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code World} class represents the game world, consisting of chunks of tiles.
+&nbsp; * It provides methods for managing and retrieving chunks, as well as accessing specific elements within those chunks.
+&nbsp; */
+&nbsp;public class World {
+<b class="fc">&nbsp;    private Map&lt;Tuple&lt;Integer, Integer&gt;, Chunk&gt; chunks = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;    private Map&lt;Tuple&lt;Integer, Integer&gt;, Chunk&gt; savedChunks = new HashMap&lt;&gt;();</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a new empty {@code World} with no chunks loaded.
+&nbsp;     */
+<b class="fc">&nbsp;    public World() {</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Gets the map of saved chunks in the world.
+&nbsp;     *
+&nbsp;     * @return the map of saved chunks, with coordinates as keys
+&nbsp;     */
+&nbsp;    public Map&lt;Tuple&lt;Integer, Integer&gt;, Chunk&gt; getSavedChunks() {
+<b class="fc">&nbsp;        return savedChunks;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the map of saved chunks in the world.
+&nbsp;     *
+&nbsp;     * @param savedChunks the map of saved chunks to set
+&nbsp;     */
+&nbsp;    public void setSavedChunks(Map&lt;Tuple&lt;Integer, Integer&gt;, Chunk&gt; savedChunks) {
+<b class="nc">&nbsp;        this.savedChunks = savedChunks;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Clears all loaded chunks from the world.
+&nbsp;     */
+&nbsp;    public void clear() {
+<b class="nc">&nbsp;        chunks.clear();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves a chunk at the specified world coordinates (x, y).
+&nbsp;     *
+&nbsp;     * @param x the x-coordinate of the chunk
+&nbsp;     * @param y the y-coordinate of the chunk
+&nbsp;     * @return the chunk at the specified coordinates, or {@code null} if not loaded
+&nbsp;     */
+&nbsp;    public Chunk get(int x, int y) {
+<b class="fc">&nbsp;        return chunks.getOrDefault(new Tuple&lt;&gt;(x, y), null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Gets the number of chunks currently loaded in the world.
+&nbsp;     *
+&nbsp;     * @return the number of loaded chunks
+&nbsp;     */
+&nbsp;    public int size() {
+<b class="fc">&nbsp;        return chunks.size();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the map of all chunks in the world.
+&nbsp;     *
+&nbsp;     * @return the map of all chunks, with coordinates as keys
+&nbsp;     */
+&nbsp;    public Map&lt;Tuple&lt;Integer, Integer&gt;, Chunk&gt; getWorld() {
+<b class="fc">&nbsp;        return chunks;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adds a chunk at the specified coordinates (x, y) to the world.
+&nbsp;     *
+&nbsp;     * @param x the x-coordinate where the chunk should be placed
+&nbsp;     * @param y the y-coordinate where the chunk should be placed
+&nbsp;     * @param chunk the chunk to add
+&nbsp;     */
+&nbsp;    public void addChunk(int x, int y, Chunk chunk) {
+<b class="fc">&nbsp;        chunks.put(new Tuple&lt;&gt;(x, y), chunk);</b>
+<b class="fc">&nbsp;        savedChunks.put(new Tuple&lt;&gt;(x, y), chunk);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the tile element at the specified world coordinates as a {@code Point} object.
+&nbsp;     *
+&nbsp;     * @param point the {@code Point} object representing the world coordinates
+&nbsp;     * @return the {@code TileEntity} at the specified point, or {@code null} if not found
+&nbsp;     */
+&nbsp;    public TileEntity getElementAt(Point point) {
+<b class="fc">&nbsp;        int tileX = Math.floorDiv((int) point.getX(), (int) MapConfig.scaledTileSize);</b>
+<b class="fc">&nbsp;        int tileY = Math.floorDiv((int) point.getY(), (int) MapConfig.scaledTileSize);</b>
+&nbsp;
+<b class="fc">&nbsp;        int chunkX = Math.floorDiv(tileX, MapConfig.chunkWidth);</b>
+<b class="fc">&nbsp;        int chunkY = Math.floorDiv(tileY, MapConfig.chunkHeight);</b>
+&nbsp;
+<b class="fc">&nbsp;        int localX = Math.floorMod(tileY, MapConfig.chunkWidth);</b>
+<b class="fc">&nbsp;        int localY = Math.floorMod(tileX, MapConfig.chunkHeight);</b>
+&nbsp;
+<b class="fc">&nbsp;        Chunk chunk = chunks.get(new Tuple&lt;&gt;(chunkX, chunkY));</b>
+<b class="fc">&nbsp;        if (chunk != null) {</b>
+<b class="fc">&nbsp;            return chunk.getElement(localX, localY);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the tile element at the specified world coordinates as a {@code Point} object, inside the cache.
+&nbsp;     *
+&nbsp;     * @param point the {@code Point} object representing the world coordinates
+&nbsp;     * @return the {@code TileEntity} at the specified point, or {@code null} if not found
+&nbsp;     */
+&nbsp;    public TileEntity getElementAtSaved(Point point) {
+<b class="nc">&nbsp;        int tileX = Math.floorDiv((int) point.getX(), (int) MapConfig.scaledTileSize);</b>
+<b class="nc">&nbsp;        int tileY = Math.floorDiv((int) point.getY(), (int) MapConfig.scaledTileSize);</b>
+&nbsp;
+<b class="nc">&nbsp;        int chunkX = Math.floorDiv(tileX, MapConfig.chunkWidth);</b>
+<b class="nc">&nbsp;        int chunkY = Math.floorDiv(tileY, MapConfig.chunkHeight);</b>
+&nbsp;
+<b class="nc">&nbsp;        int localX = Math.floorMod(tileY, MapConfig.chunkWidth);</b>
+<b class="nc">&nbsp;        int localY = Math.floorMod(tileX, MapConfig.chunkHeight);</b>
+&nbsp;
+<b class="nc">&nbsp;        Chunk chunk = savedChunks.get(new Tuple&lt;&gt;(chunkX, chunkY));</b>
+<b class="nc">&nbsp;        if (chunk != null) {</b>
+<b class="nc">&nbsp;            return chunk.getElement(localX, localY);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the tile element at the specified world coordinates as a {@code Point} object.
+&nbsp;     *
+&nbsp;     * @param point the {@code Point} object representing the world coordinates
+&nbsp;     * @param value the value of the tile saved
+&nbsp;     */
+&nbsp;    public void setElementAt(Point point, int value) {
+<b class="fc">&nbsp;        int tileX = Math.floorDiv((int) point.getX(), (int) MapConfig.scaledTileSize);</b>
+<b class="fc">&nbsp;        int tileY = Math.floorDiv((int) point.getY(), (int) MapConfig.scaledTileSize);</b>
+&nbsp;
+<b class="fc">&nbsp;        int chunkX = Math.floorDiv(tileX, MapConfig.chunkWidth);</b>
+<b class="fc">&nbsp;        int chunkY = Math.floorDiv(tileY, MapConfig.chunkHeight);</b>
+&nbsp;
+<b class="fc">&nbsp;        int localX = Math.floorMod(tileY, MapConfig.chunkWidth);</b>
+<b class="fc">&nbsp;        int localY = Math.floorMod(tileX, MapConfig.chunkHeight);</b>
+&nbsp;
+<b class="fc">&nbsp;        Chunk chunk = chunks.get(new Tuple&lt;&gt;(chunkX, chunkY));</b>
+<b class="pc">&nbsp;        if (chunk != null) {</b>
+<b class="fc">&nbsp;            chunk.setElement(localX, localY, value);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the tile element at the specified world coordinates as a {@code Point} object, inside the cache.
+&nbsp;     *
+&nbsp;     * @param point the {@code Point} object representing the world coordinates
+&nbsp;     * @param value the value of the tile saved
+&nbsp;     */
+&nbsp;    public void setElementAtSaved(Point point, int value) {
+<b class="fc">&nbsp;        int tileX = Math.floorDiv((int) point.getX(), (int) MapConfig.scaledTileSize);</b>
+<b class="fc">&nbsp;        int tileY = Math.floorDiv((int) point.getY(), (int) MapConfig.scaledTileSize);</b>
+&nbsp;
+<b class="fc">&nbsp;        int chunkX = Math.floorDiv(tileX, MapConfig.chunkWidth);</b>
+<b class="fc">&nbsp;        int chunkY = Math.floorDiv(tileY, MapConfig.chunkHeight);</b>
+&nbsp;
+<b class="fc">&nbsp;        int localX = Math.floorMod(tileY, MapConfig.chunkWidth);</b>
+<b class="fc">&nbsp;        int localY = Math.floorMod(tileX, MapConfig.chunkHeight);</b>
+&nbsp;
+<b class="fc">&nbsp;        Chunk savedChunk = savedChunks.get(new Tuple&lt;&gt;(chunkX, chunkY));</b>
+<b class="pc">&nbsp;        if (savedChunk != null) {</b>
+<b class="fc">&nbsp;            savedChunk.setElement(localX, localY, value);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

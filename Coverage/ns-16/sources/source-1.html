@@ -1,0 +1,164 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > GameCanvas</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Misc.Layers</a>
+</div>
+
+<h1>Coverage Summary for Class: GameCanvas (inf.elte.hu.gameengine_javafx.Misc.Layers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameCanvas</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    33,3%
+  </span>
+  <span class="absValue">
+    (1/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    20%
+  </span>
+  <span class="absValue">
+    (1/5)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Misc.Layers;
+&nbsp;
+&nbsp;import javafx.scene.canvas.Canvas;
+&nbsp;
+&nbsp;/**
+&nbsp; * A singleton class that extends {@link Canvas} to represent the game&#39;s drawing surface.
+&nbsp; * &lt;p&gt;
+&nbsp; * This class provides a single instance of a {@link Canvas} that can be used for rendering the game scene.
+&nbsp; * It ensures that only one instance of {@code GameCanvas} is created throughout the game.
+&nbsp; * &lt;/p&gt;
+&nbsp; */
+&nbsp;public class GameCanvas extends Canvas {
+&nbsp;    private static GameCanvas instance;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Private constructor to prevent external instantiation. Initializes the canvas with the given width and height.
+&nbsp;     *
+&nbsp;     * @param width  the width of the canvas
+&nbsp;     * @param height the height of the canvas
+&nbsp;     */
+&nbsp;    private GameCanvas(double width, double height) {
+<b class="nc">&nbsp;        super(width, height);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates and returns the singleton instance of {@code GameCanvas}.
+&nbsp;     * If the instance has already been created, it returns the existing instance.
+&nbsp;     *
+&nbsp;     * @param width  the width of the canvas
+&nbsp;     * @param height the height of the canvas
+&nbsp;     * @return the singleton instance of {@code GameCanvas}
+&nbsp;     */
+&nbsp;    public static GameCanvas createInstance(double width, double height) {
+<b class="nc">&nbsp;        if (instance == null) {</b>
+<b class="nc">&nbsp;            instance = new GameCanvas(width, height);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the singleton instance of {@code GameCanvas}.
+&nbsp;     *
+&nbsp;     * @return the singleton instance of {@code GameCanvas}
+&nbsp;     */
+&nbsp;    public static GameCanvas getInstance() {
+<b class="fc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

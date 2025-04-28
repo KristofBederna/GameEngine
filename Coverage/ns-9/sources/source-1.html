@@ -1,0 +1,347 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > EntityHub</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Core</a>
+</div>
+
+<h1>Coverage Summary for Class: EntityHub (inf.elte.hu.gameengine_javafx.Core)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EntityHub</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (12/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    86,8%
+  </span>
+  <span class="absValue">
+    (33/38)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90,8%
+  </span>
+  <span class="absValue">
+    (59/65)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Core;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.Component;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+&nbsp;import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;import java.util.concurrent.ConcurrentHashMap;
+&nbsp;
+&nbsp;/**
+&nbsp; * The {@code EntityHub} class is a singleton responsible for managing entities and their associated
+&nbsp; * entity managers in the game engine.
+&nbsp; * &lt;p&gt;
+&nbsp; * It provides methods for adding, removing, and retrieving entities and entity managers, as well as
+&nbsp; * filtering entities based on specific components or types. It also provides functionality for
+&nbsp; * determining which entities are visible inside the camera&#39;s viewport.
+&nbsp; * &lt;/p&gt;
+&nbsp; */
+&nbsp;public class EntityHub {
+&nbsp;    private static EntityHub instance;
+&nbsp;    private final Map&lt;Class&lt;?&gt;, EntityManager&lt;?&gt;&gt; entityManagers;
+<b class="fc">&nbsp;    final Map&lt;Integer, Entity&gt; entities = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;    private final Map&lt;Class&lt;? extends Component&gt;, Set&lt;Integer&gt;&gt; componentCache = new ConcurrentHashMap&lt;&gt;();</b>
+&nbsp;
+&nbsp;    public static void resetInstance() {
+<b class="fc">&nbsp;        instance = null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Map&lt;Class&lt;? extends Component&gt;, Set&lt;Integer&gt;&gt; getComponentCache() {
+<b class="fc">&nbsp;        return componentCache;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Private constructor for initializing the entity hub.
+&nbsp;     */
+<b class="fc">&nbsp;    private EntityHub() {</b>
+<b class="fc">&nbsp;        entityManagers = new ConcurrentHashMap&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the singleton instance of the {@code EntityHub}.
+&nbsp;     *
+&nbsp;     * @return the singleton instance of {@code EntityHub}
+&nbsp;     */
+&nbsp;    public static synchronized EntityHub getInstance() {
+<b class="fc">&nbsp;        if (instance == null) {</b>
+<b class="fc">&nbsp;            instance = new EntityHub();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adds an entity manager to the hub for managing entities of a specific type.
+&nbsp;     *
+&nbsp;     * @param type          the type of entities managed by the entity manager
+&nbsp;     * @param entityManager the entity manager to be added
+&nbsp;     * @param &lt;T&gt;           the type of entities managed by the entity manager
+&nbsp;     */
+&nbsp;    public &lt;T extends Entity&gt; void addEntityManager(Class&lt;T&gt; type, EntityManager&lt;T&gt; entityManager) {
+<b class="fc">&nbsp;        entityManagers.put(type, entityManager);</b>
+<b class="fc">&nbsp;        refreshEntitiesList();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the entity manager for a specific entity type.
+&nbsp;     *
+&nbsp;     * @param type the type of entities managed by the entity manager
+&nbsp;     * @param &lt;T&gt;  the type of entities managed by the entity manager
+&nbsp;     * @return the entity manager for the specified type, or {@code null} if not found
+&nbsp;     */
+&nbsp;    @SuppressWarnings(&quot;unchecked&quot;)
+&nbsp;    public &lt;T extends Entity&gt; EntityManager&lt;T&gt; getEntityManager(Class&lt;T&gt; type) {
+<b class="fc">&nbsp;        return (EntityManager&lt;T&gt;) entityManagers.get(type);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes an entity manager from the hub for a specific entity type.
+&nbsp;     *
+&nbsp;     * @param type the type of entities whose entity manager is to be removed
+&nbsp;     */
+&nbsp;    public void removeEntityManager(Class&lt;?&gt; type) {
+<b class="nc">&nbsp;        entityManagers.remove(type);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes all entity managers from the hub.
+&nbsp;     */
+&nbsp;    public void removeAllEntityManagers() {
+<b class="nc">&nbsp;        entityManagers.clear();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Unloads all entities managed by the entity managers.
+&nbsp;     */
+&nbsp;    public void unloadAll() {
+<b class="nc">&nbsp;        entities.clear();</b>
+<b class="nc">&nbsp;        entityManagers.clear();</b>
+<b class="nc">&nbsp;        componentCache.clear();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a map of all entity managers in the hub.
+&nbsp;     *
+&nbsp;     * @return a map of entity managers
+&nbsp;     */
+&nbsp;    public Map&lt;Class&lt;?&gt;, EntityManager&lt;?&gt;&gt; getAllEntityManagers() {
+<b class="nc">&nbsp;        return entityManagers;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a list of all entities currently managed by the hub.
+&nbsp;     *
+&nbsp;     * @return a list of all entities
+&nbsp;     */
+&nbsp;    public List&lt;Entity&gt; getAllEntities() {
+<b class="fc">&nbsp;        return entities.values().stream().toList();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Refreshes the list of entities by retrieving entities from all entity managers.
+&nbsp;     */
+&nbsp;    public void refreshEntitiesList() {
+<b class="fc">&nbsp;        synchronized (entities) {</b>
+<b class="fc">&nbsp;            entities.clear();</b>
+<b class="fc">&nbsp;            for (EntityManager&lt;?&gt; entityManager : entityManagers.values()) {</b>
+<b class="fc">&nbsp;                for(Entity entity : entityManager.getEntities().values()) {</b>
+<b class="pc">&nbsp;                    if (entity == null) {</b>
+&nbsp;                        continue;
+&nbsp;                    }
+<b class="fc">&nbsp;                    entities.put(entity.getId(), entity);</b>
+&nbsp;                }
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a list of entities that are inside the viewport of the specified camera entity.
+&nbsp;     *
+&nbsp;     * @param cameraEntity the camera entity used to determine the visible area
+&nbsp;     * @return a list of entities inside the camera&#39;s viewport
+&nbsp;     */
+&nbsp;    public List&lt;Entity&gt; getEntitiesInsideViewport(CameraEntity cameraEntity) {
+<b class="fc">&nbsp;        List&lt;Entity&gt; visibleEntities = new ArrayList&lt;&gt;();</b>
+&nbsp;        Collection&lt;Entity&gt; entityValues;
+&nbsp;
+<b class="fc">&nbsp;        synchronized (entities) {</b>
+<b class="fc">&nbsp;            entityValues = new ArrayList&lt;&gt;(entities.values());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        for (Entity entity : entityValues) {</b>
+<b class="pc">&nbsp;            if (entity == null) continue;</b>
+<b class="fc">&nbsp;            PositionComponent position = entity.getComponent(PositionComponent.class);</b>
+<b class="pc">&nbsp;            if (position == null) continue;</b>
+&nbsp;
+<b class="fc">&nbsp;            if (entity.getComponent(ImageComponent.class) == null) continue;</b>
+&nbsp;
+<b class="fc">&nbsp;            DimensionComponent dimension = entity.getComponent(DimensionComponent.class);</b>
+<b class="pc">&nbsp;            if (dimension == null) continue;</b>
+&nbsp;
+<b class="fc">&nbsp;            if (cameraEntity.isPositionInsideViewport(</b>
+<b class="fc">&nbsp;                    position.getGlobalX(),</b>
+<b class="fc">&nbsp;                    position.getGlobalY(),</b>
+<b class="fc">&nbsp;                    dimension.getWidth(),</b>
+<b class="fc">&nbsp;                    dimension.getHeight())) {</b>
+<b class="fc">&nbsp;                visibleEntities.add(entity);</b>
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        return visibleEntities;</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a list of entities that have a specific component.
+&nbsp;     *
+&nbsp;     * @param type the type of component to check for
+&nbsp;     * @return a list of entities that have the specified component
+&nbsp;     */
+&nbsp;    public List&lt;Entity&gt; getEntitiesWithComponent(Class&lt;? extends Component&gt; type) {
+<b class="fc">&nbsp;        Set&lt;Integer&gt; entityIds = componentCache.get(type);</b>
+&nbsp;
+<b class="fc">&nbsp;        if (entityIds == null || entityIds.isEmpty()) {</b>
+<b class="fc">&nbsp;            return new ArrayList&lt;&gt;();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        List&lt;Entity&gt; entitiesWithComponent = new ArrayList&lt;&gt;(entityIds.size());</b>
+<b class="fc">&nbsp;        for (Integer id : entityIds) {</b>
+<b class="fc">&nbsp;            entitiesWithComponent.add(entities.get(id));</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return entitiesWithComponent;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a list of entities that are of a specific type.
+&nbsp;     *
+&nbsp;     * @param type the type of entities to filter
+&nbsp;     * @return a list of entities of the specified type
+&nbsp;     */
+&nbsp;    public List&lt;Entity&gt; getEntitiesWithType(Class&lt;? extends Entity&gt; type) {
+<b class="fc">&nbsp;        List&lt;Entity&gt; entitiesWithType = new ArrayList&lt;&gt;();</b>
+&nbsp;        Collection&lt;Entity&gt; entityValues;
+&nbsp;
+<b class="fc">&nbsp;        synchronized (entities) {</b>
+<b class="fc">&nbsp;            entityValues = new ArrayList&lt;&gt;(entities.values());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        for (Entity entity : entityValues) {</b>
+<b class="fc">&nbsp;            if (type.isInstance(entity)) {</b>
+<b class="fc">&nbsp;                entitiesWithType.add(entity);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return entitiesWithType;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void removeEntity(Entity entity) {
+<b class="pc">&nbsp;        if (entity == null) return;</b>
+<b class="fc">&nbsp;        entities.remove(entity.getId());</b>
+<b class="fc">&nbsp;        for(Set&lt;Integer&gt; componentIds : componentCache.values()) {</b>
+<b class="fc">&nbsp;            if (componentIds.contains(entity.getId())) {</b>
+<b class="fc">&nbsp;                componentIds.removeIf(entityId -&gt; entityId == entity.getId());</b>
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        getEntityManager(entity.getClass()).unload(entity.getId());</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

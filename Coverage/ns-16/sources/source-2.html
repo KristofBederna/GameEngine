@@ -1,0 +1,174 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > GameLayer</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Misc.Layers</a>
+</div>
+
+<h1>Coverage Summary for Class: GameLayer (inf.elte.hu.gameengine_javafx.Misc.Layers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameLayer</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Misc.Layers;
+&nbsp;
+&nbsp;import javafx.scene.layout.StackPane;
+&nbsp;
+&nbsp;/**
+&nbsp; * A singleton class that extends {@link StackPane} to represent a game layer
+&nbsp; * containing the game canvas and UI root.
+&nbsp; * &lt;p&gt;
+&nbsp; * This class is used to manage the rendering layer of the game. It contains the
+&nbsp; * {@link GameCanvas} for drawing the game world and the {@link uiRoot} for managing the user interface.
+&nbsp; * &lt;/p&gt;
+&nbsp; */
+&nbsp;public class GameLayer extends StackPane {
+&nbsp;    private static GameLayer instance;
+&nbsp;    private GameCanvas canvas;
+&nbsp;    private uiRoot UI;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Private constructor to prevent external instantiation. Initializes the game layer
+&nbsp;     * with a canvas and a UI root.
+&nbsp;     */
+&nbsp;    private GameLayer() {
+<b class="fc">&nbsp;        super();</b>
+<b class="fc">&nbsp;        canvas = GameCanvas.getInstance();</b>
+<b class="fc">&nbsp;        UI = uiRoot.getInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the singleton instance of {@code GameLayer}.
+&nbsp;     * If the instance has not been created yet, it will be created and returned.
+&nbsp;     *
+&nbsp;     * @return the singleton instance of {@code GameLayer}
+&nbsp;     */
+&nbsp;    public static GameLayer getInstance() {
+<b class="fc">&nbsp;        if (instance == null) {</b>
+<b class="fc">&nbsp;            instance = new GameLayer();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the {@code GameCanvas} used for rendering the game world.
+&nbsp;     *
+&nbsp;     * @return the {@code GameCanvas} instance
+&nbsp;     */
+&nbsp;    public GameCanvas getCanvas() {
+<b class="fc">&nbsp;        return canvas;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the {@code uiRoot} used for managing the user interface.
+&nbsp;     *
+&nbsp;     * @return the {@code uiRoot} instance
+&nbsp;     */
+&nbsp;    public uiRoot getUIRoot() {
+<b class="fc">&nbsp;        return UI;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

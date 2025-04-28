@@ -1,0 +1,93 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > EventListener</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Misc.EventHandling</a>
+</div>
+
+<h1>Coverage Summary for Class: EventListener (inf.elte.hu.gameengine_javafx.Misc.EventHandling)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">EventListener</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Misc.EventHandling;
+&nbsp;
+&nbsp;/**
+&nbsp; * Interface for handling events within the game engine.
+&nbsp; * &lt;br&gt;
+&nbsp; * Implementing classes should define how to process specific event types.
+&nbsp; *
+&nbsp; * @param &lt;T&gt; The type of event this listener handles.
+&nbsp; */
+&nbsp;public interface EventListener&lt;T extends Event&gt; {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when an event of type {@code T} occurs.
+&nbsp;     *
+&nbsp;     * @param event The event instance to be processed.
+&nbsp;     */
+&nbsp;    void onEvent(T event);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when an event of type {@code T} exits.
+&nbsp;     *
+&nbsp;     * @param event The event instance to be processed.
+&nbsp;     */
+&nbsp;    void onExit(T event);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

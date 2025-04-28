@@ -1,0 +1,261 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CameraEntity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Entities</a>
+</div>
+
+<h1>Coverage Summary for Class: CameraEntity (inf.elte.hu.gameengine_javafx.Entities)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CameraEntity</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    73,7%
+  </span>
+  <span class="absValue">
+    (14/19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (12/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    68,9%
+  </span>
+  <span class="absValue">
+    (31/45)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Entities;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.Default.ParentComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.Layers.uiRoot;
+&nbsp;import javafx.application.Platform;
+&nbsp;
+&nbsp;public class CameraEntity extends Entity {
+&nbsp;    private static CameraEntity instance;
+&nbsp;
+<b class="fc">&nbsp;    private CameraEntity(double width, double height, double worldWidth, double worldHeight) {</b>
+<b class="fc">&nbsp;        this.addComponent(new DimensionComponent(width, height));</b>
+<b class="fc">&nbsp;        this.getComponent(PositionComponent.class).setLocalPosition(0, 0, this);</b>
+<b class="fc">&nbsp;        this.addComponent(new WorldDimensionComponent(worldWidth, worldHeight));</b>
+&nbsp;
+<b class="fc">&nbsp;        addToManager();</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    private CameraEntity(double width, double height) {</b>
+<b class="nc">&nbsp;        this.addComponent(new DimensionComponent(width, height));</b>
+<b class="nc">&nbsp;        this.getComponent(PositionComponent.class).setLocalPosition(0, 0, this);</b>
+&nbsp;
+<b class="nc">&nbsp;        addToManager();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static CameraEntity getInstance(double width, double height, double worldWidth, double worldHeight) {
+<b class="fc">&nbsp;        if (instance == null) {</b>
+<b class="fc">&nbsp;            instance = new CameraEntity(width, height, worldWidth, worldHeight);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static CameraEntity getInstance(double width, double height) {
+<b class="pc">&nbsp;        if (instance == null) {</b>
+<b class="nc">&nbsp;            instance = new CameraEntity(width, height);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static CameraEntity getInstance() {
+<b class="fc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static void resetInstance() {
+<b class="fc">&nbsp;        instance = null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setPosition(double x, double y) {
+<b class="fc">&nbsp;        this.getComponent(PositionComponent.class).setLocalPosition(x, y, this);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the position based on the edges of the world, so that the camera doesn&#39;t run off the edge.
+&nbsp;     */
+&nbsp;    public void setClampedPosition(double x, double y) {
+<b class="fc">&nbsp;        double clampedX = calculateClampedX(x);</b>
+<b class="fc">&nbsp;        double clampedY = calculateClampedY(y);</b>
+<b class="fc">&nbsp;        this.getComponent(PositionComponent.class).setLocalPosition(clampedX, clampedY, this);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Moves the UI root to match the position of the camera, so that the drawn out UI elements are in the correct position.
+&nbsp;     */
+&nbsp;    public void moveUIRootToMatch(double x, double y) {
+<b class="nc">&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc">&nbsp;            double clampedX = calculateClampedX(x);</b>
+<b class="nc">&nbsp;            double clampedY = calculateClampedY(y);</b>
+&nbsp;
+<b class="nc">&nbsp;            uiRoot.getInstance().setLayoutX(clampedX);</b>
+<b class="nc">&nbsp;            uiRoot.getInstance().setLayoutY(clampedY);</b>
+&nbsp;        });
+&nbsp;    }
+&nbsp;
+&nbsp;    private double calculateClampedY(double y) {
+<b class="fc">&nbsp;        return Math.max(0, Math.min(y, this.getComponent(WorldDimensionComponent.class).getWorldHeight() - this.getComponent(DimensionComponent.class).getHeight()));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private double calculateClampedX(double x) {
+<b class="fc">&nbsp;        return Math.max(0, Math.min(x, this.getComponent(WorldDimensionComponent.class).getWorldWidth() - this.getComponent(DimensionComponent.class).getWidth()));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setWidth(double width) {
+<b class="nc">&nbsp;        this.getComponent(DimensionComponent.class).setWidth(width);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setHeight(double height) {
+<b class="nc">&nbsp;        this.getComponent(DimensionComponent.class).setHeight(height);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns whether and entity is inside the camera&#39;s viewport.
+&nbsp;     * @param entityX X cooridnate of the entity.
+&nbsp;     * @param entityY Y coordinate of the entity.
+&nbsp;     * @param entityWidth Width of the entity.
+&nbsp;     * @param entityHeight Height of the entity.
+&nbsp;     * @return {@code True} if the entity is inside(even 1 pixel), {@code False} if not.
+&nbsp;     */
+&nbsp;    public boolean isPositionInsideViewport(double entityX, double entityY, double entityWidth, double entityHeight) {
+<b class="fc">&nbsp;        double renderX = getRenderX(entityX);</b>
+<b class="fc">&nbsp;        double renderY = getRenderY(entityY);</b>
+&nbsp;
+<b class="fc">&nbsp;        return renderX + entityWidth &gt;= 0 &amp;&amp; renderX &lt;= this.getComponent(DimensionComponent.class).getWidth() &amp;&amp;</b>
+<b class="pc">&nbsp;                renderY + entityHeight &gt;= 0 &amp;&amp; renderY &lt;= this.getComponent(DimensionComponent.class).getHeight();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @param entityY The entity&#39;s Y coordinate.
+&nbsp;     * @return The entity&#39;s rendering position(Y coordinate).
+&nbsp;     */
+&nbsp;    public static double getRenderY(double entityY) {
+<b class="fc">&nbsp;        CameraEntity cameraEntity = CameraEntity.getInstance();</b>
+<b class="pc">&nbsp;        if (cameraEntity == null) {</b>
+<b class="nc">&nbsp;            return entityY;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return entityY - cameraEntity.getComponent(PositionComponent.class).getGlobalY();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @param entityX The entity&#39;s X coordinate.
+&nbsp;     * @return The entity&#39;s rendering position(X coordinate).
+&nbsp;     */
+&nbsp;    public static double getRenderX(double entityX) {
+<b class="fc">&nbsp;        CameraEntity cameraEntity = CameraEntity.getInstance();</b>
+<b class="pc">&nbsp;        if (cameraEntity == null) {</b>
+<b class="nc">&nbsp;            return entityX;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return entityX - cameraEntity.getComponent(PositionComponent.class).getGlobalX();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Attaches the camera to the entity.
+&nbsp;     * @param entity The entity to attach the camera to.
+&nbsp;     */
+&nbsp;    public void attachTo(Entity entity) {
+<b class="fc">&nbsp;        this.getComponent(ParentComponent.class).removeAllChildren();</b>
+<b class="fc">&nbsp;        this.getComponent(ParentComponent.class).addChild(entity);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Entity getOwner() {
+<b class="fc">&nbsp;        return this.getComponent(ParentComponent.class).getChildren().stream().toList().getFirst();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

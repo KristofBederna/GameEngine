@@ -1,0 +1,298 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > MouseInputHandler</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Misc.InputHandlers</a>
+</div>
+
+<h1>Coverage Summary for Class: MouseInputHandler (inf.elte.hu.gameengine_javafx.Misc.InputHandlers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MouseInputHandler</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/42)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Misc.InputHandlers;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Entities.CameraEntity;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.Layers.GameCanvas;
+&nbsp;import javafx.scene.Scene;
+&nbsp;import javafx.scene.input.MouseButton;
+&nbsp;import javafx.scene.input.MouseEvent;
+&nbsp;import javafx.scene.input.ScrollEvent;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;/**
+&nbsp; * Singleton class for handling mouse input events.
+&nbsp; * &lt;br&gt;
+&nbsp; * Tracks mouse button presses, releases, position, and scroll events.
+&nbsp; */
+&nbsp;public class MouseInputHandler {
+&nbsp;    private static MouseInputHandler instance;
+<b class="nc">&nbsp;    private final Set&lt;MouseButton&gt; pressedButtons = new HashSet&lt;&gt;();</b>
+<b class="nc">&nbsp;    private final Set&lt;MouseButton&gt; releasedButtons = new HashSet&lt;&gt;();</b>
+<b class="nc">&nbsp;    private final Map&lt;MouseButton, Long&gt; lastPressedTime = new HashMap&lt;&gt;();</b>
+&nbsp;
+&nbsp;    private double mouseX, mouseY;
+&nbsp;    private double scrollDeltaY;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Private constructor that initializes mouse event handlers for the game scene.
+&nbsp;     */
+<b class="nc">&nbsp;    private MouseInputHandler() {</b>
+<b class="nc">&nbsp;        Scene scene = GameCanvas.getInstance().getScene();</b>
+<b class="nc">&nbsp;        scene.setOnMousePressed(this::mousePressed);</b>
+<b class="nc">&nbsp;        scene.setOnMouseReleased(this::mouseReleased);</b>
+<b class="nc">&nbsp;        scene.setOnMouseMoved(this::mouseMoved);</b>
+<b class="nc">&nbsp;        scene.setOnMouseDragged(this::mouseMoved);</b>
+<b class="nc">&nbsp;        scene.setOnScroll(this::mouseScrolled);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructor for test cases.
+&nbsp;     * @param test
+&nbsp;     */
+<b class="nc">&nbsp;    private MouseInputHandler(boolean test) {</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the singleton instance of {@code MouseInputHandler}.
+&nbsp;     * If no instance exists, a new one is created.
+&nbsp;     *
+&nbsp;     * @return The singleton instance of {@code MouseInputHandler}.
+&nbsp;     */
+&nbsp;    public static MouseInputHandler getInstance() {
+<b class="nc">&nbsp;        if (instance == null) {</b>
+<b class="nc">&nbsp;            instance = new MouseInputHandler();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Instance creation for test cases.
+&nbsp;     * @param test
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    public static MouseInputHandler getInstance(boolean test) {
+<b class="nc">&nbsp;        if (instance == null) {</b>
+<b class="nc">&nbsp;            instance = new MouseInputHandler(test);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles mouse button press events, tracking the button and its press time.
+&nbsp;     *
+&nbsp;     * @param event The {@code MouseEvent} triggered by a mouse button press.
+&nbsp;     */
+&nbsp;    private void mousePressed(MouseEvent event) {
+<b class="nc">&nbsp;        long currentTime = System.currentTimeMillis();</b>
+<b class="nc">&nbsp;        MouseButton button = event.getButton();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (!pressedButtons.contains(button)) {</b>
+<b class="nc">&nbsp;            lastPressedTime.put(button, currentTime);</b>
+<b class="nc">&nbsp;            pressedButtons.add(button);</b>
+<b class="nc">&nbsp;            releasedButtons.clear();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles mouse button release events, moving the button from pressed to released state.
+&nbsp;     *
+&nbsp;     * @param event The {@code MouseEvent} triggered by a mouse button release.
+&nbsp;     */
+&nbsp;    private void mouseReleased(MouseEvent event) {
+<b class="nc">&nbsp;        MouseButton button = event.getButton();</b>
+<b class="nc">&nbsp;        pressedButtons.remove(button);</b>
+<b class="nc">&nbsp;        releasedButtons.add(button);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the mouse position based on the camera&#39;s global position.
+&nbsp;     *
+&nbsp;     * @param event The {@code MouseEvent} triggered by a mouse movement or drag.
+&nbsp;     */
+&nbsp;    private void mouseMoved(MouseEvent event) {
+<b class="nc">&nbsp;        CameraEntity camera = CameraEntity.getInstance();</b>
+&nbsp;
+<b class="nc">&nbsp;        mouseX = event.getX() + camera.getComponent(PositionComponent.class).getGlobalX();</b>
+<b class="nc">&nbsp;        mouseY = event.getY() + camera.getComponent(PositionComponent.class).getGlobalY();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles mouse scroll events and updates the scroll delta value.
+&nbsp;     *
+&nbsp;     * @param event The {@code ScrollEvent} triggered by a mouse scroll action.
+&nbsp;     */
+&nbsp;    private void mouseScrolled(ScrollEvent event) {
+<b class="nc">&nbsp;        scrollDeltaY = event.getDeltaY();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks if a specific mouse button is currently pressed.
+&nbsp;     *
+&nbsp;     * @param button The mouse button to check.
+&nbsp;     * @return {@code true} if the button is currently pressed, {@code false} otherwise.
+&nbsp;     */
+&nbsp;    public boolean isButtonPressed(MouseButton button) {
+<b class="nc">&nbsp;        return pressedButtons.contains(button);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks if a specific mouse button was released since the last check.
+&nbsp;     * &lt;br&gt;
+&nbsp;     * If the button was released, it is removed from the released buttons set.
+&nbsp;     *
+&nbsp;     * @param button The mouse button to check.
+&nbsp;     * @return {@code true} if the button was released, {@code false} otherwise.
+&nbsp;     */
+&nbsp;    public boolean isButtonReleased(MouseButton button) {
+<b class="nc">&nbsp;        boolean wasReleased = releasedButtons.contains(button);</b>
+<b class="nc">&nbsp;        if (wasReleased) {</b>
+<b class="nc">&nbsp;            releasedButtons.remove(button);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return wasReleased;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the current x-coordinate of the mouse relative to the game world.
+&nbsp;     *
+&nbsp;     * @return The x-coordinate of the mouse.
+&nbsp;     */
+&nbsp;    public double getMouseX() {
+<b class="nc">&nbsp;        return mouseX;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the current y-coordinate of the mouse relative to the game world.
+&nbsp;     *
+&nbsp;     * @return The y-coordinate of the mouse.
+&nbsp;     */
+&nbsp;    public double getMouseY() {
+<b class="nc">&nbsp;        return mouseY;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the amount of vertical scrolling since the last scroll event.
+&nbsp;     *
+&nbsp;     * @return The vertical scroll delta value.
+&nbsp;     */
+&nbsp;    public double getScrollDeltaY() {
+<b class="nc">&nbsp;        return scrollDeltaY;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void reset() {
+<b class="nc">&nbsp;        pressedButtons.clear();</b>
+<b class="nc">&nbsp;        releasedButtons.clear();</b>
+<b class="nc">&nbsp;        lastPressedTime.clear();</b>
+<b class="nc">&nbsp;        mouseX = mouseY = scrollDeltaY = 0;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

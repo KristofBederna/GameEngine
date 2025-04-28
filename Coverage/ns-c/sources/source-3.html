@@ -1,0 +1,221 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ParticleEntity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Entities</a>
+</div>
+
+<h1>Coverage Summary for Class: ParticleEntity (inf.elte.hu.gameengine_javafx.Entities)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ParticleEntity</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    40%
+  </span>
+  <span class="absValue">
+    (2/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    4,5%
+  </span>
+  <span class="absValue">
+    (1/22)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    34,6%
+  </span>
+  <span class="absValue">
+    (18/52)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Entities;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.Default.PositionComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.MaxDistanceFromOriginComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.AccelerationComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.DragComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PhysicsComponents.VelocityComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.DimensionComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ColorComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ImageComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.RenderingComponents.ZIndexComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.ShapeComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Core.Architecture.Entity;
+&nbsp;import inf.elte.hu.gameengine_javafx.Maths.Geometry.*;
+&nbsp;import javafx.scene.canvas.GraphicsContext;
+&nbsp;import javafx.scene.paint.Color;
+&nbsp;
+&nbsp;public class ParticleEntity extends Entity {
+<b class="fc">&nbsp;    public ParticleEntity(double x, double y, double width, double height, Shape shape, Color color, Color strokeColor, double maxDistance) {</b>
+<b class="fc">&nbsp;        this.getComponent(PositionComponent.class).setLocalPosition(x, y, this);</b>
+<b class="fc">&nbsp;        addComponent(new VelocityComponent(3));</b>
+<b class="fc">&nbsp;        addComponent(new DimensionComponent(width, height));</b>
+<b class="fc">&nbsp;        addComponent(new ShapeComponent&lt;&gt;(shape));</b>
+<b class="fc">&nbsp;        addComponent(new ColorComponent(color, strokeColor));</b>
+<b class="fc">&nbsp;        addComponent(new ZIndexComponent(3));</b>
+<b class="fc">&nbsp;        addComponent(new MaxDistanceFromOriginComponent(maxDistance));</b>
+<b class="fc">&nbsp;        addComponent(new AccelerationComponent());</b>
+<b class="fc">&nbsp;        addComponent(new DragComponent(0.05));</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    public ParticleEntity(double x, double y, double width, double height, String imagePath, double maxDistance) {</b>
+<b class="nc">&nbsp;        this.getComponent(PositionComponent.class).setLocalPosition(x, y, this);</b>
+<b class="nc">&nbsp;        addComponent(new VelocityComponent(3));</b>
+<b class="nc">&nbsp;        addComponent(new DimensionComponent(width, height));</b>
+<b class="nc">&nbsp;        addComponent(new ImageComponent(imagePath, width, height));</b>
+<b class="nc">&nbsp;        addComponent(new ZIndexComponent(3));</b>
+<b class="nc">&nbsp;        addComponent(new MaxDistanceFromOriginComponent(maxDistance));</b>
+<b class="nc">&nbsp;        addComponent(new AccelerationComponent());</b>
+<b class="nc">&nbsp;        addComponent(new DragComponent(0.05));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void render(GraphicsContext gc) {
+<b class="nc">&nbsp;        if (getComponent(ImageComponent.class) != null) {</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="nc">&nbsp;        ShapeComponent&lt;?&gt; shapeComponent = getComponent(ShapeComponent.class);</b>
+<b class="nc">&nbsp;        if (shapeComponent != null) {</b>
+<b class="nc">&nbsp;            Shape shape = shapeComponent.getShape();</b>
+<b class="nc">&nbsp;            if (shape instanceof Line) {</b>
+<b class="nc">&nbsp;                shape.render(gc, getComponent(ColorComponent.class).getColor(), 5);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                shape.renderFillWithStroke(gc, getComponent(ColorComponent.class).getColor(), getComponent(ColorComponent.class).getStroke(), 1);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Aligns the shape of the particle with its position.
+&nbsp;     * @param entity The entity to be aligned to.
+&nbsp;     */
+&nbsp;    public void alignShapeWithEntity(Entity entity) {
+<b class="nc">&nbsp;        if (getComponent(ShapeComponent.class) == null) {</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="nc">&nbsp;        Shape shape = entity.getComponent(ShapeComponent.class).getShape();</b>
+<b class="nc">&nbsp;        PositionComponent positionComponent = getComponent(PositionComponent.class);</b>
+<b class="nc">&nbsp;        double x = positionComponent.getGlobalX();</b>
+<b class="nc">&nbsp;        double y = positionComponent.getGlobalY();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (shape instanceof Rectangle) {</b>
+<b class="nc">&nbsp;            shape.moveTo(new Point(x, y));</b>
+<b class="nc">&nbsp;        } else if (shape instanceof ComplexShape) {</b>
+<b class="nc">&nbsp;            shape.moveTo(new Point(x, y));</b>
+<b class="nc">&nbsp;        } else if (shape instanceof Line) {</b>
+<b class="nc">&nbsp;            shape.moveTo(new Point(x, y));</b>
+<b class="nc">&nbsp;        } else if (shape instanceof NSidedShape) {</b>
+<b class="nc">&nbsp;            shape.moveTo(new Point(x, y));</b>
+<b class="nc">&nbsp;        } else if (shape instanceof Triangle) {</b>
+<b class="nc">&nbsp;            shape.moveTo(new Point(x, y));</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a hard(deep) copy of the entity.
+&nbsp;     * @param entity A ParticleEntity to be copied.
+&nbsp;     * @return The copy of the entity.
+&nbsp;     */
+&nbsp;    public static ParticleEntity hardCopySelf(Entity entity) {
+<b class="fc">&nbsp;        PositionComponent pos = entity.getComponent(PositionComponent.class);</b>
+<b class="fc">&nbsp;        DimensionComponent dim = entity.getComponent(DimensionComponent.class);</b>
+<b class="fc">&nbsp;        ShapeComponent&lt;?&gt; shapeComponent = entity.getComponent(ShapeComponent.class);</b>
+<b class="fc">&nbsp;        ImageComponent imageComponent = entity.getComponent(ImageComponent.class);</b>
+<b class="fc">&nbsp;        ColorComponent col = entity.getComponent(ColorComponent.class);</b>
+<b class="fc">&nbsp;        MaxDistanceFromOriginComponent maxDistance = entity.getComponent(MaxDistanceFromOriginComponent.class);</b>
+&nbsp;
+<b class="pc">&nbsp;        if (shapeComponent != null) {</b>
+<b class="fc">&nbsp;            return new ParticleEntity(pos.getGlobalX(), pos.getGlobalY(), dim.getWidth(), dim.getHeight(), shapeComponent.getShape(), col.getColor(), col.getStroke(), maxDistance.getMaxDistance());</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (imageComponent != null) {</b>
+<b class="nc">&nbsp;            return new ParticleEntity(pos.getGlobalX(), pos.getGlobalY(), dim.getWidth(), dim.getHeight(), imageComponent.getImagePath(), maxDistance.getMaxDistance());</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        throw new RuntimeException(&quot;Couldn&#39;t hard copy particle entity&quot;);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>

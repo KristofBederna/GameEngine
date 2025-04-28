@@ -1,0 +1,274 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > MapLoader</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">inf.elte.hu.gameengine_javafx.Misc.MapClasses</a>
+</div>
+
+<h1>Coverage Summary for Class: MapLoader (inf.elte.hu.gameengine_javafx.Misc.MapClasses)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MapLoader</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85,7%
+  </span>
+  <span class="absValue">
+    (6/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    86,4%
+  </span>
+  <span class="absValue">
+    (19/22)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    94,8%
+  </span>
+  <span class="absValue">
+    (55/58)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package inf.elte.hu.gameengine_javafx.Misc.MapClasses;
+&nbsp;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.FilePathComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.PropertyComponents.CentralMassComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.TileValueComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.WorldComponents.MapMeshComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDataComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Components.WorldComponents.WorldDimensionComponent;
+&nbsp;import inf.elte.hu.gameengine_javafx.Entities.TileEntity;
+&nbsp;import inf.elte.hu.gameengine_javafx.Entities.WorldEntity;
+&nbsp;import inf.elte.hu.gameengine_javafx.Maths.Geometry.Point;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.Configs.MapConfig;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.Configs.ResourceConfig;
+&nbsp;import inf.elte.hu.gameengine_javafx.Misc.Tuple;
+&nbsp;
+&nbsp;import java.io.BufferedReader;
+&nbsp;import java.io.IOException;
+&nbsp;import java.io.InputStreamReader;
+&nbsp;import java.util.*;
+&nbsp;
+<b class="nc">&nbsp;public class MapLoader {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Loads the map based on the current data within the WorldEntity.
+&nbsp;     */
+&nbsp;    public static void loadMap() {
+<b class="fc">&nbsp;        WorldEntity map = WorldEntity.getInstance();</b>
+<b class="pc">&nbsp;        if (map == null) return;</b>
+&nbsp;
+<b class="fc">&nbsp;        List&lt;List&lt;Integer&gt;&gt; data = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        Tuple&lt;Integer, Integer&gt; dimensions = readMapData(map, data);</b>
+&nbsp;
+<b class="fc">&nbsp;        setWorldDimensions(dimensions);</b>
+<b class="fc">&nbsp;        createChunks(data, dimensions, map);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Gathers a 3D array of integers from a text file using a BufferReader, either from the Resources or from the file path.
+&nbsp;     * @param map The world entity to be loaded.
+&nbsp;     * @param data The 3D array of integer data.
+&nbsp;     * @return The dimensions of the 3D array.
+&nbsp;     */
+&nbsp;    private static Tuple&lt;Integer, Integer&gt; readMapData(WorldEntity map, List&lt;List&lt;Integer&gt;&gt; data) {
+<b class="fc">&nbsp;        String filePath = map.getComponent(FilePathComponent.class).getFilePath();</b>
+&nbsp;
+<b class="pc">&nbsp;        try (BufferedReader reader = filePath.startsWith(&quot;/&quot;)</b>
+<b class="fc">&nbsp;                ? new BufferedReader(new InputStreamReader(</b>
+<b class="fc">&nbsp;                Objects.requireNonNull(MapSaver.class.getResourceAsStream(filePath)))</b>
+&nbsp;        )
+<b class="fc">&nbsp;                : new BufferedReader(new java.io.FileReader(filePath))) {</b>
+&nbsp;
+<b class="fc">&nbsp;            String[] dims = reader.readLine().split(&quot; &quot;);</b>
+<b class="fc">&nbsp;            int width = Integer.parseInt(dims[0]);</b>
+<b class="fc">&nbsp;            int height = Integer.parseInt(dims[1]);</b>
+&nbsp;
+&nbsp;            String line;
+<b class="fc">&nbsp;            while ((line = reader.readLine()) != null) {</b>
+<b class="fc">&nbsp;                String[] values = line.split(&quot; &quot;);</b>
+<b class="fc">&nbsp;                List&lt;Integer&gt; row = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;                for (String value : values) {</b>
+<b class="fc">&nbsp;                    row.add(Integer.parseInt(value));</b>
+&nbsp;                }
+<b class="fc">&nbsp;                data.add(row);</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            return new Tuple&lt;&gt;(width, height);</b>
+&nbsp;
+&nbsp;        } catch (IOException e) {
+<b class="nc">&nbsp;            throw new RuntimeException(&quot;Error reading map file from path: &quot; + filePath, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private static void setWorldDimensions(Tuple&lt;Integer, Integer&gt; dimensions) {
+<b class="fc">&nbsp;        WorldDimensionComponent dimComp = WorldEntity.getInstance().getComponent(WorldDimensionComponent.class);</b>
+<b class="fc">&nbsp;        dimComp.setWorldWidth(dimensions.first());</b>
+<b class="fc">&nbsp;        dimComp.setWorldHeight(dimensions.second());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates the chunks of the map.
+&nbsp;     * @param data The integer data to load into the chunks.
+&nbsp;     * @param dimensions The dimensions of the map.
+&nbsp;     * @param map The map entity.
+&nbsp;     */
+&nbsp;    private static void createChunks(List&lt;List&lt;Integer&gt;&gt; data, Tuple&lt;Integer, Integer&gt; dimensions, WorldEntity map) {
+<b class="fc">&nbsp;        int width = dimensions.first();</b>
+<b class="fc">&nbsp;        int height = dimensions.second();</b>
+<b class="fc">&nbsp;        int chunkWidth = Math.floorDiv(width, MapConfig.chunkWidth);</b>
+<b class="fc">&nbsp;        int chunkHeight = Math.floorDiv(height, MapConfig.chunkHeight);</b>
+&nbsp;
+<b class="fc">&nbsp;        for (int i = 0; i &lt; chunkWidth; i++) {</b>
+<b class="fc">&nbsp;            for (int j = 0; j &lt; chunkHeight; j++) {</b>
+<b class="fc">&nbsp;                createChunkAt(i, j, data, map, width, height);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a chunk at the specified coordinate.
+&nbsp;     * @param chunkX The chunk&#39;s X location on the chunk grid.
+&nbsp;     * @param chunkY The chunk&#39;s Y location on the chunk grid.
+&nbsp;     * @param data The integer data to load into the chunks.
+&nbsp;     * @param map The map entity.
+&nbsp;     * @param width The width of the map.
+&nbsp;     * @param height The height of the map.
+&nbsp;     */
+&nbsp;    private static void createChunkAt(int chunkX, int chunkY, List&lt;List&lt;Integer&gt;&gt; data, WorldEntity map, int width, int height) {
+<b class="fc">&nbsp;        Tuple&lt;Integer, Integer&gt; coordinates = new Tuple&lt;&gt;(chunkX, chunkY);</b>
+<b class="fc">&nbsp;        Chunk chunkTiles = new Chunk();</b>
+&nbsp;
+<b class="fc">&nbsp;        for (int y = chunkY * MapConfig.chunkHeight; y &lt; Math.min((chunkY+1)*MapConfig.chunkHeight, height); y++) {</b>
+<b class="fc">&nbsp;            List&lt;TileEntity&gt; chunkRow = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;            List&lt;Point&gt; meshRow = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;            for (int x = chunkX * MapConfig.chunkWidth; x &lt; Math.min((chunkX+1)*MapConfig.chunkWidth, width); x++) {</b>
+<b class="fc">&nbsp;                TileEntity tile = createTileEntity(data.get(y).get(x), x, y);</b>
+<b class="fc">&nbsp;                chunkRow.add(tile);</b>
+&nbsp;
+<b class="fc">&nbsp;                if (!MapConfig.wallTiles.contains(tile.getComponent(TileValueComponent.class).getTileValue())) {</b>
+<b class="fc">&nbsp;                    CentralMassComponent cm = tile.getComponent(CentralMassComponent.class);</b>
+<b class="fc">&nbsp;                    meshRow.add(new Point(cm.getCentralX(), cm.getCentralY()));</b>
+&nbsp;                } else {
+<b class="fc">&nbsp;                    meshRow.add(null);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            chunkTiles.getChunk().add(chunkRow);</b>
+<b class="fc">&nbsp;            map.getComponent(MapMeshComponent.class).addToRow(y, meshRow);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        map.getComponent(WorldDataComponent.class).getMapData().getWorld().putIfAbsent(coordinates, chunkTiles);</b>
+<b class="fc">&nbsp;        map.getComponent(WorldDataComponent.class).getMapData().getSavedChunks().putIfAbsent(coordinates, chunkTiles);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new TileEntity at the specified spot.
+&nbsp;     * @param value The integer value of the tile.
+&nbsp;     * @param x The X position of the tile.
+&nbsp;     * @param y The Y position of the tile.
+&nbsp;     * @return The created tile.
+&nbsp;     */
+&nbsp;    private static TileEntity createTileEntity(int value, int x, int y) {
+<b class="fc">&nbsp;        String name = TileLoader.getTilePath(value);</b>
+<b class="pc">&nbsp;        if (name == null) {</b>
+<b class="nc">&nbsp;            name = String.valueOf(value);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        String path = &quot;/assets/tiles/&quot; + name + &quot;.png&quot;;</b>
+<b class="fc">&nbsp;        double tileX = x * MapConfig.scaledTileSize;</b>
+<b class="fc">&nbsp;        double tileY = y * MapConfig.scaledTileSize;</b>
+&nbsp;
+<b class="fc">&nbsp;        if (MapConfig.wallTiles.contains(value)) {</b>
+<b class="fc">&nbsp;            return new TileEntity(value, tileX, tileY, path, MapConfig.scaledTileSize, MapConfig.scaledTileSize);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            return new TileEntity(value, tileX, tileY, path, MapConfig.scaledTileSize, MapConfig.scaledTileSize);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-28 15:27</div>
+</div>
+</body>
+</html>
