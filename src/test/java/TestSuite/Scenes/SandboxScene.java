@@ -53,7 +53,7 @@ public class SandboxScene extends GameScene {
         entitySetup();
         UtilityFunctions.setUpCamera(1920, 1080, 32, 32);
         interactionSetup();
-        new SystemStartUp(this::SystemStartUp);
+        new SystemStartUp(this::systemStartUp);
 
         if (GameLoopStartUp.getGameLoop() == null) {
             new GameLoopStartUp();
@@ -67,7 +67,8 @@ public class SandboxScene extends GameScene {
       UtilityFunctions.defaultBreakdownMethod();
     }
 
-    private void SystemStartUp() {
+    @Override
+    protected void systemStartUp() {
         //Define systems to be started up here
         SystemHub systemHub = SystemHub.getInstance();
         systemHub.addSystem(MovementDeterminerSystem.class, new MovementDeterminerSystem(), 0);

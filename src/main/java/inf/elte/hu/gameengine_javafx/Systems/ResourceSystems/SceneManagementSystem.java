@@ -36,6 +36,11 @@ public class SceneManagementSystem extends GameSystem {
             public void breakdown() {
 
             }
+
+            @Override
+            protected void systemStartUp() {
+
+            }
         };
         currentScene.setup();
     }

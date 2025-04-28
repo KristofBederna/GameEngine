@@ -29,6 +29,11 @@ public class TestGameScene extends GameScene {
         breakdownCalled = true;
     }
 
+    @Override
+    protected void systemStartUp() {
+
+    }
+
     public boolean isSetupCalled() {
         return setupCalled;
     }

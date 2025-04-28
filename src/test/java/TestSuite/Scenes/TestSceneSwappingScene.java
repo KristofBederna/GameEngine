@@ -52,12 +52,13 @@ public class TestSceneSwappingScene extends GameScene {
         Entity entity2 = entitySetup();
         UtilityFunctions.setUpCamera(1920, 1080, 32, 16);
         interactionSetup(entity2);
-        new SystemStartUp(this::SystemStartUp);
+        new SystemStartUp(this::systemStartUp);
 
         GameLoopStartUp.restartLoop();
     }
 
-    private void SystemStartUp() {
+    @Override
+    protected void systemStartUp() {
         //Define systems to be started up here
         SystemHub systemHub = SystemHub.getInstance();
         systemHub.addSystem(MovementDeterminerSystem.class, new MovementDeterminerSystem(), 0);
