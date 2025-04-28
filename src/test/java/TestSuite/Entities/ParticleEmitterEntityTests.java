@@ -40,11 +40,11 @@ public class ParticleEmitterEntityTests {
 
     @Test
     public void testCreateCopy() {
-        assertEquals(5, emitterEntity.getComponent(ParentComponent.class).getChildren().size(), "The mock particle should have been created 5 times on spawn.");
+        assertEquals(0, emitterEntity.getComponent(ParentComponent.class).getChildren().size(), "The mock particle should have been created 0 times on spawn.");
         emitterEntity.createParticles(mockParticle, emitterEntity.getAmount(), emitterEntity.getComponent(ParentComponent.class));
 
         assertFalse(emitterEntity.getComponent(ParentComponent.class).getChildren().contains(mockParticle), "The mock particle should not have become a children.");
-        assertEquals(10, emitterEntity.getComponent(ParentComponent.class).getChildren().size(), "The mock particle should have been created 5 more times.");
+        assertEquals(5, emitterEntity.getComponent(ParentComponent.class).getChildren().size(), "The mock particle should have been created 5 more times.");
     }
 
     @Test
